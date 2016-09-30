@@ -1,6 +1,6 @@
 {
   "name": "@alexlafroscia/ember-wizard",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Super Simple Series of Steps",
   "directories": {
     "doc": "doc",
