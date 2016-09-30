@@ -57,7 +57,7 @@ describeComponent(
           {{step-manager/step currentStep='foo' name='foo' register-step=(action 'register')}}
         `);
 
-        expect($hook('ember-wizard-step').is(':visible')).to.be.ok;
+        expect($hook('ember-wizard-step')).to.be.visible;
       });
 
       it('is hidden if the name and `currentStep` do not match', function() {
@@ -65,7 +65,7 @@ describeComponent(
           {{step-manager/step currentStep='bar' name='foo' register-step=(action 'register')}}
         `);
 
-        expect($hook('ember-wizard-step').is(':visible')).not.to.be.ok;
+        expect($hook('ember-wizard-step')).not.to.be.visible;
       });
     });
   }

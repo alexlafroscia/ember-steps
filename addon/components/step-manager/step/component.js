@@ -15,8 +15,15 @@ export default Component.extend({
     return { name };
   }),
 
-  // Attach the layout
   layout,
+
+  init() {
+    this._super(...arguments);
+
+    const name = get(this, 'name');
+    console.log(`initializing ${name}`);
+    this['register-step'](name);
+  },
 
   /**
    * Name used to transition to this step
@@ -36,11 +43,6 @@ export default Component.extend({
   isVisible: computed('currentStep', 'name', function() {
     return get(this, 'currentStep') === get(this, 'name');
   }),
-
-  willInsertElement() {
-    const name = get(this, 'name');
-    this['register-step'](name);
-  },
 
   actions: {
     'choose-option'() {
