@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/alexlafroscia/ember-wizard.svg?branch=master)](https://travis-ci.org/alexlafroscia/ember-wizard)
 [![Coverage Status](https://coveralls.io/repos/github/alexlafroscia/ember-wizard/badge.svg?branch=master)](https://coveralls.io/github/alexlafroscia/ember-wizard?branch=master)
+[![dependencies Status](https://david-dm.org/alexlafroscia/ember-wizard/status.svg)](https://david-dm.org/alexlafroscia/ember-wizard)
+[![devDependencies Status](https://david-dm.org/alexlafroscia/ember-wizard/dev-status.svg)](https://david-dm.org/alexlafroscia/ember-wizard?type=dev)
 [![Ember Versions](https://embadge.io/v1/badge.svg?start=2.3.0)](#compatibility-note)
 
 > “Pay no attention to the man behind the curtain!”
