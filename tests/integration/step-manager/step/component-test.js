@@ -40,14 +40,40 @@ describeComponent(
     });
 
     describe('rendering', function() {
-      it('renders block content if visible', function() {
+      it('renders block content when visible', function() {
         this.render(hbs`
-          {{#step-manager/step currentStep='foo' name='foo' register-step=(action 'register')}}
+          {{#step-manager/step isActive=true register-step=(action 'register')}}
             Foo
           {{/step-manager/step}}
         `);
 
-        expect(this.$().text().trim()).to.equal('Foo');
+        expect($hook('ember-wizard-step')).to.contain('Foo');
+      });
+
+      describe('when inactive', function() {
+        it('is hidden when no alternate state is provided', function() {
+          this.render(hbs`
+            {{#step-manager/step register-step=(action 'register')}}
+              Active Content
+            {{/step-manager/step}}
+          `);
+
+          expect($hook('ember-wizard-step')).not.to.be.visible;
+          expect($hook('ember-wizard-step')).not.to.contain('Active Content');
+        });
+
+        it('renders the inverse block if provided', function() {
+          this.render(hbs`
+            {{#step-manager/step hasInactiveState=true register-step=(action 'register')}}
+              Active Content
+            {{else}}
+              Inactive Content
+            {{/step-manager/step}}
+          `);
+
+          expect($hook('ember-wizard-step')).to.be.visible;
+          expect($hook('ember-wizard-step')).to.contain('Inactive Content');
+        });
       });
     });
 
@@ -62,7 +88,7 @@ describeComponent(
 
       it('is invisible when not active', function() {
         this.render(hbs`
-          {{step-manager/step isActive=false register-step=(action 'register')}}
+          {{step-manager/step register-step=(action 'register')}}
         `);
 
         expect($hook('ember-wizard-step')).not.to.be.visible;

@@ -3,7 +3,11 @@ import hbs from 'htmlbars-inline-precompile';
 
 const { Component, computed, get } = Ember;
 const layout = hbs`
-  {{yield}}
+  {{#if isActive}}
+    {{yield}}
+  {{else if hasInactiveState}}
+    {{yield to='inverse'}}
+  {{/if}}
 `;
 
 export default Component.extend({
@@ -11,8 +15,13 @@ export default Component.extend({
   hook: 'ember-wizard-step',
   hookQualifiers: computed('name', function() {
     const name = get(this, 'name');
+    const properties = {};
 
-    return { name };
+    if (name) {
+      properties.name = name;
+    }
+
+    return properties;
   }),
 
   layout,
@@ -39,10 +48,19 @@ export default Component.extend({
   isActive: false,
 
   /**
+   * Whether or not an inactive state should be displayed instead of
+   * hiding the step entirely when not visible
+   *
+   * @property {boolean} hasInactiveState
+   * @public
+   */
+  hasInactiveState: false,
+
+  /**
    * @property {boolean} isVisible
    * @public
    */
-  isVisible: computed('isActive', function() {
-    return get(this, 'isActive');
+  isVisible: computed('isActive', 'hasInactiveState', function() {
+    return get(this, 'hasInactiveState') || get(this, 'isActive');
   })
 });

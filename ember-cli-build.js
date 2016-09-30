@@ -12,5 +12,9 @@ module.exports = function(defaults) {
     behave. You most likely want to be modifying `./index.js` or app's build file
   */
 
+  if (app.env === 'test') {
+    app.import(app.bowerDirectory + '/chai-jquery/chai-jquery.js', { type: 'test' });
+  }
+
   return app.toTree();
 };
