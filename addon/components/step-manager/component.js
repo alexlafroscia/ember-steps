@@ -49,7 +49,6 @@ export default Component.extend({
      *
      * @method registerStep
      * @param {string} name the name of the step being registered
-     * @returns number
      * @private
      */
     'register-step-component'(name) {

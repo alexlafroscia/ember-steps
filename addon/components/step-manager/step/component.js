@@ -41,11 +41,5 @@ export default Component.extend({
    */
   isVisible: computed('currentStep', 'name', function() {
     return get(this, 'currentStep') === get(this, 'name');
-  }),
-
-  actions: {
-    'choose-option'() {
-      this['selection-action'](...arguments);
-    }
-  }
+  })
 });
