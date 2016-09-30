@@ -19,7 +19,7 @@ describeComponent(
     });
 
     describe('registering with the rendering context', function() {
-      it('registers its name when provided an action', function() {
+      it('registers itself with the step manager', function() {
         const registerAction = td.function();
         this.on('register', registerAction);
 
@@ -29,10 +29,10 @@ describeComponent(
               register-step=(action 'register')}}
         `);
 
-        expect(registerAction).to.be.calledWith('foo');
+        expect(registerAction).to.be.called;
       });
 
-      it('throws an error when not provided an action', function() {
+      it('throws an error when not provided a registration action', function() {
         expect(() => {
           this.render(hbs`{{step-manager/step}}`);
         }).to.throw(Error);
@@ -52,17 +52,17 @@ describeComponent(
     });
 
     describe('programmatically controlling visibility', function() {
-      it('is visible if the name and `currentStep` match', function() {
+      it('is visible when active', function() {
         this.render(hbs`
-          {{step-manager/step currentStep='foo' name='foo' register-step=(action 'register')}}
+          {{step-manager/step isActive=true register-step=(action 'register')}}
         `);
 
         expect($hook('ember-wizard-step')).to.be.visible;
       });
 
-      it('is hidden if the name and `currentStep` do not match', function() {
+      it('is invisible when not active', function() {
         this.render(hbs`
-          {{step-manager/step currentStep='bar' name='foo' register-step=(action 'register')}}
+          {{step-manager/step isActive=false register-step=(action 'register')}}
         `);
 
         expect($hook('ember-wizard-step')).not.to.be.visible;

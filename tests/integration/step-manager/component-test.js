@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import { describeComponent, it } from 'ember-mocha';
 import { beforeEach, describe } from 'mocha';
+import td from 'testdouble';
 import hbs from 'htmlbars-inline-precompile';
 import { initialize as initializeEmberHook, $hook } from 'ember-hook';
 
@@ -14,7 +15,7 @@ describeComponent(
     beforeEach(initializeEmberHook);
 
     describe('initial render', function() {
-      it('renders `initialStep` first', function() {
+      it('renders `initialStep` first if provided', function() {
         this.render(hbs`
           {{#step-manager initialStep='second' as |w|}}
             {{w.step name='first'}}
@@ -26,14 +27,16 @@ describeComponent(
         expect($hook('ember-wizard-step', { name: 'second' })).to.be.visible;
       });
 
-      it('requires an `initialStep` to be provided', function() {
-        expect(() => {
-          this.render(hbs`
-            {{#step-manager as |w|}}
-              {{w.step name='first'}}
-            {{/step-manager}}
-          `);
-        }).to.throw(Error);
+      it('renders the first step in the DOM if no `initialStep` is present', function() {
+        this.render(hbs`
+          {{#step-manager as |w|}}
+            {{w.step name='first'}}
+            {{w.step name='second'}}
+          {{/step-manager}}
+        `);
+
+        expect($hook('ember-wizard-step', { name: 'first' })).to.be.visible;
+        expect($hook('ember-wizard-step', { name: 'second' })).not.to.be.visible;
       });
     });
 
