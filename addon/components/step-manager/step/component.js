@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
 
-const { Component, computed, get, set } = Ember;
+const { Component, computed, get } = Ember;
 const layout = hbs`
   {{yield}}
 `;
@@ -20,8 +20,7 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    const name = get(this, 'name');
-    this['register-step'](name);
+    this['register-step'](this);
   },
 
   /**
@@ -33,13 +32,17 @@ export default Component.extend({
   name: null,
 
   /**
-   * Step should only be visible when the `currentStep` matches the assigned index
-   * for this step
-   *
+   * Whether this state is currently the active one
+   * @property {boolean} isActive
+   * @private
+   */
+  isActive: false,
+
+  /**
    * @property {boolean} isVisible
    * @public
    */
-  isVisible: computed('currentStep', 'name', function() {
-    return get(this, 'currentStep') === get(this, 'name');
+  isVisible: computed('isActive', function() {
+    return get(this, 'isActive');
   })
 });

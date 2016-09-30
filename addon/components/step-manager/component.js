@@ -1,12 +1,10 @@
 import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
 
-const { A, Component, computed, isEmpty, get, run, set } = Ember;
-const { oneWay } = computed;
+const { Component, isEmpty, get, run, set } = Ember;
 const layout = hbs`
   {{yield (hash
     step=(component 'step-manager/step'
-      currentStep=(readonly currentStep)
       register-step=(action 'register-step-component')
     )
     transition-to=(action 'transition-to-step')
@@ -22,11 +20,7 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    if (!get(this, 'initialStep')) {
-      throw new Error('You must provide an `initialStep` value');
-    }
-
-    set(this, 'steps', A());
+    set(this, 'steps', {});
   },
 
   /**
@@ -39,7 +33,35 @@ export default Component.extend({
    * @property {string} currentStep the current active step
    * @private
    */
-  currentStep: oneWay('initialStep'),
+  currentStep: null,
+
+  activateStep(stepComponent) {
+    const currentStep = get(this, 'currentStep');
+
+    run.scheduleOnce('render', function() {
+      if (currentStep === stepComponent) {
+        return;
+      } else if (currentStep) {
+        set(currentStep, 'isActive', false);
+      }
+
+      set(stepComponent, 'isActive', true);
+    });
+
+    set(this, 'currentStep', stepComponent);
+  },
+
+  /**
+   * Get the `stepComponent` with a given name
+   *
+   * @method stepComponentFor
+   * @param {string} name
+   * @return {StepManager/Step}
+   * @private
+   */
+  stepComponentFor(name) {
+    return get(this, 'steps')[name];
+  },
 
   actions: {
     /**
@@ -51,20 +73,32 @@ export default Component.extend({
      * @param {string} name the name of the step being registered
      * @private
      */
-    'register-step-component'(name) {
-      get(this, 'steps').pushObject(name);
+    'register-step-component'(stepComponent) {
+      const initialStepName = get(this, 'initialStep');
+      const newStepName = get(stepComponent, 'name');
+      const currentStep = get(this, 'currentStep');
+
+      if (initialStepName && initialStepName === newStepName) {
+        this.activateStep(stepComponent);
+      } else if (!initialStepName && !currentStep) {
+        this.activateStep(stepComponent);
+      }
+
+      get(this, 'steps')[newStepName] = stepComponent;
     },
 
-    'transition-to-step'(name, option) {
+    'transition-to-step'(name) {
       if (isEmpty(name)) {
         throw new Error('You must provide a step to transition to');
       }
 
-      if (!get(this, 'steps').includes(name)) {
+      if (!get(this, 'steps')[name]) {
         throw new Error('Provided name is not valid');
       }
 
-      set(this, 'currentStep', name);
+      const nextStep = this.stepComponentFor(name);
+      this.activateStep(nextStep);
+
       if (this['on-transition']) {
         this['on-transition'](...arguments);
       }
