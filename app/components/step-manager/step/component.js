@@ -1,0 +1,1 @@
+export { default } from 'ember-wizard/components/step-manager/step/component';
