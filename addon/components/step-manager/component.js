@@ -38,7 +38,7 @@ export default Component.extend({
   activateStep(stepComponent) {
     const currentStep = get(this, 'currentStep');
 
-    run.scheduleOnce('render', function() {
+    run.schedule('render', function() {
       if (currentStep === stepComponent) {
         return;
       } else if (currentStep) {
