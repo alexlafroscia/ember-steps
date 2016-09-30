@@ -9,6 +9,7 @@ const Router = EmberRouter.extend({
 });
 
 Router.map(function() {
+  this.route('named-steps');
 });
 
 export default Router;

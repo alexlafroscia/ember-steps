@@ -1,0 +1,27 @@
+<h1>Named Steps</h1>
+
+{{#step-manager as |w|}}
+  {{#w.step name='first'}}
+    <h2>This is the first step<</h2>
+
+    <button data-test={{hook 'first-button'}} {{action w.transition-to 'second'}}>
+      Next, please!
+    </button>
+  {{/w.step}}
+
+  {{#w.step name='second'}}
+    <h2>This is the second step<</h2>
+
+    <button data-test={{hook 'second-button'}} {{action w.transition-to 'third'}}>
+      Next, please!
+    </button>
+  {{/w.step}}
+
+  {{#w.step name='third'}}
+    <h2>This is the third step<</h2>
+
+    <button data-test={{hook 'third-button'}} {{action w.transition-to 'first'}}>
+      Back to the beginning!
+    </button>
+  {{/w.step}}
+{{/step-manager}}
