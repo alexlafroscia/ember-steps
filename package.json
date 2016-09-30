@@ -10,7 +10,8 @@
     "build": "ember build",
     "deploy": "ember github-pages:commit --message \"Deploy gh-pages from commit $(git rev-parse HEAD)\"; git push; git checkout -",
     "start": "ember server",
-    "test": "ember try:each"
+    "test": "ember try:each",
+    "postpublish": "greenkeeper-postpublish"
   },
   "repository": "https://github.com/alexlafroscia/ember-wizard",
   "engines": {
@@ -41,6 +42,7 @@
     "ember-load-initializers": "^0.5.1",
     "ember-resolver": "^2.0.3",
     "eslint-plugin-ember-suave": "^1.0.0",
+    "greenkeeper-postpublish": "^1.0.1",
     "loader.js": "^4.0.1"
   },
   "keywords": [
