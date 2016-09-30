@@ -21,7 +21,6 @@ export default Component.extend({
     this._super(...arguments);
 
     const name = get(this, 'name');
-    console.log(`initializing ${name}`);
     this['register-step'](name);
   },
 
