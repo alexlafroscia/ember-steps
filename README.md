@@ -1,6 +1,7 @@
 # ember-wizard
 
 [![Build Status](https://travis-ci.org/alexlafroscia/ember-wizard.svg?branch=master)](https://travis-ci.org/alexlafroscia/ember-wizard)
+[![Ember Versions](https://embadge.io/v1/badge.svg?start=2.3.0)](#compatibility-note)
 
 > “Pay no attention to the man behind the curtain!”
 
@@ -67,5 +68,10 @@ The `step-manager` provides a [closure action][ember-closure-actions] that can b
 
 The above examples show the basic idea, but there's more configuration (and power) available if you need it.  Head over to [the wiki][wiki] to read more about what `ember-wizard` can do!
 
+## Compatibility Note
+
+This addon uses the [hash helper][hash-helper], so Ember 2.3.0+ is required.
+
 [ember-closure-actions]: https://guides.emberjs.com/v2.8.0/templates/actions/
 [wiki]: https://github.com/alexlafroscia/ember-wizard/wiki
+[hash-helper]: http://emberjs.com/blog/2016/01/15/ember-2-3-released.html#toc_hash-helper
