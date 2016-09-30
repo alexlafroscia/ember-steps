@@ -2,8 +2,8 @@ module.exports = function(environment) {
   const ENV = {
     modulePrefix: 'dummy',
     environment: environment,
-    rootURL: '/',
-    locationType: 'auto',
+    rootURL: '/ember-wizard/',
+    locationType: 'hash',
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
