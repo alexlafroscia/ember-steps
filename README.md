@@ -1,5 +1,7 @@
 # ember-wizard
 
+[![Build Status](https://travis-ci.org/alexlafroscia/ember-wizard.svg?branch=master)](https://travis-ci.org/alexlafroscia/ember-wizard)
+
 > “Pay no attention to the man behind the curtain!”
 
 ## Features
