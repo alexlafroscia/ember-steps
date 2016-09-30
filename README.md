@@ -1,6 +1,7 @@
 # ember-wizard
 
 [![Build Status](https://travis-ci.org/alexlafroscia/ember-wizard.svg?branch=master)](https://travis-ci.org/alexlafroscia/ember-wizard)
+[![Coverage Status](https://coveralls.io/repos/github/alexlafroscia/ember-wizard/badge.svg?branch=master)](https://coveralls.io/github/alexlafroscia/ember-wizard?branch=master)
 [![Ember Versions](https://embadge.io/v1/badge.svg?start=2.3.0)](#compatibility-note)
 
 > “Pay no attention to the man behind the curtain!”
