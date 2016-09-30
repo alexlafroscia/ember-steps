@@ -16,7 +16,7 @@ setResolver(resolver);
 function isVisible(chai, utils) {
   utils.addProperty(chai.Assertion.prototype, 'visible', visibilityHandler);
 
-  function visibilityHandler(opts) {
+  function visibilityHandler() {
     const subject = this._obj;
     let id;
 
