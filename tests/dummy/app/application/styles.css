@@ -1,0 +1,53 @@
+@value wiz-dark-grey, wiz-grey, wiz-blue from 'dummy/styles/colors.css';
+
+.header {
+  background-color: wiz-grey;
+  border-bottom: 1px solid wiz-dark-grey;
+  padding-bottom: 1em;
+  padding-top: 1em;
+}
+
+.header-wrapper {
+  composes: page-width from 'dummy/styles/layout.css';
+
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.title {
+  font-weight: bold;
+  font-size: 1.1em;
+  flex-grow: 1;
+}
+
+.nav-item {
+  color: wiz-blue;
+  padding-left: 10px;
+  padding-right: 10px;
+
+  &:visited {
+    color: wiz-blue;
+  }
+
+  &:global(.active) {
+    font-weight: bold;
+  }
+}
+
+.github-link {
+  line-height: 0;
+  margin-left: 10px;
+
+  img {
+    transition: transform 0.2s;
+  }
+
+  &:hover img {
+    transform: scale(0.85);
+  }
+}
+
+.outlet-wrapper {
+  composes: page-width from 'dummy/styles/layout.css';
+}

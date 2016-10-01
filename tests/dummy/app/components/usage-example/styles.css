@@ -1,0 +1,85 @@
+@value wiz-dark-grey, wiz-white, wiz-grey, wiz-orange, wiz-dark-orange from 'dummy/styles/colors.css';
+
+.usage-example {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 1em;
+}
+
+.slide {
+  display: flex;
+  position: relative;
+}
+
+.slide-inner {
+  border-radius: 4px;
+  padding: 10px;
+}
+
+.rendered {
+  composes: slide;
+
+  z-index: 2;
+}
+
+.rendered-inner {
+  composes: slide-inner;
+
+  background-color: wiz-grey;
+  border: 1px solid wiz-dark-grey;
+  margin-top: 20px;
+}
+
+.header {
+  background-color: wiz-orange;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  border-bottom: 1px solid wiz-dark-orange;
+  color: wiz-white;
+  margin: -10px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.code-example {
+  composes: slide;
+
+  z-index: 1;
+}
+
+.code-example-inner {
+  composes: slide-inner;
+
+  background-color: wiz-white;
+  border: 1px solid wiz-grey;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+  margin-bottom: 20px;
+  margin-left: -10px;
+  padding-left: 20px;
+}
+
+.code-file-links {
+  margin-bottom: 10px;
+  border-bottom: 1px solid wiz-grey;
+}
+
+.code-file-link {
+  border-left: 1px solid wiz-grey;
+  border-radius: 4px;
+  border-right: 1px solid wiz-grey;
+  border-top: 1px solid wiz-grey;
+  display: inline-block;
+  font-size: .8em;
+  padding: 10px;
+  margin-bottom: -1px;
+
+  &:hover {
+    background-color: wiz-grey;
+  }
+
+  &:global(.active) {
+    border-bottom: 1px solid wiz-white;
+    font-weight: bold;
+  }
+}

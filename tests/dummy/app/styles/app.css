@@ -1,0 +1,55 @@
+@value wiz-dark-grey, wiz-white, wiz-black, wiz-dark-aqua, wiz-aqua from './colors.css';
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: wiz-white;
+  color: wiz-black;
+  font-family: Helvetica, 'sans-serif';
+}
+
+header,
+div,
+nav {
+  box-sizing: border-box;
+}
+
+a {
+  color: wiz-aqua;
+  text-decoration: none;
+
+  &:visited {
+    color: wiz-aqua;
+  }
+}
+
+button {
+  background-color: wiz-aqua;
+  border-radius: 4px;
+  border: 1px solid wiz-dark-aqua;
+  color: wiz-white;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 10px;
+  padding: 7px 10px;
+
+  &:hover {
+    background-color: wiz-dark-aqua;
+  }
+
+  &:focus {
+    outline: 0;
+  }
+}
+
+hr {
+  border: 0;
+  border-bottom: 1px solid wiz-dark-grey;
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+}

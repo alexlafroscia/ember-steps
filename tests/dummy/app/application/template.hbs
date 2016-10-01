@@ -1,0 +1,20 @@
+<header local-class="header">
+  <div local-class="header-wrapper">
+    <span local-class="title">
+      ember-wizard
+    </span>
+
+    <nav>
+      {{link-to 'Basic Usage' 'index' local-class="nav-item"}}
+      {{link-to 'Named Steps' 'named-steps' local-class="nav-item"}}
+    </nav>
+
+    <a local-class="github-link" href="https://github.com/alexlafroscia/ember-wizard">
+      <img src="/ember-wizard/images/github.svg" />
+    </a>
+  </div>
+</header>
+
+<div local-class="outlet-wrapper">
+  {{outlet}}
+</div>

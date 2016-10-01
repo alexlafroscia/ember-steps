@@ -1,0 +1,37 @@
+{{#step-manager as |w|}}
+  {{#w.step name='a'}}
+    <h1>Step A</h1>
+
+    <button {{action w.transition-to 'b'}}>
+      Go to Step B
+    </button>
+
+    <button {{action w.transition-to 'c'}}>
+      Go to Step C
+    </button>
+  {{/w.step}}
+
+  {{#w.step name='b'}}
+    <h1>Step B</h1>
+
+    <button {{action w.transition-to 'a'}}>
+      Go to Step A
+    </button>
+
+    <button {{action w.transition-to 'c'}}>
+      Go to Step C
+    </button>
+  {{/w.step}}
+
+  {{#w.step name='c'}}
+    <h1>Step C</h1>
+
+    <button {{action w.transition-to 'a'}}>
+      Go to Step A
+    </button>
+
+    <button {{action w.transition-to 'b'}}>
+      Go to Step B
+    </button>
+  {{/w.step}}
+{{/step-manager}}

@@ -1,0 +1,17 @@
+{{#step-manager as |w|}}
+  {{#w.step}}
+    This is the first step
+  {{/w.step}}
+
+  {{#w.step}}
+    This is the second step
+  {{/w.step}}
+
+  {{#w.step}}
+    This is the third step
+  {{/w.step}}
+
+  <button {{action w.transition-to-next}}>
+    Next step, please!
+  </button>
+{{/step-manager}}
