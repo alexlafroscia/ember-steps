@@ -33,6 +33,7 @@ button {
   border: 1px solid wiz-dark-aqua;
   color: wiz-white;
   cursor: pointer;
+  display: block;
   font-size: 14px;
   margin-top: 10px;
   padding: 7px 10px;

@@ -54,12 +54,13 @@
 
 .header {
   background-color: wiz-orange;
+  border-bottom: 1px solid wiz-dark-orange;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
-  border-bottom: 1px solid wiz-dark-orange;
   color: wiz-white;
-  margin: -10px;
+  font-size: 1.6em;
   margin-bottom: 10px;
+  margin: -10px;
   padding: 10px;
 }
 

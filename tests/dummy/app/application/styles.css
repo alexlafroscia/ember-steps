@@ -1,5 +1,7 @@
 @value wiz-dark-grey, wiz-grey, wiz-blue from 'dummy/styles/colors.css';
 
+@value wrap-width: 600px;
+
 .header {
   background-color: wiz-grey;
   border-bottom: 1px solid wiz-dark-grey;
@@ -13,6 +15,7 @@
   align-items: center;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .title {
@@ -21,10 +24,46 @@
   flex-grow: 1;
 }
 
+.hamburger {
+  cursor: pointer;
+
+  @media (min-width: wrap-width) {
+    display: none;
+  }
+}
+
+.nav-items {
+  display: none;
+  flex-shrink: 0;
+  width: 100%;
+
+  &:global(.mobile-nav-expanded) {
+    display: block;
+  }
+
+  @media (min-width: wrap-width) {
+    display: block;
+    flex-shrink: 1;
+    width: auto;
+  }
+}
+
 .nav-item {
   color: wiz-blue;
-  padding-left: 10px;
-  padding-right: 10px;
+  display: block;
+  margin: 10px 0;
+  width: 100%;
+
+  @media (min-width: wrap-width) {
+    display: inline;
+    margin: 0;
+    padding: 0 10px;
+    width: auto;
+  }
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 
   &:visited {
     color: wiz-blue;
@@ -38,6 +77,10 @@
 .github-link {
   line-height: 0;
   margin-left: 10px;
+
+  @media (min-width: wrap-width) {
+    order: 2;
+  }
 
   img {
     transition: transform 0.2s;
