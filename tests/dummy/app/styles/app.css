@@ -49,7 +49,10 @@ button {
 hr {
   border: 0;
   border-bottom: 1px solid wiz-dark-grey;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 1em auto;
   width: 80%;
+}
+
+p {
+  line-height: 1.3em;
 }
