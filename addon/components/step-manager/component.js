@@ -12,6 +12,7 @@ const layout = hbs`
     )
     transition-to=(action 'transition-to-step')
     transition-to-next=(action 'transition-to-next-step')
+    currentStep=currentStep
     totalSteps=totalSteps
   )}}
 `;

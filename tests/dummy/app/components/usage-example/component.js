@@ -9,13 +9,5 @@ export default Component.extend(SlotsMixin, {
 
   layout,
 
-  title: '',
-
-  activeBlock: 'template',
-
-  actions: {
-    'switch-to-block'(name) {
-      set(this, 'activeBlock', name);
-    }
-  }
+  title: ''
 });

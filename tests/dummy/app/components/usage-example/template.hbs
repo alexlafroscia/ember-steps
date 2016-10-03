@@ -14,13 +14,13 @@
 
 <div local-class="code-example">
   <div local-class="code-example-inner">
-    {{#step-manager on-transition=(action 'switch-to-block') initialStep=activeBlock as |w|}}
+    {{#step-manager initialStep=activeBlock as |w|}}
       <div local-class="code-file-links">
         {{#yield-slot 'code-template'}}
           <a href="#"
             {{action w.transition-to 'template'}}
             local-class="code-file-link"
-            class="{{if (eq activeBlock 'template') 'active'}}"
+            class="{{if (eq w.currentStep 'template') 'active'}}"
             >
             Template
           </a>
@@ -29,7 +29,7 @@
           <a href="#"
               {{action w.transition-to 'js'}}
               local-class="code-file-link"
-              class="{{if (eq activeBlock 'js') 'active'}}"
+              class="{{if (eq w.currentStep 'js') 'active'}}"
             >
             JavaScript
           </a>

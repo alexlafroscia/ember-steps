@@ -90,6 +90,7 @@
 }
 
 .code-file-links {
+  display: flex;
   margin-bottom: 10px;
   border-bottom: 1px solid wiz-grey;
 }

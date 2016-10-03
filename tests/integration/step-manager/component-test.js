@@ -53,6 +53,32 @@ describeComponent(
 
         expect($hook('ember-wizard-step-manager')).to.contain('2');
       });
+
+      describe('exposing the current step\'s name', function() {
+        it('works with a provided name', function() {
+          this.render(hbs`
+            {{#step-manager as |w|}}
+              {{w.currentStep}}
+
+              {{w.step name='foo'}}
+            {{/step-manager}}
+          `);
+
+          expect($hook('ember-wizard-step-manager')).to.contain('foo');
+        });
+
+        it('works with a generated, index-based name', function() {
+          this.render(hbs`
+            {{#step-manager as |w|}}
+              {{w.currentStep}}
+
+              {{w.step}}
+            {{/step-manager}}
+          `);
+
+          expect($hook('ember-wizard-step-manager')).to.contain('index-0');
+        });
+      });
     });
 
     describe('transitions to named steps', function() {
