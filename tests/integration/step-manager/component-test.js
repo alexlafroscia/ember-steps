@@ -40,6 +40,21 @@ describeComponent(
       });
     });
 
+    describe('exposing meta-data', function() {
+      it('exposes the total number of steps', function() {
+        this.render(hbs`
+          {{#step-manager as |w|}}
+            {{w.totalSteps}}
+
+            {{w.step}}
+            {{w.step}}
+          {{/step-manager}}
+        `);
+
+        expect($hook('ember-wizard-step-manager')).to.contain('2');
+      });
+    });
+
     describe('transitions to named steps', function() {
       it('can transition to another step', function() {
         this.render(hbs`

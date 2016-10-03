@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
 
-const { Component, computed, get } = Ember;
+const { Component, computed, get, run } = Ember;
+const { scheduleOnce } = run;
 const layout = hbs`
   {{#if isActive}}
     {{yield}}
@@ -29,7 +30,7 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    this['register-step'](this);
+    this.registerStepTimer = scheduleOnce('afterRender', this, 'register-step', this);
   },
 
   /**
@@ -45,7 +46,9 @@ export default Component.extend({
    * @property {boolean} isActive
    * @private
    */
-  isActive: false,
+  isActive: computed('currentStep', 'name', function() {
+    return get(this, 'currentStep') === get(this, 'name');
+  }),
 
   /**
    * Whether or not an inactive state should be displayed instead of
