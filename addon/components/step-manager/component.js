@@ -2,7 +2,7 @@ import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
 import StateMachine from 'ember-wizard/-private/state-machine';
 
-const { Component, computed, isEmpty, get, set } = Ember;
+const { Component, computed, get, set } = Ember;
 const { readOnly } = computed;
 const layout = hbs`
   {{yield (hash
@@ -84,18 +84,16 @@ export default Component.extend({
      * Transition to a named step
      *
      * @method transition-to-step
-     * @param {string} name
+     * @param {string} to the name of the step to transition to
+     * @param {*} value the value to pass to the `on-transition` action
      * @public
      */
-    'transition-to-step'(name) {
-      if (isEmpty(name)) {
-        throw new Error('You must provide a step to transition to');
-      }
-
-      get(this, 'transitions').activate(name);
+    'transition-to-step'(to, value) {
+      const from = get(this, 'currentStep');
+      get(this, 'transitions').activate(to);
 
       if (this['on-transition']) {
-        this['on-transition'](...arguments);
+        this['on-transition'](value, from, to);
       }
     },
 
@@ -109,13 +107,15 @@ export default Component.extend({
      * The last step will transition back to the first one.
      *
      * @method transition-to-next-step
+     * @param {*} value the value to pass to the `on-transition` action
      * @public
      */
-    'transition-to-next-step'() {
-      get(this, 'transitions').next();
+    'transition-to-next-step'(value) {
+      const from = get(this, 'currentStep');
+      const to = get(this, 'transitions').next();
 
       if (this['on-transition']) {
-        this['on-transition'](...arguments);
+        this['on-transition'](value, from, to);
       }
     }
   }

@@ -177,7 +177,7 @@ describeComponent(
 
           this.$('button').click();
 
-          expect(onTransitionAction).to.be.calledWith('second', 'some value');
+          expect(onTransitionAction).to.be.calledWith('some value', 'first', 'second');
         });
       });
 
@@ -199,7 +199,7 @@ describeComponent(
 
           this.$('button').click();
 
-          expect(onTransitionAction).to.be.calledWith('some value');
+          expect(onTransitionAction).to.be.calledWith('some value', 'index-0', 'index-1');
         });
       });
     });
