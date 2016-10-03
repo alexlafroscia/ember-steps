@@ -2,7 +2,8 @@ import resolver from './helpers/resolver';
 import { setResolver } from 'ember-mocha';
 
 // Set up TD assertions in Chai
-import td, { tdChai } from 'testdouble';
+import td from 'testdouble';
+import tdChai from 'testdouble-chai';
 import chai from 'chai';
 
 chai.use(tdChai(td));
