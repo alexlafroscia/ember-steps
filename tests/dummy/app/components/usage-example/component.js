@@ -2,7 +2,7 @@ import Ember from 'ember';
 import SlotsMixin from 'ember-block-slots';
 import layout from './template';
 
-const { Component, set } = Ember;
+const { Component } = Ember;
 
 export default Component.extend(SlotsMixin, {
   classNameBindings: ['styles.usage-example'],
