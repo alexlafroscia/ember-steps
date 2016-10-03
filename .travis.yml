@@ -19,7 +19,6 @@ cache:
 
 env:
   - EMBER_TRY_SCENARIO=default COVERAGE=true # Only log coverage from the default scenario
-  - EMBER_TRY_SCENARIO=ember-1.13
   - EMBER_TRY_SCENARIO=ember-2.3
   - EMBER_TRY_SCENARIO=ember-release
   - EMBER_TRY_SCENARIO=ember-beta
@@ -29,7 +28,6 @@ matrix:
   fast_finish: true
   allow_failures:
     - env: EMBER_TRY_SCENARIO=ember-canary
-    - env: EMBER_TRY_SCENARIO=ember-1.13
 
 before_install:
   # Setup for Chrome
