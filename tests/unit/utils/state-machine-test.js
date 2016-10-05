@@ -11,6 +11,17 @@ describe('stateMachine', function() {
     expect(m.currentStep).to.equal('foo');
   });
 
+  describe('#peek', function() {
+    it('can get the next value without advancing', function() {
+      const m = new StateMachine();
+      m.addStep('foo');
+      m.addStep('bar');
+
+      expect(m.peek()).to.equal('bar');
+      expect(m.currentStep).to.equal('foo');
+    });
+  });
+
   describe('moving through states', function() {
     beforeEach(function() {
       const m = new StateMachine();

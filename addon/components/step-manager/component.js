@@ -90,6 +90,11 @@ export default Component.extend({
      */
     'transition-to-step'(to, value) {
       const from = get(this, 'currentStep');
+
+      if (this['will-transition'] && this['will-transition'](value, from, to) === false) {
+        return;
+      }
+
       get(this, 'transitions').activate(to);
 
       if (this['did-transition']) {
@@ -111,12 +116,9 @@ export default Component.extend({
      * @public
      */
     'transition-to-next-step'(value) {
-      const from = get(this, 'currentStep');
-      const to = get(this, 'transitions').next();
+      const to = get(this, 'transitions').peek();
 
-      if (this['did-transition']) {
-        this['did-transition'](value, from, to);
-      }
+      this.send('transition-to-step', to, value);
     }
   }
 });

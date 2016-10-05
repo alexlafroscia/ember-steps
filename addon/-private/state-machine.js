@@ -75,13 +75,15 @@ export default EmberObject.extend({
     this.notifyPropertyChange('length');
   },
 
-  next() {
+  peek() {
     const transitions = get(this, 'stepTransitions');
     const currentStep = get(this, 'currentStep');
-    const next = transitions[currentStep];
+    return transitions[currentStep];
+  },
 
+  next() {
+    const next = this.peek();
     set(this, 'currentStep', next);
-
     return next;
   },
 

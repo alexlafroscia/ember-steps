@@ -159,7 +159,7 @@ describeComponent(
     });
 
     describe('`did-transtion`', function() {
-      it('fires during a named transition', function() {
+      it('is fired during a named transition', function() {
         const onTransitionAction = td.function();
         this.on('transition', onTransitionAction);
 
@@ -179,7 +179,7 @@ describeComponent(
         expect(onTransitionAction).to.be.calledWith('some value', 'first', 'second');
       });
 
-      it('fires during a sequential transition', function() {
+      it('is fired during a sequential transition', function() {
         const onTransitionAction = td.function();
         this.on('transition', onTransitionAction);
 
@@ -197,6 +197,120 @@ describeComponent(
         this.$('button').click();
 
         expect(onTransitionAction).to.be.calledWith('some value', 'index-0', 'index-1');
+      });
+    });
+
+    describe('`will-transition`', function() {
+      it('is not fired before entering the initial route', function() {
+        const beforeAction = td.function('before action');
+        this.on('beforeAction', beforeAction);
+
+        this.render(hbs`
+          {{#step-manager will-transition=(action 'beforeAction') as |w|}}
+            {{w.step name='first'}}
+          {{/step-manager}}
+        `);
+
+        expect(beforeAction).not.to.be.called;
+      });
+
+      it('is fired before a named transition', function() {
+        const beforeAction = td.function('before action');
+        this.on('beforeAction', beforeAction);
+
+        this.render(hbs`
+          {{#step-manager will-transition=(action 'beforeAction') as |w|}}
+            {{w.step name='initial'}}
+            {{w.step name='next'}}
+
+            <button {{action w.transition-to 'next'}}>
+              Next
+            </button>
+          {{/step-manager}}
+        `);
+        this.$('button').click();
+
+        expect(beforeAction).to.be.called;
+      });
+
+      it('is fired before a sequential transition', function() {
+        const beforeAction = td.function('before action');
+        this.on('beforeAction', beforeAction);
+
+        this.render(hbs`
+          {{#step-manager will-transition=(action 'beforeAction') as |w|}}
+            {{w.step}}
+            {{w.step}}
+
+            <button {{action w.transition-to-next}}>
+              Next
+            </button>
+          {{/step-manager}}
+        `);
+        this.$('button').click();
+
+        expect(beforeAction).to.be.called;
+      });
+
+      it('is passed `undefined` as the value when none is provided', function() {
+        const beforeAction = td.function('before action');
+        this.on('beforeAction', beforeAction);
+
+        this.render(hbs`
+          {{#step-manager will-transition=(action 'beforeAction') as |w|}}
+            {{w.step}}
+            {{w.step}}
+
+            <button {{action w.transition-to-next}}>
+              Next
+            </button>
+          {{/step-manager}}
+        `);
+        this.$('button').click();
+
+        expect(beforeAction).to.be.calledWith(undefined, 'index-0', 'index-1');
+      });
+
+      it('is passed the value when one is provided', function() {
+        const beforeAction = td.function('before action');
+        this.on('beforeAction', beforeAction);
+
+        this.render(hbs`
+          {{#step-manager will-transition=(action 'beforeAction') as |w|}}
+            {{w.step}}
+            {{w.step}}
+
+            <button {{action w.transition-to-next 'foo'}}>
+              Next
+            </button>
+          {{/step-manager}}
+        `);
+        this.$('button').click();
+
+        expect(beforeAction).to.be.calledWith('foo', 'index-0', 'index-1');
+      });
+
+      it('prevents the transition if it returns `false`', function() {
+        const beforeAction = td.function('before action');
+        td.when(beforeAction('foo', 'index-0', 'index-1')).thenReturn(false);
+        this.on('beforeAction', beforeAction);
+
+        this.render(hbs`
+          {{#step-manager will-transition=(action 'beforeAction') as |w|}}
+            {{w.step}}
+            {{w.step}}
+
+            <button {{action w.transition-to-next 'foo'}}>
+              Next
+            </button>
+          {{/step-manager}}
+        `);
+
+        this.$('button').click();
+
+        expect(beforeAction).to.be.calledWith('foo', 'index-0', 'index-1');
+        expect($hook('ember-wizard-step', { name: 'index-0' })).to.be.visible;
+        expect($hook('ember-wizard-step', { name: 'index-1' })).not.to.be.visible;
       });
     });
   }
