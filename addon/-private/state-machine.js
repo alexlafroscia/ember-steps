@@ -83,8 +83,7 @@ export default EmberObject.extend({
 
   next() {
     const next = this.peek();
-    set(this, 'currentStep', next);
-    return next;
+    return this.activate(next);
   },
 
   activate(name) {
@@ -97,6 +96,7 @@ export default EmberObject.extend({
     }
 
     set(this, 'currentStep', name);
+    return name;
   },
 
   /**
