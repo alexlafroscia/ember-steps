@@ -1,4 +1,4 @@
-@value wiz-dark-grey, wiz-white, wiz-grey, wiz-orange, wiz-dark-orange from 'dummy/styles/colors.css';
+@value --dark-grey, --white, --grey, --orange, --dark-orange from 'dummy/styles/colors.css';
 
 @value stacked-breakpoint: 800px;
 
@@ -44,8 +44,8 @@
 .rendered-inner {
   composes: slide-inner;
 
-  background-color: wiz-grey;
-  border: 1px solid wiz-dark-grey;
+  background-color: --grey;
+  border: 1px solid --dark-grey;
 
   @media (min-width: stacked-breakpoint) {
     margin-top: 20px;
@@ -53,11 +53,11 @@
 }
 
 .header {
-  background-color: wiz-orange;
-  border-bottom: 1px solid wiz-dark-orange;
+  background-color: --orange;
+  border-bottom: 1px solid --dark-orange;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
-  color: wiz-white;
+  color: --white;
   font-size: 1.6em;
   margin-bottom: 10px;
   margin: -10px;
@@ -78,8 +78,8 @@
 .code-example-inner {
   composes: slide-inner;
 
-  background-color: wiz-white;
-  border: 1px solid wiz-grey;
+  background-color: --white;
+  border: 1px solid --grey;
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
 
   @media (min-width: stacked-breakpoint) {
@@ -92,26 +92,26 @@
 .code-file-links {
   display: flex;
   margin-bottom: 10px;
-  border-bottom: 1px solid wiz-grey;
+  border-bottom: 1px solid --grey;
 }
 
 .code-file-link {
-  border-left: 1px solid wiz-grey;
-  border-right: 1px solid wiz-grey;
+  border-left: 1px solid --grey;
+  border-right: 1px solid --grey;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
-  border-top: 1px solid wiz-grey;
+  border-top: 1px solid --grey;
   display: inline-block;
   font-size: .8em;
   padding: 10px;
   margin-bottom: -1px;
 
   &:hover {
-    background-color: wiz-grey;
+    background-color: --grey;
   }
 
   &:global(.active) {
-    border-bottom: 1px solid wiz-white;
+    border-bottom: 1px solid --white;
     font-weight: bold;
   }
 }

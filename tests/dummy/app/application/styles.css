@@ -1,10 +1,10 @@
-@value wiz-dark-grey, wiz-grey, wiz-blue from 'dummy/styles/colors.css';
+@value --dark-grey, --grey, --blue from 'dummy/styles/colors.css';
 
 @value wrap-width: 600px;
 
 .header {
-  background-color: wiz-grey;
-  border-bottom: 1px solid wiz-dark-grey;
+  background-color: --grey;
+  border-bottom: 1px solid --dark-grey;
   padding-bottom: 1em;
   padding-top: 1em;
 }
@@ -49,7 +49,7 @@
 }
 
 .nav-item {
-  color: wiz-blue;
+  color: --blue;
   display: block;
   margin: 10px 0;
   width: 100%;
@@ -66,7 +66,7 @@
   }
 
   &:visited {
-    color: wiz-blue;
+    color: --blue;
   }
 
   &:global(.active) {
