@@ -5,6 +5,8 @@ import td from 'testdouble';
 import hbs from 'htmlbars-inline-precompile';
 import { initialize as initializeEmberHook, $hook } from 'ember-hook';
 
+const { matchers: { anything: matchAnything } } = td;
+
 describeComponent(
   'step-manager',
   'Integration: StepManagerComponent',
@@ -40,7 +42,7 @@ describeComponent(
       });
     });
 
-    describe('exposing meta-data', function() {
+    describe('meta-data', function() {
       it('exposes the total number of steps', function() {
         this.render(hbs`
           {{#step-manager as |w|}}
@@ -158,7 +160,7 @@ describeComponent(
       });
     });
 
-    describe('`did-transtion`', function() {
+    describe('providing a `did-transition` action', function() {
       it('is fired during a named transition', function() {
         const onTransitionAction = td.function();
         this.on('transition', onTransitionAction);
@@ -176,7 +178,11 @@ describeComponent(
 
         this.$('button').click();
 
-        expect(onTransitionAction).to.be.calledWith('some value', 'first', 'second');
+        expect(onTransitionAction).to.be.calledWith({
+          value: 'some value',
+          from: 'first',
+          to: 'second'
+        });
       });
 
       it('is fired during a sequential transition', function() {
@@ -196,11 +202,63 @@ describeComponent(
 
         this.$('button').click();
 
-        expect(onTransitionAction).to.be.calledWith('some value', 'index-0', 'index-1');
+        expect(onTransitionAction).to.be.calledWith({
+          value: 'some value',
+          from: 'index-0',
+          to: 'index-1'
+        });
+      });
+
+      describe('the arguments', function() {
+        it('passes the destination and source step', function() {
+          const action = td.function('did-transition action');
+          this.on('action', action);
+
+          this.render(hbs`
+            {{#step-manager did-transition=(action 'action') as |w|}}
+              {{w.step}}
+              {{w.step}}
+
+              <button {{action w.transition-to-next}}>
+                Next
+              </button>
+            {{/step-manager}}
+          `);
+          this.$('button').click();
+
+          expect(action).to.be.calledWith({
+            value: undefined,
+            from: 'index-0',
+            to: 'index-1'
+          });
+        });
+
+        it('passes the value when given one', function() {
+          const action = td.function('did-transition action');
+          this.on('action', action);
+
+          this.render(hbs`
+            {{#step-manager did-transition=(action 'action') as |w|}}
+              {{w.step}}
+              {{w.step}}
+
+              <button {{action w.transition-to-next 'foo'}}>
+                Next
+              </button>
+            {{/step-manager}}
+          `);
+          this.$('button').click();
+
+          expect(action).to.be.calledWith({
+            value: 'foo',
+            from: 'index-0',
+            to: 'index-1'
+          });
+        });
       });
     });
 
-    describe('`will-transition`', function() {
+    describe('providing a `will-transition` action', function() {
       it('is not fired before entering the initial route', function() {
         const beforeAction = td.function('before action');
         this.on('beforeAction', beforeAction);
@@ -252,8 +310,57 @@ describeComponent(
         expect(beforeAction).to.be.called;
       });
 
-      it('is passed `undefined` as the value when none is provided', function() {
+      describe('the arguments', function() {
+        it('passes the destination and source step', function() {
+          const beforeAction = td.function('before action');
+          this.on('beforeAction', beforeAction);
+
+          this.render(hbs`
+            {{#step-manager will-transition=(action 'beforeAction') as |w|}}
+              {{w.step}}
+              {{w.step}}
+
+              <button {{action w.transition-to-next}}>
+                Next
+              </button>
+            {{/step-manager}}
+          `);
+          this.$('button').click();
+
+          expect(beforeAction).to.be.calledWith({
+            value: undefined,
+            from: 'index-0',
+            to: 'index-1'
+          });
+        });
+
+        it('passes the value when given one', function() {
+          const beforeAction = td.function('before action');
+          this.on('beforeAction', beforeAction);
+
+          this.render(hbs`
+            {{#step-manager will-transition=(action 'beforeAction') as |w|}}
+              {{w.step}}
+              {{w.step}}
+
+              <button {{action w.transition-to-next 'foo'}}>
+                Next
+              </button>
+            {{/step-manager}}
+          `);
+          this.$('button').click();
+
+          expect(beforeAction).to.be.calledWith({
+            value: 'foo',
+            from: 'index-0',
+            to: 'index-1'
+          });
+        });
+      });
+
+      it('prevents the transition if it returns `false`', function() {
         const beforeAction = td.function('before action');
+        td.when(beforeAction(matchAnything())).thenReturn(false);
         this.on('beforeAction', beforeAction);
 
         this.render(hbs`
@@ -266,49 +373,9 @@ describeComponent(
             </button>
           {{/step-manager}}
         `);
-        this.$('button').click();
-
-        expect(beforeAction).to.be.calledWith(undefined, 'index-0', 'index-1');
-      });
-
-      it('is passed the value when one is provided', function() {
-        const beforeAction = td.function('before action');
-        this.on('beforeAction', beforeAction);
-
-        this.render(hbs`
-          {{#step-manager will-transition=(action 'beforeAction') as |w|}}
-            {{w.step}}
-            {{w.step}}
-
-            <button {{action w.transition-to-next 'foo'}}>
-              Next
-            </button>
-          {{/step-manager}}
-        `);
-        this.$('button').click();
-
-        expect(beforeAction).to.be.calledWith('foo', 'index-0', 'index-1');
-      });
-
-      it('prevents the transition if it returns `false`', function() {
-        const beforeAction = td.function('before action');
-        td.when(beforeAction('foo', 'index-0', 'index-1')).thenReturn(false);
-        this.on('beforeAction', beforeAction);
-
-        this.render(hbs`
-          {{#step-manager will-transition=(action 'beforeAction') as |w|}}
-            {{w.step}}
-            {{w.step}}
-
-            <button {{action w.transition-to-next 'foo'}}>
-              Next
-            </button>
-          {{/step-manager}}
-        `);
 
         this.$('button').click();
 
-        expect(beforeAction).to.be.calledWith('foo', 'index-0', 'index-1');
         expect($hook('ember-wizard-step', { name: 'index-0' })).to.be.visible;
         expect($hook('ember-wizard-step', { name: 'index-1' })).not.to.be.visible;
       });

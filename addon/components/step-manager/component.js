@@ -47,9 +47,42 @@ export default Component.extend({
 
   /**
    * @property {string} currentStep the current active step
-   * @private
+   * @public
    */
   currentStep: readOnly('transitions.currentStep'),
+
+  /**
+   * If provided, this action will be called with a single POJO as the
+   * argument, containing:
+   *
+   * - `value`-> The value passed to the transition action, or `undefined`
+   * - `from` -> The name of the step being transitioned from
+   * - `to`   -> The name of the step being transitioned to
+   *
+   * The action is called before the next step is activated.
+   *
+   * By returning `false` from this action, you can prevent the transition
+   * from taking place.
+   *
+   * @property {Action} will-transition
+   * @public
+   */
+  'will-transition': null,
+
+  /**
+   * If provided, this action will be called with a single POJO as the
+   * argument, containing:
+   *
+   * - `value`-> The value passed to the transition action, or `undefined`
+   * - `from` -> The name of the step being transitioned from
+   * - `to`   -> The name of the step being transitioned to
+   *
+   * The action is called after the next step is activated.
+   *
+   * @property {Action} did-transition
+   * @public
+   */
+  'did-transition': null,
 
   /**
    * @property {number} totalSteps the total number of steps
@@ -91,14 +124,14 @@ export default Component.extend({
     'transition-to-step'(to, value) {
       const from = get(this, 'currentStep');
 
-      if (this['will-transition'] && this['will-transition'](value, from, to) === false) {
+      if (this['will-transition'] && this['will-transition']({ value, from, to }) === false) {
         return;
       }
 
       get(this, 'transitions').activate(to);
 
       if (this['did-transition']) {
-        this['did-transition'](value, from, to);
+        this['did-transition']({ value, from, to });
       }
     },
 
