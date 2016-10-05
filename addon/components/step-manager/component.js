@@ -85,15 +85,15 @@ export default Component.extend({
      *
      * @method transition-to-step
      * @param {string} to the name of the step to transition to
-     * @param {*} value the value to pass to the `on-transition` action
+     * @param {*} value the value to pass to the transition actions
      * @public
      */
     'transition-to-step'(to, value) {
       const from = get(this, 'currentStep');
       get(this, 'transitions').activate(to);
 
-      if (this['on-transition']) {
-        this['on-transition'](value, from, to);
+      if (this['did-transition']) {
+        this['did-transition'](value, from, to);
       }
     },
 
@@ -107,15 +107,15 @@ export default Component.extend({
      * The last step will transition back to the first one.
      *
      * @method transition-to-next-step
-     * @param {*} value the value to pass to the `on-transition` action
+     * @param {*} value the value to pass to the transition actions
      * @public
      */
     'transition-to-next-step'(value) {
       const from = get(this, 'currentStep');
       const to = get(this, 'transitions').next();
 
-      if (this['on-transition']) {
-        this['on-transition'](value, from, to);
+      if (this['did-transition']) {
+        this['did-transition'](value, from, to);
       }
     }
   }

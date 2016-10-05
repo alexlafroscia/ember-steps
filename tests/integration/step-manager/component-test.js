@@ -158,49 +158,45 @@ describeComponent(
       });
     });
 
-    describe('collecting data', function() {
-      describe('during named transitions', function() {
-        it('triggers an event on transition', function() {
-          const onTransitionAction = td.function();
-          this.on('transition', onTransitionAction);
+    describe('`did-transtion`', function() {
+      it('fires during a named transition', function() {
+        const onTransitionAction = td.function();
+        this.on('transition', onTransitionAction);
 
-          this.render(hbs`
-            {{#step-manager initialStep='first' on-transition=(action 'transition') as |w|}}
-              <button {{action w.transition-to 'second' 'some value'}}>
-                Transition to Next
-              </button>
+        this.render(hbs`
+          {{#step-manager initialStep='first' did-transition=(action 'transition') as |w|}}
+            <button {{action w.transition-to 'second' 'some value'}}>
+              Transition to Next
+            </button>
 
-              {{w.step name='first'}}
-              {{w.step name='second'}}
-            {{/step-manager}}
-          `);
+            {{w.step name='first'}}
+            {{w.step name='second'}}
+          {{/step-manager}}
+        `);
 
-          this.$('button').click();
+        this.$('button').click();
 
-          expect(onTransitionAction).to.be.calledWith('some value', 'first', 'second');
-        });
+        expect(onTransitionAction).to.be.calledWith('some value', 'first', 'second');
       });
 
-      describe('during anonymous transitions', function() {
-        it('triggers an event on transition', function() {
-          const onTransitionAction = td.function();
-          this.on('transition', onTransitionAction);
+      it('fires during a sequential transition', function() {
+        const onTransitionAction = td.function();
+        this.on('transition', onTransitionAction);
 
-          this.render(hbs`
-            {{#step-manager on-transition=(action 'transition') as |w|}}
-              <button {{action w.transition-to-next 'some value'}}>
-                Transition to Next
-              </button>
+        this.render(hbs`
+          {{#step-manager did-transition=(action 'transition') as |w|}}
+            <button {{action w.transition-to-next 'some value'}}>
+              Transition to Next
+            </button>
 
-              {{w.step}}
-              {{w.step}}
-            {{/step-manager}}
-          `);
+            {{w.step}}
+            {{w.step}}
+          {{/step-manager}}
+        `);
 
-          this.$('button').click();
+        this.$('button').click();
 
-          expect(onTransitionAction).to.be.calledWith('some value', 'index-0', 'index-1');
-        });
+        expect(onTransitionAction).to.be.calledWith('some value', 'index-0', 'index-1');
       });
     });
   }
