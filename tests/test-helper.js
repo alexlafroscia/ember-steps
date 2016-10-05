@@ -1,5 +1,8 @@
+import Ember from 'ember';
 import resolver from './helpers/resolver';
 import { setResolver } from 'ember-mocha';
+
+const { $ } = Ember;
 
 // Set up TD assertions in Chai
 import td from 'testdouble';
@@ -37,4 +40,9 @@ function isVisible(chai, utils) {
       `Element ${id} is visible`
     );
   }
+}
+
+// Custom test Mocha browser config
+if (window.location.search.indexOf('nocontainer') > -1) {
+  $('#ember-testing-container').css({ visibility: 'hidden' });
 }
