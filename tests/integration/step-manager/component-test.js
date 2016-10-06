@@ -17,9 +17,9 @@ describeComponent(
     beforeEach(initializeEmberHook);
 
     describe('initial render', function() {
-      it('renders `initialStep` first if provided', function() {
+      it('renders `currentStep` first if provided as a regular value', function() {
         this.render(hbs`
-          {{#step-manager initialStep='second' as |w|}}
+          {{#step-manager currentStep='second' as |w|}}
             {{w.step name='first'}}
             {{w.step name='second'}}
           {{/step-manager}}
@@ -29,7 +29,20 @@ describeComponent(
         expect($hook('ember-wizard-step', { name: 'second' })).to.be.visible;
       });
 
-      it('renders the first step in the DOM if no `initialStep` is present', function() {
+      it('renders `currentStep` first if provided as a mutable value', function() {
+        this.set('currentStep', 'second');
+        this.render(hbs`
+          {{#step-manager currentStep=(mut currentStep) as |w|}}
+            {{w.step name='first'}}
+            {{w.step name='second'}}
+          {{/step-manager}}
+        `);
+
+        expect($hook('ember-wizard-step', { name: 'first' })).not.to.be.visible;
+        expect($hook('ember-wizard-step', { name: 'second' })).to.be.visible;
+      });
+
+      it('renders the first step in the DOM if no `currentStep` is present', function() {
         this.render(hbs`
           {{#step-manager as |w|}}
             {{w.step name='first'}}
@@ -396,6 +409,119 @@ describeComponent(
 
         expect($hook('ember-wizard-step', { name: 'index-0' })).to.be.visible;
         expect($hook('ember-wizard-step', { name: 'index-1' })).not.to.be.visible;
+      });
+    });
+
+    describe('the `currentStep` property', function() {
+      describe('changing the property from the target obejct', function() {
+        it('changes steps when the property changes', function() {
+          this.set('step', 'first');
+          this.render(hbs`
+            {{#step-manager currentStep=step as |w|}}
+              {{w.step name='first'}}
+              {{w.step name='second'}}
+            {{/step-manager}}
+          `);
+
+          expect($hook('ember-wizard-step', { name: 'first' })).to.be.visible;
+          expect($hook('ember-wizard-step', { name: 'second' })).not.to.be.visible;
+
+          this.set('step', 'second');
+
+          expect($hook('ember-wizard-step', { name: 'first' })).not.to.be.visible;
+          expect($hook('ember-wizard-step', { name: 'second' })).to.be.visible;
+        });
+
+        it('changes steps when the property changes (with the mut helper)', function() {
+          this.set('step', 'first');
+          this.render(hbs`
+            {{#step-manager currentStep=(mut step) as |w|}}
+              {{w.step name='first'}}
+              {{w.step name='second'}}
+            {{/step-manager}}
+          `);
+
+          expect($hook('ember-wizard-step', { name: 'first' })).to.be.visible;
+          expect($hook('ember-wizard-step', { name: 'second' })).not.to.be.visible;
+
+          this.set('step', 'second');
+
+          expect($hook('ember-wizard-step', { name: 'first' })).not.to.be.visible;
+          expect($hook('ember-wizard-step', { name: 'second' })).to.be.visible;
+        });
+
+        it('throws an error when an invalid step is provided', function() {
+          this.set('step', 'first');
+          this.render(hbs`
+            {{#step-manager currentStep=step as |w|}}
+              {{w.step name='first'}}
+              {{w.step name='second'}}
+            {{/step-manager}}
+          `);
+
+          expect($hook('ember-wizard-step', { name: 'first' })).to.be.visible;
+          expect($hook('ember-wizard-step', { name: 'second' })).not.to.be.visible;
+
+          expect(() => {
+            this.set('step', 'foobar');
+          }).to.throw(Error);
+        });
+      });
+
+      describe('updating the target object from the component', function() {
+        it('mutates the target object\'s property when a mutable value is provided', function() {
+          this.set('step', 'first');
+          this.render(hbs`
+            {{#step-manager currentStep=(mut step) as |w|}}
+              {{w.step name='first'}}
+              {{w.step name='second'}}
+
+              <button {{action w.transition-to 'second'}}>
+                Next
+              </button>
+            {{/step-manager}}
+          `);
+
+          this.$('button').click();
+
+          expect(this.get('step')).to.equal('second');
+        });
+
+        it('mutates the target object\'s property when a regular value is provided', function() {
+          this.set('step', 'first');
+          this.render(hbs`
+            {{#step-manager currentStep=step as |w|}}
+              {{w.step name='first'}}
+              {{w.step name='second'}}
+
+              <button {{action w.transition-to 'second'}}>
+                Next
+              </button>
+            {{/step-manager}}
+          `);
+
+          this.$('button').click();
+
+          expect(this.get('step')).to.equal('second');
+        });
+
+        it('does not update an the target object with an unbound value', function() {
+          this.set('step', 'first');
+          this.render(hbs`
+            {{#step-manager currentStep=(unbound step) as |w|}}
+              {{w.step name='first'}}
+              {{w.step name='second'}}
+
+              <button {{action w.transition-to 'second'}}>
+                Next
+              </button>
+            {{/step-manager}}
+          `);
+
+          this.$('button').click();
+
+          expect(this.get('step')).to.equal('first');
+        });
       });
     });
   }

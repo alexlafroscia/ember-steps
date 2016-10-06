@@ -8,11 +8,11 @@ const layout = hbs`
   {{yield (hash
     step=(component 'step-manager/step'
       register-step=(action 'register-step-component')
-      currentStep=currentStep
+      currentStep=transitions.currentStep
     )
     transition-to=(action 'transition-to-step')
     transition-to-next=(action 'transition-to-next-step')
-    currentStep=currentStep
+    currentStep=transitions.currentStep
     totalSteps=totalSteps
     steps=transitions.stepOrder
   )}}
@@ -28,7 +28,7 @@ export default Component.extend({
     this._super(...arguments);
 
     // Set up the state machine
-    const initialStep = get(this, 'initialStep');
+    const initialStep = get(this, 'currentStep');
     set(this, 'transitions', StateMachine.create({
       initialStep
     }));
@@ -41,16 +41,27 @@ export default Component.extend({
   transitions: null,
 
   /**
-   * @property {string} the step to start on
-   * @public
-   */
-  initialStep: null,
-
-  /**
+   * The `currentStep` property can be used for providing, or binding to, the
+   * name of the current step.
+   *
+   * If you only want to provide the initial step, but do not want the target
+   * object's value to be bound to it, you can either:
+   *
+   * - Pass it a value directly, like `currentStep='name'`
+   * - Use the Unbound helper, like `currentStep=(unbound nameOfStep)`
+   *
+   * If you want to bind the value in both directions, you can do so by:
+   *
+   * - Passing a template value directly, like `currentStep=nameOfStep
+   * - Using the Mut helper, like `currentStep=(mut nameOfStep)`
+   *
+   * Providing a mutable value is useful for cases like binding the current
+   * step name to a query param.
+   *
    * @property {string} currentStep the current active step
    * @public
    */
-  currentStep: readOnly('transitions.currentStep'),
+  currentStep: null,
 
   /**
    * If provided, this action will be called with a single POJO as the
@@ -91,6 +102,17 @@ export default Component.extend({
    */
   totalSteps: readOnly('transitions.length'),
 
+  didUpdateAttrs({ oldAttrs, newAttrs }) {
+    this._super(...arguments);
+
+    const oldStep = oldAttrs.currentStep.value;
+    const newStep = newAttrs.currentStep.value;
+
+    if (newStep && oldStep !== newStep) {
+      get(this, 'transitions').activate(newStep);
+    }
+  },
+
   actions: {
 
     /**
@@ -117,18 +139,34 @@ export default Component.extend({
     /**
      * Transition to a named step
      *
+     * If the `currentStep` property was provided as a mutable value, like:
+     *
+     * ```js
+     * {{#step-manager currentStep=(mut step) as |w|}}
+     *   ...
+     * {{/step-manager}}
+     * ```
+     *
+     * Then the external property will be updated to the new step name.
+     *
      * @method transition-to-step
      * @param {string} to the name of the step to transition to
      * @param {*} value the value to pass to the transition actions
      * @public
      */
     'transition-to-step'(to, value) {
-      const from = get(this, 'currentStep');
+      const from = get(this, 'transitions.currentStep');
 
       if (this['will-transition'] && this['will-transition']({ value, from, to }) === false) {
         return;
       }
 
+      // Update the `currentStep` if it's mutable
+      if (this.attrs.currentStep && this.attrs.currentStep.update) {
+        this.attrs.currentStep.update(to);
+      }
+
+      // Activate the next step
       get(this, 'transitions').activate(to);
 
       if (this['did-transition']) {
