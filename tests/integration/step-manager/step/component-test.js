@@ -4,6 +4,7 @@ import { beforeEach, describe } from 'mocha';
 import td from 'testdouble';
 import hbs from 'htmlbars-inline-precompile';
 import { initialize as initializeEmberHook, $hook } from 'ember-hook';
+import { StepNameError } from 'ember-wizard/-private/errors';
 
 describeComponent(
   'step-manager/step',
@@ -24,9 +25,7 @@ describeComponent(
         this.on('register', registerAction);
 
         this.render(hbs`
-          {{step-manager/step
-              name='foo'
-              register-step=(action 'register')}}
+          {{step-manager/step name='foo' register-step=(action 'register')}}
         `);
 
         expect(registerAction).to.be.called;
@@ -39,10 +38,75 @@ describeComponent(
       });
     });
 
+    describe('the step name', function() {
+      it('must be provided', function() {
+        expect(() => {
+          this.render(hbs`
+            {{step-manager/step register-step=(action 'register')}}
+          `);
+        }).to.throw(StepNameError, /Name must be provided/);
+      });
+
+      describe('with immuatable values', function() {
+        it('can be given a value with the `unbound` helper', function() {
+          this.set('name', 'someValue');
+
+          expect(() => {
+            this.render(hbs`
+              {{step-manager/step name=(unbound name) register-step=(action 'register')}}
+            `);
+          }).not.to.throw(StepNameError);
+        });
+
+        it('can be given a string primitive', function() {
+          expect(() => {
+            this.render(hbs`
+              {{step-manager/step name='someValue' register-step=(action 'register')}}
+            `);
+          }).not.to.throw(StepNameError);
+        });
+      });
+
+      describe('with mutable values', function() {
+        beforeEach(function() {
+          this.set('name', 'someValue');
+        });
+
+        it('errors when given a value from the `mut` helper', function() {
+          expect(() => {
+            this.render(hbs`
+              {{step-manager/step name=(mut name) register-step=(action 'register')}}
+            `);
+          }).to.throw(StepNameError, /Name must be an immutable string/);
+        });
+
+        // Skipped because there's currently no way to detect the `readonly` helper
+        // at runtime. I eventually want to be able to error here because changes to
+        // this value will not actually change the name of the step and could get
+        // the user in trouble.
+        it.skip('errors when given a value from the `readonly` helper', function() {
+          expect(() => {
+            this.render(hbs`
+              {{step-manager/step name=(readonly name) register-step=(action 'register')}}
+            `);
+          }).to.throw(StepNameError, /Name must be an immutable string/);
+        });
+
+        it('errors when given a dynamic property directly', function() {
+          expect(() => {
+            this.render(hbs`
+              {{step-manager/step name=name register-step=(action 'register')}}
+            `);
+          }).to.throw(StepNameError, /Name must be an immutable string/);
+        });
+      });
+
+    });
+
     describe('rendering', function() {
       it('renders block content when visible', function() {
         this.render(hbs`
-          {{#step-manager/step isActive=true register-step=(action 'register')}}
+          {{#step-manager/step name='foo' isActive=true register-step=(action 'register')}}
             Foo
           {{/step-manager/step}}
         `);
@@ -53,7 +117,7 @@ describeComponent(
       describe('when inactive', function() {
         it('is hidden when no alternate state is provided', function() {
           this.render(hbs`
-            {{#step-manager/step register-step=(action 'register')}}
+            {{#step-manager/step name='foo' register-step=(action 'register')}}
               Active Content
             {{/step-manager/step}}
           `);
@@ -64,7 +128,7 @@ describeComponent(
 
         it('renders the inverse block if provided', function() {
           this.render(hbs`
-            {{#step-manager/step hasInactiveState=true register-step=(action 'register')}}
+            {{#step-manager/step name='foo' hasInactiveState=true register-step=(action 'register')}}
               Active Content
             {{else}}
               Inactive Content
@@ -80,7 +144,7 @@ describeComponent(
     describe('programmatically controlling visibility', function() {
       it('is visible when active', function() {
         this.render(hbs`
-          {{step-manager/step isActive=true register-step=(action 'register')}}
+          {{step-manager/step name='foo' isActive=true register-step=(action 'register')}}
         `);
 
         expect($hook('ember-wizard-step')).to.be.visible;
@@ -88,7 +152,7 @@ describeComponent(
 
       it('is invisible when not active', function() {
         this.render(hbs`
-          {{step-manager/step register-step=(action 'register')}}
+          {{step-manager/step name='foo' register-step=(action 'register')}}
         `);
 
         expect($hook('ember-wizard-step')).not.to.be.visible;

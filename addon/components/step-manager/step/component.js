@@ -1,8 +1,8 @@
 import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
+import { StepNameError } from 'ember-wizard/-private/errors';
 
-const { Component, computed, get, run } = Ember;
-const { scheduleOnce } = run;
+const { Component, computed, get, isBlank } = Ember;
 const layout = hbs`
   {{#if isActive}}
     {{yield}}
@@ -30,7 +30,15 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    this.registerStepTimer = scheduleOnce('afterRender', this, 'register-step', this);
+    const { name } = this.attrs;
+    if (isBlank(name)) {
+      throw new StepNameError('Name must be provided');
+    }
+    if (typeof name !== 'string') {
+      throw new StepNameError('Name must be an immutable string');
+    }
+
+    this['register-step'](this);
   },
 
   /**

@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
 import StateMachine from 'ember-wizard/-private/state-machine';
+import { NoInitialStepError } from 'ember-wizard/-private/errors';
 
 const { Component, computed, get, set } = Ember;
 const { readOnly } = computed;
@@ -29,6 +30,10 @@ export default Component.extend({
 
     // Set up the state machine
     const initialStep = get(this, 'currentStep');
+    if (!initialStep) {
+      throw new NoInitialStepError();
+    }
+
     set(this, 'transitions', StateMachine.create({
       initialStep
     }));
