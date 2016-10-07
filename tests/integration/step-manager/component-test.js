@@ -61,6 +61,12 @@ describeComponent(
 
           expect($hook('ember-wizard-step', { name: 'first' })).not.to.be.visible;
           expect($hook('ember-wizard-step', { name: 'second' })).to.be.visible;
+
+          // Important for binding current step to a query param
+          this.set('step', undefined);
+
+          expect($hook('ember-wizard-step', { name: 'first' })).to.be.visible;
+          expect($hook('ember-wizard-step', { name: 'second' })).not.to.be.visible;
         });
 
         it('changes steps when the property changes (with the mut helper)', function() {

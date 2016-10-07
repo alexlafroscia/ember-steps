@@ -117,6 +117,11 @@ export default Component.extend({
     const oldStep = oldAttrs.currentStep.value;
     const newStep = newAttrs.currentStep.value;
 
+    if (typeof newStep === 'undefined') {
+      const firstStep = get(this, 'transitions.firstStep');
+      get(this, 'transitions').activate(firstStep);
+    }
+
     if (newStep && oldStep !== newStep) {
       get(this, 'transitions').activate(newStep);
     }
@@ -135,7 +140,7 @@ export default Component.extend({
      * @private
      */
     'register-step-component'(stepComponent) {
-      let name = get(stepComponent, 'name');
+      const name = get(stepComponent, 'name');
       get(this, 'transitions').addStep(name);
     },
 
