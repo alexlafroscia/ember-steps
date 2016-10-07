@@ -5,7 +5,7 @@ import td from 'testdouble';
 import hbs from 'htmlbars-inline-precompile';
 import { initialize as initializeEmberHook, $hook } from 'ember-hook';
 
-const { matchers: { anything: matchAnything } } = td;
+const { matchers: { anything: matchAnything, contains: matchContains } } = td;
 
 describeComponent(
   'step-manager',
@@ -169,35 +169,39 @@ describeComponent(
     });
 
     describe('`yield`-ed data', function() {
-      it('exposes the total number of steps', function() {
-        this.render(hbs`
-          {{#step-manager as |w|}}
-            {{w.totalSteps}}
+      describe('totalSteps', function() {
+        it('has the right value when they are direct children', function() {
+          this.render(hbs`
+            {{#step-manager as |w|}}
+              {{w.totalSteps}}
 
-            {{w.step}}
-            {{w.step}}
-          {{/step-manager}}
-        `);
+              {{w.step}}
+              {{w.step}}
+            {{/step-manager}}
+          `);
 
-        expect($hook('ember-wizard-step-manager')).to.contain('2');
-      });
+          expect($hook('ember-wizard-step-manager')).to.contain('2');
+        });
 
-      it('exposes a list of the registered steps', function() {
-        this.render(hbs`
-          {{#step-manager as |w|}}
-            <ul>
-              {{#each w.steps as |step|}}
-                <li>{{step}}</li>
-              {{/each}}
-            </ul>
+        it('has the right value when they are not direct children', function() {
+          this.render(hbs`
+            {{#step-manager as |w|}}
+              {{w.totalSteps}}
 
-            {{w.step name='foo'}}
-            {{w.step name='bar'}}
-          {{/step-manager}}
-        `);
+              <div>
+                {{w.step}}
+              </div>
 
-        expect(this.$('ul li:eq(0)')).to.contain('foo');
-        expect(this.$('ul li:eq(1)')).to.contain('bar');
+              <div>
+                <div>
+                  {{w.step}}
+                </div>
+              </div>
+            {{/step-manager}}
+          `);
+
+          expect($hook('ember-wizard-step-manager')).to.contain('2');
+        });
       });
 
       it('exposes the name of the current step', function() {
@@ -216,7 +220,7 @@ describeComponent(
     describe('transitions to named steps', function() {
       it('can transition to another step', function() {
         this.render(hbs`
-          {{#step-manager initialStep='first' as |w|}}
+          {{#step-manager currentStep='first' as |w|}}
             <button {{action w.transition-to 'second'}}>
               Transition to Next
             </button>
@@ -238,7 +242,7 @@ describeComponent(
       it('errors when transitioning to an invalid step', function() {
         expect(() => {
           this.render(hbs`
-            {{#step-manager initialStep='first' as |w|}}
+            {{#step-manager currentStep='first' as |w|}}
               <button {{action w.transition-to 'second'}}>
                 Transition to Next
               </button>
@@ -296,7 +300,7 @@ describeComponent(
         this.on('transition', onTransitionAction);
 
         this.render(hbs`
-          {{#step-manager initialStep='first' did-transition=(action 'transition') as |w|}}
+          {{#step-manager currentStep='first' did-transition=(action 'transition') as |w|}}
             <button {{action w.transition-to 'second' 'some value'}}>
               Transition to Next
             </button>
@@ -308,11 +312,7 @@ describeComponent(
 
         this.$('button').click();
 
-        expect(onTransitionAction).to.be.calledWith({
-          value: 'some value',
-          from: 'first',
-          to: 'second'
-        });
+        expect(onTransitionAction).to.be.called;
       });
 
       it('is fired during a sequential transition', function() {
@@ -332,11 +332,7 @@ describeComponent(
 
         this.$('button').click();
 
-        expect(onTransitionAction).to.be.calledWith({
-          value: 'some value',
-          from: 'index-0',
-          to: 'index-1'
-        });
+        expect(onTransitionAction).to.be.called;
       });
 
       describe('the arguments', function() {
@@ -346,8 +342,8 @@ describeComponent(
 
           this.render(hbs`
             {{#step-manager did-transition=(action 'action') as |w|}}
-              {{w.step}}
-              {{w.step}}
+              {{w.step name='first'}}
+              {{w.step name='second'}}
 
               <button {{action w.transition-to-next}}>
                 Next
@@ -356,11 +352,12 @@ describeComponent(
           `);
           this.$('button').click();
 
-          expect(action).to.be.calledWith({
-            value: undefined,
-            from: 'index-0',
-            to: 'index-1'
-          });
+          expect(action).to.be.calledWith(
+            matchContains({
+              from: 'first',
+              to: 'second'
+            })
+          );
         });
 
         it('passes the value when given one', function() {
@@ -379,11 +376,11 @@ describeComponent(
           `);
           this.$('button').click();
 
-          expect(action).to.be.calledWith({
-            value: 'foo',
-            from: 'index-0',
-            to: 'index-1'
-          });
+          expect(action).to.be.calledWith(
+            matchContains({
+              value: 'foo'
+            })
+          );
         });
       });
     });
@@ -447,8 +444,8 @@ describeComponent(
 
           this.render(hbs`
             {{#step-manager will-transition=(action 'beforeAction') as |w|}}
-              {{w.step}}
-              {{w.step}}
+              {{w.step name='first'}}
+              {{w.step name='second'}}
 
               <button {{action w.transition-to-next}}>
                 Next
@@ -457,11 +454,12 @@ describeComponent(
           `);
           this.$('button').click();
 
-          expect(beforeAction).to.be.calledWith({
-            value: undefined,
-            from: 'index-0',
-            to: 'index-1'
-          });
+          expect(beforeAction).to.be.calledWith(
+            matchContains({
+              from: 'first',
+              to: 'second'
+            })
+          );
         });
 
         it('passes the value when given one', function() {
@@ -480,11 +478,11 @@ describeComponent(
           `);
           this.$('button').click();
 
-          expect(beforeAction).to.be.calledWith({
-            value: 'foo',
-            from: 'index-0',
-            to: 'index-1'
-          });
+          expect(beforeAction).to.be.calledWith(
+            matchContains({
+              value: 'foo'
+            })
+          );
         });
       });
 
@@ -495,8 +493,8 @@ describeComponent(
 
         this.render(hbs`
           {{#step-manager will-transition=(action 'beforeAction') as |w|}}
-            {{w.step}}
-            {{w.step}}
+            {{w.step name='first'}}
+            {{w.step name='second'}}
 
             <button {{action w.transition-to-next}}>
               Next
@@ -506,8 +504,8 @@ describeComponent(
 
         this.$('button').click();
 
-        expect($hook('ember-wizard-step', { name: 'index-0' })).to.be.visible;
-        expect($hook('ember-wizard-step', { name: 'index-1' })).not.to.be.visible;
+        expect($hook('ember-wizard-step', { name: 'first' })).to.be.visible;
+        expect($hook('ember-wizard-step', { name: 'second' })).not.to.be.visible;
       });
     });
   }

@@ -1,9 +1,9 @@
 import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
 import StateMachine from 'ember-wizard/-private/state-machine';
+import { MissingPropertyError } from 'ember-wizard/-private/errors';
 
-const { Component, computed, get, set } = Ember;
-const { readOnly } = computed;
+const { Component, get, set } = Ember;
 const layout = hbs`
   {{yield (hash
     step=(component 'step-manager/step'
@@ -14,7 +14,6 @@ const layout = hbs`
     transition-to-next=(action 'transition-to-next-step')
     currentStep=transitions.currentStep
     totalSteps=totalSteps
-    steps=transitions.stepOrder
   )}}
 `;
 
@@ -29,6 +28,16 @@ export default Component.extend({
 
     // Set up the state machine
     const initialStep = get(this, 'currentStep');
+    if (!initialStep) {
+      throw new MissingPropertyError('initialStep');
+    }
+
+    const stepCount = get(this, 'stepCount');
+    if (!stepCount) {
+      throw new MissingPropertyError('stepCount');
+    }
+    set(this, 'totalSteps', parseInt(stepCount));
+
     set(this, 'transitions', StateMachine.create({
       initialStep
     }));
@@ -100,7 +109,7 @@ export default Component.extend({
    * @property {number} totalSteps the total number of steps
    * @public
    */
-  totalSteps: readOnly('transitions.length'),
+  totalSteps: 0,
 
   didUpdateAttrs({ oldAttrs, newAttrs }) {
     this._super(...arguments);
@@ -127,12 +136,6 @@ export default Component.extend({
      */
     'register-step-component'(stepComponent) {
       let name = get(stepComponent, 'name');
-      if (!name) {
-        const stepCount = get(this, 'totalSteps');
-        name = `index-${stepCount}`;
-        set(stepComponent, 'name', name);
-      }
-
       get(this, 'transitions').addStep(name);
     },
 
