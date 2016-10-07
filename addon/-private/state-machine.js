@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const { A, Object: EmberObject, computed, get, set } = Ember;
+const { Object: EmberObject, computed, get, set } = Ember;
 
 export default EmberObject.extend({
 
@@ -16,13 +16,6 @@ export default EmberObject.extend({
    * @private
    */
   stepTransitions: null,
-
-  /**
-   * List of steps, in the order they were inserted
-   * @property {string[]} stepOrder
-   * @private
-   */
-  stepOrder: null,
 
   /**
    * @property {string} firstStep
@@ -44,7 +37,6 @@ export default EmberObject.extend({
 
   init() {
     set(this, 'stepTransitions', EmberObject.create());
-    set(this, 'stepOrder', A());
 
     const initialStep = get(this, 'initialStep');
     if (initialStep) {
@@ -62,8 +54,6 @@ export default EmberObject.extend({
     if (!get(this, 'lastStep')) {
       set(this, 'lastStep', name);
     }
-
-    get(this, 'stepOrder').pushObject(name);
 
     // Set the last step to transition to the new one, event if the last step
     // is this one

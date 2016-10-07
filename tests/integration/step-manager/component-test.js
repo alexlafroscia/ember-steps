@@ -204,24 +204,6 @@ describeComponent(
         });
       });
 
-      it.skip('exposes a list of the registered steps', function() {
-        this.render(hbs`
-          {{#step-manager as |w|}}
-            <ul>
-              {{#each w.steps as |step|}}
-                <li>{{step}}</li>
-              {{/each}}
-            </ul>
-
-            {{w.step name='foo'}}
-            {{w.step name='bar'}}
-          {{/step-manager}}
-        `);
-
-        expect(this.$('ul li:eq(0)')).to.contain('foo');
-        expect(this.$('ul li:eq(1)')).to.contain('bar');
-      });
-
       it('exposes the name of the current step', function() {
         this.render(hbs`
           {{#step-manager as |w|}}

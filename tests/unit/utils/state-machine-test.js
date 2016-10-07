@@ -93,18 +93,4 @@ describe('Step Transition State Machine', function() {
       expect(m.get('currentStep')).to.equal('foo');
     });
   });
-
-  describe('.stepOrder', function() {
-    it('tracks the order that the steps were inserted', function() {
-      const m = new StateMachine();
-      m.addStep('foo');
-      m.addStep('bar');
-      m.addStep('baz');
-
-      const steps = m.get('stepOrder');
-      expect(steps.objectAt(0)).to.equal('foo');
-      expect(steps.objectAt(1)).to.equal('bar');
-      expect(steps.objectAt(2)).to.equal('baz');
-    });
-  });
 });

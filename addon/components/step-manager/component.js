@@ -14,7 +14,6 @@ const layout = hbs`
     transition-to-next=(action 'transition-to-next-step')
     currentStep=transitions.currentStep
     totalSteps=totalSteps
-    steps=transitions.stepOrder
   )}}
 `;
 
