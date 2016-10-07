@@ -18,9 +18,6 @@ const layout = hbs`
 `;
 
 export default Component.extend({
-  // Configure ember-hook
-  hook: 'ember-wizard-step-manager',
-
   layout,
 
   init() {

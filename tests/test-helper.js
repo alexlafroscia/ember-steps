@@ -2,7 +2,10 @@ import Ember from 'ember';
 import resolver from './helpers/resolver';
 import { setResolver } from 'ember-mocha';
 
-const { $ } = Ember;
+import StepManagerComponent from 'ember-wizard/components/step-manager/component';
+import StepComponent from 'ember-wizard/components/step-manager/step/component';
+
+const { $, computed, get } = Ember;
 
 // Set up TD assertions in Chai
 import td from 'testdouble';
@@ -46,3 +49,22 @@ function isVisible(chai, utils) {
 if (window.location.search.indexOf('nocontainer') > -1) {
   $('#ember-testing-container').css({ visibility: 'hidden' });
 }
+
+// Configure ember-hook
+StepManagerComponent.reopen({
+  hook: 'ember-wizard-step-manager'
+});
+
+StepComponent.reopen({
+  hook: 'ember-wizard-step',
+  hookQualifiers: computed('name', function() {
+    const name = get(this, 'name');
+    const properties = {};
+
+    if (name) {
+      properties.name = name;
+    }
+
+    return properties;
+  })
+});

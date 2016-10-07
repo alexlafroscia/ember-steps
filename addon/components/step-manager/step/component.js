@@ -12,19 +12,6 @@ const layout = hbs`
 `;
 
 export default Component.extend({
-  // Configure ember-hook
-  hook: 'ember-wizard-step',
-  hookQualifiers: computed('name', function() {
-    const name = get(this, 'name');
-    const properties = {};
-
-    if (name) {
-      properties.name = name;
-    }
-
-    return properties;
-  }),
-
   layout,
 
   init() {
