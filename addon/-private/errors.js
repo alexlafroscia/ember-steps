@@ -1,17 +1,19 @@
+function createErrorMessage(missingProperty) {
+  return `\`${missingProperty}\` must be provided. This should be ensured by the build process.
+
+If you\'re seeing this message, please file a bug report because something is wrong.`;
+}
+
 /**
- * @class NoInitialStepError
+ * @class MissingPropertyError
  * @private
  */
-export function NoInitialStepError() {
-  this.name = 'NoInitialStepError';
+export function MissingPropertyError(missingProperty) {
+  this.name = 'MissingPropertyError';
   this.stack = (new Error()).stack;
+  this.message = createErrorMessage(missingProperty);
 }
-NoInitialStepError.prototype = new Error;
-NoInitialStepError.prototype.message = `
-Initial step must be provided. This should be ensured by the build process.
-
-If you're seeing this message, please file a bug report because something is wrong.
-`.trim();
+MissingPropertyError.prototype = new Error;
 
 /**
  * @class StepNameError
