@@ -1,13 +1,22 @@
 {
-  "name": "ember-wizard",
+  "name": "@alexlafroscia/ember-wizard",
   "dependencies": {
+    "chai": "~2.3.0",
+    "chai-jquery": "^2.0.1",
     "ember": "~2.8.0",
     "ember-cli-shims": "0.1.1",
-    "mocha": "~2.2.4",
-    "chai": "~2.3.0",
     "ember-mocha-adapter": "~0.3.1",
+    "mocha": "~2.2.4",
     "testdouble": "testdouble/testdouble.js#^1.4.2",
-    "chai-jquery": "^2.0.1",
     "testdouble-chai": "alexlafroscia/testdouble-chai#support-amd-modules"
-  }
+  },
+  "version": "0.9.0",
+  "description": "Super Simple Series of Steps",
+  "main": "index.js",
+  "repository": {
+    "url": "git@github.com:alexlafroscia/ember-wizard.git",
+    "type": "git"
+  },
+  "author": "Alex LaFroscia <alex@lafroscia.com>",
+  "license": "MIT"
 }

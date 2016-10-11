@@ -11,10 +11,11 @@ addons:
 
 language: node_js
 node_js:
-  - "4"
+  - "6"
 
 cache:
   directories:
+    - $HOME/.yarn-cache
     - node_modules
 
 env:
@@ -35,11 +36,12 @@ before_install:
   - sh -e /etc/init.d/xvfb start
   # Other setup
   - npm config set spin false
-  - npm install -g bower
+  - npm install -g bower yarnpkg
   - bower --version
+  - yarn --version
 
 install:
-  - npm install
+  - yarn install
   - bower install
 
 script:

@@ -13,11 +13,14 @@
     "test": "ember try:each",
     "postpublish": "greenkeeper-postpublish"
   },
-  "repository": "https://github.com/alexlafroscia/ember-wizard",
+  "repository": {
+    "url": "git@github.com:alexlafroscia/ember-wizard.git",
+    "type": "git"
+  },
   "engines": {
     "node": ">= 0.10.0"
   },
-  "author": "",
+  "author": "Alex LaFroscia <alex@lafroscia.com>",
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.2",
@@ -65,5 +68,6 @@
   "ember-addon": {
     "configPath": "tests/dummy/config",
     "demoURL": "http://alexlafroscia.com/ember-wizard/"
-  }
+  },
+  "main": "index.js"
 }
