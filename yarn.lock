@@ -737,7 +737,7 @@ broccoli-lint-eslint@^3.1.0:
     json-stable-stringify "^1.0.1"
     md5-hex "^1.2.1"
 
-broccoli-merge-trees@^1.0.0, broccoli-merge-trees@^1.1.1, broccoli-merge-trees@^1.1.2:
+broccoli-merge-trees@^1.0.0, broccoli-merge-trees@^1.1.1, broccoli-merge-trees@^1.1.2, broccoli-merge-trees@^1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/broccoli-merge-trees/-/broccoli-merge-trees-1.1.4.tgz#ab9eafd30b0dd8136e882ffd8fb08f3817533ea0"
   dependencies:
@@ -1885,11 +1885,14 @@ ember-cli-test-loader@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/ember-cli-test-loader/-/ember-cli-test-loader-1.1.0.tgz#54850145b311e7ac0f990cbd461a028012700441"
 
-ember-cli-testdouble-chai@1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/ember-cli-testdouble-chai/-/ember-cli-testdouble-chai-1.0.1.tgz#7f1145a3681f361c1a77a7756d8ef919b3fad639"
+ember-cli-testdouble-chai@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/ember-cli-testdouble-chai/-/ember-cli-testdouble-chai-1.1.0.tgz#1647f57a6279957efe1dcd9aed53a010e335e425"
   dependencies:
+    broccoli-funnel "^1.0.7"
+    broccoli-merge-trees "^1.1.4"
     ember-cli-babel "^5.1.6"
+    testdouble-chai "^0.4.0"
 
 ember-cli-testdouble@0.1.0:
   version "0.1.0"
@@ -5575,6 +5578,10 @@ temp@^0.8.3, temp@0.8.3:
   dependencies:
     os-tmpdir "^1.0.0"
     rimraf "~2.2.6"
+
+testdouble-chai@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/testdouble-chai/-/testdouble-chai-0.4.0.tgz#6e7a2cfe506d459d094440d9a8d567a7ac5c7cbc"
 
 testem@^1.8.1:
   version "1.12.0"

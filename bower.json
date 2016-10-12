@@ -7,8 +7,7 @@
     "ember-cli-shims": "0.1.1",
     "ember-mocha-adapter": "~0.3.1",
     "mocha": "~2.2.4",
-    "testdouble": "testdouble/testdouble.js#^1.4.2",
-    "testdouble-chai": "alexlafroscia/testdouble-chai#support-amd-modules"
+    "testdouble": "testdouble/testdouble.js#^1.4.2"
   },
   "version": "0.9.0",
   "description": "Super Simple Series of Steps",
