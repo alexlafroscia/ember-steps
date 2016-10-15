@@ -1,8 +1,8 @@
 # ember-steps
 
-[![Build Status](https://travis-ci.org/alexlafroscia/ember-wizard.svg?branch=master)](https://travis-ci.org/alexlafroscia/ember-wizard)
-[![dependencies Status](https://david-dm.org/alexlafroscia/ember-wizard/status.svg)](https://david-dm.org/alexlafroscia/ember-wizard)
-[![devDependencies Status](https://david-dm.org/alexlafroscia/ember-wizard/dev-status.svg)](https://david-dm.org/alexlafroscia/ember-wizard?type=dev)
+[![Build Status](https://travis-ci.org/alexlafroscia/ember-steps.svg?branch=master)](https://travis-ci.org/alexlafroscia/ember-steps)
+[![dependencies Status](https://david-dm.org/alexlafroscia/ember-steps/status.svg)](https://david-dm.org/alexlafroscia/ember-steps)
+[![devDependencies Status](https://david-dm.org/alexlafroscia/ember-steps/dev-status.svg)](https://david-dm.org/alexlafroscia/ember-steps?type=dev)
 [![Ember Versions](https://embadge.io/v1/badge.svg?start=2.3.0)](#compatibility-note)
 
 ## Features
@@ -73,5 +73,5 @@ The above examples show the basic idea, but there's more configuration (and powe
 This addon uses the [hash helper][hash-helper], so Ember 2.3.0+ is required.
 
 [ember-closure-actions]: https://guides.emberjs.com/v2.8.0/templates/actions/
-[wiki]: https://github.com/alexlafroscia/ember-wizard/wiki
+[wiki]: https://github.com/alexlafroscia/ember-steps/wiki
 [hash-helper]: http://emberjs.com/blog/2016/01/15/ember-2-3-released.html#toc_hash-helper

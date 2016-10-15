@@ -14,7 +14,7 @@
     "postpublish": "greenkeeper-postpublish"
   },
   "repository": {
-    "url": "git@github.com:alexlafroscia/ember-wizard.git",
+    "url": "git@github.com:alexlafroscia/ember-steps.git",
     "type": "git"
   },
   "engines": {
@@ -69,7 +69,7 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
-    "demoURL": "http://alexlafroscia.com/ember-wizard/"
+    "demoURL": "http://alexlafroscia.com/ember-steps/"
   },
   "main": "index.js"
 }

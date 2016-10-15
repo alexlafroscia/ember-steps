@@ -13,7 +13,7 @@
   "description": "Super Simple Series of Steps",
   "main": "index.js",
   "repository": {
-    "url": "git@github.com:alexlafroscia/ember-wizard.git",
+    "url": "git@github.com:alexlafroscia/ember-steps.git",
     "type": "git"
   },
   "author": "Alex LaFroscia <alex@lafroscia.com>",

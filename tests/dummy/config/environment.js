@@ -2,7 +2,7 @@ module.exports = function(environment) {
   const ENV = {
     modulePrefix: 'dummy',
     environment: environment,
-    rootURL: '/ember-wizard/',
+    rootURL: '/ember-steps/',
     locationType: 'hash',
     EmberENV: {
       FEATURES: {
