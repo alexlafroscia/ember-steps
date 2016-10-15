@@ -175,41 +175,6 @@ describeComponent(
     });
 
     describe('`yield`-ed data', function() {
-      describe('totalSteps', function() {
-        it('has the right value when they are direct children', function() {
-          this.render(hbs`
-            {{#step-manager as |w|}}
-              {{w.totalSteps}}
-
-              {{w.step}}
-              {{w.step}}
-            {{/step-manager}}
-          `);
-
-          expect($hook('step-manager')).to.contain('2');
-        });
-
-        it('has the right value when they are not direct children', function() {
-          this.render(hbs`
-            {{#step-manager as |w|}}
-              {{w.totalSteps}}
-
-              <div>
-                {{w.step}}
-              </div>
-
-              <div>
-                <div>
-                  {{w.step}}
-                </div>
-              </div>
-            {{/step-manager}}
-          `);
-
-          expect($hook('step-manager')).to.contain('2');
-        });
-      });
-
       it('exposes the name of the current step', function() {
         this.render(hbs`
           {{#step-manager as |w|}}

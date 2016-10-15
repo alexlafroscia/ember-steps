@@ -13,7 +13,6 @@ const layout = hbs`
     transition-to=(action 'transition-to-step')
     transition-to-next=(action 'transition-to-next-step')
     currentStep=transitions.currentStep
-    totalSteps=totalSteps
   )}}
 `;
 
@@ -33,7 +32,6 @@ export default Component.extend({
     if (!stepCount) {
       throw new MissingPropertyError('stepCount');
     }
-    set(this, 'totalSteps', parseInt(stepCount));
 
     set(this, 'transitions', StateMachine.create({
       initialStep
@@ -101,12 +99,6 @@ export default Component.extend({
    * @public
    */
   'did-transition': null,
-
-  /**
-   * @property {number} totalSteps the total number of steps
-   * @public
-   */
-  totalSteps: 0,
 
   didUpdateAttrs({ oldAttrs, newAttrs }) {
     this._super(...arguments);
