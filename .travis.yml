@@ -20,7 +20,8 @@ cache:
 
 env:
   - EMBER_TRY_SCENARIO=default COVERAGE=true # Only log coverage from the default scenario
-  - EMBER_TRY_SCENARIO=ember-2.3
+  - EMBER_TRY_SCENARIO=minimum-supported-version
+  - EMBER_TRY_SCENARIO=fastboot-addon-tests
   - EMBER_TRY_SCENARIO=ember-release
   - EMBER_TRY_SCENARIO=ember-beta
   - EMBER_TRY_SCENARIO=ember-canary
