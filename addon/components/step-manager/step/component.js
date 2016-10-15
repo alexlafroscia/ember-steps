@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
-import { StepNameError } from 'ember-wizard/-private/errors';
+import { StepNameError } from 'ember-steps/-private/errors';
 
 const { Component, computed, get, isBlank } = Ember;
 const layout = hbs`

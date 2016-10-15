@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { beforeEach, describe, it } from 'mocha';
-import StateMachine from 'ember-wizard/-private/state-machine';
+import StateMachine from 'ember-steps/-private/state-machine';
 
 describe('Step Transition State Machine', function() {
   describe('constructor', function() {

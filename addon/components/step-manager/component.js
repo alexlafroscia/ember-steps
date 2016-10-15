@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import hbs from 'htmlbars-inline-precompile';
-import StateMachine from 'ember-wizard/-private/state-machine';
-import { MissingPropertyError } from 'ember-wizard/-private/errors';
+import StateMachine from 'ember-steps/-private/state-machine';
+import { MissingPropertyError } from 'ember-steps/-private/errors';
 
 const { Component, get, set } = Ember;
 const layout = hbs`
@@ -127,7 +127,7 @@ export default Component.extend({
   actions: {
 
     /**
-     * Register a step with the wizard
+     * Register a step with the manager
      *
      * Adds a set to the internal registry of steps by name.  If no name is
      * provided, a name will be assigned by index.

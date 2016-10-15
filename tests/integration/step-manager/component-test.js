@@ -26,8 +26,8 @@ describeComponent(
             {{/step-manager}}
           `);
 
-          expect($hook('ember-wizard-step', { name: 'first' })).not.to.be.visible;
-          expect($hook('ember-wizard-step', { name: 'second' })).to.be.visible;
+          expect($hook('step', { name: 'first' })).not.to.be.visible;
+          expect($hook('step', { name: 'second' })).to.be.visible;
         });
 
         it('can use a value from the `mut` helper', function() {
@@ -39,8 +39,8 @@ describeComponent(
             {{/step-manager}}
           `);
 
-          expect($hook('ember-wizard-step', { name: 'first' })).not.to.be.visible;
-          expect($hook('ember-wizard-step', { name: 'second' })).to.be.visible;
+          expect($hook('step', { name: 'first' })).not.to.be.visible;
+          expect($hook('step', { name: 'second' })).to.be.visible;
         });
       });
 
@@ -54,19 +54,19 @@ describeComponent(
             {{/step-manager}}
           `);
 
-          expect($hook('ember-wizard-step', { name: 'first' })).to.be.visible;
-          expect($hook('ember-wizard-step', { name: 'second' })).not.to.be.visible;
+          expect($hook('step', { name: 'first' })).to.be.visible;
+          expect($hook('step', { name: 'second' })).not.to.be.visible;
 
           this.set('step', 'second');
 
-          expect($hook('ember-wizard-step', { name: 'first' })).not.to.be.visible;
-          expect($hook('ember-wizard-step', { name: 'second' })).to.be.visible;
+          expect($hook('step', { name: 'first' })).not.to.be.visible;
+          expect($hook('step', { name: 'second' })).to.be.visible;
 
           // Important for binding current step to a query param
           this.set('step', undefined);
 
-          expect($hook('ember-wizard-step', { name: 'first' })).to.be.visible;
-          expect($hook('ember-wizard-step', { name: 'second' })).not.to.be.visible;
+          expect($hook('step', { name: 'first' })).to.be.visible;
+          expect($hook('step', { name: 'second' })).not.to.be.visible;
         });
 
         it('changes steps when the property changes (with the mut helper)', function() {
@@ -78,13 +78,13 @@ describeComponent(
             {{/step-manager}}
           `);
 
-          expect($hook('ember-wizard-step', { name: 'first' })).to.be.visible;
-          expect($hook('ember-wizard-step', { name: 'second' })).not.to.be.visible;
+          expect($hook('step', { name: 'first' })).to.be.visible;
+          expect($hook('step', { name: 'second' })).not.to.be.visible;
 
           this.set('step', 'second');
 
-          expect($hook('ember-wizard-step', { name: 'first' })).not.to.be.visible;
-          expect($hook('ember-wizard-step', { name: 'second' })).to.be.visible;
+          expect($hook('step', { name: 'first' })).not.to.be.visible;
+          expect($hook('step', { name: 'second' })).to.be.visible;
         });
 
         it('throws an error when an invalid step is provided', function() {
@@ -96,8 +96,8 @@ describeComponent(
             {{/step-manager}}
           `);
 
-          expect($hook('ember-wizard-step', { name: 'first' })).to.be.visible;
-          expect($hook('ember-wizard-step', { name: 'second' })).not.to.be.visible;
+          expect($hook('step', { name: 'first' })).to.be.visible;
+          expect($hook('step', { name: 'second' })).not.to.be.visible;
 
           expect(() => {
             this.set('step', 'foobar');
@@ -170,8 +170,8 @@ describeComponent(
         {{/step-manager}}
       `);
 
-      expect($hook('ember-wizard-step', { name: 'first' })).to.be.visible;
-      expect($hook('ember-wizard-step', { name: 'second' })).not.to.be.visible;
+      expect($hook('step', { name: 'first' })).to.be.visible;
+      expect($hook('step', { name: 'second' })).not.to.be.visible;
     });
 
     describe('`yield`-ed data', function() {
@@ -186,7 +186,7 @@ describeComponent(
             {{/step-manager}}
           `);
 
-          expect($hook('ember-wizard-step-manager')).to.contain('2');
+          expect($hook('step-manager')).to.contain('2');
         });
 
         it('has the right value when they are not direct children', function() {
@@ -206,7 +206,7 @@ describeComponent(
             {{/step-manager}}
           `);
 
-          expect($hook('ember-wizard-step-manager')).to.contain('2');
+          expect($hook('step-manager')).to.contain('2');
         });
       });
 
@@ -219,7 +219,7 @@ describeComponent(
           {{/step-manager}}
         `);
 
-        expect($hook('ember-wizard-step-manager')).to.contain('foo');
+        expect($hook('step-manager')).to.contain('foo');
       });
     });
 
@@ -236,13 +236,13 @@ describeComponent(
           {{/step-manager}}
         `);
 
-        expect($hook('ember-wizard-step', { name: 'first' })).to.be.visible;
-        expect($hook('ember-wizard-step', { name: 'second' })).not.to.be.visible;
+        expect($hook('step', { name: 'first' })).to.be.visible;
+        expect($hook('step', { name: 'second' })).not.to.be.visible;
 
         this.$('button').click();
 
-        expect($hook('ember-wizard-step', { name: 'first' })).not.to.be.visible;
-        expect($hook('ember-wizard-step', { name: 'second' })).to.be.visible;
+        expect($hook('step', { name: 'first' })).not.to.be.visible;
+        expect($hook('step', { name: 'second' })).to.be.visible;
       });
 
       it('errors when transitioning to an invalid step', function() {
@@ -510,8 +510,8 @@ describeComponent(
 
         this.$('button').click();
 
-        expect($hook('ember-wizard-step', { name: 'first' })).to.be.visible;
-        expect($hook('ember-wizard-step', { name: 'second' })).not.to.be.visible;
+        expect($hook('step', { name: 'first' })).to.be.visible;
+        expect($hook('step', { name: 'second' })).not.to.be.visible;
       });
     });
   }

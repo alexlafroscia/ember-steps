@@ -5,9 +5,9 @@ const { Route, isEmpty } = Ember;
 export default Route.extend({
   title(tokens) {
     if (isEmpty(tokens)) {
-      return 'ember-wizard';
+      return 'ember-steps';
     }
 
-    return `ember-wizard – ${tokens.join(' ')}`;
+    return `ember-steps – ${tokens.join(' ')}`;
   }
 });

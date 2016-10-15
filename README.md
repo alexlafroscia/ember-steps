@@ -1,11 +1,9 @@
-# ember-wizard
+# ember-steps
 
 [![Build Status](https://travis-ci.org/alexlafroscia/ember-wizard.svg?branch=master)](https://travis-ci.org/alexlafroscia/ember-wizard)
 [![dependencies Status](https://david-dm.org/alexlafroscia/ember-wizard/status.svg)](https://david-dm.org/alexlafroscia/ember-wizard)
 [![devDependencies Status](https://david-dm.org/alexlafroscia/ember-wizard/dev-status.svg)](https://david-dm.org/alexlafroscia/ember-wizard?type=dev)
 [![Ember Versions](https://embadge.io/v1/badge.svg?start=2.3.0)](#compatibility-note)
-
-> “Pay no attention to the man behind the curtain!”
 
 ## Features
 
@@ -15,12 +13,12 @@
 ## Installation
 
 ```bash
-ember install @alexlafroscia/ember-wizard
+ember install ember-steps
 ```
 
 ## Basic Usage
 
-Using `ember-wizard` starts with creating a `step-manager`
+Using `ember-steps` starts with creating a `step-manager`
 
 ```handlebars
 {{#step-manager as |w|}}
@@ -64,11 +62,11 @@ As you may have guessed, the first `w.step` component, `a`, will be visible init
 {{/step-manager}}
 ```
 
-The `step-manager` provides a [closure action][ember-closure-actions] that can be called with the name of a step to show that one, instead.  One of the neat features of `ember-wizard` is that there is no explicit order to the steps; show all of them, or only some. It's entirely up to you.
+The `step-manager` provides a [closure action][ember-closure-actions] that can be called with the name of a step to show that one, instead.  One of the neat features of `ember-steps` is that there is no explicit order to the steps; show all of them, or only some. It's entirely up to you.
 
 ## Not-So-Basic Usage
 
-The above examples show the basic idea, but there's more configuration (and power) available if you need it.  Head over to [the wiki][wiki] to read more about what `ember-wizard` can do!
+The above examples show the basic idea, but there's more configuration (and power) available if you need it.  Head over to [the wiki][wiki] to read more about what `ember-steps` can do!
 
 ## Compatibility Note
 

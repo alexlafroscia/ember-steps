@@ -4,7 +4,7 @@ import { beforeEach, describe } from 'mocha';
 import td from 'testdouble';
 import hbs from 'htmlbars-inline-precompile';
 import { initialize as initializeEmberHook, $hook } from 'ember-hook';
-import { StepNameError } from 'ember-wizard/-private/errors';
+import { StepNameError } from 'ember-steps/-private/errors';
 
 describeComponent(
   'step-manager/step',
@@ -111,7 +111,7 @@ describeComponent(
           {{/step-manager/step}}
         `);
 
-        expect($hook('ember-wizard-step')).to.contain('Foo');
+        expect($hook('step')).to.contain('Foo');
       });
 
       describe('when inactive', function() {
@@ -122,8 +122,8 @@ describeComponent(
             {{/step-manager/step}}
           `);
 
-          expect($hook('ember-wizard-step')).not.to.be.visible;
-          expect($hook('ember-wizard-step')).not.to.contain('Active Content');
+          expect($hook('step')).not.to.be.visible;
+          expect($hook('step')).not.to.contain('Active Content');
         });
 
         it('renders the inverse block if provided', function() {
@@ -135,8 +135,8 @@ describeComponent(
             {{/step-manager/step}}
           `);
 
-          expect($hook('ember-wizard-step')).to.be.visible;
-          expect($hook('ember-wizard-step')).to.contain('Inactive Content');
+          expect($hook('step')).to.be.visible;
+          expect($hook('step')).to.contain('Inactive Content');
         });
       });
     });
@@ -147,7 +147,7 @@ describeComponent(
           {{step-manager/step name='foo' isActive=true register-step=(action 'register')}}
         `);
 
-        expect($hook('ember-wizard-step')).to.be.visible;
+        expect($hook('step')).to.be.visible;
       });
 
       it('is invisible when not active', function() {
@@ -155,7 +155,7 @@ describeComponent(
           {{step-manager/step name='foo' register-step=(action 'register')}}
         `);
 
-        expect($hook('ember-wizard-step')).not.to.be.visible;
+        expect($hook('step')).not.to.be.visible;
       });
     });
   }
