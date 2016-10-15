@@ -26,7 +26,7 @@ export default Component.extend({
     // Set up the state machine
     const initialStep = get(this, 'currentStep');
     if (!initialStep) {
-      throw new MissingPropertyError('initialStep');
+      throw new MissingPropertyError('currentStep');
     }
 
     const stepCount = get(this, 'stepCount');

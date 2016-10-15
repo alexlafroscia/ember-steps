@@ -14,7 +14,7 @@
 
 <div local-class="code-example">
   <div local-class="code-example-inner">
-    {{#step-manager currentStep=(unbound activeBlock) as |w|}}
+    {{#step-manager currentStep='template' as |w|}}
       <div local-class="code-file-links">
         {{#yield-slot 'code-template'}}
           <a href="#"
