@@ -1,3 +1,5 @@
+/* eslint-env node */
+
 module.exports = {
   scenarios: [
     {
@@ -7,7 +9,7 @@ module.exports = {
       }
     },
     {
-      name: 'ember-2.3',
+      name: 'minimum-supported-version',
       bower: {
         dependencies: {
           'ember': '~2.3.0'
@@ -15,6 +17,13 @@ module.exports = {
         resolutions: {
           'ember': '~2.3.0'
         }
+      }
+    },
+    {
+      name: 'fastboot-addon-tests',
+      command: 'ember fastboot:test',
+      bower: {
+        dependencies: { }
       }
     },
     {
