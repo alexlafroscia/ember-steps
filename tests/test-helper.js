@@ -58,13 +58,9 @@ StepManagerComponent.reopen({
 StepComponent.reopen({
   hook: 'step',
   hookQualifiers: computed('name', function() {
+    const index = get(this, 'index');
     const name = get(this, 'name');
-    const properties = {};
 
-    if (name) {
-      properties.name = name;
-    }
-
-    return properties;
+    return { index, name };
   })
 });

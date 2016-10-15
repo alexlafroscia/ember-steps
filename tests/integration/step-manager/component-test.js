@@ -479,5 +479,28 @@ describeComponent(
         expect($hook('step', { name: 'second' })).not.to.be.visible;
       });
     });
+
+    describe('assigning step indices', function() {
+      it('works outside of a loop', function() {
+        this.render(hbs`
+          {{#step-manager as |w|}}
+            {{w.step}}
+            {{w.step}}
+
+            <button {{action w.transition-to-next}}>
+              Next
+            </button>
+          {{/step-manager}}
+        `);
+
+        expect($hook('step', { index: 0 })).to.be.visible;
+        expect($hook('step', { index: 1 })).not.to.be.visible;
+
+        this.$('button').click();
+
+        expect($hook('step', { index: 0 })).not.to.be.visible;
+        expect($hook('step', { index: 1 })).to.be.visible;
+      });
+    });
   }
 );
