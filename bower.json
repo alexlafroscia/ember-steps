@@ -9,7 +9,7 @@
     "mocha": "~2.2.4",
     "testdouble": "testdouble/testdouble.js#^1.4.2"
   },
-  "version": "0.9.0",
+  "version": "0.10.0",
   "description": "Super Simple Series of Steps",
   "main": "index.js",
   "repository": {
