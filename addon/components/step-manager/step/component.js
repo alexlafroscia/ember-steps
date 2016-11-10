@@ -28,6 +28,28 @@ export default Component.extend({
     this['register-step'](this);
   },
 
+  didReceiveAttrs({ newAttrs }) {
+    this._super(...arguments);
+
+    const currentStep = get(newAttrs, 'currentStep.value');
+
+    if (get(this, 'name') === currentStep && this['on-entrance']) {
+      this['on-entrance']();
+    }
+  },
+
+  didUpdateAttrs({ newAttrs, oldAttrs }) {
+    this._super(...arguments);
+
+    const name = get(this, 'name');
+    const oldCurrentStep = get(oldAttrs, 'currentStep.value');
+    const newCurrentStep = get(newAttrs, 'currentStep.value');
+
+    if (oldCurrentStep === name && newCurrentStep !== name && this['on-exit']) {
+      this['on-exit']();
+    }
+  },
+
   /**
    * Name used to transition to this step
    *

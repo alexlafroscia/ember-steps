@@ -158,5 +158,86 @@ describeComponent(
         expect($hook('step')).not.to.be.visible;
       });
     });
+
+    describe('lifecycle hooks', function() {
+      describe('on-entrance', function() {
+        it('is called if the step is initially active', function() {
+          const entranceAction = td.function();
+          this.on('entrance', entranceAction);
+          this.set('currentStep', 'foo');
+
+          this.render(hbs`
+            {{step-manager/step
+                name='foo'
+                currentStep=currentStep
+                on-entrance=(action 'entrance')
+                register-step=(action 'register')}}
+          `);
+
+          this.set('currentStep', 'foo');
+
+          expect(entranceAction).to.be.called;
+        });
+
+        it('is called when the step becomes active', function() {
+          const entranceAction = td.function();
+          this.on('entrance', entranceAction);
+          this.set('currentStep', 'bar');
+
+          this.render(hbs`
+            {{step-manager/step
+                name='foo'
+                currentStep=currentStep
+                on-entrance=(action 'entrance')
+                register-step=(action 'register')}}
+          `);
+
+          // Activate the step
+          this.set('currentStep', 'foo');
+
+          expect(entranceAction).to.be.called;
+        });
+      });
+
+      describe('on-exit', function() {
+        it('is called when the step becomes inactive', function() {
+          const exitAction = td.function();
+          this.on('exit', exitAction);
+          this.set('currentStep', 'foo');
+
+          this.render(hbs`
+            {{step-manager/step
+                name='foo'
+                currentStep=currentStep
+                on-exit=(action 'exit')
+                register-step=(action 'register')}}
+          `);
+
+          // Deactivate the step
+          this.set('currentStep', 'bar');
+
+          expect(exitAction).to.be.called;
+        });
+
+        it('is not called when the current step changes to a value that is not the name of the step', function() {
+          const exitAction = td.function();
+          this.on('exit', exitAction);
+          this.set('currentStep', 'bar');
+
+          this.render(hbs`
+            {{step-manager/step
+                name='foo'
+                currentStep=currentStep
+                on-exit=(action 'exit')
+                register-step=(action 'register')}}
+          `);
+
+          // Deactivate the step
+          this.set('currentStep', 'baz');
+
+          expect(exitAction).not.to.be.called;
+        });
+      });
+    });
   }
 );
