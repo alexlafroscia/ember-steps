@@ -5,6 +5,8 @@
 [![devDependencies Status](https://david-dm.org/alexlafroscia/ember-steps/dev-status.svg)](https://david-dm.org/alexlafroscia/ember-steps?type=dev)
 [![Ember Versions](https://embadge.io/v1/badge.svg?start=2.3.0)](#compatibility-note)
 
+**WARNING:** API and feature set is subject to change prior to `v1.0.0`.  Make sure to pay attention to changes between minor releases!
+
 ## Features
 
 - Provides an extremely generic way of describing a series of views that should be shown in succession
