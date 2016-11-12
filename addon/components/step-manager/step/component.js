@@ -33,8 +33,8 @@ export default Component.extend({
 
     const currentStep = get(newAttrs, 'currentStep.value');
 
-    if (get(this, 'name') === currentStep && this['on-entrance']) {
-      this['on-entrance']();
+    if (get(this, 'name') === currentStep && this['will-enter']) {
+      this['will-enter']();
     }
   },
 
@@ -45,8 +45,8 @@ export default Component.extend({
     const oldCurrentStep = get(oldAttrs, 'currentStep.value');
     const newCurrentStep = get(newAttrs, 'currentStep.value');
 
-    if (oldCurrentStep === name && newCurrentStep !== name && this['on-exit']) {
-      this['on-exit']();
+    if (oldCurrentStep === name && newCurrentStep !== name && this['will-exit']) {
+      this['will-exit']();
     }
   },
 

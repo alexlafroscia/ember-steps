@@ -160,7 +160,7 @@ describeComponent(
     });
 
     describe('lifecycle hooks', function() {
-      describe('on-entrance', function() {
+      describe('will-enter', function() {
         it('is called if the step is initially active', function() {
           const entranceAction = td.function();
           this.on('entrance', entranceAction);
@@ -170,7 +170,7 @@ describeComponent(
             {{step-manager/step
                 name='foo'
                 currentStep=currentStep
-                on-entrance=(action 'entrance')
+                will-enter=(action 'entrance')
                 register-step=(action 'register')}}
           `);
 
@@ -188,7 +188,7 @@ describeComponent(
             {{step-manager/step
                 name='foo'
                 currentStep=currentStep
-                on-entrance=(action 'entrance')
+                will-enter=(action 'entrance')
                 register-step=(action 'register')}}
           `);
 
@@ -199,7 +199,7 @@ describeComponent(
         });
       });
 
-      describe('on-exit', function() {
+      describe('will-exit', function() {
         it('is called when the step becomes inactive', function() {
           const exitAction = td.function();
           this.on('exit', exitAction);
@@ -209,7 +209,7 @@ describeComponent(
             {{step-manager/step
                 name='foo'
                 currentStep=currentStep
-                on-exit=(action 'exit')
+                will-exit=(action 'exit')
                 register-step=(action 'register')}}
           `);
 
@@ -228,7 +228,7 @@ describeComponent(
             {{step-manager/step
                 name='foo'
                 currentStep=currentStep
-                on-exit=(action 'exit')
+                will-exit=(action 'exit')
                 register-step=(action 'register')}}
           `);
 
