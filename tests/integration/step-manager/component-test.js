@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import { expect } from 'chai';
 import { describeComponent, it } from 'ember-mocha';
 import { beforeEach, describe } from 'mocha';
@@ -6,6 +7,7 @@ import hbs from 'htmlbars-inline-precompile';
 import { initialize as initializeEmberHook, $hook } from 'ember-hook';
 
 const { matchers: { anything: matchAnything, contains: matchContains } } = td;
+const { A } = Ember;
 
 describeComponent(
   'step-manager',
@@ -500,6 +502,85 @@ describeComponent(
 
         expect($hook('step', { index: 0 })).not.to.be.visible;
         expect($hook('step', { index: 1 })).to.be.visible;
+      });
+    });
+
+    describe.only('dynamically creating steps', function() {
+      beforeEach(function() {
+        this.set('data', A([
+          { name: 'foo' },
+          { name: 'bar' }
+        ]));
+      });
+
+      it('allows dynamically creating steps', function() {
+        this.render(hbs`
+          {{#step-manager currentStep=(unbound data.firstObject.name) as |w|}}
+            {{#each data as |item|}}
+              {{#w.step name=(unbound item.name)}}
+                {{item.name}}
+              {{/w.step}}
+            {{/each}}
+
+            <button {{action w.transition-to-next}}>
+              Next
+            </button>
+          {{/step-manager}}
+        `);
+
+        expect($hook('step', { name: 'foo' })).to.be.visible;
+        expect($hook('step', { name: 'bar' })).not.to.be.visible;
+        expect(this.$()).to.contain('foo');
+
+        this.$('button').click();
+
+        expect($hook('step', { name: 'foo' })).not.to.be.visible;
+        expect($hook('step', { name: 'bar' })).to.be.visible;
+        expect(this.$()).to.contain('bar');
+      });
+
+      it('allows for adding more steps after the initial render', function() {
+        this.render(hbs`
+          {{#step-manager currentStep=(unbound data.firstObject.name) as |w|}}
+            {{#each data as |item|}}
+              {{#w.step name=(unbound item.name)}}
+                {{item.name}}
+              {{/w.step}}
+            {{/each}}
+
+            <button {{action w.transition-to-next}}>
+              Next
+            </button>
+          {{/step-manager}}
+        `);
+
+        this.$('button').click();
+
+        this.set('data', A([
+          { name: 'foo' },
+          { name: 'bar' },
+          { name: 'baz' }
+        ]));
+
+        expect($hook('step', { name: 'foo' })).not.to.be.visible;
+        expect($hook('step', { name: 'bar' })).to.be.visible;
+        expect($hook('step', { name: 'baz' })).not.to.be.visible;
+
+        // Check that the previous "last step" now points to the new one
+        this.$('button').click();
+
+        expect($hook('step', { name: 'foo' })).not.to.be.visible;
+        expect($hook('step', { name: 'bar' })).not.to.be.visible;
+        expect($hook('step', { name: 'baz' })).to.be.visible;
+        expect(this.$()).to.contain('baz');
+
+        // Check that the new step now points to the first one
+        this.$('button').click();
+
+        expect($hook('step', { name: 'foo' })).to.be.visible;
+        expect($hook('step', { name: 'bar' })).not.to.be.visible;
+        expect($hook('step', { name: 'baz' })).not.to.be.visible;
+        expect(this.$()).to.contain('foo');
       });
     });
   }
