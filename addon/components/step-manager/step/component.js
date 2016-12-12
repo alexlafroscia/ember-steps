@@ -72,7 +72,7 @@ export default Component.extend({
    * hiding the step entirely when not visible
    *
    * @property {boolean} hasInactiveState
-   * @public
+   * @private
    */
   hasInactiveState: false,
 

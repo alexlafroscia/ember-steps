@@ -506,6 +506,29 @@ describe('Integration: StepManagerComponent', function() {
     });
   });
 
+  describe('showing alternate step states', function() {
+    it('property is added by the HTMLBars transform', function() {
+      this.render(hbs`
+        {{#step-manager as |w|}}
+          {{#w.step}}
+            Active
+          {{else}}
+            Inactive
+          {{/w.step}}
+
+          {{#w.step}}
+            Active
+          {{else}}
+            Inactive
+          {{/w.step}}
+        {{/step-manager}}
+      `);
+
+      expect($hook('step', { index: 0 }).text().trim()).to.equal('Active');
+      expect($hook('step', { index: 1 }).text().trim()).to.equal('Inactive');
+    });
+  });
+
   describe('dynamically creating steps', function() {
     beforeEach(function() {
       this.set('data', A([
