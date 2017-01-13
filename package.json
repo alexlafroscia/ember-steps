@@ -50,7 +50,7 @@
     "ember-fastboot-addon-tests": "0.1.0",
     "ember-hook": "^1.4.0",
     "ember-load-initializers": "^0.6.2",
-    "ember-metrics": "^0.7.0",
+    "ember-metrics": "^0.8.0",
     "ember-prop-types": "^3.2.0",
     "ember-resolver": "^2.0.3",
     "ember-truth-helpers": "1.2.0",
