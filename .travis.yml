@@ -21,7 +21,7 @@ cache:
     - $HOME/.cache
 
 env:
-  - EMBER_TRY_SCENARIO=default
+  - EMBER_TRY_SCENARIO=ember-default
   - EMBER_TRY_SCENARIO=minimum-supported-version
   # - EMBER_TRY_SCENARIO=fastboot-addon-tests
   - EMBER_TRY_SCENARIO=ember-release
@@ -52,4 +52,4 @@ install:
 script:
   # Usually, it's ok to finish the test scenario without reverting
   #  to the addon's original dependency state, skipping "cleanup".
-  - ember try:one $EMBER_TRY_SCENARIO test --skip-cleanup
+  - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO test --skip-cleanup
