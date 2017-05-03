@@ -1,61 +1,19 @@
 /* eslint-env node */
-
 module.exports = {
   scenarios: [
-    {
-      name: 'default',
-      bower: {
-        dependencies: { }
-      }
-    },
     {
       name: 'minimum-supported-version',
       bower: {
         dependencies: {
-          'ember': '~2.3.0'
+          'ember': 'components/ember#v2.3.0'
         },
         resolutions: {
           'ember': '~2.3.0'
         }
-      }
-    },
-    {
-      name: 'fastboot-addon-tests',
-      command: 'ember fastboot:test',
-      bower: {
-        dependencies: { }
-      }
-    },
-    {
-      name: 'ember-release',
-      bower: {
-        dependencies: {
-          'ember': 'components/ember#release'
-        },
-        resolutions: {
-          'ember': 'release'
-        }
-      }
-    },
-    {
-      name: 'ember-beta',
-      bower: {
-        dependencies: {
-          'ember': 'components/ember#beta'
-        },
-        resolutions: {
-          'ember': 'beta'
-        }
-      }
-    },
-    {
-      name: 'ember-canary',
-      bower: {
-        dependencies: {
-          'ember': 'components/ember#canary'
-        },
-        resolutions: {
-          'ember': 'canary'
+      },
+      npm: {
+        devDependencies: {
+          'ember-source': null
         }
       }
     },
@@ -68,6 +26,11 @@ module.exports = {
         resolutions: {
           'ember': 'lts-2-4'
         }
+      },
+      npm: {
+        devDependencies: {
+          'ember-source': null
+        }
       }
     },
     {
@@ -79,7 +42,70 @@ module.exports = {
         resolutions: {
           'ember': 'lts-2-8'
         }
+      },
+      npm: {
+        devDependencies: {
+          'ember-source': null
+        }
       }
+    },
+    {
+      name: 'ember-release',
+      bower: {
+        dependencies: {
+          'ember': 'components/ember#release'
+        },
+        resolutions: {
+          'ember': 'release'
+        }
+      },
+      npm: {
+        devDependencies: {
+          'ember-source': null
+        }
+      }
+    },
+    {
+      name: 'ember-beta',
+      bower: {
+        dependencies: {
+          'ember': 'components/ember#beta'
+        },
+        resolutions: {
+          'ember': 'beta'
+        }
+      },
+      npm: {
+        devDependencies: {
+          'ember-source': null
+        }
+      }
+    },
+    {
+      name: 'ember-canary',
+      bower: {
+        dependencies: {
+          'ember': 'components/ember#canary'
+        },
+        resolutions: {
+          'ember': 'canary'
+        }
+      },
+      npm: {
+        devDependencies: {
+          'ember-source': null
+        }
+      }
+    },
+    {
+      name: 'ember-default',
+      npm: {
+        devDependencies: {}
+      }
+    },
+    {
+      name: 'fastboot-addon-tests',
+      command: 'ember fastboot:test'
     }
   ]
 };
