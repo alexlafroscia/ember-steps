@@ -1,11 +1,8 @@
 {
   "name": "ember-steps",
   "dependencies": {
-    "chai": "~2.3.0",
-    "chai-jquery": "^2.0.1",
     "ember": "~2.8.0",
     "ember-cli-shims": "0.1.1",
-    "mocha": "~2.2.4",
     "testdouble": "testdouble/testdouble.js#^1.4.2"
   },
   "version": "0.12.0",
