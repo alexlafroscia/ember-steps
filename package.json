@@ -25,22 +25,22 @@
   "devDependencies": {
     "broccoli-asset-rev": "^2.5.0",
     "chai": "3.5.0",
+    "chai-jquery": "^2.0.0",
     "coveralls": "^2.11.15",
     "ember-block-slots": "^1.1.8",
     "ember-cli": "^2.13.1",
-    "ember-cli-chai": "^0.3.1",
+    "ember-cli-chai": "^0.3.2",
     "ember-cli-code-coverage": "^0.3.8",
     "ember-cli-dependency-checker": "^1.2.0",
     "ember-cli-document-title": "^0.3.3",
     "ember-cli-eslint": "3.0.0",
     "ember-cli-github-pages": "0.1.2",
     "ember-cli-inject-live-reload": "^1.6.1",
-    "ember-cli-mocha": "^0.13.0",
+    "ember-cli-mocha": "^0.14.1",
     "ember-cli-release": "^1.0.0-beta.2",
     "ember-cli-sri": "^2.1.0",
     "ember-cli-test-loader": "^2.1.0",
     "ember-cli-testdouble": "0.1.0",
-    "ember-cli-testdouble-chai": "1.1.1",
     "ember-cli-uglify": "^1.2.0",
     "ember-code-snippet": "1.8.0",
     "ember-css-modules": "^0.6.2",
@@ -56,7 +56,8 @@
     "eslint-plugin-ember-suave": "^1.0.0",
     "greenkeeper-postpublish": "^1.0.1",
     "loader.js": "^4.4.0",
-    "postcss-nested": "^1.0.0"
+    "postcss-nested": "^1.0.0",
+    "testdouble-chai": "^0.5.0"
   },
   "keywords": [
     "ember-addon"
