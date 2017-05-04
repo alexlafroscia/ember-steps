@@ -18,12 +18,13 @@ const layout = hbs`
 
 export default Component.extend({
   layout,
-
+  _currentStep: null,
   init() {
     this._super(...arguments);
 
     // Set up the state machine
     const initialStep = get(this, 'currentStep');
+    set(this, '_currentStep', initialStep);
     if (!initialStep) {
       throw new MissingPropertyError('currentStep');
     }
@@ -100,11 +101,11 @@ export default Component.extend({
    */
   'did-transition': null,
 
-  didUpdateAttrs({ oldAttrs, newAttrs }) {
+  didUpdateAttrs() {
     this._super(...arguments);
 
-    const oldStep = oldAttrs.currentStep.value;
-    const newStep = newAttrs.currentStep.value;
+    const oldStep = this.get('_currentStep');
+    const newStep = this.get('currentStep');
 
     if (typeof newStep === 'undefined') {
       const firstStep = get(this, 'transitions.firstStep');
@@ -114,6 +115,9 @@ export default Component.extend({
     if (newStep && oldStep !== newStep) {
       get(this, 'transitions').activate(newStep);
     }
+    this.set('_currentStep', newStep);
+
+    this._super(...arguments);
   },
 
   actions: {
