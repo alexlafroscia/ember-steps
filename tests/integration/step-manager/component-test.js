@@ -4,10 +4,7 @@ import { setupComponentTest } from 'ember-mocha';
 import { beforeEach, describe, it } from 'mocha';
 import td from 'testdouble';
 import hbs from 'htmlbars-inline-precompile';
-import {
-  initialize as initializeEmberHook,
-  $hook
-} from 'ember-hook';
+import { initialize as initializeEmberHook, $hook } from 'ember-hook';
 
 const { matchers: { anything: matchAnything, contains: matchContains } } = td;
 const { A } = Ember;
@@ -109,7 +106,7 @@ describe('Integration: StepManagerComponent', function() {
     });
 
     describe('updating the target object from the component', function() {
-      it('mutates the target object\'s property when a mutable value is provided', function() {
+      it("mutates the target object's property when a mutable value is provided", function() {
         this.set('step', 'first');
         this.render(hbs`
           {{#step-manager currentStep=(mut step) as |w|}}
@@ -127,7 +124,7 @@ describe('Integration: StepManagerComponent', function() {
         expect(this.get('step')).to.equal('second');
       });
 
-      it('mutates the target object\'s property when a regular value is provided', function() {
+      it("mutates the target object's property when a regular value is provided", function() {
         this.set('step', 'first');
         this.render(hbs`
           {{#step-manager currentStep=step as |w|}}
@@ -531,10 +528,7 @@ describe('Integration: StepManagerComponent', function() {
 
   describe('dynamically creating steps', function() {
     beforeEach(function() {
-      this.set('data', A([
-        { name: 'foo' },
-        { name: 'bar' }
-      ]));
+      this.set('data', A([{ name: 'foo' }, { name: 'bar' }]));
     });
 
     it('allows dynamically creating steps', function() {
@@ -580,11 +574,7 @@ describe('Integration: StepManagerComponent', function() {
 
       this.$('button').click();
 
-      this.set('data', A([
-        { name: 'foo' },
-        { name: 'bar' },
-        { name: 'baz' }
-      ]));
+      this.set('data', A([{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }]));
 
       expect($hook('step', { name: 'foo' })).not.to.be.visible;
       expect($hook('step', { name: 'bar' })).to.be.visible;

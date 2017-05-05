@@ -1,7 +1,9 @@
+/* eslint-env node */
+
 module.exports = function(environment) {
   const ENV = {
     modulePrefix: 'dummy',
-    environment: environment,
+    environment,
     rootURL: '/ember-steps/',
     locationType: 'hash',
     EmberENV: {

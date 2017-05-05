@@ -1,11 +1,11 @@
 module.exports = {
   env: {
     'browser': false,
-    'node': true
+    'node': true,
+    'mocha': true
   },
   rules: {
-    'no-var': false,
-    'object-shorthand': false
+    'object-shorthand': "off"
   }
 };
 

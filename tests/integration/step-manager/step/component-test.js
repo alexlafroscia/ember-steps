@@ -3,10 +3,7 @@ import { setupComponentTest } from 'ember-mocha';
 import { beforeEach, describe, it } from 'mocha';
 import td from 'testdouble';
 import hbs from 'htmlbars-inline-precompile';
-import {
-  initialize as initializeEmberHook,
-  $hook
-} from 'ember-hook';
+import { initialize as initializeEmberHook, $hook } from 'ember-hook';
 import { StepNameError } from 'ember-steps/-private/errors';
 
 describe('Integration: StepManagerStepComponent', function() {
@@ -17,7 +14,7 @@ describe('Integration: StepManagerStepComponent', function() {
   beforeEach(initializeEmberHook);
 
   beforeEach(function() {
-    this.on('register', function() { });
+    this.on('register', function() {});
   });
 
   describe('registering with the rendering context', function() {
@@ -101,7 +98,6 @@ describe('Integration: StepManagerStepComponent', function() {
         }).to.throw(StepNameError, /Name must be an immutable string/);
       });
     });
-
   });
 
   describe('rendering', function() {

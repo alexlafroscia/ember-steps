@@ -6,12 +6,23 @@ module.exports = {
   },
   extends: [
     'eslint:recommended',
-    'plugin:ember-suave/recommended'
+    'plugin:ember-suave/recommended',
+    'prettier'
+  ],
+  plugins: [
+    'prettier'
   ],
   env: {
     'browser': true
   },
   rules: {
-    'ember-suave/no-const-outside-module-scope': 'off'
+    'prefer-const': 'error',
+
+    'ember-suave/no-const-outside-module-scope': 'off',
+
+    'prettier/prettier': ['error', {
+      printWidth: 120,
+      singleQuote: true
+    }]
   }
 };
