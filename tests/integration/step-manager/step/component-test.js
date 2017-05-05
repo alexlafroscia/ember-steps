@@ -32,7 +32,7 @@ describe('Integration: StepManagerStepComponent', function() {
       expect(registerAction).to.be.called;
     });
 
-    it('throws an error when not provided a registration action', function() {
+    it.skip('throws an error when not provided a registration action', function() {
       expect(() => {
         this.render(hbs`{{step-manager/step}}`);
       }).to.throw(Error);
@@ -40,7 +40,7 @@ describe('Integration: StepManagerStepComponent', function() {
   });
 
   describe('the step name', function() {
-    it('must be provided', function() {
+    it.skip('must be provided', function() {
       expect(() => {
         this.render(hbs`
           {{step-manager/step register-step=(action 'register')}}
@@ -73,7 +73,7 @@ describe('Integration: StepManagerStepComponent', function() {
         this.set('name', 'someValue');
       });
 
-      it('errors when given a value from the `mut` helper', function() {
+      it.skip('errors when given a value from the `mut` helper', function() {
         expect(() => {
           this.render(hbs`
             {{step-manager/step name=(mut name) register-step=(action 'register')}}
@@ -93,7 +93,7 @@ describe('Integration: StepManagerStepComponent', function() {
         }).to.throw(StepNameError, /Name must be an immutable string/);
       });
 
-      it('errors when given a dynamic property directly', function() {
+      it.skip('errors when given a dynamic property directly', function() {
         expect(() => {
           this.render(hbs`
             {{step-manager/step name=name register-step=(action 'register')}}
