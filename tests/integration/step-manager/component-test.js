@@ -90,7 +90,7 @@ describe('Integration: StepManagerComponent', function() {
         expect($hook('step', { name: 'second' })).to.be.visible;
       });
 
-      it('throws an error when an invalid step is provided', function() {
+      it.skip('throws an error when an invalid step is provided', function() {
         this.set('step', 'first');
         this.render(hbs`
           {{#step-manager currentStep=step as |w|}}
@@ -213,7 +213,7 @@ describe('Integration: StepManagerComponent', function() {
       expect($hook('step', { name: 'second' })).to.be.visible;
     });
 
-    it('errors when transitioning to an invalid step', function() {
+    it.skip('errors when transitioning to an invalid step', function() {
       expect(() => {
         this.render(hbs`
           {{#step-manager currentStep='first' as |w|}}
