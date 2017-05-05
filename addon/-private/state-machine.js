@@ -3,7 +3,6 @@ import Ember from 'ember';
 const { Object: EmberObject, computed, get, set } = Ember;
 
 export default EmberObject.extend({
-
   /**
    * @property {string} initialStep
    * @public

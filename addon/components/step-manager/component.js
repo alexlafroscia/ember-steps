@@ -34,9 +34,13 @@ export default Component.extend({
       throw new MissingPropertyError('stepCount');
     }
 
-    set(this, 'transitions', StateMachine.create({
-      initialStep
-    }));
+    set(
+      this,
+      'transitions',
+      StateMachine.create({
+        initialStep
+      })
+    );
   },
 
   /**
@@ -121,7 +125,6 @@ export default Component.extend({
   },
 
   actions: {
-
     /**
      * Register a step with the manager
      *

@@ -1,16 +1,18 @@
+/* eslint-env node */
+
 'use strict';
 
-var debug = require('./lib/utils/debug')('addon');
-var EmberStepsPlugin = require('./lib/htmlbars-plugin');
+const debug = require('./lib/utils/debug')('addon');
+const EmberStepsPlugin = require('./lib/htmlbars-plugin');
 
 module.exports = {
   name: 'ember-steps',
 
-  shouldIncludeChildAddon: function(addon) {
+  shouldIncludeChildAddon(addon) {
     return addon.name.indexOf('dummy') === -1;
   },
 
-  setupPreprocessorRegistry: function(type, registry) {
+  setupPreprocessorRegistry(type, registry) {
     if (type !== 'parent') {
       return;
     }
@@ -19,7 +21,7 @@ module.exports = {
     registry.add('htmlbars-ast-plugin', {
       name: 'ember-steps',
       plugin: EmberStepsPlugin,
-      baseDir: function() {
+      baseDir() {
         return __dirname;
       }
     });

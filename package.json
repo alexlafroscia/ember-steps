@@ -11,7 +11,9 @@
     "deploy": "ember github-pages:commit --message \"Deploy gh-pages from commit $(git rev-parse HEAD)\" && git push && git checkout -",
     "start": "ember server",
     "test": "ember try:each",
-    "postpublish": "greenkeeper-postpublish"
+    "postpublish": "greenkeeper-postpublish",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
   },
   "repository": {
     "url": "git@github.com:alexlafroscia/ember-steps.git",
@@ -55,10 +57,14 @@
     "ember-resolver": "^4.1.0",
     "ember-source": "^2.13.0",
     "ember-truth-helpers": "1.2.0",
+    "eslint": "^3.19.0",
+    "eslint-config-prettier": "^1.7.0",
     "eslint-plugin-ember-suave": "^1.0.0",
+    "eslint-plugin-prettier": "^2.0.1",
     "greenkeeper-postpublish": "^1.0.1",
     "loader.js": "^4.4.0",
     "postcss-nested": "^1.0.0",
+    "prettier": "^1.3.1",
     "testdouble-chai": "^0.5.0"
   },
   "keywords": [
