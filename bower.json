@@ -3,7 +3,7 @@
   "dependencies": {
     "testdouble": "testdouble/testdouble.js#^1.4.2"
   },
-  "version": "0.12.0",
+  "version": "0.13.0",
   "description": "Super Simple Series of Steps",
   "main": "index.js",
   "repository": {
