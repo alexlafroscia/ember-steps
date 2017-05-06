@@ -18,16 +18,16 @@ const layout = hbs`
 
 export default Component.extend({
   layout,
-  _currentStep: null,
   init() {
     this._super(...arguments);
 
     // Set up the state machine
     const initialStep = get(this, 'currentStep');
-    set(this, '_currentStep', initialStep);
     if (!initialStep) {
       throw new MissingPropertyError('currentStep');
     }
+
+    this._lastStep = initialStep;
 
     const stepCount = get(this, 'stepCount');
     if (!stepCount) {
@@ -48,6 +48,14 @@ export default Component.extend({
    * @private
    */
   transitions: null,
+
+  /**
+   * Used internally to track the previous step
+   *
+   * @property {string} _lastStep
+   * @private
+   */
+  _lastStep: undefined,
 
   /**
    * The `currentStep` property can be used for providing, or binding to, the
@@ -108,7 +116,7 @@ export default Component.extend({
   didUpdateAttrs() {
     this._super(...arguments);
 
-    const oldStep = this.get('_currentStep');
+    const oldStep = this._lastStep;
     const newStep = this.get('currentStep');
 
     if (typeof newStep === 'undefined') {
@@ -119,7 +127,8 @@ export default Component.extend({
     if (newStep && oldStep !== newStep) {
       get(this, 'transitions').activate(newStep);
     }
-    this.set('_currentStep', newStep);
+
+    this._lastStep = newStep;
 
     this._super(...arguments);
   },

@@ -28,26 +28,30 @@ export default Component.extend({
     this['register-step'](this);
   },
 
-  didReceiveAttrs({ newAttrs }) {
+  /**
+   * Used internally to track the "active" state of the last time the attributes
+   * were updated.
+   *
+   * @property {boolean} _wasActive
+   * @private
+   */
+  _wasActive: false,
+
+  didReceiveAttrs() {
     this._super(...arguments);
 
-    const currentStep = get(newAttrs, 'currentStep.value');
+    const isActive = get(this, 'isActive');
+    const wasActive = this._wasActive;
 
-    if (get(this, 'name') === currentStep && this['will-enter']) {
+    if (isActive && !wasActive && this['will-enter']) {
       this['will-enter']();
     }
-  },
 
-  didUpdateAttrs({ newAttrs, oldAttrs }) {
-    this._super(...arguments);
-
-    const name = get(this, 'name');
-    const oldCurrentStep = get(oldAttrs, 'currentStep.value');
-    const newCurrentStep = get(newAttrs, 'currentStep.value');
-
-    if (oldCurrentStep === name && newCurrentStep !== name && this['will-exit']) {
+    if (!isActive && wasActive && this['will-exit']) {
       this['will-exit']();
     }
+
+    this._wasActive = isActive;
   },
 
   /**
