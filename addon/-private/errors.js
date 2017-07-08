@@ -1,7 +1,7 @@
 function createErrorMessage(missingProperty) {
   return `\`${missingProperty}\` must be provided as static value.
 
-If you\'re seeing this message, you're likely either iterating over some data
+If you're seeing this message, you're likely either iterating over some data
 to create your steps or doing something to provide the value dynamically. This
 is currently unsupported by \`ember-steps\`. Please see the following for more
 information:
