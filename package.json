@@ -45,7 +45,7 @@
     "ember-cli-testdouble": "^0.1.2",
     "ember-cli-uglify": "^1.2.0",
     "ember-code-snippet": "^1.9.0",
-    "ember-css-modules": "^0.6.2",
+    "ember-css-modules": "^0.7.0",
     "ember-disable-prototype-extensions": "^1.1.2",
     "ember-export-application-global": "^2.0.0",
     "ember-fastboot-addon-tests": "^0.4.0",
@@ -60,7 +60,7 @@
     "eslint-plugin-ember-suave": "^1.0.0",
     "eslint-plugin-prettier": "^2.1.2",
     "loader.js": "^4.5.1",
-    "postcss-nested": "^1.0.0",
+    "postcss-nested": "^2.0.2",
     "prettier": "^1.5.2",
     "testdouble-chai": "^0.5.0"
   },

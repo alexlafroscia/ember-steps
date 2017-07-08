@@ -5,7 +5,7 @@ import layout from './template';
 const { Component } = Ember;
 
 export default Component.extend(SlotsMixin, {
-  classNameBindings: ['styles.usage-example'],
+  localClassNames: ['usage-example'],
 
   layout,
 

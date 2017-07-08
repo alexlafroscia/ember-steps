@@ -13,7 +13,7 @@
 
     <hr />
 
-    {{#step-manager classNames=styles.step-manager as |w|}}
+    {{#step-manager classNames=(local-class 'step-manager') as |w|}}
       {{#w.step}}
         This is the first step
       {{/w.step}}

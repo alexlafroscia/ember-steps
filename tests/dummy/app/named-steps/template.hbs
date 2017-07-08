@@ -12,7 +12,7 @@
 
     <hr />
 
-    {{#step-manager classNames=styles.step-manager as |w|}}
+    {{#step-manager classNames=(local-class 'step-manager') as |w|}}
       {{#w.step name='a'}}
         <h3>Step A</h3>
 
