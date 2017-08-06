@@ -1,9 +1,7 @@
 # ember-steps
 
 [![Build Status](https://travis-ci.org/alexlafroscia/ember-steps.svg?branch=master)](https://travis-ci.org/alexlafroscia/ember-steps)
-[![dependencies Status](https://david-dm.org/alexlafroscia/ember-steps/status.svg)](https://david-dm.org/alexlafroscia/ember-steps)
-[![devDependencies Status](https://david-dm.org/alexlafroscia/ember-steps/dev-status.svg)](https://david-dm.org/alexlafroscia/ember-steps?type=dev)
-[![Ember Versions](https://embadge.io/v1/badge.svg?start=2.3.0)](#compatibility-note)
+[![Ember Versions](https://embadge.io/v1/badge.svg?start=2.8.0)](#compatibility-note)
 
 ## Features
 
@@ -70,7 +68,9 @@ The above examples show the basic idea, but there's more configuration (and powe
 
 ## Compatibility Note
 
-This addon uses the [hash helper][hash-helper], so Ember 2.3.0+ is required.
+Tests are no longer run against anything before 2.8.0, since that's the lowest LTS supported by the core team at this time. Older versions may work, but no promises.
+
+This addon uses the [hash helper][hash-helper], so Ember 2.3.0+ is required. If you want something that will definitely work on a version of Ember lower than 2.8.0, use `v0.15.0` of this addon.
 
 [ember-closure-actions]: https://guides.emberjs.com/v2.8.0/templates/actions/
 [wiki]: https://github.com/alexlafroscia/ember-steps/wiki
