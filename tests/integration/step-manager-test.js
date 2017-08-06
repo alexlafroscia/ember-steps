@@ -5,6 +5,7 @@ import { beforeEach, describe, it } from 'mocha';
 import td from 'testdouble';
 import hbs from 'htmlbars-inline-precompile';
 import { initialize as initializeEmberHook, $hook } from 'ember-hook';
+import { click, findAll } from 'ember-native-dom-helpers';
 
 const { matchers: { anything: matchAnything, contains: matchContains } } = td;
 const { A } = Ember;
@@ -144,7 +145,7 @@ describe('Integration: StepManagerComponent', function() {
           {{/step-manager}}
         `);
 
-        this.$('button').click();
+        click('button');
 
         expect(this.get('step')).to.equal('second');
       });
@@ -162,7 +163,7 @@ describe('Integration: StepManagerComponent', function() {
           {{/step-manager}}
         `);
 
-        this.$('button').click();
+        click('button');
 
         expect(this.get('step')).to.equal('second');
       });
@@ -180,7 +181,7 @@ describe('Integration: StepManagerComponent', function() {
           {{/step-manager}}
         `);
 
-        this.$('button').click();
+        click('button');
 
         expect(this.get('step')).to.equal('first');
       });
@@ -206,12 +207,14 @@ describe('Integration: StepManagerComponent', function() {
 
   it('renders tagless components', function() {
     this.render(hbs`
-      {{#step-manager as |w|}}
-        {{w.step}}
-      {{/step-manager}}
+      <div id="steps">
+        {{#step-manager as |w|}}
+          {{w.step}}
+        {{/step-manager}}
+      </div>
     `);
 
-    expect(this.$('*').toArray()).to.be.empty;
+    expect(findAll('#steps *')).to.be.empty;
   });
 
   describe('`yield`-ed data', function() {
@@ -251,7 +254,7 @@ describe('Integration: StepManagerComponent', function() {
       expect($hook('first')).to.be.visible;
       expect($hook('second')).not.to.be.visible;
 
-      this.$('button').click();
+      click('button');
 
       expect($hook('first')).not.to.be.visible;
       expect($hook('second')).to.be.visible;
@@ -269,7 +272,7 @@ describe('Integration: StepManagerComponent', function() {
           {{/step-manager}}
         `);
 
-        this.$('button').click();
+        click('button');
       }).to.throw(Error);
     });
   });
@@ -300,19 +303,19 @@ describe('Integration: StepManagerComponent', function() {
       expect($hook('second')).not.to.be.visible;
       expect($hook('third')).not.to.be.visible;
 
-      this.$('button').click();
+      click('button');
 
       expect($hook('first')).not.to.be.visible;
       expect($hook('second')).to.be.visible;
       expect($hook('third')).not.to.be.visible;
 
-      this.$('button').click();
+      click('button');
 
       expect($hook('first')).not.to.be.visible;
       expect($hook('second')).not.to.be.visible;
       expect($hook('third')).to.be.visible;
 
-      this.$('button').click();
+      click('button');
 
       expect($hook('first')).to.be.visible;
       expect($hook('second')).not.to.be.visible;
@@ -336,7 +339,7 @@ describe('Integration: StepManagerComponent', function() {
         {{/step-manager}}
       `);
 
-      this.$('button').click();
+      click('button');
 
       expect(onTransitionAction).to.be.called;
     });
@@ -356,7 +359,7 @@ describe('Integration: StepManagerComponent', function() {
         {{/step-manager}}
       `);
 
-      this.$('button').click();
+      click('button');
 
       expect(onTransitionAction).to.be.called;
     });
@@ -376,7 +379,7 @@ describe('Integration: StepManagerComponent', function() {
             </button>
           {{/step-manager}}
         `);
-        this.$('button').click();
+        click('button');
 
         expect(action).to.be.calledWith(
           matchContains({
@@ -400,7 +403,7 @@ describe('Integration: StepManagerComponent', function() {
             </button>
           {{/step-manager}}
         `);
-        this.$('button').click();
+        click('button');
 
         expect(action).to.be.calledWith(
           matchContains({
@@ -439,7 +442,7 @@ describe('Integration: StepManagerComponent', function() {
           </button>
         {{/step-manager}}
       `);
-      this.$('button').click();
+      click('button');
 
       expect(beforeAction).to.be.called;
     });
@@ -458,7 +461,7 @@ describe('Integration: StepManagerComponent', function() {
           </button>
         {{/step-manager}}
       `);
-      this.$('button').click();
+      click('button');
 
       expect(beforeAction).to.be.called;
     });
@@ -478,7 +481,7 @@ describe('Integration: StepManagerComponent', function() {
             </button>
           {{/step-manager}}
         `);
-        this.$('button').click();
+        click('button');
 
         expect(beforeAction).to.be.calledWith(
           matchContains({
@@ -502,7 +505,7 @@ describe('Integration: StepManagerComponent', function() {
             </button>
           {{/step-manager}}
         `);
-        this.$('button').click();
+        click('button');
 
         expect(beforeAction).to.be.calledWith(
           matchContains({
@@ -533,7 +536,7 @@ describe('Integration: StepManagerComponent', function() {
         {{/step-manager}}
       `);
 
-      this.$('button').click();
+      click('button');
 
       expect($hook('first')).to.be.visible;
       expect($hook('second')).not.to.be.visible;
@@ -560,7 +563,7 @@ describe('Integration: StepManagerComponent', function() {
       expect($hook('step', { index: 0 })).to.be.visible;
       expect($hook('step', { index: 1 })).not.to.be.visible;
 
-      this.$('button').click();
+      click('button');
 
       expect($hook('step', { index: 0 })).not.to.be.visible;
       expect($hook('step', { index: 1 })).to.be.visible;
@@ -602,13 +605,15 @@ describe('Integration: StepManagerComponent', function() {
     it('allows dynamically creating steps', function() {
       this.render(hbs`
         {{#step-manager currentStep=(unbound data.firstObject.name) as |w|}}
-          {{#each data as |item|}}
-            {{#w.step name=(unbound item.name)}}
-              <div data-test={{hook 'step' name=item.name}}>
-                {{item.name}}
-              </div>
-            {{/w.step}}
-          {{/each}}
+          <div data-test={{hook 'steps'}}>
+            {{#each data as |item|}}
+              {{#w.step name=(unbound item.name)}}
+                <div data-test={{hook 'step' name=item.name}}>
+                  {{item.name}}
+                </div>
+              {{/w.step}}
+            {{/each}}
+          </div>
 
           <button {{action w.transition-to-next}}>
             Next
@@ -618,25 +623,27 @@ describe('Integration: StepManagerComponent', function() {
 
       expect($hook('step', { name: 'foo' })).to.be.visible;
       expect($hook('step', { name: 'bar' })).not.to.be.visible;
-      expect(this.$()).to.contain('foo');
+      expect($hook('steps').text().trim()).to.equal('foo');
 
-      this.$('button').click();
+      click('button');
 
       expect($hook('step', { name: 'foo' })).not.to.be.visible;
       expect($hook('step', { name: 'bar' })).to.be.visible;
-      expect(this.$()).to.contain('bar');
+      expect($hook('steps').text().trim()).to.equal('bar');
     });
 
     it('allows for adding more steps after the initial render', function() {
       this.render(hbs`
         {{#step-manager currentStep=(unbound data.firstObject.name) as |w|}}
-          {{#each data as |item|}}
-            {{#w.step name=(unbound item.name)}}
-              <div data-test={{hook 'step' name=item.name}}>
-                {{item.name}}
-              </div>
-            {{/w.step}}
-          {{/each}}
+          <div data-test={{hook 'steps'}}>
+            {{#each data as |item|}}
+              {{#w.step name=(unbound item.name)}}
+                <div data-test={{hook 'step' name=item.name}}>
+                  {{item.name}}
+                </div>
+              {{/w.step}}
+            {{/each}}
+          </div>
 
           <button {{action w.transition-to-next}}>
             Next
@@ -644,7 +651,7 @@ describe('Integration: StepManagerComponent', function() {
         {{/step-manager}}
       `);
 
-      this.$('button').click();
+      click('button');
 
       this.set('data', A([{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }]));
 
@@ -653,20 +660,20 @@ describe('Integration: StepManagerComponent', function() {
       expect($hook('step', { name: 'baz' })).not.to.be.visible;
 
       // Check that the previous "last step" now points to the new one
-      this.$('button').click();
+      click('button');
 
       expect($hook('step', { name: 'foo' })).not.to.be.visible;
       expect($hook('step', { name: 'bar' })).not.to.be.visible;
       expect($hook('step', { name: 'baz' })).to.be.visible;
-      expect(this.$()).to.contain('baz');
+      expect($hook('steps').text().trim()).to.equal('baz');
 
       // Check that the new step now points to the first one
-      this.$('button').click();
+      click('button');
 
       expect($hook('step', { name: 'foo' })).to.be.visible;
       expect($hook('step', { name: 'bar' })).not.to.be.visible;
       expect($hook('step', { name: 'baz' })).not.to.be.visible;
-      expect(this.$()).to.contain('foo');
+      expect($hook('steps').text().trim()).to.equal('foo');
     });
   });
 });

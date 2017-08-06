@@ -3018,6 +3018,13 @@ ember-mocha@^0.12.0:
   dependencies:
     ember-test-helpers "^0.6.3"
 
+ember-native-dom-helpers@^0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/ember-native-dom-helpers/-/ember-native-dom-helpers-0.5.2.tgz#ba6123230fc32c3350f90a8f9183584a022215fa"
+  dependencies:
+    broccoli-funnel "^1.1.0"
+    ember-cli-babel "^6.1.0"
+
 "ember-prop-types@>=2.0.0 <4.0.0":
   version "3.12.0"
   resolved "https://registry.yarnpkg.com/ember-prop-types/-/ember-prop-types-3.12.0.tgz#2939a7ddb95155ab0f2eba591176600f0d411a20"
