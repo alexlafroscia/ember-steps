@@ -204,6 +204,16 @@ describe('Integration: StepManagerComponent', function() {
     expect($hook('second')).not.to.be.visible;
   });
 
+  it('renders tagless components', function() {
+    this.render(hbs`
+      {{#step-manager as |w|}}
+        {{w.step}}
+      {{/step-manager}}
+    `);
+
+    expect(this.$('*').toArray()).to.be.empty;
+  });
+
   describe('`yield`-ed data', function() {
     it('exposes the name of the current step', function() {
       this.render(hbs`

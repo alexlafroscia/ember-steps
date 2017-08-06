@@ -9,8 +9,8 @@
 
 ## Features
 
-- Provides an extremely generic way of describing a series of views that should be shown in succession
-- Provides absolutely CSS styling and the bare minimum HTML to stay out of the way of your code
+- Provides an extremely generic way of describing a series of views that should be shown in succession.
+- Non-intrusive as the addon components do not create additional HTML.
 
 ## Installation
 
@@ -20,7 +20,7 @@ ember install ember-steps
 
 ## Basic Usage
 
-Using `ember-steps` starts with creating a `step-manager`
+Using `ember-steps` starts with creating a `step-manager`.
 
 ```handlebars
 {{#step-manager as |w|}}
@@ -28,7 +28,7 @@ Using `ember-steps` starts with creating a `step-manager`
 {{/step-manager}}
 ```
 
-Cool, right?  Ehh, it doesn't do much yet -- we need to add some steps
+Cool, right?  Ehh, it doesn't do much yet -- we need to add some steps.
 
 ```handlebars
 {{#step-manager as |w|}}
