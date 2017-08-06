@@ -104,7 +104,9 @@ describe('Integration: StepManagerStepComponent', function() {
     it('renders block content when visible', function() {
       this.render(hbs`
         {{#step-manager/step name='foo' isActive=true register-step=(action 'register')}}
-          Foo
+          <div data-test={{hook 'step'}}>
+            Foo
+          </div>
         {{/step-manager/step}}
       `);
 
@@ -115,24 +117,26 @@ describe('Integration: StepManagerStepComponent', function() {
       it('is hidden when no alternate state is provided', function() {
         this.render(hbs`
           {{#step-manager/step name='foo' register-step=(action 'register')}}
-            Active Content
+            <div data-test={{hook 'step'}}>
+              Active Content
+            </div>
           {{/step-manager/step}}
         `);
 
         expect($hook('step')).not.to.be.visible;
-        expect($hook('step')).not.to.contain('Active Content');
       });
 
       it('renders the inverse block if provided', function() {
         this.render(hbs`
-          {{#step-manager/step name='foo' hasInactiveState=true register-step=(action 'register')}}
-            Active Content
-          {{else}}
-            Inactive Content
-          {{/step-manager/step}}
+          <div data-test={{hook 'step'}}>
+            {{#step-manager/step name='foo' hasInactiveState=true register-step=(action 'register')}}
+              Active Content
+            {{else}}
+              Inactive Content
+            {{/step-manager/step}}
+          </div>
         `);
 
-        expect($hook('step')).to.be.visible;
         expect($hook('step')).to.contain('Inactive Content');
       });
     });
@@ -141,7 +145,9 @@ describe('Integration: StepManagerStepComponent', function() {
   describe('programmatically controlling visibility', function() {
     it('is visible when active', function() {
       this.render(hbs`
-        {{step-manager/step name='foo' isActive=true register-step=(action 'register')}}
+        {{#step-manager/step name='foo' isActive=true register-step=(action 'register')}}
+          <div data-test={{hook 'step'}}></div>
+        {{/step-manager/step}}
       `);
 
       expect($hook('step')).to.be.visible;
@@ -149,7 +155,9 @@ describe('Integration: StepManagerStepComponent', function() {
 
     it('is invisible when not active', function() {
       this.render(hbs`
-        {{step-manager/step name='foo' register-step=(action 'register')}}
+        {{#step-manager/step name='foo' register-step=(action 'register')}}
+          <div data-test={{hook 'step'}}></div>
+        {{/step-manager/step}}
       `);
 
       expect($hook('step')).not.to.be.visible;

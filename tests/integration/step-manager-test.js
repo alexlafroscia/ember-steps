@@ -21,26 +21,36 @@ describe('Integration: StepManagerComponent', function() {
       it('can use a primitive value', function() {
         this.render(hbs`
           {{#step-manager currentStep='second' as |w|}}
-            {{w.step name='first'}}
-            {{w.step name='second'}}
+            {{#w.step name='first'}}
+              <div data-test={{hook 'first'}}></div>
+            {{/w.step}}
+
+            {{#w.step name='second'}}
+              <div data-test={{hook 'second'}}></div>
+            {{/w.step}}
           {{/step-manager}}
         `);
 
-        expect($hook('step', { name: 'first' })).not.to.be.visible;
-        expect($hook('step', { name: 'second' })).to.be.visible;
+        expect($hook('first')).not.to.be.visible;
+        expect($hook('second')).to.be.visible;
       });
 
       it('can use a value from the `mut` helper', function() {
         this.set('currentStep', 'second');
         this.render(hbs`
           {{#step-manager currentStep=(mut currentStep) as |w|}}
-            {{w.step name='first'}}
-            {{w.step name='second'}}
+            {{#w.step name='first'}}
+              <div data-test={{hook 'first'}}></div>
+            {{/w.step}}
+
+            {{#w.step name='second'}}
+              <div data-test={{hook 'second'}}></div>
+            {{/w.step}}
           {{/step-manager}}
         `);
 
-        expect($hook('step', { name: 'first' })).not.to.be.visible;
-        expect($hook('step', { name: 'second' })).to.be.visible;
+        expect($hook('first')).not.to.be.visible;
+        expect($hook('second')).to.be.visible;
       });
     });
 
@@ -49,55 +59,70 @@ describe('Integration: StepManagerComponent', function() {
         this.set('step', 'first');
         this.render(hbs`
           {{#step-manager currentStep=step as |w|}}
-            {{w.step name='first'}}
-            {{w.step name='second'}}
+            {{#w.step name='first'}}
+              <div data-test={{hook 'first'}}></div>
+            {{/w.step}}
+
+            {{#w.step name='second'}}
+              <div data-test={{hook 'second'}}></div>
+            {{/w.step}}
           {{/step-manager}}
         `);
 
-        expect($hook('step', { name: 'first' })).to.be.visible;
-        expect($hook('step', { name: 'second' })).not.to.be.visible;
+        expect($hook('first')).to.be.visible;
+        expect($hook('second')).not.to.be.visible;
 
         this.set('step', 'second');
 
-        expect($hook('step', { name: 'first' })).not.to.be.visible;
-        expect($hook('step', { name: 'second' })).to.be.visible;
+        expect($hook('first')).not.to.be.visible;
+        expect($hook('second')).to.be.visible;
 
         // Important for binding current step to a query param
         this.set('step', undefined);
 
-        expect($hook('step', { name: 'first' })).to.be.visible;
-        expect($hook('step', { name: 'second' })).not.to.be.visible;
+        expect($hook('first')).to.be.visible;
+        expect($hook('second')).not.to.be.visible;
       });
 
       it('changes steps when the property changes (with the mut helper)', function() {
         this.set('step', 'first');
         this.render(hbs`
           {{#step-manager currentStep=(mut step) as |w|}}
-            {{w.step name='first'}}
-            {{w.step name='second'}}
+            {{#w.step name='first'}}
+              <div data-test={{hook 'first'}}></div>
+            {{/w.step}}
+
+            {{#w.step name='second'}}
+              <div data-test={{hook 'second'}}></div>
+            {{/w.step}}
           {{/step-manager}}
         `);
 
-        expect($hook('step', { name: 'first' })).to.be.visible;
-        expect($hook('step', { name: 'second' })).not.to.be.visible;
+        expect($hook('first')).to.be.visible;
+        expect($hook('second')).not.to.be.visible;
 
         this.set('step', 'second');
 
-        expect($hook('step', { name: 'first' })).not.to.be.visible;
-        expect($hook('step', { name: 'second' })).to.be.visible;
+        expect($hook('first')).not.to.be.visible;
+        expect($hook('second')).to.be.visible;
       });
 
       it.skip('throws an error when an invalid step is provided', function() {
         this.set('step', 'first');
         this.render(hbs`
           {{#step-manager currentStep=step as |w|}}
-            {{w.step name='first'}}
-            {{w.step name='second'}}
+            {{#w.step name='first'}}
+              <div data-test={{hook 'first'}}></div>
+            {{/w.step}}
+
+            {{#w.step name='second'}}
+              <div data-test={{hook 'second'}}></div>
+            {{/w.step}}
           {{/step-manager}}
         `);
 
-        expect($hook('step', { name: 'first' })).to.be.visible;
-        expect($hook('step', { name: 'second' })).not.to.be.visible;
+        expect($hook('first')).to.be.visible;
+        expect($hook('second')).not.to.be.visible;
 
         expect(() => {
           this.set('step', 'foobar');
@@ -165,26 +190,33 @@ describe('Integration: StepManagerComponent', function() {
   it('renders the first step in the DOM if no `currentStep` is present', function() {
     this.render(hbs`
       {{#step-manager as |w|}}
-        {{w.step name='first'}}
-        {{w.step name='second'}}
+        {{#w.step name='first'}}
+          <div data-test={{hook 'first'}}></div>
+        {{/w.step}}
+
+        {{#w.step name='second'}}
+          <div data-test={{hook 'second'}}></div>
+        {{/w.step}}
       {{/step-manager}}
     `);
 
-    expect($hook('step', { name: 'first' })).to.be.visible;
-    expect($hook('step', { name: 'second' })).not.to.be.visible;
+    expect($hook('first')).to.be.visible;
+    expect($hook('second')).not.to.be.visible;
   });
 
   describe('`yield`-ed data', function() {
     it('exposes the name of the current step', function() {
       this.render(hbs`
         {{#step-manager as |w|}}
-          {{w.currentStep}}
+          <div data-test={{hook 'steps'}}>
+            {{w.currentStep}}
 
-          {{w.step name='foo'}}
+            {{w.step name='foo'}}
+          </div>
         {{/step-manager}}
       `);
 
-      expect($hook('step-manager')).to.contain('foo');
+      expect($hook('steps')).to.contain('foo');
     });
   });
 
@@ -196,18 +228,23 @@ describe('Integration: StepManagerComponent', function() {
             Transition to Next
           </button>
 
-          {{w.step name='first'}}
-          {{w.step name='second'}}
+          {{#w.step name='first'}}
+            <div data-test={{hook 'first'}}></div>
+          {{/w.step}}
+
+          {{#w.step name='second'}}
+            <div data-test={{hook 'second'}}></div>
+          {{/w.step}}
         {{/step-manager}}
       `);
 
-      expect($hook('step', { name: 'first' })).to.be.visible;
-      expect($hook('step', { name: 'second' })).not.to.be.visible;
+      expect($hook('first')).to.be.visible;
+      expect($hook('second')).not.to.be.visible;
 
       this.$('button').click();
 
-      expect($hook('step', { name: 'first' })).not.to.be.visible;
-      expect($hook('step', { name: 'second' })).to.be.visible;
+      expect($hook('first')).not.to.be.visible;
+      expect($hook('second')).to.be.visible;
     });
 
     it.skip('errors when transitioning to an invalid step', function() {
@@ -235,33 +272,41 @@ describe('Integration: StepManagerComponent', function() {
             Next!
           </button>
 
-          {{w.step id='first'}}
-          {{w.step id='second'}}
-          {{w.step id='third'}}
+          {{#w.step name='first'}}
+            <div data-test={{hook 'first'}}></div>
+          {{/w.step}}
+
+          {{#w.step name='second'}}
+            <div data-test={{hook 'second'}}></div>
+          {{/w.step}}
+
+          {{#w.step name='third'}}
+            <div data-test={{hook 'third'}}></div>
+          {{/w.step}}
         {{/step-manager}}
       `);
 
-      expect(this.$('#first')).to.be.visible;
-      expect(this.$('#second')).not.to.be.visible;
-      expect(this.$('#third')).not.to.be.visible;
+      expect($hook('first')).to.be.visible;
+      expect($hook('second')).not.to.be.visible;
+      expect($hook('third')).not.to.be.visible;
 
       this.$('button').click();
 
-      expect(this.$('#first')).not.to.be.visible;
-      expect(this.$('#second')).to.be.visible;
-      expect(this.$('#third')).not.to.be.visible;
+      expect($hook('first')).not.to.be.visible;
+      expect($hook('second')).to.be.visible;
+      expect($hook('third')).not.to.be.visible;
 
       this.$('button').click();
 
-      expect(this.$('#first')).not.to.be.visible;
-      expect(this.$('#second')).not.to.be.visible;
-      expect(this.$('#third')).to.be.visible;
+      expect($hook('first')).not.to.be.visible;
+      expect($hook('second')).not.to.be.visible;
+      expect($hook('third')).to.be.visible;
 
       this.$('button').click();
 
-      expect(this.$('#first')).to.be.visible;
-      expect(this.$('#second')).not.to.be.visible;
-      expect(this.$('#third')).not.to.be.visible;
+      expect($hook('first')).to.be.visible;
+      expect($hook('second')).not.to.be.visible;
+      expect($hook('third')).not.to.be.visible;
     });
   });
 
@@ -464,8 +509,13 @@ describe('Integration: StepManagerComponent', function() {
 
       this.render(hbs`
         {{#step-manager will-transition=(action 'beforeAction') as |w|}}
-          {{w.step name='first'}}
-          {{w.step name='second'}}
+          {{#w.step name='first'}}
+            <div data-test={{hook 'first'}}></div>
+          {{/w.step}}
+
+          {{#w.step name='second'}}
+            <div data-test={{hook 'second'}}></div>
+          {{/w.step}}
 
           <button {{action w.transition-to-next}}>
             Next
@@ -475,8 +525,8 @@ describe('Integration: StepManagerComponent', function() {
 
       this.$('button').click();
 
-      expect($hook('step', { name: 'first' })).to.be.visible;
-      expect($hook('step', { name: 'second' })).not.to.be.visible;
+      expect($hook('first')).to.be.visible;
+      expect($hook('second')).not.to.be.visible;
     });
   });
 
@@ -484,8 +534,12 @@ describe('Integration: StepManagerComponent', function() {
     it('works outside of a loop', function() {
       this.render(hbs`
         {{#step-manager as |w|}}
-          {{w.step}}
-          {{w.step}}
+          {{#w.step}}
+            <div data-test={{hook 'step' index=0}}></div>
+          {{/w.step}}
+          {{#w.step}}
+            <div data-test={{hook 'step' index=1}}></div>
+          {{/w.step}}
 
           <button {{action w.transition-to-next}}>
             Next
@@ -507,17 +561,21 @@ describe('Integration: StepManagerComponent', function() {
     it('property is added by the HTMLBars transform', function() {
       this.render(hbs`
         {{#step-manager as |w|}}
-          {{#w.step}}
-            Active
-          {{else}}
-            Inactive
-          {{/w.step}}
+          <div data-test={{hook 'step' index=0}}>
+            {{#w.step}}
+              Active
+            {{else}}
+              Inactive
+            {{/w.step}}
+          </div>
 
-          {{#w.step}}
-            Active
-          {{else}}
-            Inactive
-          {{/w.step}}
+          <div data-test={{hook 'step' index=1}}>
+            {{#w.step}}
+              Active
+            {{else}}
+              Inactive
+            {{/w.step}}
+          </div>
         {{/step-manager}}
       `);
 
@@ -536,7 +594,9 @@ describe('Integration: StepManagerComponent', function() {
         {{#step-manager currentStep=(unbound data.firstObject.name) as |w|}}
           {{#each data as |item|}}
             {{#w.step name=(unbound item.name)}}
-              {{item.name}}
+              <div data-test={{hook 'step' name=item.name}}>
+                {{item.name}}
+              </div>
             {{/w.step}}
           {{/each}}
 
@@ -562,7 +622,9 @@ describe('Integration: StepManagerComponent', function() {
         {{#step-manager currentStep=(unbound data.firstObject.name) as |w|}}
           {{#each data as |item|}}
             {{#w.step name=(unbound item.name)}}
-              {{item.name}}
+              <div data-test={{hook 'step' name=item.name}}>
+                {{item.name}}
+              </div>
             {{/w.step}}
           {{/each}}
 
