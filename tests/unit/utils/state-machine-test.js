@@ -93,4 +93,17 @@ describe('Step Transition State Machine', function() {
       expect(m.get('currentStep')).to.equal('foo');
     });
   });
+
+  describe('.stepArray', function() {
+    it('exposes an array of step names', function() {
+      const m = new StateMachine();
+      m.addStep('foo');
+      m.addStep('bar');
+      expect(m.get('stepArray'), 'Provides the steps in order').to.deep.equal(['foo', 'bar']);
+
+      m.addStep('baz');
+
+      expect(m.get('stepArray'), 'Updates as new steps are added').to.deep.equal(['foo', 'bar', 'baz']);
+    });
+  });
 });
