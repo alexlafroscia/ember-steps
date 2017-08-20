@@ -13,6 +13,7 @@ const layout = hbs`
     transition-to=(action 'transition-to-step')
     transition-to-next=(action 'transition-to-next-step')
     currentStep=transitions.currentStep
+    steps=(if _hasRendered transitions.stepArray)
   )}}
 `;
 
@@ -50,6 +51,16 @@ export default Component.extend({
    * @private
    */
   transitions: null,
+
+  /**
+   * Whether the initial render cycle has completed
+   *
+   * Used to prevent a double-render-cycle when yielding an array of steps
+   *
+   * @property {boolean} _hasRendered
+   * @private
+   */
+  _hasRendered: false,
 
   /**
    * Used internally to track the previous step
@@ -133,6 +144,12 @@ export default Component.extend({
     this._lastStep = newStep;
 
     this._super(...arguments);
+  },
+
+  didInsertElement() {
+    this._super(...arguments);
+
+    set(this, '_hasRendered', true);
   },
 
   actions: {

@@ -231,6 +231,76 @@ describe('Integration: StepManagerComponent', function() {
 
       expect($hook('steps')).to.contain('foo');
     });
+
+    describe('exposing an array of steps', function() {
+      it('can render the array after the steps are defined', function() {
+        this.render(hbs`
+          {{#step-manager as |w|}}
+            <div data-test={{hook 'active-step'}}>
+              {{#w.step name='foo'}}
+                Foo
+              {{/w.step}}
+
+              {{#w.step name='bar'}}
+                Bar
+              {{/w.step}}
+            </div>
+
+            <ul>
+              {{#each w.steps as |step|}}
+                <li onClick={{action w.transition-to step}} data-test={{hook 'step-trigger' step=step}}>
+                  {{step}}
+                </li>
+              {{/each}}
+            </ul>
+          {{/step-manager}}
+        `);
+
+        expect(this.$('li')).to.have.length(2);
+        expect($hook('step-trigger', { step: 'foo' })).to.contain('foo');
+        expect($hook('step-trigger', { step: 'bar' })).to.contain('bar');
+
+        expect($hook('active-step')).to.contain('Foo');
+
+        $hook('step-trigger', { step: 'bar' }).click();
+
+        expect($hook('active-step')).to.contain('Bar');
+      });
+
+      it('can render the array before the steps are defined', function() {
+        this.render(hbs`
+          {{#step-manager as |w|}}
+            <ul>
+              {{#each w.steps as |step|}}
+                <li onClick={{action w.transition-to step}} data-test={{hook 'step-trigger' step=step}}>
+                  {{step}}
+                </li>
+              {{/each}}
+            </ul>
+
+            <div data-test={{hook 'active-step'}}>
+              {{#w.step name='foo'}}
+                Foo
+              {{/w.step}}
+
+              {{#w.step name='bar'}}
+                Bar
+              {{/w.step}}
+            </div>
+          {{/step-manager}}
+        `);
+
+        expect(this.$('li')).to.have.length(2);
+        expect($hook('step-trigger', { step: 'foo' })).to.contain('foo');
+        expect($hook('step-trigger', { step: 'bar' })).to.contain('bar');
+
+        expect($hook('active-step')).to.contain('Foo');
+
+        $hook('step-trigger', { step: 'bar' }).click();
+
+        expect($hook('active-step')).to.contain('Bar');
+      });
+    });
   });
 
   describe('transitions to named steps', function() {

@@ -107,5 +107,15 @@ export default EmberObject.extend({
    */
   length: computed(function() {
     return Object.keys(get(this, 'stepTransitions')).length;
+  }),
+
+  /**
+   * An array of the step names
+   *
+   * @property {Array<string>} stepArray
+   * @public
+   */
+  stepArray: computed('length', function() {
+    return Object.keys(get(this, 'stepTransitions'));
   })
 });
