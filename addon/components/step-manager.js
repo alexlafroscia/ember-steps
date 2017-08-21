@@ -189,7 +189,10 @@ export default Component.extend({
     'transition-to-step'(to, value) {
       const from = get(this, 'transitions.currentStep');
 
-      if (this['will-transition'] && this['will-transition']({ value, from, to }) === false) {
+      if (
+        this['will-transition'] &&
+        this['will-transition']({ value, from, to }) === false
+      ) {
         return;
       }
 
