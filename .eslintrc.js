@@ -16,13 +16,16 @@ module.exports = {
     'browser': true
   },
   rules: {
-    'prefer-const': 'error',
-
-    'ember-suave/no-const-outside-module-scope': 'off',
-
+    // Prettier
     'prettier/prettier': ['error', {
       printWidth: 120,
       singleQuote: true
-    }]
+    }],
+
+    // Ember Suave
+    'ember-suave/no-const-outside-module-scope': 'off',
+
+    // Built In
+    'prefer-const': 'error'
   }
 };
