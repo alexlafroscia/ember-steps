@@ -227,7 +227,7 @@ export default Component.extend({
       const to = get(this, 'transitions').peek();
 
       this.send('transition-to-step', to, value);
-    }
+    },
 
     /**
      * Transition to the "previous" step
