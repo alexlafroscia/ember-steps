@@ -666,12 +666,12 @@ describe('Integration: StepManagerComponent', function() {
         $hook('step', { index: 0 })
           .text()
           .trim()
-        ).to.equal('Active');
+      ).to.equal('Active');
       expect(
         $hook('step', { index: 1 })
           .text()
           .trim()
-        ).to.equal('Inactive');
+      ).to.equal('Inactive');
     });
   });
 
