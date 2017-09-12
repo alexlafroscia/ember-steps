@@ -391,6 +391,47 @@ describe('Integration: StepManagerComponent', function() {
       expect($hook('second')).not.to.be.visible;
       expect($hook('third')).not.to.be.visible;
     });
+
+    it('can transition to the previous step', function() {
+      this.render(hbs`
+        {{#step-manager as |w|}}
+          <button id='previous' {{action w.transition-to-previous}}>
+            Previous!
+          </button>
+          <button id='next' {{action w.transition-to-next}}>
+            Next!
+          </button>
+
+          {{#w.step name='first'}}
+            <div data-test={{hook 'first'}}></div>
+          {{/w.step}}
+
+          {{#w.step name='second'}}
+            <div data-test={{hook 'second'}}></div>
+          {{/w.step}}
+
+          {{#w.step name='third'}}
+            <div data-test={{hook 'third'}}></div>
+          {{/w.step}}
+        {{/step-manager}}
+      `);
+
+      expect($hook('first')).to.be.visible;
+      expect($hook('second')).not.to.be.visible;
+      expect($hook('third')).not.to.be.visible;
+
+      click('#next');
+
+      expect($hook('first')).not.to.be.visible;
+      expect($hook('second')).to.be.visible;
+      expect($hook('third')).not.to.be.visible;
+
+      click('#previous');
+
+      expect($hook('first')).to.be.visible;
+      expect($hook('second')).not.to.be.visible;
+      expect($hook('third')).not.to.be.visible;
+    });
   });
 
   describe('providing a `did-transition` action', function() {
