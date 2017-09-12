@@ -244,7 +244,9 @@ export default Component.extend({
     'transition-to-previous-step'(value) {
       const to = get(this, '_lastStep');
 
-      if (to) this.send('transition-to-step', to, value);
+      if (to) {
+        this.send('transition-to-step', to, value);
+      }
     }
   }
 });
