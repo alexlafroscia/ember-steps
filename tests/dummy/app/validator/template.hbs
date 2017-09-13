@@ -1,0 +1,51 @@
+{{#usage-example title='Validator usage'}}
+  {{#block-slot 'rendered'}}
+    <p>
+      A common use-case might be to validate a step, so you can prevent leaving the step. This could be used to create an experience where a user typed-in values that need to be validated by the server.
+    </p>
+
+    <hr />
+
+    {{!-- BEGIN-SNIPPET validator --}}
+    {{#step-manager will-transition=(action 'validator') as |w|}}
+      <div>
+        {{#each w.steps as |step|}}
+        <div>
+          <span>Step {{step}}</span>
+          {{#if (eq step w.currentStep)}}
+            {{#if w.loading}}
+            <span>: validating</span>
+            {{/if}}
+            {{#if validationFailed}}
+            <span>: validation failed</span>
+            {{/if}}
+          {{/if}}
+        </div>
+        {{/each}}
+      </div>
+      <button {{action w.transition-to-next}}>
+        Go to next step
+      </button>
+
+      {{#w.step name='a'}}
+        <h3>Step A</h3>
+      {{/w.step}}
+
+      {{#w.step name='b'}}
+        <h3>Step B</h3>
+      {{/w.step}}
+
+      {{#w.step name='c'}}
+        <h3>Step C</h3>
+      {{/w.step}}
+    {{/step-manager}}
+    {{!-- END-SNIPPET --}}
+  {{/block-slot}}
+
+  {{#block-slot 'code-template'}}
+    {{code-snippet name='validator.hbs'}}
+  {{/block-slot}}
+  {{#block-slot 'code-js'}}
+    {{code-snippet name='validator.js'}}
+  {{/block-slot}}
+{{/usage-example}}
