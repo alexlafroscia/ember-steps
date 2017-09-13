@@ -14,6 +14,7 @@ const layout = hbs`
     transition-to-next=(action 'transition-to-next-step')
     transition-to-previous=(action 'transition-to-previous-step')
     currentStep=transitions.currentStep
+    loading=loading
     steps=(if _hasRendered transitions.stepArray)
   )}}
 `;
@@ -95,6 +96,17 @@ export default Component.extend({
   currentStep: null,
 
   /**
+   * This property indicates if the step-manager is performing an asynchronous
+   * operation.
+   *
+   * It can be used to display a loader for example.
+   *
+   * @property {Boolean} loading
+   * @public
+   */
+  loading: false,
+
+  /**
    * If provided, this action will be called with a single POJO as the
    * argument, containing:
    *
@@ -103,6 +115,11 @@ export default Component.extend({
    * - `to`   -> The name of the step being transitioned to
    *
    * The action is called before the next step is activated.
+   *
+   * The action can return a Promise or a boolean.
+   *
+   * By returning a Promise, you can wait the end of an asynchronous process
+   * before the transition. The transition will be prevented if the Promise rejects.
    *
    * By returning `false` from this action, you can prevent the transition
    * from taking place.
@@ -170,7 +187,33 @@ export default Component.extend({
     },
 
     /**
+     * Used internally to transition to a specific named step
+     *
+     * @method make-transition
+     * @param {string} to the name of the step to transition to
+     * @param {string} from the name of the step being transitioned
+     * @param {*} value the value to pass to the transition actions
+     * @private
+     */
+    'make-transition'(to, from, value) {
+      // Update the `currentStep` if it's mutable
+      if (this.attrs.currentStep && this.attrs.currentStep.update) {
+        this.attrs.currentStep.update(to);
+      }
+
+      // Activate the next step
+      get(this, 'transitions').activate(to);
+
+      if (this['did-transition']) {
+        this['did-transition']({ value, from, to });
+      }
+    },
+
+    /**
      * Transition to a named step
+     *
+     * If you have provided a `will-transition` action, it will call the action
+     * before transitioning to the step.
      *
      * If the `currentStep` property was provided as a mutable value, like:
      *
@@ -189,25 +232,34 @@ export default Component.extend({
      */
     'transition-to-step'(to, value) {
       const from = get(this, 'transitions.currentStep');
+      const validator = this['will-transition'];
 
-      if (
-        this['will-transition'] &&
-        this['will-transition']({ value, from, to }) === false
-      ) {
+      // Prevent multiple transitions
+      if (get(this, 'loading')) {
         return;
       }
 
-      // Update the `currentStep` if it's mutable
-      if (this.attrs.currentStep && this.attrs.currentStep.update) {
-        this.attrs.currentStep.update(to);
+      if (validator && typeof validator === 'function') {
+        const result = validator({ value, from, to });
+
+        if (result) {
+          if (typeof result.then === 'function') {
+            set(this, 'loading', true);
+            result
+              .then(() => {
+                this.send('make-transition', to, from, value);
+              }, null)
+              .finally(() => {
+                set(this, 'loading', false);
+              });
+            return;
+          }
+        } else if (result === false) {
+          return;
+        }
       }
 
-      // Activate the next step
-      get(this, 'transitions').activate(to);
-
-      if (this['did-transition']) {
-        this['did-transition']({ value, from, to });
-      }
+      this.send('make-transition', to, from, value);
     },
 
     /**
