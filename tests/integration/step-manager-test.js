@@ -391,6 +391,47 @@ describe('Integration: StepManagerComponent', function() {
       expect($hook('second')).not.to.be.visible;
       expect($hook('third')).not.to.be.visible;
     });
+
+    it('can transition to the previous step', function() {
+      this.render(hbs`
+        {{#step-manager as |w|}}
+          <button id='previous' {{action w.transition-to-previous}}>
+            Previous!
+          </button>
+          <button id='next' {{action w.transition-to-next}}>
+            Next!
+          </button>
+
+          {{#w.step name='first'}}
+            <div data-test={{hook 'first'}}></div>
+          {{/w.step}}
+
+          {{#w.step name='second'}}
+            <div data-test={{hook 'second'}}></div>
+          {{/w.step}}
+
+          {{#w.step name='third'}}
+            <div data-test={{hook 'third'}}></div>
+          {{/w.step}}
+        {{/step-manager}}
+      `);
+
+      expect($hook('first')).to.be.visible;
+      expect($hook('second')).not.to.be.visible;
+      expect($hook('third')).not.to.be.visible;
+
+      click('#next');
+
+      expect($hook('first')).not.to.be.visible;
+      expect($hook('second')).to.be.visible;
+      expect($hook('third')).not.to.be.visible;
+
+      click('#previous');
+
+      expect($hook('first')).to.be.visible;
+      expect($hook('second')).not.to.be.visible;
+      expect($hook('third')).not.to.be.visible;
+    });
   });
 
   describe('providing a `did-transition` action', function() {
@@ -662,8 +703,16 @@ describe('Integration: StepManagerComponent', function() {
         {{/step-manager}}
       `);
 
-      expect($hook('step', { index: 0 }).text().trim()).to.equal('Active');
-      expect($hook('step', { index: 1 }).text().trim()).to.equal('Inactive');
+      expect(
+        $hook('step', { index: 0 })
+          .text()
+          .trim()
+      ).to.equal('Active');
+      expect(
+        $hook('step', { index: 1 })
+          .text()
+          .trim()
+      ).to.equal('Inactive');
     });
   });
 
@@ -693,13 +742,21 @@ describe('Integration: StepManagerComponent', function() {
 
       expect($hook('step', { name: 'foo' })).to.be.visible;
       expect($hook('step', { name: 'bar' })).not.to.be.visible;
-      expect($hook('steps').text().trim()).to.equal('foo');
+      expect(
+        $hook('steps')
+          .text()
+          .trim()
+      ).to.equal('foo');
 
       click('button');
 
       expect($hook('step', { name: 'foo' })).not.to.be.visible;
       expect($hook('step', { name: 'bar' })).to.be.visible;
-      expect($hook('steps').text().trim()).to.equal('bar');
+      expect(
+        $hook('steps')
+          .text()
+          .trim()
+      ).to.equal('bar');
     });
 
     it('allows for adding more steps after the initial render', function() {
@@ -735,7 +792,11 @@ describe('Integration: StepManagerComponent', function() {
       expect($hook('step', { name: 'foo' })).not.to.be.visible;
       expect($hook('step', { name: 'bar' })).not.to.be.visible;
       expect($hook('step', { name: 'baz' })).to.be.visible;
-      expect($hook('steps').text().trim()).to.equal('baz');
+      expect(
+        $hook('steps')
+          .text()
+          .trim()
+      ).to.equal('baz');
 
       // Check that the new step now points to the first one
       click('button');
@@ -743,7 +804,11 @@ describe('Integration: StepManagerComponent', function() {
       expect($hook('step', { name: 'foo' })).to.be.visible;
       expect($hook('step', { name: 'bar' })).not.to.be.visible;
       expect($hook('step', { name: 'baz' })).not.to.be.visible;
-      expect($hook('steps').text().trim()).to.equal('foo');
+      expect(
+        $hook('steps')
+          .text()
+          .trim()
+      ).to.equal('foo');
     });
   });
 });

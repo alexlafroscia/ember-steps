@@ -12,6 +12,7 @@ const layout = hbs`
     )
     transition-to=(action 'transition-to-step')
     transition-to-next=(action 'transition-to-next-step')
+    transition-to-previous=(action 'transition-to-previous-step')
     currentStep=transitions.currentStep
     steps=(if _hasRendered transitions.stepArray)
   )}}
@@ -226,6 +227,26 @@ export default Component.extend({
       const to = get(this, 'transitions').peek();
 
       this.send('transition-to-step', to, value);
+    },
+
+    /**
+     * Transition to the "previous" step
+     *
+     * When called, this action will go back to the previous step according to
+     * the step which was visited before entering the currentStep
+     *
+     * The first step will not transition to anything.
+     *
+     * @method transition-to-previous-step
+     * @param {*} value the value to pass to the transition actions
+     * @public
+     */
+    'transition-to-previous-step'(value) {
+      const to = get(this, '_lastStep');
+
+      if (to) {
+        this.send('transition-to-step', to, value);
+      }
     }
   }
 });
