@@ -242,18 +242,16 @@ export default Component.extend({
       if (validator && typeof validator === 'function') {
         const result = validator({ value, from, to });
 
-        if (result) {
-          if (typeof result.then === 'function') {
-            set(this, 'loading', true);
-            result
-              .then(() => {
-                this.send('make-transition', to, from, value);
-              }, null)
-              .finally(() => {
-                set(this, 'loading', false);
-              });
-            return;
-          }
+        if (result && typeof result.then === 'function') {
+          set(this, 'loading', true);
+          result
+            .then(() => {
+              this.send('make-transition', to, from, value);
+            }, null)
+            .finally(() => {
+              set(this, 'loading', false);
+            });
+          return;
         } else if (result === false) {
           return;
         }
