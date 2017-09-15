@@ -242,11 +242,9 @@ export default Component.extend({
      * @public
      */
     'transition-to-previous-step'(value) {
-      const to = get(this, '_lastStep');
+      const to = get(this, 'transitions').previous();
 
-      if (to) {
-        this.send('transition-to-step', to, value);
-      }
+      this.send('transition-to-step', to, value);
     }
   }
 });
