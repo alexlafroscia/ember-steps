@@ -31,16 +31,15 @@ describe('Step Transition State Machine', function() {
     });
   });
 
-  describe('#next', function() {
-    it('can transition to the next step', function() {
+  describe('#previous', function() {
+    it('can get the previous step without advancing', function() {
       const m = new StateMachine();
       m.addStep('foo');
       m.addStep('bar');
       m.addStep('baz');
 
-      expect(m.next()).to.equal('bar');
-      expect(m.next()).to.equal('baz');
-      expect(m.next()).to.equal('foo');
+      expect(m.previous()).to.equal('baz');
+      expect(m.get('currentStep')).to.equal('foo');
     });
   });
 
