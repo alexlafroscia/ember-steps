@@ -426,10 +426,16 @@ describe('Integration: StepManagerComponent', function() {
       expect($hook('second')).to.be.visible;
       expect($hook('third')).not.to.be.visible;
 
+      click('#next');
+
+      expect($hook('first')).not.to.be.visible;
+      expect($hook('second')).not.to.be.visible;
+      expect($hook('third')).to.be.visible;
+
       click('#previous');
 
-      expect($hook('first')).to.be.visible;
-      expect($hook('second')).not.to.be.visible;
+      expect($hook('first')).not.to.be.visible;
+      expect($hook('second')).to.be.visible;
       expect($hook('third')).not.to.be.visible;
     });
   });
