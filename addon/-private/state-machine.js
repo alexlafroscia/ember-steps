@@ -80,9 +80,19 @@ export default EmberObject.extend({
     return transitions[currentStep];
   },
 
-  next() {
-    const next = this.peek();
-    return this.activate(next);
+  previous() {
+    let previous;
+    const transitions = get(this, 'stepTransitions');
+    const currentStep = get(this, 'currentStep');
+
+    for (const k in transitions) {
+      if (transitions[k] === currentStep) {
+        previous = k;
+        break;
+      }
+    }
+
+    return previous;
   },
 
   activate(name) {
