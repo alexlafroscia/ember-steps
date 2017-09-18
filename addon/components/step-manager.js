@@ -73,6 +73,29 @@ export default Component.extend({
   _lastStep: undefined,
 
   /**
+   * Used internally to transition to a specific named step
+   *
+   * @method do-transition
+   * @param {string} to the name of the step to transition to
+   * @param {string} from the name of the step being transitioned
+   * @param {*} value the value to pass to the transition actions
+   * @private
+   */
+  'do-transition'(to, from, value) {
+    // Update the `currentStep` if it's mutable
+    if (this.attrs.currentStep && this.attrs.currentStep.update) {
+      this.attrs.currentStep.update(to);
+    }
+
+    // Activate the next step
+    get(this, 'transitions').activate(to);
+
+    if (this['did-transition']) {
+      this['did-transition']({ value, from, to });
+    }
+  },
+
+  /**
    * The `currentStep` property can be used for providing, or binding to, the
    * name of the current step.
    *
@@ -187,29 +210,6 @@ export default Component.extend({
     },
 
     /**
-     * Used internally to transition to a specific named step
-     *
-     * @method make-transition
-     * @param {string} to the name of the step to transition to
-     * @param {string} from the name of the step being transitioned
-     * @param {*} value the value to pass to the transition actions
-     * @private
-     */
-    'make-transition'(to, from, value) {
-      // Update the `currentStep` if it's mutable
-      if (this.attrs.currentStep && this.attrs.currentStep.update) {
-        this.attrs.currentStep.update(to);
-      }
-
-      // Activate the next step
-      get(this, 'transitions').activate(to);
-
-      if (this['did-transition']) {
-        this['did-transition']({ value, from, to });
-      }
-    },
-
-    /**
      * Transition to a named step
      *
      * If you have provided a `will-transition` action, it will call the action
@@ -246,7 +246,7 @@ export default Component.extend({
           set(this, 'loading', true);
           result
             .then(() => {
-              this.send('make-transition', to, from, value);
+              this['do-transition'](to, from, value);
             }, null)
             .finally(() => {
               set(this, 'loading', false);
@@ -257,7 +257,7 @@ export default Component.extend({
         }
       }
 
-      this.send('make-transition', to, from, value);
+      this['do-transition'](to, from, value);
     },
 
     /**
