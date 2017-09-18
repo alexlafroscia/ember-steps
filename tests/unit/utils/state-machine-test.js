@@ -20,25 +20,25 @@ describe('Step Transition State Machine', function() {
     });
   });
 
-  describe('#peek', function() {
+  describe('#pickNext', function() {
     it('can get the next step without advancing', function() {
       const m = new StateMachine();
       m.addStep('foo');
       m.addStep('bar');
 
-      expect(m.peek()).to.equal('bar');
+      expect(m.pickNext()).to.equal('bar');
       expect(m.get('currentStep')).to.equal('foo');
     });
   });
 
-  describe('#previous', function() {
+  describe('#pickPrevious', function() {
     it('can get the previous step without advancing', function() {
       const m = new StateMachine();
       m.addStep('foo');
       m.addStep('bar');
       m.addStep('baz');
 
-      expect(m.previous()).to.equal('baz');
+      expect(m.pickPrevious()).to.equal('baz');
       expect(m.get('currentStep')).to.equal('foo');
     });
   });
