@@ -29,14 +29,11 @@ describe('Integration: StepManagerStepComponent', function() {
       expect(registerAction).to.be.called;
     });
 
-    it.skip(
-      'throws an error when not provided a registration action',
-      function() {
-        expect(() => {
-          this.render(hbs`{{step-manager/step}}`);
-        }).to.throw(Error);
-      }
-    );
+    it.skip('throws an error when not provided a registration action', function() {
+      expect(() => {
+        this.render(hbs`{{step-manager/step}}`);
+      }).to.throw(Error);
+    });
   });
 
   describe('the step name', function() {
@@ -85,16 +82,13 @@ describe('Integration: StepManagerStepComponent', function() {
       // at runtime. I eventually want to be able to error here because changes to
       // this value will not actually change the name of the step and could get
       // the user in trouble.
-      it.skip(
-        'errors when given a value from the `readonly` helper',
-        function() {
-          expect(() => {
-            this.render(hbs`
-            {{step-manager/step name=(readonly name) register-step=(action 'register')}}
-          `);
-          }).to.throw(StepNameError, /Name must be an immutable string/);
-        }
-      );
+      it.skip('errors when given a value from the `readonly` helper', function() {
+        expect(() => {
+          this.render(hbs`
+          {{step-manager/step name=(readonly name) register-step=(action 'register')}}
+        `);
+        }).to.throw(StepNameError, /Name must be an immutable string/);
+      });
 
       it.skip('errors when given a dynamic property directly', function() {
         expect(() => {
