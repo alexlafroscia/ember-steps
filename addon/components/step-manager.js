@@ -274,7 +274,7 @@ export default Component.extend({
      * @public
      */
     'transition-to-next-step'(value) {
-      const to = get(this, 'transitions').peek();
+      const to = get(this, 'transitions').pickNext();
 
       this.send('transition-to-step', to, value);
     },
@@ -292,11 +292,9 @@ export default Component.extend({
      * @public
      */
     'transition-to-previous-step'(value) {
-      const to = get(this, '_lastStep');
+      const to = get(this, 'transitions').pickPrevious();
 
-      if (to) {
-        this.send('transition-to-step', to, value);
-      }
+      this.send('transition-to-step', to, value);
     }
   }
 });
