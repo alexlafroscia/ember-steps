@@ -674,7 +674,9 @@ describe('Integration: StepManagerComponent', function() {
         .then(done, done);
     });
 
-    it('prevents the transition if the promise resolve to `false`', function(done) {
+    it('prevents the transition if the promise resolve to `false`', function(
+      done
+    ) {
       const { run } = Ember;
       let didTransition = false;
       const waitForMe = function() {
