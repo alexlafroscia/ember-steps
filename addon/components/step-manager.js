@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import RSVP from 'rsvp';
 import hbs from 'htmlbars-inline-precompile';
 import StateMachine from 'ember-steps/-private/state-machine';
 import { MissingPropertyError } from 'ember-steps/-private/errors';
@@ -240,24 +241,20 @@ export default Component.extend({
       }
 
       if (validator && typeof validator === 'function') {
-        const result = validator({ value, from, to });
+        set(this, 'loading', true);
 
-        if (result && typeof result.then === 'function') {
-          set(this, 'loading', true);
-          result
-            .then(() => {
+        RSVP.resolve(validator({ value, from, to }))
+          .then(result => {
+            if (result !== false) {
               this['do-transition'](to, from, value);
-            }, null)
-            .finally(() => {
-              set(this, 'loading', false);
-            });
-          return;
-        } else if (result === false) {
-          return;
-        }
+            }
+          })
+          .finally(() => {
+            set(this, 'loading', false);
+          });
+      } else {
+        this['do-transition'](to, from, value);
       }
-
-      this['do-transition'](to, from, value);
     },
 
     /**
