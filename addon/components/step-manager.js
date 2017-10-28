@@ -82,7 +82,7 @@ export default Component.extend({
    * @param {*} value the value to pass to the transition actions
    * @private
    */
-  'do-transition'(to, from, value) {
+  'do-transition'(to, from, value, direction) {
     // Update the `currentStep` if it's mutable
     if (this.attrs.currentStep && this.attrs.currentStep.update) {
       this.attrs.currentStep.update(to);
@@ -92,7 +92,7 @@ export default Component.extend({
     get(this, 'transitions').activate(to);
 
     if (this['did-transition']) {
-      this['did-transition']({ value, from, to });
+      this['did-transition']({ value, from, to, direction });
     }
   },
 
@@ -134,9 +134,10 @@ export default Component.extend({
    * If provided, this action will be called with a single POJO as the
    * argument, containing:
    *
-   * - `value`-> The value passed to the transition action, or `undefined`
-   * - `from` -> The name of the step being transitioned from
-   * - `to`   -> The name of the step being transitioned to
+   * - `value`     -> The value passed to the transition action, or `undefined`
+   * - `from`      -> The name of the step being transitioned from
+   * - `to`        -> The name of the step being transitioned to
+   * - `direction` -> The direction of the transition when using transition-to-next or transition-to-previous
    *
    * The action is called before the next step is activated.
    *
@@ -157,9 +158,10 @@ export default Component.extend({
    * If provided, this action will be called with a single POJO as the
    * argument, containing:
    *
-   * - `value`-> The value passed to the transition action, or `undefined`
-   * - `from` -> The name of the step being transitioned from
-   * - `to`   -> The name of the step being transitioned to
+   * - `value`     -> The value passed to the transition action, or `undefined`
+   * - `from`      -> The name of the step being transitioned from
+   * - `to`        -> The name of the step being transitioned to
+   * - `direction` -> The direction of the transition when using transition-to-next or transition-to-previous
    *
    * The action is called after the next step is activated.
    *
@@ -231,7 +233,7 @@ export default Component.extend({
      * @param {*} value the value to pass to the transition actions
      * @public
      */
-    'transition-to-step'(to, value) {
+    'transition-to-step'(to, value, direction) {
       const from = get(this, 'transitions.currentStep');
       const validator = this['will-transition'];
 
@@ -243,17 +245,17 @@ export default Component.extend({
       if (validator && typeof validator === 'function') {
         set(this, 'loading', true);
 
-        RSVP.resolve(validator({ value, from, to }))
+        RSVP.resolve(validator({ value, from, to, direction }))
           .then(result => {
             if (result !== false) {
-              this['do-transition'](to, from, value);
+              this['do-transition'](to, from, value, direction);
             }
           })
           .finally(() => {
             set(this, 'loading', false);
           });
       } else {
-        this['do-transition'](to, from, value);
+        this['do-transition'](to, from, value, direction);
       }
     },
 
@@ -273,7 +275,7 @@ export default Component.extend({
     'transition-to-next-step'(value) {
       const to = get(this, 'transitions').pickNext();
 
-      this.send('transition-to-step', to, value);
+      this.send('transition-to-step', to, value, 'next');
     },
 
     /**
@@ -291,7 +293,7 @@ export default Component.extend({
     'transition-to-previous-step'(value) {
       const to = get(this, 'transitions').pickPrevious();
 
-      this.send('transition-to-step', to, value);
+      this.send('transition-to-step', to, value, 'previous');
     }
   }
 });

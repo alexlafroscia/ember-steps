@@ -632,6 +632,29 @@ describe('Integration: StepManagerComponent', function() {
           })
         );
       });
+
+      it('passes the direction when using transition-to-next or transition-to-previous', function() {
+        const beforeAction = td.function('before action');
+        this.on('beforeAction', beforeAction);
+
+        this.render(hbs`
+          {{#step-manager will-transition=(action 'beforeAction') as |w|}}
+            {{w.step}}
+            {{w.step}}
+
+            <button {{action w.transition-to-next}}>
+              Next
+            </button>
+          {{/step-manager}}
+        `);
+        click('button');
+
+        expect(beforeAction).to.be.calledWith(
+          matchContains({
+            direction: 'next'
+          })
+        );
+      });
     });
 
     it('can wait for a promise to resolve', function(done) {
