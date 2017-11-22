@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import RSVP from 'rsvp';
 import hbs from 'htmlbars-inline-precompile';
 import StateMachine from 'ember-steps/-private/state-machine';
 import { MissingPropertyError } from 'ember-steps/-private/errors';
@@ -14,6 +15,7 @@ const layout = hbs`
     transition-to-next=(action 'transition-to-next-step')
     transition-to-previous=(action 'transition-to-previous-step')
     currentStep=transitions.currentStep
+    loading=loading
     steps=(if _hasRendered transitions.stepArray)
   )}}
 `;
@@ -72,6 +74,29 @@ export default Component.extend({
   _lastStep: undefined,
 
   /**
+   * Used internally to transition to a specific named step
+   *
+   * @method do-transition
+   * @param {string} to the name of the step to transition to
+   * @param {string} from the name of the step being transitioned
+   * @param {*} value the value to pass to the transition actions
+   * @private
+   */
+  'do-transition'(to, from, value, direction) {
+    // Update the `currentStep` if it's mutable
+    if (this.attrs.currentStep && this.attrs.currentStep.update) {
+      this.attrs.currentStep.update(to);
+    }
+
+    // Activate the next step
+    get(this, 'transitions').activate(to);
+
+    if (this['did-transition']) {
+      this['did-transition']({ value, from, to, direction });
+    }
+  },
+
+  /**
    * The `currentStep` property can be used for providing, or binding to, the
    * name of the current step.
    *
@@ -95,14 +120,31 @@ export default Component.extend({
   currentStep: null,
 
   /**
+   * This property indicates if the step-manager is performing an asynchronous
+   * operation.
+   *
+   * It can be used to display a loader for example.
+   *
+   * @property {Boolean} loading
+   * @public
+   */
+  loading: false,
+
+  /**
    * If provided, this action will be called with a single POJO as the
    * argument, containing:
    *
-   * - `value`-> The value passed to the transition action, or `undefined`
-   * - `from` -> The name of the step being transitioned from
-   * - `to`   -> The name of the step being transitioned to
+   * - `value`     -> The value passed to the transition action, or `undefined`
+   * - `from`      -> The name of the step being transitioned from
+   * - `to`        -> The name of the step being transitioned to
+   * - `direction` -> The direction of the transition when using transition-to-next or transition-to-previous
    *
    * The action is called before the next step is activated.
+   *
+   * The action can return a Promise or a boolean.
+   *
+   * By returning a Promise, you can wait the end of an asynchronous process
+   * before the transition. The transition will be prevented if the Promise rejects.
    *
    * By returning `false` from this action, you can prevent the transition
    * from taking place.
@@ -116,9 +158,10 @@ export default Component.extend({
    * If provided, this action will be called with a single POJO as the
    * argument, containing:
    *
-   * - `value`-> The value passed to the transition action, or `undefined`
-   * - `from` -> The name of the step being transitioned from
-   * - `to`   -> The name of the step being transitioned to
+   * - `value`     -> The value passed to the transition action, or `undefined`
+   * - `from`      -> The name of the step being transitioned from
+   * - `to`        -> The name of the step being transitioned to
+   * - `direction` -> The direction of the transition when using transition-to-next or transition-to-previous
    *
    * The action is called after the next step is activated.
    *
@@ -172,6 +215,9 @@ export default Component.extend({
     /**
      * Transition to a named step
      *
+     * If you have provided a `will-transition` action, it will call the action
+     * before transitioning to the step.
+     *
      * If the `currentStep` property was provided as a mutable value, like:
      *
      * ```js
@@ -187,26 +233,29 @@ export default Component.extend({
      * @param {*} value the value to pass to the transition actions
      * @public
      */
-    'transition-to-step'(to, value) {
+    'transition-to-step'(to, value, direction) {
       const from = get(this, 'transitions.currentStep');
+      const validator = this['will-transition'];
 
-      if (
-        this['will-transition'] &&
-        this['will-transition']({ value, from, to }) === false
-      ) {
+      // Prevent multiple transitions
+      if (get(this, 'loading')) {
         return;
       }
 
-      // Update the `currentStep` if it's mutable
-      if (this.attrs.currentStep && this.attrs.currentStep.update) {
-        this.attrs.currentStep.update(to);
-      }
+      if (validator && typeof validator === 'function') {
+        set(this, 'loading', true);
 
-      // Activate the next step
-      get(this, 'transitions').activate(to);
-
-      if (this['did-transition']) {
-        this['did-transition']({ value, from, to });
+        RSVP.resolve(validator({ value, from, to, direction }))
+          .then(result => {
+            if (result !== false) {
+              this['do-transition'](to, from, value, direction);
+            }
+          })
+          .finally(() => {
+            set(this, 'loading', false);
+          });
+      } else {
+        this['do-transition'](to, from, value, direction);
       }
     },
 
@@ -226,7 +275,7 @@ export default Component.extend({
     'transition-to-next-step'(value) {
       const to = get(this, 'transitions').pickNext();
 
-      this.send('transition-to-step', to, value);
+      this.send('transition-to-step', to, value, 'next');
     },
 
     /**
@@ -244,7 +293,7 @@ export default Component.extend({
     'transition-to-previous-step'(value) {
       const to = get(this, 'transitions').pickPrevious();
 
-      this.send('transition-to-step', to, value);
+      this.send('transition-to-step', to, value, 'previous');
     }
   }
 });

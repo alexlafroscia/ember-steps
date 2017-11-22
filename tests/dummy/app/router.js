@@ -27,6 +27,7 @@ const Router = EmberRouter.extend({
 Router.map(function() {
   this.route('named-steps');
   this.route('step-links');
+  this.route('validator');
   this.route('wizard-example');
 });
 

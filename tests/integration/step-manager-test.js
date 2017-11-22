@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import RSVP from 'rsvp';
 import { expect } from 'chai';
 import { setupComponentTest } from 'ember-mocha';
 import { beforeEach, describe, it } from 'mocha';
@@ -6,6 +7,7 @@ import td from 'testdouble';
 import hbs from 'htmlbars-inline-precompile';
 import { initialize as initializeEmberHook, $hook } from 'ember-hook';
 import { click, findAll } from 'ember-native-dom-helpers';
+import wait from 'ember-test-helpers/wait';
 
 const { matchers: { anything: matchAnything, contains: matchContains } } = td;
 const { A } = Ember;
@@ -630,6 +632,151 @@ describe('Integration: StepManagerComponent', function() {
           })
         );
       });
+
+      it('passes the direction when using transition-to-next or transition-to-previous', function() {
+        const beforeAction = td.function('before action');
+        this.on('beforeAction', beforeAction);
+
+        this.render(hbs`
+          {{#step-manager will-transition=(action 'beforeAction') as |w|}}
+            {{w.step}}
+            {{w.step}}
+
+            <button {{action w.transition-to-next}}>
+              Next
+            </button>
+          {{/step-manager}}
+        `);
+        click('button');
+
+        expect(beforeAction).to.be.calledWith(
+          matchContains({
+            direction: 'next'
+          })
+        );
+      });
+    });
+
+    it('can wait for a promise to resolve', function(done) {
+      const { run } = Ember;
+      let didTransition = false;
+      const waitForMe = function() {
+        return new RSVP.Promise(function(resolve) {
+          run.later(null, resolve, 500);
+        });
+      };
+      this.on('beforeAction', waitForMe);
+      this.on('afterTransition', () => (didTransition = true));
+
+      this.render(hbs`
+        {{#step-manager will-transition=(action 'beforeAction') did-transition=(action 'afterTransition') as |w|}}
+          {{#w.step name='first'}}
+            <div data-test={{hook 'first'}}></div>
+          {{/w.step}}
+
+          {{#w.step name='second'}}
+            <div data-test={{hook 'second'}}></div>
+          {{/w.step}}
+
+          <button {{action w.transition-to-next}}>
+            Next
+          </button>
+        {{/step-manager}}
+      `);
+
+      click('button');
+
+      expect(didTransition).to.equal(false);
+
+      return wait()
+        .then(() => {
+          expect(didTransition).to.equal(true);
+          expect($hook('first')).not.to.be.visible;
+          expect($hook('second')).to.be.visible;
+        })
+        .then(done, done);
+    });
+
+    it('prevents the transition if the promise resolve to `false`', function(
+      done
+    ) {
+      const { run } = Ember;
+      let didTransition = false;
+      const waitForMe = function() {
+        return new RSVP.Promise(function(resolve) {
+          run.later(null, () => resolve(false), 500);
+        });
+      };
+      this.on('beforeAction', waitForMe);
+      this.on('afterTransition', () => (didTransition = true));
+
+      this.render(hbs`
+        {{#step-manager will-transition=(action 'beforeAction') did-transition=(action 'afterTransition') as |w|}}
+          {{#w.step name='first'}}
+            <div data-test={{hook 'first'}}></div>
+          {{/w.step}}
+
+          {{#w.step name='second'}}
+            <div data-test={{hook 'second'}}></div>
+          {{/w.step}}
+
+          <button {{action w.transition-to-next}}>
+            Next
+          </button>
+        {{/step-manager}}
+      `);
+
+      click('button');
+
+      expect(didTransition).to.equal(false);
+
+      return wait()
+        .then(() => {
+          expect(didTransition).to.equal(false);
+          expect($hook('first')).to.be.visible;
+          expect($hook('second')).not.to.be.visible;
+        })
+        .then(done, done);
+    });
+
+    it('prevents the transition if the promise reject', function(done) {
+      const { run } = Ember;
+      let didTransition = false;
+      const waitForMe = function() {
+        return new RSVP.Promise(function(resolve, reject) {
+          run.later(null, reject, 500);
+        });
+      };
+      this.on('beforeAction', waitForMe);
+      this.on('afterTransition', () => (didTransition = true));
+
+      this.render(hbs`
+        {{#step-manager will-transition=(action 'beforeAction') did-transition=(action 'afterTransition') as |w|}}
+          {{#w.step name='first'}}
+            <div data-test={{hook 'first'}}></div>
+          {{/w.step}}
+
+          {{#w.step name='second'}}
+            <div data-test={{hook 'second'}}></div>
+          {{/w.step}}
+
+          <button {{action w.transition-to-next}}>
+            Next
+          </button>
+        {{/step-manager}}
+      `);
+
+      click('button');
+
+      expect(didTransition).to.equal(false);
+
+      return wait()
+        .then(() => {
+          expect(didTransition).to.equal(false);
+          expect($hook('first')).to.be.visible;
+          expect($hook('second')).not.to.be.visible;
+        })
+        .then(done, done);
     });
 
     it('prevents the transition if it returns `false`', function() {
