@@ -805,6 +805,47 @@ describe('Integration: StepManagerComponent', function() {
       expect($hook('first')).to.be.visible;
       expect($hook('second')).not.to.be.visible;
     });
+
+    it("doesn't update loading when destroyed", function(done) {
+      const { run } = Ember;
+      let didTransition = false;
+      this.on('beforeAction', function() {
+        return new RSVP.Promise(function(resolve) {
+          run.later(null, resolve, 500);
+        });
+      });
+      this.on('afterTransition', () => (didTransition = true));
+
+      this.render(hbs`
+        {{#step-manager will-transition=(action 'beforeAction') did-transition=(action 'afterTransition') as |w|}}
+          {{#w.step name='first'}}
+            <div data-test={{hook 'first'}}></div>
+          {{/w.step}}
+
+          {{#w.step name='second'}}
+            <div data-test={{hook 'second'}}></div>
+          {{/w.step}}
+
+          <button {{action w.transition-to-next}}>
+            Next
+          </button>
+        {{/step-manager}}
+      `);
+
+      click('button');
+
+      expect(didTransition).to.equal(false);
+
+      this.clearRender();
+
+      return wait()
+        .then(() => {
+          expect(didTransition).to.equal(false);
+          expect($hook('first')).not.to.be.visible;
+          expect($hook('second')).not.to.be.visible;
+        })
+        .then(done, done);
+    });
   });
 
   describe('assigning step indices', function() {

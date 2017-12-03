@@ -247,12 +247,14 @@ export default Component.extend({
 
         RSVP.resolve(validator({ value, from, to, direction }))
           .then(result => {
-            if (result !== false) {
+            if (result !== false && !get(this, 'isDestroyed')) {
               this['do-transition'](to, from, value, direction);
             }
           })
           .finally(() => {
-            set(this, 'loading', false);
+            if (!get(this, 'isDestroyed')) {
+              set(this, 'loading', false);
+            }
           });
       } else {
         this['do-transition'](to, from, value, direction);
