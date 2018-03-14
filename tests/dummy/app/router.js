@@ -25,10 +25,21 @@ const Router = EmberRouter.extend({
 });
 
 Router.map(function() {
-  this.route('named-steps');
-  this.route('step-links');
-  this.route('validator');
-  this.route('wizard-example');
+  this.route('docs', function() {
+    this.route('cookbook', function() {
+      this.route('dynamic-definition');
+      this.route('tabs', function() {
+        this.route('query-param');
+      });
+      this.route('wizard', function() {
+        this.route('progress-indicator');
+      });
+    });
+
+    this.route('api', function() {
+      this.route('item', { path: '/*path' });
+    });
+  });
 });
 
 export default Router;

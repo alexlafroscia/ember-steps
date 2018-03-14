@@ -1,28 +1,29 @@
-import { beforeEach, describe, it } from 'mocha';
-import { setupRenderingTest } from 'ember-mocha';
 import { expect } from 'chai';
+import { setupComponentTest } from 'ember-mocha';
+import { beforeEach, describe, it } from 'mocha';
 import td from 'testdouble';
 import hbs from 'htmlbars-inline-precompile';
 import { initialize as initializeEmberHook, $hook } from 'ember-hook';
-import { render } from '@ember/test-helpers';
 import { StepNameError } from 'ember-steps/-private/errors';
 
 describe('Integration: StepManagerStepComponent', function() {
-  setupRenderingTest();
+  setupComponentTest('step-manager/step', {
+    integration: true
+  });
 
   beforeEach(initializeEmberHook);
 
   beforeEach(function() {
-    this.set('register', function() {});
+    this.on('register', function() {});
   });
 
   describe('registering with the rendering context', function() {
-    it('registers itself with the step manager', async function() {
+    it('registers itself with the step manager', function() {
       const registerAction = td.function();
-      this.set('register', registerAction);
+      this.on('register', registerAction);
 
-      await render(hbs`
-        {{step-manager/step name='foo' register-step=(action register)}}
+      this.render(hbs`
+        {{step-manager/step name='foo' register-step=(action 'register')}}
       `);
 
       expect(registerAction).to.be.called;
@@ -31,8 +32,8 @@ describe('Integration: StepManagerStepComponent', function() {
     it.skip(
       'throws an error when not provided a registration action',
       function() {
-        expect(async () => {
-          await render(hbs`{{step-manager/step}}`);
+        expect(() => {
+          this.render(hbs`{{step-manager/step}}`);
         }).to.throw(Error);
       }
     );
@@ -40,30 +41,30 @@ describe('Integration: StepManagerStepComponent', function() {
 
   describe('the step name', function() {
     it.skip('must be provided', function() {
-      expect(async () => {
-        await render(hbs`
-          {{step-manager/step register-step=(action register)}}
+      expect(() => {
+        this.render(hbs`
+          {{step-manager/step register-step=(action 'register')}}
         `);
-      }).to.be.rejectedWith(StepNameError, /Name must be provided/);
+      }).to.throw(StepNameError, /Name must be provided/);
     });
 
     describe('with immuatable values', function() {
       it('can be given a value with the `unbound` helper', function() {
         this.set('name', 'someValue');
 
-        expect(
-          render(hbs`
-            {{step-manager/step name=(unbound name) register-step=(action register)}}
-          `)
-        ).not.to.be.rejectedWith(StepNameError);
+        expect(() => {
+          this.render(hbs`
+            {{step-manager/step name=(unbound name) register-step=(action 'register')}}
+          `);
+        }).not.to.throw(StepNameError);
       });
 
       it('can be given a string primitive', function() {
-        expect(
-          render(hbs`
-            {{step-manager/step name='someValue' register-step=(action register)}}
-          `)
-        ).not.to.be.rejectedWith(StepNameError);
+        expect(() => {
+          this.render(hbs`
+            {{step-manager/step name='someValue' register-step=(action 'register')}}
+          `);
+        }).not.to.throw(StepNameError);
       });
     });
 
@@ -73,9 +74,9 @@ describe('Integration: StepManagerStepComponent', function() {
       });
 
       it.skip('errors when given a value from the `mut` helper', function() {
-        expect(async () => {
-          await render(hbs`
-            {{step-manager/step name=(mut name) register-step=(action register)}}
+        expect(() => {
+          this.render(hbs`
+            {{step-manager/step name=(mut name) register-step=(action 'register')}}
           `);
         }).to.throw(StepNameError, /Name must be an immutable string/);
       });
@@ -87,18 +88,18 @@ describe('Integration: StepManagerStepComponent', function() {
       it.skip(
         'errors when given a value from the `readonly` helper',
         function() {
-          expect(async () => {
-            await render(hbs`
-              {{step-manager/step name=(readonly name) register-step=(action register)}}
-            `);
+          expect(() => {
+            this.render(hbs`
+          {{step-manager/step name=(readonly name) register-step=(action 'register')}}
+        `);
           }).to.throw(StepNameError, /Name must be an immutable string/);
         }
       );
 
       it.skip('errors when given a dynamic property directly', function() {
-        expect(async () => {
-          await render(hbs`
-            {{step-manager/step name=name register-step=(action register)}}
+        expect(() => {
+          this.render(hbs`
+            {{step-manager/step name=name register-step=(action 'register')}}
           `);
         }).to.throw(StepNameError, /Name must be an immutable string/);
       });
@@ -106,9 +107,9 @@ describe('Integration: StepManagerStepComponent', function() {
   });
 
   describe('rendering', function() {
-    it('renders block content when visible', async function() {
-      await render(hbs`
-        {{#step-manager/step name='foo' isActive=true register-step=(action register)}}
+    it('renders block content when visible', function() {
+      this.render(hbs`
+        {{#step-manager/step name='foo' isActive=true register-step=(action 'register')}}
           <div data-test={{hook 'step'}}>
             Foo
           </div>
@@ -119,9 +120,9 @@ describe('Integration: StepManagerStepComponent', function() {
     });
 
     describe('when inactive', function() {
-      it('is hidden when no alternate state is provided', async function() {
-        await render(hbs`
-          {{#step-manager/step name='foo' register-step=(action register)}}
+      it('is hidden when no alternate state is provided', function() {
+        this.render(hbs`
+          {{#step-manager/step name='foo' register-step=(action 'register')}}
             <div data-test={{hook 'step'}}>
               Active Content
             </div>
@@ -131,10 +132,10 @@ describe('Integration: StepManagerStepComponent', function() {
         expect($hook('step')).not.to.be.visible;
       });
 
-      it('renders the inverse block if provided', async function() {
-        await render(hbs`
+      it('renders the inverse block if provided', function() {
+        this.render(hbs`
           <div data-test={{hook 'step'}}>
-            {{#step-manager/step name='foo' hasInactiveState=true register-step=(action register)}}
+            {{#step-manager/step name='foo' hasInactiveState=true register-step=(action 'register')}}
               Active Content
             {{else}}
               Inactive Content
@@ -148,9 +149,9 @@ describe('Integration: StepManagerStepComponent', function() {
   });
 
   describe('programmatically controlling visibility', function() {
-    it('is visible when active', async function() {
-      await render(hbs`
-        {{#step-manager/step name='foo' isActive=true register-step=(action register)}}
+    it('is visible when active', function() {
+      this.render(hbs`
+        {{#step-manager/step name='foo' isActive=true register-step=(action 'register')}}
           <div data-test={{hook 'step'}}></div>
         {{/step-manager/step}}
       `);
@@ -158,9 +159,9 @@ describe('Integration: StepManagerStepComponent', function() {
       expect($hook('step')).to.be.visible;
     });
 
-    it('is invisible when not active', async function() {
-      await render(hbs`
-        {{#step-manager/step name='foo' register-step=(action register)}}
+    it('is invisible when not active', function() {
+      this.render(hbs`
+        {{#step-manager/step name='foo' register-step=(action 'register')}}
           <div data-test={{hook 'step'}}></div>
         {{/step-manager/step}}
       `);
@@ -171,17 +172,17 @@ describe('Integration: StepManagerStepComponent', function() {
 
   describe('lifecycle hooks', function() {
     describe('will-enter', function() {
-      it('is called if the step is initially active', async function() {
+      it('is called if the step is initially active', function() {
         const entranceAction = td.function();
-        this.set('entrance', entranceAction);
+        this.on('entrance', entranceAction);
         this.set('currentStep', 'foo');
 
-        await render(hbs`
+        this.render(hbs`
           {{step-manager/step
               name='foo'
               currentStep=currentStep
-              will-enter=(action entrance)
-              register-step=(action register)}}
+              will-enter=(action 'entrance')
+              register-step=(action 'register')}}
         `);
 
         this.set('currentStep', 'foo');
@@ -189,17 +190,17 @@ describe('Integration: StepManagerStepComponent', function() {
         expect(entranceAction).to.be.called;
       });
 
-      it('is called when the step becomes active', async function() {
+      it('is called when the step becomes active', function() {
         const entranceAction = td.function();
-        this.set('entrance', entranceAction);
+        this.on('entrance', entranceAction);
         this.set('currentStep', 'bar');
 
-        await render(hbs`
+        this.render(hbs`
           {{step-manager/step
               name='foo'
               currentStep=currentStep
-              will-enter=(action entrance)
-              register-step=(action register)}}
+              will-enter=(action 'entrance')
+              register-step=(action 'register')}}
         `);
 
         // Activate the step
@@ -210,17 +211,17 @@ describe('Integration: StepManagerStepComponent', function() {
     });
 
     describe('will-exit', function() {
-      it('is called when the step becomes inactive', async function() {
+      it('is called when the step becomes inactive', function() {
         const exitAction = td.function();
-        this.set('exit', exitAction);
+        this.on('exit', exitAction);
         this.set('currentStep', 'foo');
 
-        await render(hbs`
+        this.render(hbs`
           {{step-manager/step
               name='foo'
               currentStep=currentStep
-              will-exit=(action exit)
-              register-step=(action register)}}
+              will-exit=(action 'exit')
+              register-step=(action 'register')}}
         `);
 
         // Deactivate the step
@@ -229,17 +230,17 @@ describe('Integration: StepManagerStepComponent', function() {
         expect(exitAction).to.be.called;
       });
 
-      it('is not called when the current step changes to a value that is not the name of the step', async function() {
+      it('is not called when the current step changes to a value that is not the name of the step', function() {
         const exitAction = td.function();
-        this.set('exit', exitAction);
+        this.on('exit', exitAction);
         this.set('currentStep', 'bar');
 
-        await render(hbs`
+        this.render(hbs`
           {{step-manager/step
               name='foo'
               currentStep=currentStep
-              will-exit=(action exit)
-              register-step=(action register)}}
+              will-exit=(action 'exit')
+              register-step=(action 'register')}}
         `);
 
         // Deactivate the step

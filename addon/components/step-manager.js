@@ -21,6 +21,36 @@ const layout = hbs`
   )}}
 `;
 
+/**
+ * A component for creating a set of "steps", where only one is visible at a time
+ *
+ * ```hbs
+ * {{#step-manager as |w|}}
+ *   {{#w.step}}
+ *     The first step
+ *   {{/w.step}}
+ *
+ *   {{#w.step}}
+ *     The second step
+ *   {{/w.step}}
+ *
+ *   <button {{action w.transition-to-next}}>
+ *     Next Step
+ *   </button>
+ * {{/step-manager}}
+ * ```
+ *
+ * @class StepManager
+ * @yield {hash} w
+ * @yield {Component} w.step Renders a step
+ * @yield {Action} w.transition-to
+ * @yield {Action} w.transition-to-next Render the next step
+ * @yield {Action} w.transition-to-previous Render the previous step
+ * @yield {string} w.currentStep The name of the current step
+ * @yield {boolean} w.loading Whether an asynchronous validation is currently being performed
+ * @yield {Array<String>} w.steps All of the step names that are currently defined, in order
+ * @public
+ */
 export default Component.extend({
   layout,
   tagName: '',
@@ -150,7 +180,7 @@ export default Component.extend({
    * By returning `false` from this action, you can prevent the transition
    * from taking place.
    *
-   * @property {Action} will-transition
+   * @argument {Action} will-transition
    * @public
    */
   'will-transition': null,
@@ -166,7 +196,7 @@ export default Component.extend({
    *
    * The action is called after the next step is activated.
    *
-   * @property {Action} did-transition
+   * @argument {Action} did-transition
    * @public
    */
   'did-transition': null,
@@ -204,7 +234,7 @@ export default Component.extend({
      * Adds a set to the internal registry of steps by name.  If no name is
      * provided, a name will be assigned by index.
      *
-     * @method registerStep
+     * @action register-step-component
      * @param {string} name the name of the step being registered
      * @private
      */
@@ -229,7 +259,7 @@ export default Component.extend({
      *
      * Then the external property will be updated to the new step name.
      *
-     * @method transition-to-step
+     * @action transition-to-step
      * @param {string} to the name of the step to transition to
      * @param {*} value the value to pass to the transition actions
      * @public
@@ -271,7 +301,7 @@ export default Component.extend({
      *
      * The last step will transition back to the first one.
      *
-     * @method transition-to-next-step
+     * @action transition-to-next-step
      * @param {*} value the value to pass to the transition actions
      * @public
      */
@@ -289,7 +319,7 @@ export default Component.extend({
      *
      * The first step will not transition to anything.
      *
-     * @method transition-to-previous-step
+     * @action transition-to-previous-step
      * @param {*} value the value to pass to the transition actions
      * @public
      */

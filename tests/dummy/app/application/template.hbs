@@ -1,26 +1,3 @@
-<header local-class="header">
-  <div local-class="header-wrapper">
-    <span local-class="title">
-      ember-steps
-    </span>
+{{outlet}}
 
-    <img {{action 'toggleNav'}} local-class="hamburger" src="/ember-steps/images/hamburger.svg" />
-
-    <a local-class="github-link" href="https://github.com/alexlafroscia/ember-steps">
-      <img src="/ember-steps/images/github.svg" />
-    </a>
-
-    <nav local-class="nav-items" class="{{if navExpanded 'mobile-nav-expanded'}}">
-      {{link-to 'Basic Usage' 'index' local-class="nav-item"}}
-      {{link-to 'Named Steps' 'named-steps' local-class="nav-item"}}
-      {{link-to 'Step Links' 'step-links' local-class="nav-item"}}
-      {{link-to 'Validator usage' 'validator' local-class="nav-item"}}
-      {{link-to 'Wizard example' 'wizard-example' local-class="nav-item"}}
-    </nav>
-
-  </div>
-</header>
-
-<div local-class="outlet-wrapper">
-  {{outlet}}
-</div>
+{{docs-keyboard-shortcuts}}

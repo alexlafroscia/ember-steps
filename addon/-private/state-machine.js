@@ -1,5 +1,12 @@
 import EmberObject, { set, get, computed } from '@ember/object';
 
+/**
+ * Keeps track of the order of the steps in the step manager, as well as
+ * the current step.
+ *
+ * @class StateMachine
+ * @private
+ */
 export default EmberObject.extend({
   /**
    * @property {string} initialStep

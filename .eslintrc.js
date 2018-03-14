@@ -23,7 +23,8 @@ module.exports = {
 
     'ember/avoid-leaking-state-in-ember-objects': ['error', [
       'actions',
-      'localClassNames'
+      'localClassNames',
+      'queryParams'
     ]]
   },
   overrides: [
@@ -51,7 +52,7 @@ module.exports = {
       },
       plugins: ['node'],
       rules: Object.assign({}, require('eslint-plugin-node').configs.recommended.rules, {
-        // add your custom rules and overrides for node files here
+        'node/no-unpublished-require': 'off'
       })
     }
   ]

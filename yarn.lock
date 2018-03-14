@@ -1437,15 +1437,6 @@ broccoli-filter@^1.2.4:
     symlink-or-copy "^1.0.1"
     walk-sync "^0.3.1"
 
-broccoli-flatiron@^0.0.0:
-  version "0.0.0"
-  resolved "https://registry.yarnpkg.com/broccoli-flatiron/-/broccoli-flatiron-0.0.0.tgz#e97504016b56eea04813b5d862fda18b6f11a77f"
-  dependencies:
-    broccoli-kitchen-sink-helpers "~0.2.4"
-    broccoli-writer "~0.1.1"
-    mkdirp "^0.3.5"
-    rsvp "~3.0.6"
-
 broccoli-flatiron@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/broccoli-flatiron/-/broccoli-flatiron-0.1.2.tgz#088cf6f03cee71721a925df9bb12cabf07e6b65c"
@@ -3203,17 +3194,6 @@ ember-cli@~3.0.0:
     walk-sync "^0.3.0"
     watch-detector "^0.1.0"
     yam "0.0.22"
-
-ember-code-snippet@^2.0.0-alpha.2:
-  version "2.0.0-alpha.2"
-  resolved "https://registry.yarnpkg.com/ember-code-snippet/-/ember-code-snippet-2.0.0-alpha.2.tgz#28ae333e492c7a7de9ce65d5f81baf4592e552c7"
-  dependencies:
-    broccoli-flatiron "^0.0.0"
-    broccoli-merge-trees "^1.0.0"
-    broccoli-static-compiler "^0.1.4"
-    broccoli-writer "^0.1.1"
-    es6-promise "^1.0.0"
-    glob "^4.0.4"
 
 ember-code-snippet@ef4/ember-code-snippet:
   version "2.0.1"
@@ -7761,10 +7741,6 @@ silent-error@^1.0.0, silent-error@^1.0.1, silent-error@^1.1.0:
   resolved "https://registry.yarnpkg.com/silent-error/-/silent-error-1.1.0.tgz#2209706f1c850a9f1d10d0d840918b46f26e1bc9"
   dependencies:
     debug "^2.2.0"
-
-simple-dom@^0.3.0:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/simple-dom/-/simple-dom-0.3.2.tgz#0663d10f1556f1500551d518f56e3aba0871371d"
 
 simple-fmt@~0.1.0:
   version "0.1.0"

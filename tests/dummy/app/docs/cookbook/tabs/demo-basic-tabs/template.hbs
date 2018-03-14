@@ -1,0 +1,30 @@
+{{#docs-demo as |demo|}}
+  {{#demo.example name='cookbook-tabs.hbs'}}
+    {{#step-manager as |w|}}
+      {{#tab-group}}
+        <button
+          onclick={{action w.transition-to 'first'}}
+          aria-pressed={{eq w.currentStep 'first'}}
+        >
+          First Tab
+        </button>
+        <button
+          onclick={{action w.transition-to 'second'}}
+          aria-pressed={{eq w.currentStep 'second'}}
+        >
+          Second Tab
+        </button>
+      {{/tab-group}}
+
+      {{#w.step name='first'}}
+        This content is on the first tab
+      {{/w.step}}
+
+      {{#w.step name='second'}}
+        This content is on the second tab
+      {{/w.step}}
+    {{/step-manager}}
+  {{/demo.example}}
+
+  {{demo.snippet 'cookbook-tabs.hbs'}}
+{{/docs-demo}}
