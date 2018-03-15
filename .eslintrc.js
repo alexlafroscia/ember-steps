@@ -19,7 +19,12 @@ module.exports = {
   rules: {
     'prettier/prettier': ['error', {
       singleQuote: true
-    }]
+    }],
+
+    'ember/avoid-leaking-state-in-ember-objects': ['error', [
+      'actions',
+      'localClassNames'
+    ]]
   },
   overrides: [
     // node files

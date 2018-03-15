@@ -6,10 +6,7 @@ import { setupComponentTest } from 'ember-mocha';
 import { beforeEach, describe, it } from 'mocha';
 import td from 'testdouble';
 import hbs from 'htmlbars-inline-precompile';
-import {
-  initialize as initializeEmberHook,
-  $hook
-} from 'ember-hook';
+import { initialize as initializeEmberHook, $hook } from 'ember-hook';
 import { click, findAll } from 'ember-native-dom-helpers';
 import wait from 'ember-test-helpers/wait';
 
@@ -896,16 +893,8 @@ describe('Integration: StepManagerComponent', function() {
         {{/step-manager}}
       `);
 
-      expect(
-        $hook('step', { index: 0 })
-          .text()
-          .trim()
-      ).to.equal('Active');
-      expect(
-        $hook('step', { index: 1 })
-          .text()
-          .trim()
-      ).to.equal('Inactive');
+      expect($hook('step', { index: 0 }).text().trim()).to.equal('Active');
+      expect($hook('step', { index: 1 }).text().trim()).to.equal('Inactive');
     });
   });
 
@@ -935,21 +924,13 @@ describe('Integration: StepManagerComponent', function() {
 
       expect($hook('step', { name: 'foo' })).to.be.visible;
       expect($hook('step', { name: 'bar' })).not.to.be.visible;
-      expect(
-        $hook('steps')
-          .text()
-          .trim()
-      ).to.equal('foo');
+      expect($hook('steps').text().trim()).to.equal('foo');
 
       click('button');
 
       expect($hook('step', { name: 'foo' })).not.to.be.visible;
       expect($hook('step', { name: 'bar' })).to.be.visible;
-      expect(
-        $hook('steps')
-          .text()
-          .trim()
-      ).to.equal('bar');
+      expect($hook('steps').text().trim()).to.equal('bar');
     });
 
     it('allows for adding more steps after the initial render', function() {
@@ -985,11 +966,7 @@ describe('Integration: StepManagerComponent', function() {
       expect($hook('step', { name: 'foo' })).not.to.be.visible;
       expect($hook('step', { name: 'bar' })).not.to.be.visible;
       expect($hook('step', { name: 'baz' })).to.be.visible;
-      expect(
-        $hook('steps')
-          .text()
-          .trim()
-      ).to.equal('baz');
+      expect($hook('steps').text().trim()).to.equal('baz');
 
       // Check that the new step now points to the first one
       click('button');
@@ -997,11 +974,7 @@ describe('Integration: StepManagerComponent', function() {
       expect($hook('step', { name: 'foo' })).to.be.visible;
       expect($hook('step', { name: 'bar' })).not.to.be.visible;
       expect($hook('step', { name: 'baz' })).not.to.be.visible;
-      expect(
-        $hook('steps')
-          .text()
-          .trim()
-      ).to.equal('foo');
+      expect($hook('steps').text().trim()).to.equal('foo');
     });
   });
 });
