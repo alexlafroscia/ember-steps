@@ -1,6 +1,5 @@
-import Ember from 'ember';
-
-const { Route, isEmpty } = Ember;
+import Route from '@ember/routing/route';
+import { isEmpty } from '@ember/utils';
 
 export default Route.extend({
   title(tokens) {

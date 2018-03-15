@@ -1,10 +1,10 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { set, get } from '@ember/object';
 import RSVP from 'rsvp';
 import hbs from 'htmlbars-inline-precompile';
 import StateMachine from 'ember-steps/-private/state-machine';
 import { MissingPropertyError } from 'ember-steps/-private/errors';
 
-const { Component, get, set } = Ember;
 const layout = hbs`
   {{yield (hash
     step=(component 'step-manager/step'

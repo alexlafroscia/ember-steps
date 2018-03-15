@@ -1,8 +1,9 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { get, computed } from '@ember/object';
+import { isBlank } from '@ember/utils';
 import hbs from 'htmlbars-inline-precompile';
 import { StepNameError } from 'ember-steps/-private/errors';
 
-const { Component, computed, get, isBlank } = Ember;
 const layout = hbs`
   {{#if isActive}}
     {{yield}}

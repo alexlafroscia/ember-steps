@@ -1,7 +1,6 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
+import Controller from '@ember/controller';
 import RSVP from 'rsvp';
-
-const { Controller } = Ember;
 
 export default Controller.extend({
   // BEGIN-SNIPPET validator
@@ -9,7 +8,6 @@ export default Controller.extend({
 
   actions: {
     validator(payload) {
-      const { run } = Ember;
       let promise;
       this.set('validationFailed', false);
 

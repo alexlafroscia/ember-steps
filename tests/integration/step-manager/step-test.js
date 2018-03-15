@@ -3,7 +3,10 @@ import { setupComponentTest } from 'ember-mocha';
 import { beforeEach, describe, it } from 'mocha';
 import td from 'testdouble';
 import hbs from 'htmlbars-inline-precompile';
-import { initialize as initializeEmberHook, $hook } from 'ember-hook';
+import {
+  initialize as initializeEmberHook,
+  $hook
+} from 'ember-hook';
 import { StepNameError } from 'ember-steps/-private/errors';
 
 describe('Integration: StepManagerStepComponent', function() {

@@ -1,16 +1,19 @@
-import Ember from 'ember';
+import { run } from '@ember/runloop';
+import { A } from '@ember/array';
 import RSVP from 'rsvp';
 import { expect } from 'chai';
 import { setupComponentTest } from 'ember-mocha';
 import { beforeEach, describe, it } from 'mocha';
 import td from 'testdouble';
 import hbs from 'htmlbars-inline-precompile';
-import { initialize as initializeEmberHook, $hook } from 'ember-hook';
+import {
+  initialize as initializeEmberHook,
+  $hook
+} from 'ember-hook';
 import { click, findAll } from 'ember-native-dom-helpers';
 import wait from 'ember-test-helpers/wait';
 
 const { matchers: { anything: matchAnything, contains: matchContains } } = td;
-const { A } = Ember;
 
 describe('Integration: StepManagerComponent', function() {
   setupComponentTest('step-manager', {
@@ -658,7 +661,6 @@ describe('Integration: StepManagerComponent', function() {
     });
 
     it('can wait for a promise to resolve', function(done) {
-      const { run } = Ember;
       let didTransition = false;
       const waitForMe = function() {
         return new RSVP.Promise(function(resolve) {
@@ -700,7 +702,6 @@ describe('Integration: StepManagerComponent', function() {
     it('prevents the transition if the promise resolve to `false`', function(
       done
     ) {
-      const { run } = Ember;
       let didTransition = false;
       const waitForMe = function() {
         return new RSVP.Promise(function(resolve) {
@@ -740,7 +741,6 @@ describe('Integration: StepManagerComponent', function() {
     });
 
     it('prevents the transition if the promise reject', function(done) {
-      const { run } = Ember;
       let didTransition = false;
       const waitForMe = function() {
         return new RSVP.Promise(function(resolve, reject) {
@@ -807,7 +807,6 @@ describe('Integration: StepManagerComponent', function() {
     });
 
     it("doesn't update loading when destroyed", function(done) {
-      const { run } = Ember;
       let didTransition = false;
       this.on('beforeAction', function() {
         return new RSVP.Promise(function(resolve) {
