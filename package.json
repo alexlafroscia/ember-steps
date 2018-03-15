@@ -9,11 +9,9 @@
   "scripts": {
     "build": "ember build",
     "deploy": "ember github-pages:commit --message \"Deploy gh-pages from commit $(git rev-parse HEAD)\" && git push && git checkout -",
-    "lint:js": "eslint ./*.js addon addon-test-support app config lib server test-support tests",
+    "lint:js": "eslint ./*.js .",
     "start": "ember serve",
-    "test": "ember try:each",
-    "lint": "eslint addon app config fastboot-tests lib tests",
-    "lint:fix": "eslint --fix addon app config fastboot-tests lib tests"
+    "test": "ember try:each"
   },
   "repository": {
     "url": "git@github.com:alexlafroscia/ember-steps.git",
@@ -25,6 +23,7 @@
   "author": "Alex LaFroscia <alex@lafroscia.com>",
   "license": "MIT",
   "devDependencies": {
+    "@ember/test-helpers": "^0.7.18",
     "broccoli-asset-rev": "^2.5.0",
     "chai": "^4.1.1",
     "chai-jquery": "^2.0.0",
@@ -33,7 +32,6 @@
     "ember-cli-chai": "^0.4.2",
     "ember-cli-dependency-checker": "^2.0.1",
     "ember-cli-document-title": "^0.3.3",
-    "ember-cli-eslint": "^4.2.1",
     "ember-cli-github-pages": "0.1.2",
     "ember-cli-inject-live-reload": "^1.7.0",
     "ember-cli-mocha": "^0.14.4",
