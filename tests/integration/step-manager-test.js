@@ -1,28 +1,25 @@
+import { beforeEach, describe, it } from 'mocha';
+import { setupRenderingTest } from 'ember-mocha';
+import { expect } from 'chai';
+import td from 'testdouble';
+import hbs from 'htmlbars-inline-precompile';
+import { initialize as initializeEmberHook, $hook, hook } from 'ember-hook';
+import { click, findAll, render } from '@ember/test-helpers';
 import { run } from '@ember/runloop';
 import { A } from '@ember/array';
 import RSVP from 'rsvp';
-import { expect } from 'chai';
-import { setupComponentTest } from 'ember-mocha';
-import { beforeEach, describe, it } from 'mocha';
-import td from 'testdouble';
-import hbs from 'htmlbars-inline-precompile';
-import { initialize as initializeEmberHook, $hook } from 'ember-hook';
-import { click, findAll } from 'ember-native-dom-helpers';
-import wait from 'ember-test-helpers/wait';
 
 const { matchers: { anything: matchAnything, contains: matchContains } } = td;
 
 describe('Integration: StepManagerComponent', function() {
-  setupComponentTest('step-manager', {
-    integration: true
-  });
+  setupRenderingTest();
 
   beforeEach(initializeEmberHook);
 
   describe('`currentStep` attribute', function() {
     describe('getting the initial step', function() {
-      it('can use a primitive value', function() {
-        this.render(hbs`
+      it('can use a primitive value', async function() {
+        await render(hbs`
           {{#step-manager currentStep='second' as |w|}}
             {{#w.step name='first'}}
               <div data-test={{hook 'first'}}></div>
@@ -38,9 +35,9 @@ describe('Integration: StepManagerComponent', function() {
         expect($hook('second')).to.be.visible;
       });
 
-      it('can use a value from the `mut` helper', function() {
+      it('can use a value from the `mut` helper', async function() {
         this.set('currentStep', 'second');
-        this.render(hbs`
+        await render(hbs`
           {{#step-manager currentStep=(mut currentStep) as |w|}}
             {{#w.step name='first'}}
               <div data-test={{hook 'first'}}></div>
@@ -58,9 +55,9 @@ describe('Integration: StepManagerComponent', function() {
     });
 
     describe('changing the visible step from the target object', function() {
-      it('changes steps when the property changes', function() {
+      it('changes steps when the property changes', async function() {
         this.set('step', 'first');
-        this.render(hbs`
+        await render(hbs`
           {{#step-manager currentStep=step as |w|}}
             {{#w.step name='first'}}
               <div data-test={{hook 'first'}}></div>
@@ -87,9 +84,9 @@ describe('Integration: StepManagerComponent', function() {
         expect($hook('second')).not.to.be.visible;
       });
 
-      it('changes steps when the property changes (with the mut helper)', function() {
+      it('changes steps when the property changes (with the mut helper)', async function() {
         this.set('step', 'first');
-        this.render(hbs`
+        await render(hbs`
           {{#step-manager currentStep=(mut step) as |w|}}
             {{#w.step name='first'}}
               <div data-test={{hook 'first'}}></div>
@@ -110,33 +107,36 @@ describe('Integration: StepManagerComponent', function() {
         expect($hook('second')).to.be.visible;
       });
 
-      it.skip('throws an error when an invalid step is provided', function() {
-        this.set('step', 'first');
-        this.render(hbs`
-          {{#step-manager currentStep=step as |w|}}
-            {{#w.step name='first'}}
-              <div data-test={{hook 'first'}}></div>
-            {{/w.step}}
+      it.skip(
+        'throws an error when an invalid step is provided',
+        async function() {
+          this.set('step', 'first');
+          await render(hbs`
+            {{#step-manager currentStep=step as |w|}}
+              {{#w.step name='first'}}
+                <div data-test={{hook 'first'}}></div>
+              {{/w.step}}
 
-            {{#w.step name='second'}}
-              <div data-test={{hook 'second'}}></div>
-            {{/w.step}}
-          {{/step-manager}}
-        `);
+              {{#w.step name='second'}}
+                <div data-test={{hook 'second'}}></div>
+              {{/w.step}}
+            {{/step-manager}}
+          `);
 
-        expect($hook('first')).to.be.visible;
-        expect($hook('second')).not.to.be.visible;
+          expect($hook('first')).to.be.visible;
+          expect($hook('second')).not.to.be.visible;
 
-        expect(() => {
-          this.set('step', 'foobar');
-        }).to.throw(Error);
-      });
+          expect(() => {
+            this.set('step', 'foobar');
+          }).to.throw(Error);
+        }
+      );
     });
 
     describe('updating the target object from the component', function() {
-      it("mutates the target object's property when a mutable value is provided", function() {
+      it("mutates the target object's property when a mutable value is provided", async function() {
         this.set('step', 'first');
-        this.render(hbs`
+        await render(hbs`
           {{#step-manager currentStep=(mut step) as |w|}}
             {{w.step name='first'}}
             {{w.step name='second'}}
@@ -147,14 +147,14 @@ describe('Integration: StepManagerComponent', function() {
           {{/step-manager}}
         `);
 
-        click('button');
+        await click('button');
 
         expect(this.get('step')).to.equal('second');
       });
 
-      it("mutates the target object's property when a regular value is provided", function() {
+      it("mutates the target object's property when a regular value is provided", async function() {
         this.set('step', 'first');
-        this.render(hbs`
+        await render(hbs`
           {{#step-manager currentStep=step as |w|}}
             {{w.step name='first'}}
             {{w.step name='second'}}
@@ -165,14 +165,14 @@ describe('Integration: StepManagerComponent', function() {
           {{/step-manager}}
         `);
 
-        click('button');
+        await click('button');
 
         expect(this.get('step')).to.equal('second');
       });
 
-      it('does not update the target object with an unbound value', function() {
+      it('does not update the target object with an unbound value', async function() {
         this.set('step', 'first');
-        this.render(hbs`
+        await render(hbs`
           {{#step-manager currentStep=(unbound step) as |w|}}
             {{w.step name='first'}}
             {{w.step name='second'}}
@@ -183,15 +183,15 @@ describe('Integration: StepManagerComponent', function() {
           {{/step-manager}}
         `);
 
-        click('button');
+        await click('button');
 
         expect(this.get('step')).to.equal('first');
       });
     });
   });
 
-  it('renders the first step in the DOM if no `currentStep` is present', function() {
-    this.render(hbs`
+  it('renders the first step in the DOM if no `currentStep` is present', async function() {
+    await render(hbs`
       {{#step-manager as |w|}}
         {{#w.step name='first'}}
           <div data-test={{hook 'first'}}></div>
@@ -207,8 +207,8 @@ describe('Integration: StepManagerComponent', function() {
     expect($hook('second')).not.to.be.visible;
   });
 
-  it('renders tagless components', function() {
-    this.render(hbs`
+  it('renders tagless components', async function() {
+    await render(hbs`
       <div id="steps">
         {{#step-manager as |w|}}
           {{w.step}}
@@ -220,8 +220,8 @@ describe('Integration: StepManagerComponent', function() {
   });
 
   describe('`yield`-ed data', function() {
-    it('exposes the name of the current step', function() {
-      this.render(hbs`
+    it('exposes the name of the current step', async function() {
+      await render(hbs`
         {{#step-manager as |w|}}
           <div data-test={{hook 'steps'}}>
             {{w.currentStep}}
@@ -235,8 +235,8 @@ describe('Integration: StepManagerComponent', function() {
     });
 
     describe('exposing an array of steps', function() {
-      it('can render the array after the steps are defined', function() {
-        this.render(hbs`
+      it('can render the array after the steps are defined', async function() {
+        await render(hbs`
           {{#step-manager as |w|}}
             <div data-test={{hook 'active-step'}}>
               {{#w.step name='foo'}}
@@ -264,13 +264,13 @@ describe('Integration: StepManagerComponent', function() {
 
         expect($hook('active-step')).to.contain('Foo');
 
-        $hook('step-trigger', { step: 'bar' }).click();
+        await click(hook('step-trigger', { step: 'bar' }));
 
         expect($hook('active-step')).to.contain('Bar');
       });
 
-      it('can render the array before the steps are defined', function() {
-        this.render(hbs`
+      it('can render the array before the steps are defined', async function() {
+        await render(hbs`
           {{#step-manager as |w|}}
             <ul>
               {{#each w.steps as |step|}}
@@ -298,7 +298,7 @@ describe('Integration: StepManagerComponent', function() {
 
         expect($hook('active-step')).to.contain('Foo');
 
-        $hook('step-trigger', { step: 'bar' }).click();
+        await click(hook('step-trigger', { step: 'bar' }));
 
         expect($hook('active-step')).to.contain('Bar');
       });
@@ -306,8 +306,8 @@ describe('Integration: StepManagerComponent', function() {
   });
 
   describe('transitions to named steps', function() {
-    it('can transition to another step', function() {
-      this.render(hbs`
+    it('can transition to another step', async function() {
+      await render(hbs`
         {{#step-manager currentStep='first' as |w|}}
           <button {{action w.transition-to 'second'}}>
             Transition to Next
@@ -326,15 +326,15 @@ describe('Integration: StepManagerComponent', function() {
       expect($hook('first')).to.be.visible;
       expect($hook('second')).not.to.be.visible;
 
-      click('button');
+      await click('button');
 
       expect($hook('first')).not.to.be.visible;
       expect($hook('second')).to.be.visible;
     });
 
     it.skip('errors when transitioning to an invalid step', function() {
-      expect(() => {
-        this.render(hbs`
+      expect(async () => {
+        await render(hbs`
           {{#step-manager currentStep='first' as |w|}}
             <button {{action w.transition-to 'second'}}>
               Transition to Next
@@ -344,14 +344,14 @@ describe('Integration: StepManagerComponent', function() {
           {{/step-manager}}
         `);
 
-        click('button');
+        await click('button');
       }).to.throw(Error);
     });
   });
 
   describe('transition to anonymous steps', function() {
-    it('can transition to the next step', function() {
-      this.render(hbs`
+    it('can transition to the next step', async function() {
+      await render(hbs`
         {{#step-manager as |w|}}
           <button {{action w.transition-to-next}}>
             Next!
@@ -375,27 +375,27 @@ describe('Integration: StepManagerComponent', function() {
       expect($hook('second')).not.to.be.visible;
       expect($hook('third')).not.to.be.visible;
 
-      click('button');
+      await click('button');
 
       expect($hook('first')).not.to.be.visible;
       expect($hook('second')).to.be.visible;
       expect($hook('third')).not.to.be.visible;
 
-      click('button');
+      await click('button');
 
       expect($hook('first')).not.to.be.visible;
       expect($hook('second')).not.to.be.visible;
       expect($hook('third')).to.be.visible;
 
-      click('button');
+      await click('button');
 
       expect($hook('first')).to.be.visible;
       expect($hook('second')).not.to.be.visible;
       expect($hook('third')).not.to.be.visible;
     });
 
-    it('can transition to the previous step', function() {
-      this.render(hbs`
+    it('can transition to the previous step', async function() {
+      await render(hbs`
         {{#step-manager as |w|}}
           <button id='previous' {{action w.transition-to-previous}}>
             Previous!
@@ -422,19 +422,19 @@ describe('Integration: StepManagerComponent', function() {
       expect($hook('second')).not.to.be.visible;
       expect($hook('third')).not.to.be.visible;
 
-      click('#next');
+      await click('#next');
 
       expect($hook('first')).not.to.be.visible;
       expect($hook('second')).to.be.visible;
       expect($hook('third')).not.to.be.visible;
 
-      click('#next');
+      await click('#next');
 
       expect($hook('first')).not.to.be.visible;
       expect($hook('second')).not.to.be.visible;
       expect($hook('third')).to.be.visible;
 
-      click('#previous');
+      await click('#previous');
 
       expect($hook('first')).not.to.be.visible;
       expect($hook('second')).to.be.visible;
@@ -443,12 +443,12 @@ describe('Integration: StepManagerComponent', function() {
   });
 
   describe('providing a `did-transition` action', function() {
-    it('is fired during a named transition', function() {
+    it('is fired during a named transition', async function() {
       const onTransitionAction = td.function();
-      this.on('transition', onTransitionAction);
+      this.set('transition', onTransitionAction);
 
-      this.render(hbs`
-        {{#step-manager currentStep='first' did-transition=(action 'transition') as |w|}}
+      await render(hbs`
+        {{#step-manager currentStep='first' did-transition=(action transition) as |w|}}
           <button {{action w.transition-to 'second' 'some value'}}>
             Transition to Next
           </button>
@@ -458,17 +458,17 @@ describe('Integration: StepManagerComponent', function() {
         {{/step-manager}}
       `);
 
-      click('button');
+      await click('button');
 
       expect(onTransitionAction).to.be.called;
     });
 
-    it('is fired during a sequential transition', function() {
+    it('is fired during a sequential transition', async function() {
       const onTransitionAction = td.function();
-      this.on('transition', onTransitionAction);
+      this.set('transition', onTransitionAction);
 
-      this.render(hbs`
-        {{#step-manager did-transition=(action 'transition') as |w|}}
+      await render(hbs`
+        {{#step-manager did-transition=(action transition) as |w|}}
           <button {{action w.transition-to-next 'some value'}}>
             Transition to Next
           </button>
@@ -478,18 +478,18 @@ describe('Integration: StepManagerComponent', function() {
         {{/step-manager}}
       `);
 
-      click('button');
+      await click('button');
 
       expect(onTransitionAction).to.be.called;
     });
 
     describe('the arguments', function() {
-      it('passes the destination and source step', function() {
+      it('passes the destination and source step', async function() {
         const action = td.function('did-transition action');
-        this.on('action', action);
+        this.set('action', action);
 
-        this.render(hbs`
-          {{#step-manager did-transition=(action 'action') as |w|}}
+        await render(hbs`
+          {{#step-manager did-transition=(action action) as |w|}}
             {{w.step name='first'}}
             {{w.step name='second'}}
 
@@ -498,7 +498,7 @@ describe('Integration: StepManagerComponent', function() {
             </button>
           {{/step-manager}}
         `);
-        click('button');
+        await click('button');
 
         expect(action).to.be.calledWith(
           matchContains({
@@ -508,12 +508,12 @@ describe('Integration: StepManagerComponent', function() {
         );
       });
 
-      it('passes the value when given one', function() {
+      it('passes the value when given one', async function() {
         const action = td.function('did-transition action');
-        this.on('action', action);
+        this.set('action', action);
 
-        this.render(hbs`
-          {{#step-manager did-transition=(action 'action') as |w|}}
+        await render(hbs`
+          {{#step-manager did-transition=(action action) as |w|}}
             {{w.step}}
             {{w.step}}
 
@@ -522,7 +522,7 @@ describe('Integration: StepManagerComponent', function() {
             </button>
           {{/step-manager}}
         `);
-        click('button');
+        await click('button');
 
         expect(action).to.be.calledWith(
           matchContains({
@@ -534,12 +534,12 @@ describe('Integration: StepManagerComponent', function() {
   });
 
   describe('providing a `will-transition` action', function() {
-    it('is not fired before entering the initial route', function() {
+    it('is not fired before entering the initial route', async function() {
       const beforeAction = td.function('before action');
-      this.on('beforeAction', beforeAction);
+      this.set('beforeAction', beforeAction);
 
-      this.render(hbs`
-        {{#step-manager will-transition=(action 'beforeAction') as |w|}}
+      await render(hbs`
+        {{#step-manager will-transition=(action beforeAction) as |w|}}
           {{w.step name='first'}}
         {{/step-manager}}
       `);
@@ -547,12 +547,12 @@ describe('Integration: StepManagerComponent', function() {
       expect(beforeAction).not.to.be.called;
     });
 
-    it('is fired before a named transition', function() {
+    it('is fired before a named transition', async function() {
       const beforeAction = td.function('before action');
-      this.on('beforeAction', beforeAction);
+      this.set('beforeAction', beforeAction);
 
-      this.render(hbs`
-        {{#step-manager will-transition=(action 'beforeAction') as |w|}}
+      await render(hbs`
+        {{#step-manager will-transition=(action beforeAction) as |w|}}
           {{w.step name='initial'}}
           {{w.step name='next'}}
 
@@ -561,17 +561,17 @@ describe('Integration: StepManagerComponent', function() {
           </button>
         {{/step-manager}}
       `);
-      click('button');
+      await click('button');
 
       expect(beforeAction).to.be.called;
     });
 
-    it('is fired before a sequential transition', function() {
+    it('is fired before a sequential transition', async function() {
       const beforeAction = td.function('before action');
-      this.on('beforeAction', beforeAction);
+      this.set('beforeAction', beforeAction);
 
-      this.render(hbs`
-        {{#step-manager will-transition=(action 'beforeAction') as |w|}}
+      await render(hbs`
+        {{#step-manager will-transition=(action beforeAction) as |w|}}
           {{w.step}}
           {{w.step}}
 
@@ -580,18 +580,18 @@ describe('Integration: StepManagerComponent', function() {
           </button>
         {{/step-manager}}
       `);
-      click('button');
+      await click('button');
 
       expect(beforeAction).to.be.called;
     });
 
     describe('the arguments', function() {
-      it('passes the destination and source step', function() {
+      it('passes the destination and source step', async function() {
         const beforeAction = td.function('before action');
-        this.on('beforeAction', beforeAction);
+        this.set('beforeAction', beforeAction);
 
-        this.render(hbs`
-          {{#step-manager will-transition=(action 'beforeAction') as |w|}}
+        await render(hbs`
+          {{#step-manager will-transition=(action beforeAction) as |w|}}
             {{w.step name='first'}}
             {{w.step name='second'}}
 
@@ -600,7 +600,7 @@ describe('Integration: StepManagerComponent', function() {
             </button>
           {{/step-manager}}
         `);
-        click('button');
+        await click('button');
 
         expect(beforeAction).to.be.calledWith(
           matchContains({
@@ -610,12 +610,12 @@ describe('Integration: StepManagerComponent', function() {
         );
       });
 
-      it('passes the value when given one', function() {
+      it('passes the value when given one', async function() {
         const beforeAction = td.function('before action');
-        this.on('beforeAction', beforeAction);
+        this.set('beforeAction', beforeAction);
 
-        this.render(hbs`
-          {{#step-manager will-transition=(action 'beforeAction') as |w|}}
+        await render(hbs`
+          {{#step-manager will-transition=(action beforeAction) as |w|}}
             {{w.step}}
             {{w.step}}
 
@@ -624,7 +624,7 @@ describe('Integration: StepManagerComponent', function() {
             </button>
           {{/step-manager}}
         `);
-        click('button');
+        await click('button');
 
         expect(beforeAction).to.be.calledWith(
           matchContains({
@@ -633,12 +633,12 @@ describe('Integration: StepManagerComponent', function() {
         );
       });
 
-      it('passes the direction when using transition-to-next or transition-to-previous', function() {
+      it('passes the direction when using transition-to-next or transition-to-previous', async function() {
         const beforeAction = td.function('before action');
-        this.on('beforeAction', beforeAction);
+        this.set('beforeAction', beforeAction);
 
-        this.render(hbs`
-          {{#step-manager will-transition=(action 'beforeAction') as |w|}}
+        await render(hbs`
+          {{#step-manager will-transition=(action beforeAction) as |w|}}
             {{w.step}}
             {{w.step}}
 
@@ -647,7 +647,7 @@ describe('Integration: StepManagerComponent', function() {
             </button>
           {{/step-manager}}
         `);
-        click('button');
+        await click('button');
 
         expect(beforeAction).to.be.calledWith(
           matchContains({
@@ -657,18 +657,18 @@ describe('Integration: StepManagerComponent', function() {
       });
     });
 
-    it('can wait for a promise to resolve', function(done) {
+    it('can wait for a promise to resolve', async function() {
       let didTransition = false;
       const waitForMe = function() {
         return new RSVP.Promise(function(resolve) {
           run.later(null, resolve, 500);
         });
       };
-      this.on('beforeAction', waitForMe);
-      this.on('afterTransition', () => (didTransition = true));
+      this.set('beforeAction', waitForMe);
+      this.set('afterTransition', () => (didTransition = true));
 
-      this.render(hbs`
-        {{#step-manager will-transition=(action 'beforeAction') did-transition=(action 'afterTransition') as |w|}}
+      await render(hbs`
+        {{#step-manager will-transition=(action beforeAction) did-transition=(action afterTransition) as |w|}}
           {{#w.step name='first'}}
             <div data-test={{hook 'first'}}></div>
           {{/w.step}}
@@ -683,33 +683,27 @@ describe('Integration: StepManagerComponent', function() {
         {{/step-manager}}
       `);
 
-      click('button');
-
       expect(didTransition).to.equal(false);
 
-      return wait()
-        .then(() => {
-          expect(didTransition).to.equal(true);
-          expect($hook('first')).not.to.be.visible;
-          expect($hook('second')).to.be.visible;
-        })
-        .then(done, done);
+      await click('button');
+
+      expect(didTransition).to.equal(true);
+      expect($hook('first')).not.to.be.visible;
+      expect($hook('second')).to.be.visible;
     });
 
-    it('prevents the transition if the promise resolve to `false`', function(
-      done
-    ) {
+    it('prevents the transition if the promise resolve to `false`', async function() {
       let didTransition = false;
       const waitForMe = function() {
         return new RSVP.Promise(function(resolve) {
           run.later(null, () => resolve(false), 500);
         });
       };
-      this.on('beforeAction', waitForMe);
-      this.on('afterTransition', () => (didTransition = true));
+      this.set('beforeAction', waitForMe);
+      this.set('afterTransition', () => (didTransition = true));
 
-      this.render(hbs`
-        {{#step-manager will-transition=(action 'beforeAction') did-transition=(action 'afterTransition') as |w|}}
+      await render(hbs`
+        {{#step-manager will-transition=(action beforeAction) did-transition=(action afterTransition) as |w|}}
           {{#w.step name='first'}}
             <div data-test={{hook 'first'}}></div>
           {{/w.step}}
@@ -724,31 +718,25 @@ describe('Integration: StepManagerComponent', function() {
         {{/step-manager}}
       `);
 
-      click('button');
+      await click('button');
 
       expect(didTransition).to.equal(false);
-
-      return wait()
-        .then(() => {
-          expect(didTransition).to.equal(false);
-          expect($hook('first')).to.be.visible;
-          expect($hook('second')).not.to.be.visible;
-        })
-        .then(done, done);
+      expect($hook('first')).to.be.visible;
+      expect($hook('second')).not.to.be.visible;
     });
 
-    it('prevents the transition if the promise reject', function(done) {
+    it('prevents the transition if the promise reject', async function() {
       let didTransition = false;
       const waitForMe = function() {
         return new RSVP.Promise(function(resolve, reject) {
           run.later(null, reject, 500);
         });
       };
-      this.on('beforeAction', waitForMe);
-      this.on('afterTransition', () => (didTransition = true));
+      this.set('beforeAction', waitForMe);
+      this.set('afterTransition', () => (didTransition = true));
 
-      this.render(hbs`
-        {{#step-manager will-transition=(action 'beforeAction') did-transition=(action 'afterTransition') as |w|}}
+      await render(hbs`
+        {{#step-manager will-transition=(action beforeAction) did-transition=(action afterTransition) as |w|}}
           {{#w.step name='first'}}
             <div data-test={{hook 'first'}}></div>
           {{/w.step}}
@@ -763,26 +751,20 @@ describe('Integration: StepManagerComponent', function() {
         {{/step-manager}}
       `);
 
-      click('button');
+      await click('button');
 
       expect(didTransition).to.equal(false);
-
-      return wait()
-        .then(() => {
-          expect(didTransition).to.equal(false);
-          expect($hook('first')).to.be.visible;
-          expect($hook('second')).not.to.be.visible;
-        })
-        .then(done, done);
+      expect($hook('first')).to.be.visible;
+      expect($hook('second')).not.to.be.visible;
     });
 
-    it('prevents the transition if it returns `false`', function() {
+    it('prevents the transition if it returns `false`', async function() {
       const beforeAction = td.function('before action');
       td.when(beforeAction(matchAnything())).thenReturn(false);
-      this.on('beforeAction', beforeAction);
+      this.set('beforeAction', beforeAction);
 
-      this.render(hbs`
-        {{#step-manager will-transition=(action 'beforeAction') as |w|}}
+      await render(hbs`
+        {{#step-manager will-transition=(action beforeAction) as |w|}}
           {{#w.step name='first'}}
             <div data-test={{hook 'first'}}></div>
           {{/w.step}}
@@ -797,23 +779,23 @@ describe('Integration: StepManagerComponent', function() {
         {{/step-manager}}
       `);
 
-      click('button');
+      await click('button');
 
       expect($hook('first')).to.be.visible;
       expect($hook('second')).not.to.be.visible;
     });
 
-    it("doesn't update loading when destroyed", function(done) {
+    it("doesn't update loading when destroyed", async function() {
       let didTransition = false;
-      this.on('beforeAction', function() {
+      this.set('beforeAction', function() {
         return new RSVP.Promise(function(resolve) {
           run.later(null, resolve, 500);
         });
       });
-      this.on('afterTransition', () => (didTransition = true));
+      this.set('afterTransition', () => (didTransition = true));
 
-      this.render(hbs`
-        {{#step-manager will-transition=(action 'beforeAction') did-transition=(action 'afterTransition') as |w|}}
+      await render(hbs`
+        {{#step-manager will-transition=(action beforeAction) did-transition=(action afterTransition) as |w|}}
           {{#w.step name='first'}}
             <div data-test={{hook 'first'}}></div>
           {{/w.step}}
@@ -829,24 +811,17 @@ describe('Integration: StepManagerComponent', function() {
       `);
 
       click('button');
+      await this.clearRender();
 
       expect(didTransition).to.equal(false);
-
-      this.clearRender();
-
-      return wait()
-        .then(() => {
-          expect(didTransition).to.equal(false);
-          expect($hook('first')).not.to.be.visible;
-          expect($hook('second')).not.to.be.visible;
-        })
-        .then(done, done);
+      expect($hook('first')).not.to.be.visible;
+      expect($hook('second')).not.to.be.visible;
     });
   });
 
   describe('assigning step indices', function() {
-    it('works outside of a loop', function() {
-      this.render(hbs`
+    it('works outside of a loop', async function() {
+      await render(hbs`
         {{#step-manager as |w|}}
           {{#w.step}}
             <div data-test={{hook 'step' index=0}}></div>
@@ -864,7 +839,7 @@ describe('Integration: StepManagerComponent', function() {
       expect($hook('step', { index: 0 })).to.be.visible;
       expect($hook('step', { index: 1 })).not.to.be.visible;
 
-      click('button');
+      await click('button');
 
       expect($hook('step', { index: 0 })).not.to.be.visible;
       expect($hook('step', { index: 1 })).to.be.visible;
@@ -872,8 +847,8 @@ describe('Integration: StepManagerComponent', function() {
   });
 
   describe('showing alternate step states', function() {
-    it('property is added by the HTMLBars transform', function() {
-      this.render(hbs`
+    it('property is added by the HTMLBars transform', async function() {
+      await render(hbs`
         {{#step-manager as |w|}}
           <div data-test={{hook 'step' index=0}}>
             {{#w.step}}
@@ -903,8 +878,8 @@ describe('Integration: StepManagerComponent', function() {
       this.set('data', A([{ name: 'foo' }, { name: 'bar' }]));
     });
 
-    it('allows dynamically creating steps', function() {
-      this.render(hbs`
+    it('allows dynamically creating steps', async function() {
+      await render(hbs`
         {{#step-manager currentStep=(unbound data.firstObject.name) as |w|}}
           <div data-test={{hook 'steps'}}>
             {{#each data as |item|}}
@@ -926,15 +901,15 @@ describe('Integration: StepManagerComponent', function() {
       expect($hook('step', { name: 'bar' })).not.to.be.visible;
       expect($hook('steps').text().trim()).to.equal('foo');
 
-      click('button');
+      await click('button');
 
       expect($hook('step', { name: 'foo' })).not.to.be.visible;
       expect($hook('step', { name: 'bar' })).to.be.visible;
       expect($hook('steps').text().trim()).to.equal('bar');
     });
 
-    it('allows for adding more steps after the initial render', function() {
-      this.render(hbs`
+    it('allows for adding more steps after the initial render', async function() {
+      await render(hbs`
         {{#step-manager currentStep=(unbound data.firstObject.name) as |w|}}
           <div data-test={{hook 'steps'}}>
             {{#each data as |item|}}
@@ -952,7 +927,7 @@ describe('Integration: StepManagerComponent', function() {
         {{/step-manager}}
       `);
 
-      click('button');
+      await click('button');
 
       this.set('data', A([{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }]));
 
@@ -961,7 +936,7 @@ describe('Integration: StepManagerComponent', function() {
       expect($hook('step', { name: 'baz' })).not.to.be.visible;
 
       // Check that the previous "last step" now points to the new one
-      click('button');
+      await click('button');
 
       expect($hook('step', { name: 'foo' })).not.to.be.visible;
       expect($hook('step', { name: 'bar' })).not.to.be.visible;
@@ -969,7 +944,7 @@ describe('Integration: StepManagerComponent', function() {
       expect($hook('steps').text().trim()).to.equal('baz');
 
       // Check that the new step now points to the first one
-      click('button');
+      await click('button');
 
       expect($hook('step', { name: 'foo' })).to.be.visible;
       expect($hook('step', { name: 'bar' })).not.to.be.visible;
