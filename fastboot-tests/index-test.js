@@ -1,3 +1,5 @@
+/* eslint-disable ember/no-global-jquery */
+
 const { expect } = require('chai');
 
 describe('index', function() {

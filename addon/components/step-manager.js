@@ -1,10 +1,11 @@
-import Ember from 'ember';
+import Component from '@ember/component';
+import { set, get } from '@ember/object';
+import { isEmpty } from '@ember/utils';
 import RSVP from 'rsvp';
 import hbs from 'htmlbars-inline-precompile';
 import StateMachine from 'ember-steps/-private/state-machine';
 import { MissingPropertyError } from 'ember-steps/-private/errors';
 
-const { Component, get, set } = Ember;
 const layout = hbs`
   {{yield (hash
     step=(component 'step-manager/step'
@@ -84,8 +85,8 @@ export default Component.extend({
    */
   'do-transition'(to, from, value, direction) {
     // Update the `currentStep` if it's mutable
-    if (this.attrs.currentStep && this.attrs.currentStep.update) {
-      this.attrs.currentStep.update(to);
+    if (!isEmpty(get(this, 'currentStep'))) {
+      set(this, 'currentStep', to);
     }
 
     // Activate the next step

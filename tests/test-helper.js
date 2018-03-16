@@ -1,18 +1,9 @@
-import Ember from 'ember';
-import resolver from './helpers/resolver';
-import { setResolver } from 'ember-mocha';
-
+import Application from '../app';
+import config from '../config/environment';
+import { setApplication } from '@ember/test-helpers';
+import { computed, get } from '@ember/object';
 import StepManagerComponent from 'ember-steps/components/step-manager';
 import StepComponent from 'ember-steps/components/step-manager/step';
-
-const { $, computed, get } = Ember;
-
-setResolver(resolver);
-
-// Custom test Mocha browser config
-if (window.location.search.indexOf('nocontainer') > -1) {
-  $('#ember-testing-container').css({ visibility: 'hidden' });
-}
 
 // Configure ember-hook
 StepManagerComponent.reopen({
@@ -28,3 +19,5 @@ StepComponent.reopen({
     return { index, name };
   })
 });
+
+setApplication(Application.create(config.APP));

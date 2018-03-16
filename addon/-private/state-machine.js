@@ -1,6 +1,4 @@
-import Ember from 'ember';
-
-const { Object: EmberObject, computed, get, set } = Ember;
+import EmberObject, { set, get, computed } from '@ember/object';
 
 export default EmberObject.extend({
   /**
