@@ -1,0 +1,26 @@
+.progress-indicators {
+  align-items: center;
+  display: flex;
+}
+
+.progress-dot {
+  background: lightgrey;
+  border-radius: 15px;
+  border: 3px solid lightgrey;
+  height: 15px;
+  padding: 0;
+  width: 15px;
+
+  &:focus {
+    outline: 0;
+  }
+
+  &[aria-pressed] {
+    background: grey;
+    border-color: grey;
+  }
+
+  &:not(:last-child) {
+    margin-right: 1em;
+  }
+}

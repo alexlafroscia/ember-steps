@@ -1,0 +1,23 @@
+{{#docs-demo as |demo|}}
+  {{#demo.example name='dynamic-definition-basic-example.hbs'}}
+    {{#step-manager currentStep=(unbound (get data 0)) as |w|}}
+      {{#each data as |content|}}
+        {{#w.step name=(unbound content)}}
+          {{content}}
+        {{/w.step}}
+      {{/each}}
+
+      {{#control-group}}
+        <button {{action w.transition-to-previous}}>
+          Previous
+        </button>
+        <button {{action w.transition-to-next}}>
+          Next
+        </button>
+      {{/control-group}}
+    {{/step-manager}}
+  {{/demo.example}}
+
+  {{demo.snippet 'dynamic-definition-basic-example.js' label='component.js'}}
+  {{demo.snippet 'dynamic-definition-basic-example.hbs'}}
+{{/docs-demo}}

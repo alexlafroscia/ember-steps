@@ -1,0 +1,39 @@
+{{#docs-demo as |demo|}}
+  {{#demo.example name='demo-wizard-with-progress-indicator.hbs'}}
+    {{#step-manager as |w|}}
+      {{#w.step}}
+        This content is on the first step
+      {{/w.step}}
+
+      {{#w.step}}
+        This content is on the second step
+      {{/w.step}}
+
+      {{#w.step}}
+        This content is on the third step
+      {{/w.step}}
+
+      <hr>
+
+      <div local-class="toolbar">
+        <button {{action w.transition-to-previous}}>
+          Previous
+        </button>
+        <div local-class="progress-indicators">
+          {{#each w.steps as |step|}}
+            <button
+                local-class="progress-dot"
+                aria-pressed={{eq w.currentStep step}}
+                {{action (action w.transition-to step)}}>
+            </button>
+          {{/each}}
+        </div>
+        <button {{action w.transition-to-next}}>
+          Next
+        </button>
+      </div>
+    {{/step-manager}}
+  {{/demo.example}}
+
+  {{demo.snippet 'demo-wizard-with-progress-indicator.hbs'}}
+{{/docs-demo}}
