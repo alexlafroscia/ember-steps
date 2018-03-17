@@ -1,12 +1,8 @@
 # ember-steps
 
 [![Build Status](https://travis-ci.org/alexlafroscia/ember-steps.svg?branch=master)](https://travis-ci.org/alexlafroscia/ember-steps)
-[![Ember Versions](https://embadge.io/v1/badge.svg?start=2.8.0)](#compatibility-note)
 
-## Features
-
-- Provides an extremely generic way of describing a series of views that should be shown in succession.
-- Non-intrusive as the addon components do not create additional HTML.
+> Declaratively create wizards, tabs, or any interface with sections of the page that should be shown one-at-a-time
 
 ## Installation
 
@@ -64,14 +60,12 @@ The `step-manager` provides a [closure action][ember-closure-actions] that can b
 
 ## Not-So-Basic Usage
 
-The above examples show the basic idea, but there's more configuration (and power) available if you need it.  Head over to [the wiki][wiki] to read more about what `ember-steps` can do!
+The above examples show the basic idea, but there's more configuration (and power) available if you need it.  Head over to [the cookbook][cookbook] to read more about what `ember-steps` can do!
 
 ## Compatibility Note
 
-Tests are no longer run against anything before 2.8.0, since that's the lowest LTS supported by the core team at this time. Older versions may work, but no promises.
+Ember `2.12` is the earliest version that the tests are run against. YMMV with older versions of Ember.
 
-This addon uses the [hash helper][hash-helper], so Ember 2.3.0+ is required. If you want something that will definitely work on a version of Ember lower than 2.8.0, use `v0.15.0` of this addon.
-
-[ember-closure-actions]: https://guides.emberjs.com/v2.8.0/templates/actions/
-[wiki]: https://github.com/alexlafroscia/ember-steps/wiki
+[ember-closure-actions]: https://guides.emberjs.com/v3.0.0/templates/actions/
+[cookbook]: http://alexlafroscia.com/ember-steps/latest/docs/cookbook
 [hash-helper]: http://emberjs.com/blog/2016/01/15/ember-2-3-released.html#toc_hash-helper
