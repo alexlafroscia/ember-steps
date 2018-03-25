@@ -248,17 +248,15 @@ describe('Integration: StepManagerComponent', function() {
               {{/w.step}}
             </div>
 
-            <ul>
-              {{#each w.steps as |step|}}
-                <li onClick={{action w.transition-to step}} data-test={{hook 'step-trigger' step=step}}>
-                  {{step}}
-                </li>
-              {{/each}}
-            </ul>
+            {{#each w.steps as |step|}}
+              <a {{action w.transition-to step}} data-test={{hook 'step-trigger' step=step}}>
+                {{step}}
+              </a>
+            {{/each}}
           {{/step-manager}}
         `);
 
-        expect(this.$('li')).to.have.length(2);
+        expect($hook('step-trigger')).to.have.length(2);
         expect($hook('step-trigger', { step: 'foo' })).to.contain('foo');
         expect($hook('step-trigger', { step: 'bar' })).to.contain('bar');
 
@@ -272,13 +270,11 @@ describe('Integration: StepManagerComponent', function() {
       it('can render the array before the steps are defined', async function() {
         await render(hbs`
           {{#step-manager as |w|}}
-            <ul>
-              {{#each w.steps as |step|}}
-                <li onClick={{action w.transition-to step}} data-test={{hook 'step-trigger' step=step}}>
-                  {{step}}
-                </li>
-              {{/each}}
-            </ul>
+            {{#each w.steps as |step|}}
+              <a {{action w.transition-to step}} data-test={{hook 'step-trigger' step=step}}>
+                {{step}}
+              </a>
+            {{/each}}
 
             <div data-test={{hook 'active-step'}}>
               {{#w.step name='foo'}}
@@ -292,7 +288,7 @@ describe('Integration: StepManagerComponent', function() {
           {{/step-manager}}
         `);
 
-        expect(this.$('li')).to.have.length(2);
+        expect($hook('step-trigger')).to.have.length(2);
         expect($hook('step-trigger', { step: 'foo' })).to.contain('foo');
         expect($hook('step-trigger', { step: 'bar' })).to.contain('bar');
 
