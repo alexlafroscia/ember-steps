@@ -15,7 +15,7 @@
 
       <hr>
 
-      <div local-class="toolbar">
+      {{#control-group}}
         <button {{action w.transition-to-previous}}>
           Previous
         </button>
@@ -31,7 +31,7 @@
         <button {{action w.transition-to-next}}>
           Next
         </button>
-      </div>
+      {{/control-group}}
     {{/step-manager}}
   {{/demo.example}}
 

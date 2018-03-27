@@ -4,19 +4,21 @@
 .tab-group {
   display: flex;
   border-bottom: 1px solid --grey;
-  margin-bottom: 1px;
+  margin-bottom: 1em;
 
   > * {
     background: --grey;
     border: 1px solid --grey;
     color: black;
+    font-size: 0.9em;
     margin-bottom: -1px;
-    outline: none;
-    padding: 10px 15px;
+    padding: 0.7em 1em;
     text-decoration: none;
 
+    &:focus,
     &:hover {
       background: --light-grey;
+      outline: none;
     }
 
     &:not(:first-child) {
@@ -27,6 +29,7 @@
     &:global(.active) {
       background: white;
       border-bottom: 1px solid white;
+      outline: none;
     }
   }
 }

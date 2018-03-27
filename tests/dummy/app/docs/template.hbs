@@ -1,7 +1,10 @@
+{{docs-header}}
+
 {{#docs-viewer as |viewer|}}
   {{#viewer.nav as |nav|}}
     {{nav.item 'Overview' 'docs.index'}}
-    {{nav.item 'Cookbook' 'docs.cookbook.index'}}
+
+    {{nav.section 'Cookbook'}}
     {{#nav.subnav as |cookbook|}}
       {{cookbook.item 'Dynamic Definition of Steps' 'docs.cookbook.dynamic-definition'}}
       {{cookbook.item 'Tabbed Interface' 'docs.cookbook.tabs'}}

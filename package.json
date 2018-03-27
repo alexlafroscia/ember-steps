@@ -13,7 +13,9 @@
     "start": "ember serve",
     "test": "ember try:each"
   },
+  "main": "index.js",
   "repository": "https://github.com/alexlafroscia/ember-steps",
+  "homepage": "https://alexlafroscia.github.io/ember-steps",
   "engines": {
     "node": "6.* || >= 7.*"
   },
@@ -28,7 +30,7 @@
     "ember-ajax": "^3.1.0",
     "ember-block-slots": "^1.1.11",
     "ember-cli": "~3.0.0",
-    "ember-cli-addon-docs": "^0.2.2",
+    "ember-cli-addon-docs": "^0.3.0",
     "ember-cli-addon-docs-yuidoc": "^0.1.0",
     "ember-cli-chai": "^0.4.2",
     "ember-cli-dependency-checker": "^2.0.1",
@@ -81,6 +83,5 @@
   "ember-addon": {
     "configPath": "tests/dummy/config",
     "demoURL": "http://alexlafroscia.com/ember-steps/"
-  },
-  "main": "index.js"
+  }
 }

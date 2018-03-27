@@ -12,6 +12,7 @@ https://github.com/alexlafroscia/ember-steps/wiki/dynamically-generating-steps`;
 /**
  * @class MissingPropertyError
  * @private
+ * @hide
  */
 export function MissingPropertyError(missingProperty) {
   this.name = 'MissingPropertyError';
@@ -23,6 +24,7 @@ MissingPropertyError.prototype = new Error();
 /**
  * @class StepNameError
  * @private
+ * @hide
  */
 export function StepNameError(message) {
   this.name = 'StepNameError';

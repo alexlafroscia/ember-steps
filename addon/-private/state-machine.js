@@ -6,6 +6,7 @@ import EmberObject, { set, get, computed } from '@ember/object';
  *
  * @class StateMachine
  * @private
+ * @hide
  */
 export default EmberObject.extend({
   /**
