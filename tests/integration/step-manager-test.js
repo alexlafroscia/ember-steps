@@ -10,7 +10,7 @@ import RSVP from 'rsvp';
 
 const { matchers: { anything: matchAnything, contains: matchContains } } = td;
 
-module('Integration: StepManagerComponent', function(hooks) {
+module('step-manager', function(hooks) {
   setupRenderingTest(hooks);
 
   hooks.beforeEach(initializeEmberHook);

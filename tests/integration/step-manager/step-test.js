@@ -5,7 +5,7 @@ import { render } from '@ember/test-helpers';
 import td from 'testdouble';
 import { initialize as initializeEmberHook, hook } from 'ember-hook';
 
-module('Integration: StepManagerStepComponent', function(hooks) {
+module('step-manger/step', function(hooks) {
   setupRenderingTest(hooks);
 
   hooks.beforeEach(initializeEmberHook);
