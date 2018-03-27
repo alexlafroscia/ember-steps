@@ -60,12 +60,11 @@ The `step-manager` provides a [closure action][ember-closure-actions] that can b
 
 ## Not-So-Basic Usage
 
-The above examples show the basic idea, but there's more configuration (and power) available if you need it.  Head over to [the cookbook][cookbook] to read more about what `ember-steps` can do!
+The above examples show the basic idea, but there's more configuration (and power) available if you need it.  Head over to {{docs-link 'the cookbook' 'docs.cookbook'}} to read more about what `ember-steps` can do!
 
 ## Compatibility Note
 
 Ember `2.12` is the earliest version that the tests are run against. YMMV with older versions of Ember.
 
 [ember-closure-actions]: https://guides.emberjs.com/v3.0.0/templates/actions/
-[cookbook]: http://alexlafroscia.com/ember-steps/latest/docs/cookbook
 [hash-helper]: http://emberjs.com/blog/2016/01/15/ember-2-3-released.html#toc_hash-helper

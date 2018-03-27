@@ -1,141 +1,94 @@
-import { expect } from 'chai';
-import { setupComponentTest } from 'ember-mocha';
-import { beforeEach, describe, it } from 'mocha';
-import td from 'testdouble';
+import { module, test, skip } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import { initialize as initializeEmberHook, $hook } from 'ember-hook';
-import { StepNameError } from 'ember-steps/-private/errors';
+import { render } from '@ember/test-helpers';
+import td from 'testdouble';
+import { initialize as initializeEmberHook, hook } from 'ember-hook';
 
-describe('Integration: StepManagerStepComponent', function() {
-  setupComponentTest('step-manager/step', {
-    integration: true
+module('Integration: StepManagerStepComponent', function(hooks) {
+  setupRenderingTest(hooks);
+
+  hooks.beforeEach(initializeEmberHook);
+
+  hooks.beforeEach(function() {
+    this.set('register', function() {});
   });
 
-  beforeEach(initializeEmberHook);
-
-  beforeEach(function() {
-    this.on('register', function() {});
-  });
-
-  describe('registering with the rendering context', function() {
-    it('registers itself with the step manager', function() {
+  module('registering with the rendering context', function() {
+    test('registers itself with the step manager', async function(assert) {
       const registerAction = td.function();
-      this.on('register', registerAction);
+      this.set('register', registerAction);
 
-      this.render(hbs`
-        {{step-manager/step name='foo' register-step=(action 'register')}}
+      await render(hbs`
+        {{step-manager/step name='foo' register-step=(action register)}}
       `);
 
-      expect(registerAction).to.be.called;
+      assert.wasCalled(registerAction);
     });
 
-    it.skip(
-      'throws an error when not provided a registration action',
-      function() {
-        expect(() => {
-          this.render(hbs`{{step-manager/step}}`);
-        }).to.throw(Error);
-      }
-    );
-  });
-
-  describe('the step name', function() {
-    it.skip('must be provided', function() {
-      expect(() => {
-        this.render(hbs`
-          {{step-manager/step register-step=(action 'register')}}
-        `);
-      }).to.throw(StepNameError, /Name must be provided/);
-    });
-
-    describe('with immuatable values', function() {
-      it('can be given a value with the `unbound` helper', function() {
-        this.set('name', 'someValue');
-
-        expect(() => {
-          this.render(hbs`
-            {{step-manager/step name=(unbound name) register-step=(action 'register')}}
-          `);
-        }).not.to.throw(StepNameError);
-      });
-
-      it('can be given a string primitive', function() {
-        expect(() => {
-          this.render(hbs`
-            {{step-manager/step name='someValue' register-step=(action 'register')}}
-          `);
-        }).not.to.throw(StepNameError);
-      });
-    });
-
-    describe('with mutable values', function() {
-      beforeEach(function() {
-        this.set('name', 'someValue');
-      });
-
-      it.skip('errors when given a value from the `mut` helper', function() {
-        expect(() => {
-          this.render(hbs`
-            {{step-manager/step name=(mut name) register-step=(action 'register')}}
-          `);
-        }).to.throw(StepNameError, /Name must be an immutable string/);
-      });
-
-      // Skipped because there's currently no way to detect the `readonly` helper
-      // at runtime. I eventually want to be able to error here because changes to
-      // this value will not actually change the name of the step and could get
-      // the user in trouble.
-      it.skip(
-        'errors when given a value from the `readonly` helper',
-        function() {
-          expect(() => {
-            this.render(hbs`
-          {{step-manager/step name=(readonly name) register-step=(action 'register')}}
-        `);
-          }).to.throw(StepNameError, /Name must be an immutable string/);
-        }
-      );
-
-      it.skip('errors when given a dynamic property directly', function() {
-        expect(() => {
-          this.render(hbs`
-            {{step-manager/step name=name register-step=(action 'register')}}
-          `);
-        }).to.throw(StepNameError, /Name must be an immutable string/);
-      });
+    skip('throws an error when not provided a registration action', function(
+      assert
+    ) {
+      assert.throws(async () => {
+        await render(hbs`{{step-manager/step}}`);
+      }, Error);
     });
   });
 
-  describe('rendering', function() {
-    it('renders block content when visible', function() {
-      this.render(hbs`
-        {{#step-manager/step name='foo' isActive=true register-step=(action 'register')}}
+  module('the step name', function() {
+    skip('must be provided', function(assert) {
+      assert.throws(async () => {
+        await render(hbs`
+          {{step-manager/step register-step=(action register)}}
+        `);
+      }, /Name must be provided/);
+    });
+
+    test('throws an error when changed', async function(assert) {
+      this.set('name', 'foo');
+
+      await render(hbs`
+        {{step-manager/step name=name register-step=(action register)}}
+      `);
+
+      assert.expectAssertion(() => {
+        this.set('name', 'bar');
+      }, 'The `name` property should never change');
+    });
+  });
+
+  module('rendering', function() {
+    test('renders block content when visible', async function(assert) {
+      await render(hbs`
+        {{#step-manager/step name='foo' isActive=true register-step=(action register)}}
           <div data-test={{hook 'step'}}>
             Foo
           </div>
         {{/step-manager/step}}
       `);
 
-      expect($hook('step')).to.contain('Foo');
+      assert.dom(hook('step')).hasText('Foo');
     });
 
-    describe('when inactive', function() {
-      it('is hidden when no alternate state is provided', function() {
-        this.render(hbs`
-          {{#step-manager/step name='foo' register-step=(action 'register')}}
+    module('when inactive', function() {
+      test('is hidden when no alternate state is provided', async function(
+        assert
+      ) {
+        await render(hbs`
+          {{#step-manager/step name='foo' register-step=(action register)}}
             <div data-test={{hook 'step'}}>
               Active Content
             </div>
           {{/step-manager/step}}
         `);
 
-        expect($hook('step')).not.to.be.visible;
+        assert.dom(hook('step')).doesNotExist();
       });
 
-      it('renders the inverse block if provided', function() {
-        this.render(hbs`
+      test('renders the inverse block if provided', async function(assert) {
+        await render(hbs`
           <div data-test={{hook 'step'}}>
-            {{#step-manager/step name='foo' hasInactiveState=true register-step=(action 'register')}}
+            {{#step-manager/step name='foo' hasInactiveState=true register-step=(action register)}}
               Active Content
             {{else}}
               Inactive Content
@@ -143,110 +96,112 @@ describe('Integration: StepManagerStepComponent', function() {
           </div>
         `);
 
-        expect($hook('step')).to.contain('Inactive Content');
+        assert.dom(hook('step')).hasText('Inactive Content');
       });
     });
   });
 
-  describe('programmatically controlling visibility', function() {
-    it('is visible when active', function() {
-      this.render(hbs`
-        {{#step-manager/step name='foo' isActive=true register-step=(action 'register')}}
+  module('programmatically controlling visibility', function() {
+    test('is visible when active', async function(assert) {
+      await render(hbs`
+        {{#step-manager/step name='foo' isActive=true register-step=(action register)}}
           <div data-test={{hook 'step'}}></div>
         {{/step-manager/step}}
       `);
 
-      expect($hook('step')).to.be.visible;
+      assert.dom(hook('step')).exists();
     });
 
-    it('is invisible when not active', function() {
-      this.render(hbs`
-        {{#step-manager/step name='foo' register-step=(action 'register')}}
+    test('is invisible when not active', async function(assert) {
+      await render(hbs`
+        {{#step-manager/step name='foo' register-step=(action register)}}
           <div data-test={{hook 'step'}}></div>
         {{/step-manager/step}}
       `);
 
-      expect($hook('step')).not.to.be.visible;
+      assert.dom(hook('step')).doesNotExist();
     });
   });
 
-  describe('lifecycle hooks', function() {
-    describe('will-enter', function() {
-      it('is called if the step is initially active', function() {
+  module('lifecycle hooks', function() {
+    module('will-enter', function() {
+      test('is called if the step is initially active', async function(assert) {
         const entranceAction = td.function();
-        this.on('entrance', entranceAction);
+        this.set('entrance', entranceAction);
         this.set('currentStep', 'foo');
 
-        this.render(hbs`
+        await render(hbs`
           {{step-manager/step
               name='foo'
               currentStep=currentStep
-              will-enter=(action 'entrance')
-              register-step=(action 'register')}}
+              will-enter=(action entrance)
+              register-step=(action register)}}
         `);
 
         this.set('currentStep', 'foo');
 
-        expect(entranceAction).to.be.called;
+        assert.wasCalled(entranceAction);
       });
 
-      it('is called when the step becomes active', function() {
+      test('is called when the step becomes active', async function(assert) {
         const entranceAction = td.function();
-        this.on('entrance', entranceAction);
+        this.set('entrance', entranceAction);
         this.set('currentStep', 'bar');
 
-        this.render(hbs`
+        await render(hbs`
           {{step-manager/step
               name='foo'
               currentStep=currentStep
-              will-enter=(action 'entrance')
-              register-step=(action 'register')}}
+              will-enter=(action entrance)
+              register-step=(action register)}}
         `);
 
         // Activate the step
         this.set('currentStep', 'foo');
 
-        expect(entranceAction).to.be.called;
+        assert.wasCalled(entranceAction);
       });
     });
 
-    describe('will-exit', function() {
-      it('is called when the step becomes inactive', function() {
+    module('will-exit', function() {
+      test('is called when the step becomes inactive', async function(assert) {
         const exitAction = td.function();
-        this.on('exit', exitAction);
+        this.set('exit', exitAction);
         this.set('currentStep', 'foo');
 
-        this.render(hbs`
+        await render(hbs`
           {{step-manager/step
               name='foo'
               currentStep=currentStep
-              will-exit=(action 'exit')
-              register-step=(action 'register')}}
+              will-exit=(action exit)
+              register-step=(action register)}}
         `);
 
         // Deactivate the step
         this.set('currentStep', 'bar');
 
-        expect(exitAction).to.be.called;
+        assert.wasCalled(exitAction);
       });
 
-      it('is not called when the current step changes to a value that is not the name of the step', function() {
+      test('is not called when the current step changes to a value that is not the name of the step', async function(
+        assert
+      ) {
         const exitAction = td.function();
-        this.on('exit', exitAction);
+        this.set('exit', exitAction);
         this.set('currentStep', 'bar');
 
-        this.render(hbs`
+        await render(hbs`
           {{step-manager/step
               name='foo'
               currentStep=currentStep
-              will-exit=(action 'exit')
-              register-step=(action 'register')}}
+              will-exit=(action exit)
+              register-step=(action register)}}
         `);
 
         // Deactivate the step
         this.set('currentStep', 'baz');
 
-        expect(exitAction).not.to.be.called;
+        assert.wasNotCalled(exitAction);
       });
     });
   });

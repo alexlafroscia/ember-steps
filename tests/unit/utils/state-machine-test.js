@@ -1,114 +1,107 @@
-import { expect } from 'chai';
-import { beforeEach, describe, it } from 'mocha';
+import { module, test } from 'qunit';
 import StateMachine from 'ember-steps/-private/state-machine';
 
-describe('Step Transition State Machine', function() {
-  describe('constructor', function() {
-    it('uses the initial step, if provided', function() {
+module('Step Transition State Machine', function() {
+  module('constructor', function() {
+    test('uses the initial step, if provided', function(assert) {
       const m = new StateMachine({
         initialStep: 'foo'
       });
 
-      expect(m.get('currentStep')).to.equal('foo');
+      assert.equal(m.get('currentStep'), 'foo');
     });
 
-    it('calculates the initial step if necessary', function() {
+    test('calculates the initial step if necessary', function(assert) {
       const m = new StateMachine();
       m.addStep('foo');
 
-      expect(m.get('currentStep')).to.equal('foo');
+      assert.equal(m.get('currentStep'), 'foo');
     });
   });
 
-  describe('#pickNext', function() {
-    it('can get the next step without advancing', function() {
+  module('#pickNext', function() {
+    test('can get the next step without advancing', function(assert) {
       const m = new StateMachine();
       m.addStep('foo');
       m.addStep('bar');
 
-      expect(m.pickNext()).to.equal('bar');
-      expect(m.get('currentStep')).to.equal('foo');
+      assert.equal(m.pickNext(), 'bar');
+      assert.equal(m.get('currentStep'), 'foo');
     });
   });
 
-  describe('#pickPrevious', function() {
-    it('can get the previous step without advancing', function() {
+  module('#pickPrevious', function() {
+    test('can get the previous step without advancing', function(assert) {
       const m = new StateMachine();
       m.addStep('foo');
       m.addStep('bar');
       m.addStep('baz');
 
-      expect(m.pickPrevious()).to.equal('baz');
-      expect(m.get('currentStep')).to.equal('foo');
+      assert.equal(m.pickPrevious(), 'baz');
+      assert.equal(m.get('currentStep'), 'foo');
     });
   });
 
-  describe('#activate', function() {
-    beforeEach(function() {
+  module('#activate', function(hooks) {
+    hooks.beforeEach(function() {
       this.m = new StateMachine();
       this.m.addStep('foo');
       this.m.addStep('bar');
     });
 
-    it('can go to a step by name', function() {
+    test('can go to a step by name', function(assert) {
       this.m.activate('bar');
-      expect(this.m.get('currentStep')).to.equal('bar');
+      assert.equal(this.m.get('currentStep'), 'bar');
     });
 
-    it('throws an error if the step name is not valid', function() {
-      expect(() => {
+    test('throws an error if the step name is not valid', function(assert) {
+      assert.throws(() => {
         this.m.activate('foobar');
-      }).to.throw(Error, /Step name "foobar" is invalid/);
+      }, /Step name "foobar" is invalid/);
     });
 
-    it('throws an error if no step name is provided', function() {
-      expect(() => {
+    test('throws an error if no step name is provided', function(assert) {
+      assert.throws(() => {
         this.m.activate();
-      }).to.throw(Error, /No step name provided/);
+      }, /No step name provided/);
     });
   });
 
-  describe('.length', function() {
-    beforeEach(function() {
+  module('.length', function(hooks) {
+    hooks.beforeEach(function() {
       this.m = new StateMachine();
       this.m.addStep('foo');
       this.m.addStep('bar');
     });
 
-    it('is set to the number of steps', function() {
-      expect(this.m.get('length')).to.equal(2);
+    test('is set to the number of steps', function(assert) {
+      assert.equal(this.m.get('length'), 2);
     });
 
-    it('updates as more steps are added', function() {
+    test('updates as more steps are added', function(assert) {
       this.m.addStep('baz');
-      expect(this.m.get('length')).to.equal(3);
+      assert.equal(this.m.get('length'), 3);
     });
   });
 
-  describe('.currentStep', function() {
-    it('exposes the name of the current step', function() {
+  module('.currentStep', function() {
+    test('exposes the name of the current step', function(assert) {
       const m = new StateMachine();
       m.addStep('foo');
-      expect(m.get('currentStep')).to.equal('foo');
+      assert.equal(m.get('currentStep'), 'foo');
     });
   });
 
-  describe('.stepArray', function() {
-    it('exposes an array of step names', function() {
+  module('.stepArray', function() {
+    test('exposes an array of step names', function(assert) {
       const m = new StateMachine();
       m.addStep('foo');
       m.addStep('bar');
-      expect(m.get('stepArray'), 'Provides the steps in order').to.deep.equal([
-        'foo',
-        'bar'
-      ]);
+      assert.deepEqual(m.get('stepArray'), ['foo', 'bar']);
 
       m.addStep('baz');
 
-      expect(
-        m.get('stepArray'),
-        'Updates as new steps are added'
-      ).to.deep.equal(['foo', 'bar', 'baz']);
+      assert.deepEqual(m.get('stepArray'), ['foo', 'bar', 'baz']);
     });
   });
 });
