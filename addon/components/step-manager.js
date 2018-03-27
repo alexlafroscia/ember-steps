@@ -1,16 +1,21 @@
 import Component from '@ember/component';
-import { set, get } from '@ember/object';
-import { isEmpty } from '@ember/utils';
+import { computed, get, set } from '@ember/object';
+import { isEmpty, isPresent } from '@ember/utils';
+import { schedule } from '@ember/runloop';
 import { assert } from '@ember/debug';
 import hbs from 'htmlbars-inline-precompile';
-import StateMachine from 'ember-steps/-private/state-machine';
+import CircularStateMachine from 'ember-steps/-private/state-machine/circular';
+import LinearStateMachine from 'ember-steps/-private/state-machine/linear';
 
 const layout = hbs`
   {{yield (hash
     step=(component 'step-manager/step'
       register-step=(action 'register-step-component')
       currentStep=transitions.currentStep
+      transitions=transitions
     )
+    hasNextStep=hasNextStep
+    hasPreviousStep=hasPreviousStep
     transition-to=(action 'transition-to')
     transition-to-next=(action 'transition-to-next')
     transition-to-previous=(action 'transition-to-previous')
@@ -64,14 +69,18 @@ export default Component.extend({
     const stepCount = get(this, 'stepCount');
     assert('Missing `stepCount` property', !!stepCount);
 
-    set(
-      this,
-      'transitions',
-      StateMachine.create({
-        initialStep
-      })
-    );
+    const StateMachine = get(this, 'linear')
+      ? LinearStateMachine
+      : CircularStateMachine;
+
+    set(this, 'transitions', StateMachine.create({ initialStep }));
   },
+
+  /**
+   * @property {boolean} boolean
+   * @public
+   */
+  linear: true,
 
   /**
    * @property {Ember.Object} transitions state machine for transitions
@@ -96,6 +105,14 @@ export default Component.extend({
    * @private
    */
   _lastStep: undefined,
+
+  hasNextStep: computed('transitions.{currentStep,length}', function() {
+    return isPresent(get(this, 'transitions').pickNext());
+  }),
+
+  hasPreviousStep: computed('transitions.{currentStep,length}', function() {
+    return isPresent(get(this, 'transitions').pickPrevious());
+  }),
 
   /**
    * Used internally to transition to a specific named step
@@ -177,7 +194,10 @@ export default Component.extend({
      */
     'register-step-component'(stepComponent) {
       const name = get(stepComponent, 'name');
-      get(this, 'transitions').addStep(name);
+
+      schedule('actions', () => {
+        get(this, 'transitions').addStep(name);
+      });
     },
 
     /**
@@ -215,6 +235,8 @@ export default Component.extend({
     'transition-to-next'() {
       const to = get(this, 'transitions').pickNext();
 
+      assert('There is no next step', !!to);
+
       this.doTransition(to);
     },
 
@@ -229,6 +251,8 @@ export default Component.extend({
      */
     'transition-to-previous'() {
       const to = get(this, 'transitions').pickPrevious();
+
+      assert('There is no previous step', !!to);
 
       this.doTransition(to);
     }

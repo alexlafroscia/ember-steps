@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
-import StateMachine from 'ember-steps/-private/state-machine';
+import StateMachine from 'ember-steps/-private/state-machine/linear';
 
-module('Step Transition State Machine', function() {
+module('-private/state-machine/linear', function() {
   module('constructor', function() {
     test('uses the initial step, if provided', function(assert) {
       const m = new StateMachine({
@@ -28,6 +28,16 @@ module('Step Transition State Machine', function() {
       assert.equal(m.pickNext(), 'bar');
       assert.equal(m.get('currentStep'), 'foo');
     });
+
+    test('the "next" step from the last step is empty', function(assert) {
+      const m = new StateMachine();
+      m.addStep('foo');
+      m.addStep('bar');
+
+      m.activate('bar');
+
+      assert.equal(m.pickNext(), null);
+    });
   });
 
   module('#pickPrevious', function() {
@@ -37,8 +47,18 @@ module('Step Transition State Machine', function() {
       m.addStep('bar');
       m.addStep('baz');
 
-      assert.equal(m.pickPrevious(), 'baz');
-      assert.equal(m.get('currentStep'), 'foo');
+      m.activate('bar');
+
+      assert.equal(m.pickPrevious(), 'foo');
+      assert.equal(m.get('currentStep'), 'bar');
+    });
+
+    test('the "previous" step from the first step is empty', function(assert) {
+      const m = new StateMachine();
+      m.addStep('foo');
+      m.addStep('bar');
+
+      assert.equal(m.pickPrevious(), null);
     });
   });
 

@@ -118,9 +118,4 @@ module('step-manger/step', function(hooks) {
       assert.dom(hook('step')).doesNotExist();
     });
   });
-
-
-
-    });
-  });
 });

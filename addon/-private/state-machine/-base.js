@@ -1,4 +1,5 @@
 import EmberObject, { set, get, computed } from '@ember/object';
+import { assert } from '@ember/debug';
 
 /**
  * Keeps track of the order of the steps in the step manager, as well as
@@ -60,14 +61,8 @@ export default EmberObject.extend({
       set(this, 'lastStep', name);
     }
 
-    // Set the last step to transition to the new one, event if the last step
-    // is this one
-    const lastStep = get(this, 'lastStep');
-    set(this, `stepTransitions.${lastStep}`, name);
-
-    // Set the new step to transition to the first one
-    const firstStep = get(this, 'firstStep');
-    set(this, `stepTransitions.${name}`, firstStep);
+    // Add to the transition map based on the super-class
+    this._addStepToTransitions(name);
 
     // Set the current step, if it hasn't been yet
     if (!get(this, 'currentStep')) {
@@ -80,9 +75,14 @@ export default EmberObject.extend({
     this.notifyPropertyChange('length');
   },
 
+  _addStepToTransitions() {
+    assert('must be implemented by parent class');
+  },
+
   pickNext() {
     const transitions = get(this, 'stepTransitions');
     const currentStep = get(this, 'currentStep');
+
     return transitions[currentStep];
   },
 
@@ -106,7 +106,7 @@ export default EmberObject.extend({
       throw new Error('No step name provided');
     }
 
-    if (!get(this, `stepTransitions.${name}`)) {
+    if (!Object.keys(get(this, 'stepTransitions')).includes(name)) {
       throw new Error(`Step name "${name}" is invalid`);
     }
 

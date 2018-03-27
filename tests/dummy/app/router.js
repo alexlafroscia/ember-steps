@@ -28,6 +28,7 @@ Router.map(function() {
   this.route('docs', function() {
     this.route('features', function() {
       this.route('validating-steps');
+      this.route('cyclical-steps');
     });
 
     this.route('cookbook', function() {

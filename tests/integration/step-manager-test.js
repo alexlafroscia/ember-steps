@@ -336,11 +336,11 @@ module('step-manager', function(hooks) {
     });
   });
 
-  module('transition to anonymous steps', function() {
-    test('can transition to the next step', async function(assert) {
+  module('exposing whether there is a next step', function() {
+    test('linear step managers', async function(assert) {
       await render(hbs`
         {{#step-manager as |w|}}
-          <button {{action w.transition-to-next}}>
+          <button {{action w.transition-to-next}} disabled={{not w.hasNextStep}}>
             Next!
           </button>
 
@@ -351,43 +351,20 @@ module('step-manager', function(hooks) {
           {{#w.step name='second'}}
             <div data-test={{hook 'second'}}></div>
           {{/w.step}}
-
-          {{#w.step name='third'}}
-            <div data-test={{hook 'third'}}></div>
-          {{/w.step}}
         {{/step-manager}}
       `);
 
-      assert.dom(hook('first')).exists();
-      assert.dom(hook('second')).doesNotExist();
-      assert.dom(hook('third')).doesNotExist();
+      assert.dom('button').doesNotHaveAttribute('disabled');
 
       await click('button');
 
-      assert.dom(hook('first')).doesNotExist();
-      assert.dom(hook('second')).exists();
-      assert.dom(hook('third')).doesNotExist();
-
-      await click('button');
-
-      assert.dom(hook('first')).doesNotExist();
-      assert.dom(hook('second')).doesNotExist();
-      assert.dom(hook('third')).exists();
-
-      await click('button');
-
-      assert.dom(hook('first')).exists();
-      assert.dom(hook('second')).doesNotExist();
-      assert.dom(hook('third')).doesNotExist();
+      assert.dom('button').hasAttribute('disabled');
     });
 
-    test('can transition to the previous step', async function(assert) {
+    test('circular step manager', async function(assert) {
       await render(hbs`
-        {{#step-manager as |w|}}
-          <button id='previous' {{action w.transition-to-previous}}>
-            Previous!
-          </button>
-          <button id='next' {{action w.transition-to-next}}>
+        {{#step-manager linear=false as |w|}}
+          <button {{action w.transition-to-next}} disabled={{not w.hasNextStep}}>
             Next!
           </button>
 
@@ -398,34 +375,143 @@ module('step-manager', function(hooks) {
           {{#w.step name='second'}}
             <div data-test={{hook 'second'}}></div>
           {{/w.step}}
+        {{/step-manager}}
+      `);
 
-          {{#w.step name='third'}}
-            <div data-test={{hook 'third'}}></div>
+      assert.dom('button').doesNotHaveAttribute('disabled');
+
+      await click('button');
+
+      assert.dom('button').doesNotHaveAttribute('disabled');
+    });
+  });
+
+  module('exposing whether there is a next previous', function() {
+    test('linear step managers', async function(assert) {
+      await render(hbs`
+        {{#step-manager as |w|}}
+          <button {{action w.transition-to-previous}} disabled={{not w.hasPreviousStep}}>
+            Next!
+          </button>
+
+          {{#w.step name='first'}}
+            <div data-test={{hook 'first'}}></div>
           {{/w.step}}
         {{/step-manager}}
       `);
 
-      assert.dom(hook('first')).exists();
-      assert.dom(hook('second')).doesNotExist();
-      assert.dom(hook('third')).doesNotExist();
+      assert.dom('button').hasAttribute('disabled');
+    });
 
-      await click('#next');
+    test('circular step manager', async function(assert) {
+      await render(hbs`
+        {{#step-manager linear=false as |w|}}
+          <button {{action w.transition-to-next}} disabled={{not w.hasPreviousStep}}>
+            Next!
+          </button>
 
-      assert.dom(hook('first')).doesNotExist();
-      assert.dom(hook('second')).exists();
-      assert.dom(hook('third')).doesNotExist();
+          {{#w.step name='first'}}
+            <div data-test={{hook 'first'}}></div>
+          {{/w.step}}
+        {{/step-manager}}
+      `);
 
-      await click('#next');
+      assert.dom('button').doesNotHaveAttribute('disabled');
+    });
+  });
 
-      assert.dom(hook('first')).doesNotExist();
-      assert.dom(hook('second')).doesNotExist();
-      assert.dom(hook('third')).exists();
+  module('transition to anonymous steps', function() {
+    module('with the circular state manager', function() {
+      test('can transition to the next step', async function(assert) {
+        await render(hbs`
+          {{#step-manager linear=false as |w|}}
+            <button {{action w.transition-to-next}}>
+              Next!
+            </button>
 
-      await click('#previous');
+            {{#w.step name='first'}}
+              <div data-test={{hook 'first'}}></div>
+            {{/w.step}}
 
-      assert.dom(hook('first')).doesNotExist();
-      assert.dom(hook('second')).exists();
-      assert.dom(hook('third')).doesNotExist();
+            {{#w.step name='second'}}
+              <div data-test={{hook 'second'}}></div>
+            {{/w.step}}
+
+            {{#w.step name='third'}}
+              <div data-test={{hook 'third'}}></div>
+            {{/w.step}}
+          {{/step-manager}}
+        `);
+
+        assert.dom(hook('first')).exists();
+        assert.dom(hook('second')).doesNotExist();
+        assert.dom(hook('third')).doesNotExist();
+
+        await click('button');
+
+        assert.dom(hook('first')).doesNotExist();
+        assert.dom(hook('second')).exists();
+        assert.dom(hook('third')).doesNotExist();
+
+        await click('button');
+
+        assert.dom(hook('first')).doesNotExist();
+        assert.dom(hook('second')).doesNotExist();
+        assert.dom(hook('third')).exists();
+
+        await click('button');
+
+        assert.dom(hook('first')).exists();
+        assert.dom(hook('second')).doesNotExist();
+        assert.dom(hook('third')).doesNotExist();
+      });
+
+      test('can transition to the previous step', async function(assert) {
+        await render(hbs`
+          {{#step-manager linear=false as |w|}}
+            <button id='previous' {{action w.transition-to-previous}}>
+              Previous!
+            </button>
+            <button id='next' {{action w.transition-to-next}}>
+              Next!
+            </button>
+
+            {{#w.step name='first'}}
+              <div data-test={{hook 'first'}}></div>
+            {{/w.step}}
+
+            {{#w.step name='second'}}
+              <div data-test={{hook 'second'}}></div>
+            {{/w.step}}
+
+            {{#w.step name='third'}}
+              <div data-test={{hook 'third'}}></div>
+            {{/w.step}}
+          {{/step-manager}}
+        `);
+
+        assert.dom(hook('first')).exists();
+        assert.dom(hook('second')).doesNotExist();
+        assert.dom(hook('third')).doesNotExist();
+
+        await click('#next');
+
+        assert.dom(hook('first')).doesNotExist();
+        assert.dom(hook('second')).exists();
+        assert.dom(hook('third')).doesNotExist();
+
+        await click('#next');
+
+        assert.dom(hook('first')).doesNotExist();
+        assert.dom(hook('second')).doesNotExist();
+        assert.dom(hook('third')).exists();
+
+        await click('#previous');
+
+        assert.dom(hook('first')).doesNotExist();
+        assert.dom(hook('second')).exists();
+        assert.dom(hook('third')).doesNotExist();
+      });
     });
   });
 
@@ -453,33 +539,6 @@ module('step-manager', function(hooks) {
 
       assert.dom(hook('step', { index: 0 })).doesNotExist();
       assert.dom(hook('step', { index: 1 })).exists();
-    });
-  });
-
-  module('showing alternate step states', function() {
-    test('property is added by the HTMLBars transform', async function(assert) {
-      await render(hbs`
-        {{#step-manager as |w|}}
-          <div data-test={{hook 'step' index=0}}>
-            {{#w.step}}
-              Active
-            {{else}}
-              Inactive
-            {{/w.step}}
-          </div>
-
-          <div data-test={{hook 'step' index=1}}>
-            {{#w.step}}
-              Active
-            {{else}}
-              Inactive
-            {{/w.step}}
-          </div>
-        {{/step-manager}}
-      `);
-
-      assert.dom(hook('step', { index: 0 })).hasText('Active');
-      assert.dom(hook('step', { index: 1 })).hasText('Inactive');
     });
   });
 
@@ -520,7 +579,7 @@ module('step-manager', function(hooks) {
 
     test('allows for adding more steps after the initial render', async function(assert) {
       await render(hbs`
-        {{#step-manager currentStep=(unbound data.firstObject.name) as |w|}}
+        {{#step-manager linear=false currentStep=(unbound data.firstObject.name) as |w|}}
           <div data-test={{hook 'steps'}}>
             {{#each data as |item|}}
               {{#w.step name=(unbound item.name)}}
