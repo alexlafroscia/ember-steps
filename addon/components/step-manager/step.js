@@ -1,20 +1,19 @@
 import Component from '@ember/component';
-import { get, computed } from '@ember/object';
+import { computed, get, observer } from '@ember/object';
 import { isBlank } from '@ember/utils';
+import { assert } from '@ember/debug';
 import hbs from 'htmlbars-inline-precompile';
 import { StepNameError } from 'ember-steps/-private/errors';
 
-const layout = hbs`
-  {{#if isActive}}
-    {{yield}}
-  {{else if hasInactiveState}}
-    {{yield to='inverse'}}
-  {{/if}}
-`;
-
 export default Component.extend({
-  layout,
   tagName: '',
+  layout: hbs`
+    {{#if isActive}}
+      {{yield}}
+    {{else if hasInactiveState}}
+      {{yield to='inverse'}}
+    {{/if}}
+  `,
 
   init() {
     this._super(...arguments);
@@ -29,6 +28,10 @@ export default Component.extend({
 
     this['register-step'](this);
   },
+
+  _ensureNameDoesntChange: observer('name', function() {
+    assert('The `name` property should never change');
+  }),
 
   /**
    * Used internally to track the "active" state of the last time the attributes
