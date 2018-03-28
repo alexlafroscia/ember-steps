@@ -1,14 +1,9 @@
 import { module, test, skip } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import td from 'testdouble';
 import hbs from 'htmlbars-inline-precompile';
 import { initialize as initializeEmberHook, hook } from 'ember-hook';
 import { click, findAll, render } from '@ember/test-helpers';
-import { run } from '@ember/runloop';
 import { A } from '@ember/array';
-import RSVP from 'rsvp';
-
-const { matchers: { anything: matchAnything, contains: matchContains } } = td;
 
 module('step-manager', function(hooks) {
   setupRenderingTest(hooks);

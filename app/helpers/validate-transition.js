@@ -1,1 +1,4 @@
-export { default, validateTransition } from 'ember-steps/helpers/validate-transition';
+export {
+  default,
+  validateTransition
+} from 'ember-steps/helpers/validate-transition';
