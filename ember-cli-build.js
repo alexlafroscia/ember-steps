@@ -6,6 +6,10 @@ module.exports = function(defaults) {
   const app = new EmberAddon(defaults, {
     snippetSearchPaths: ['tests/dummy/app'],
 
+    'ember-composable-helpers': {
+      only: ['pipe']
+    },
+
     cssModules: {
       plugins: [require('postcss-nested')]
     }

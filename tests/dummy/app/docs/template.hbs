@@ -5,6 +5,11 @@
     {{nav.item 'Overview' 'docs.index'}}
     {{nav.item 'Cookbook' 'docs.cookbook'}}
 
+    {{nav.section 'Features'}}
+    {{#nav.subnav as |features|}}
+      {{features.item 'Validating Steps' 'docs.features.validating-steps'}}
+    {{/nav.subnav}}
+
     {{nav.section 'Cookbook'}}
     {{#nav.subnav as |cookbook|}}
       {{cookbook.item 'Dynamic Definition of Steps' 'docs.cookbook.dynamic-definition'}}

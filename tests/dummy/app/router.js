@@ -26,6 +26,10 @@ const Router = EmberRouter.extend({
 
 Router.map(function() {
   this.route('docs', function() {
+    this.route('features', function() {
+      this.route('validating-steps');
+    });
+
     this.route('cookbook', function() {
       this.route('dynamic-definition');
       this.route('tabs', function() {

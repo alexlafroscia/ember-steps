@@ -43,6 +43,8 @@
     "ember-cli-test-loader": "^2.1.0",
     "ember-cli-testdouble": "^0.1.2",
     "ember-cli-uglify": "^2.0.0",
+    "ember-composable-helpers": "^2.1.0",
+    "ember-concurrency": "^0.8.16",
     "ember-css-modules": "^0.7.2",
     "ember-disable-prototype-extensions": "^1.1.3",
     "ember-export-application-global": "^2.0.0",
