@@ -78,9 +78,7 @@ module('step-manager', function(hooks) {
         assert.dom(hook('second')).doesNotExist();
       });
 
-      test('changes steps when the property changes (with the mut helper)', async function(
-        assert
-      ) {
+      test('changes steps when the property changes (with the mut helper)', async function(assert) {
         this.set('step', 'first');
         await render(hbs`
           {{#step-manager currentStep=(mut step) as |w|}}
@@ -103,9 +101,7 @@ module('step-manager', function(hooks) {
         assert.dom(hook('second')).exists();
       });
 
-      skip('throws an error when an invalid step is provided', async function(
-        assert
-      ) {
+      skip('throws an error when an invalid step is provided', async function(assert) {
         this.set('step', 'first');
         await render(hbs`
             {{#step-manager currentStep=step as |w|}}
@@ -129,9 +125,7 @@ module('step-manager', function(hooks) {
     });
 
     module('updating the target object from the component', function() {
-      test("mutates the target object's property when a mutable value is provided", async function(
-        assert
-      ) {
+      test("mutates the target object's property when a mutable value is provided", async function(assert) {
         this.set('step', 'first');
         await render(hbs`
           {{#step-manager currentStep=(mut step) as |w|}}
@@ -149,9 +143,7 @@ module('step-manager', function(hooks) {
         assert.equal(this.get('step'), 'second');
       });
 
-      test("mutates the target object's property when a regular value is provided", async function(
-        assert
-      ) {
+      test("mutates the target object's property when a regular value is provided", async function(assert) {
         this.set('step', 'first');
         await render(hbs`
           {{#step-manager currentStep=step as |w|}}
@@ -169,9 +161,7 @@ module('step-manager', function(hooks) {
         assert.equal(this.get('step'), 'second');
       });
 
-      test('does not update the target object with an unbound value', async function(
-        assert
-      ) {
+      test('does not update the target object with an unbound value', async function(assert) {
         this.set('step', 'first');
         await render(hbs`
           {{#step-manager currentStep=(unbound step) as |w|}}
@@ -191,9 +181,7 @@ module('step-manager', function(hooks) {
     });
   });
 
-  test('renders the first step in the DOM if no `currentStep` is present', async function(
-    assert
-  ) {
+  test('renders the first step in the DOM if no `currentStep` is present', async function(assert) {
     await render(hbs`
       {{#step-manager as |w|}}
         {{#w.step name='first'}}
@@ -238,9 +226,7 @@ module('step-manager', function(hooks) {
     });
 
     module('exposing an array of steps', function() {
-      test('can render the array after the steps are defined', async function(
-        assert
-      ) {
+      test('can render the array after the steps are defined', async function(assert) {
         await render(hbs`
           {{#step-manager as |w|}}
             <div data-test={{hook 'active-step'}}>
@@ -272,9 +258,7 @@ module('step-manager', function(hooks) {
         assert.dom(hook('active-step')).hasText('Bar');
       });
 
-      test('can render the array before the steps are defined', async function(
-        assert
-      ) {
+      test('can render the array before the steps are defined', async function(assert) {
         await render(hbs`
           {{#step-manager as |w|}}
             {{#each w.steps as |step|}}
@@ -534,9 +518,7 @@ module('step-manager', function(hooks) {
       assert.dom(hook('steps')).hasText('bar');
     });
 
-    test('allows for adding more steps after the initial render', async function(
-      assert
-    ) {
+    test('allows for adding more steps after the initial render', async function(assert) {
       await render(hbs`
         {{#step-manager currentStep=(unbound data.firstObject.name) as |w|}}
           <div data-test={{hook 'steps'}}>

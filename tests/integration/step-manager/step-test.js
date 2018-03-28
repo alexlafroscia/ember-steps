@@ -26,9 +26,7 @@ module('step-manger/step', function(hooks) {
       assert.wasCalled(registerAction);
     });
 
-    skip('throws an error when not provided a registration action', function(
-      assert
-    ) {
+    skip('throws an error when not provided a registration action', function(assert) {
       assert.throws(async () => {
         await render(hbs`{{step-manager/step}}`);
       }, Error);
@@ -71,9 +69,7 @@ module('step-manger/step', function(hooks) {
     });
 
     module('when inactive', function() {
-      test('is hidden when no alternate state is provided', async function(
-        assert
-      ) {
+      test('is hidden when no alternate state is provided', async function(assert) {
         await render(hbs`
           {{#step-manager/step name='foo' register-step=(action register)}}
             <div data-test={{hook 'step'}}>
@@ -183,9 +179,7 @@ module('step-manger/step', function(hooks) {
         assert.wasCalled(exitAction);
       });
 
-      test('is not called when the current step changes to a value that is not the name of the step', async function(
-        assert
-      ) {
+      test('is not called when the current step changes to a value that is not the name of the step', async function(assert) {
         const exitAction = td.function();
         this.set('exit', exitAction);
         this.set('currentStep', 'bar');
