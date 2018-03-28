@@ -1,16 +1,11 @@
 import { module, test, skip } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import td from 'testdouble';
 import hbs from 'htmlbars-inline-precompile';
 import { initialize as initializeEmberHook, hook } from 'ember-hook';
 import { click, findAll, render } from '@ember/test-helpers';
-import { run } from '@ember/runloop';
 import { A } from '@ember/array';
-import RSVP from 'rsvp';
 
-const { matchers: { anything: matchAnything, contains: matchContains } } = td;
-
-module('Integration: StepManagerComponent', function(hooks) {
+module('step-manager', function(hooks) {
   setupRenderingTest(hooks);
 
   hooks.beforeEach(initializeEmberHook);
@@ -83,9 +78,7 @@ module('Integration: StepManagerComponent', function(hooks) {
         assert.dom(hook('second')).doesNotExist();
       });
 
-      test('changes steps when the property changes (with the mut helper)', async function(
-        assert
-      ) {
+      test('changes steps when the property changes (with the mut helper)', async function(assert) {
         this.set('step', 'first');
         await render(hbs`
           {{#step-manager currentStep=(mut step) as |w|}}
@@ -108,9 +101,7 @@ module('Integration: StepManagerComponent', function(hooks) {
         assert.dom(hook('second')).exists();
       });
 
-      skip('throws an error when an invalid step is provided', async function(
-        assert
-      ) {
+      skip('throws an error when an invalid step is provided', async function(assert) {
         this.set('step', 'first');
         await render(hbs`
             {{#step-manager currentStep=step as |w|}}
@@ -134,9 +125,7 @@ module('Integration: StepManagerComponent', function(hooks) {
     });
 
     module('updating the target object from the component', function() {
-      test("mutates the target object's property when a mutable value is provided", async function(
-        assert
-      ) {
+      test("mutates the target object's property when a mutable value is provided", async function(assert) {
         this.set('step', 'first');
         await render(hbs`
           {{#step-manager currentStep=(mut step) as |w|}}
@@ -154,9 +143,7 @@ module('Integration: StepManagerComponent', function(hooks) {
         assert.equal(this.get('step'), 'second');
       });
 
-      test("mutates the target object's property when a regular value is provided", async function(
-        assert
-      ) {
+      test("mutates the target object's property when a regular value is provided", async function(assert) {
         this.set('step', 'first');
         await render(hbs`
           {{#step-manager currentStep=step as |w|}}
@@ -174,9 +161,7 @@ module('Integration: StepManagerComponent', function(hooks) {
         assert.equal(this.get('step'), 'second');
       });
 
-      test('does not update the target object with an unbound value', async function(
-        assert
-      ) {
+      test('does not update the target object with an unbound value', async function(assert) {
         this.set('step', 'first');
         await render(hbs`
           {{#step-manager currentStep=(unbound step) as |w|}}
@@ -196,9 +181,7 @@ module('Integration: StepManagerComponent', function(hooks) {
     });
   });
 
-  test('renders the first step in the DOM if no `currentStep` is present', async function(
-    assert
-  ) {
+  test('renders the first step in the DOM if no `currentStep` is present', async function(assert) {
     await render(hbs`
       {{#step-manager as |w|}}
         {{#w.step name='first'}}
@@ -243,9 +226,7 @@ module('Integration: StepManagerComponent', function(hooks) {
     });
 
     module('exposing an array of steps', function() {
-      test('can render the array after the steps are defined', async function(
-        assert
-      ) {
+      test('can render the array after the steps are defined', async function(assert) {
         await render(hbs`
           {{#step-manager as |w|}}
             <div data-test={{hook 'active-step'}}>
@@ -277,9 +258,7 @@ module('Integration: StepManagerComponent', function(hooks) {
         assert.dom(hook('active-step')).hasText('Bar');
       });
 
-      test('can render the array before the steps are defined', async function(
-        assert
-      ) {
+      test('can render the array before the steps are defined', async function(assert) {
         await render(hbs`
           {{#step-manager as |w|}}
             {{#each w.steps as |step|}}
@@ -450,403 +429,6 @@ module('Integration: StepManagerComponent', function(hooks) {
     });
   });
 
-  module('providing a `did-transition` action', function() {
-    test('is fired during a named transition', async function(assert) {
-      const onTransitionAction = td.function();
-      this.set('transition', onTransitionAction);
-
-      await render(hbs`
-        {{#step-manager currentStep='first' did-transition=(action transition) as |w|}}
-          <button {{action w.transition-to 'second' 'some value'}}>
-            Transition to Next
-          </button>
-
-          {{w.step name='first'}}
-          {{w.step name='second'}}
-        {{/step-manager}}
-      `);
-
-      await click('button');
-
-      assert.equal(td.explain(onTransitionAction).callCount, 1);
-    });
-
-    test('is fired during a sequential transition', async function(assert) {
-      const onTransitionAction = td.function();
-      this.set('transition', onTransitionAction);
-
-      await render(hbs`
-        {{#step-manager did-transition=(action transition) as |w|}}
-          <button {{action w.transition-to-next 'some value'}}>
-            Transition to Next
-          </button>
-
-          {{w.step}}
-          {{w.step}}
-        {{/step-manager}}
-      `);
-
-      await click('button');
-
-      assert.equal(td.explain(onTransitionAction).callCount, 1);
-    });
-
-    module('the arguments', function() {
-      test('passes the destination and source step', async function(assert) {
-        const action = td.function('did-transition action');
-        this.set('action', action);
-
-        await render(hbs`
-          {{#step-manager did-transition=(action action) as |w|}}
-            {{w.step name='first'}}
-            {{w.step name='second'}}
-
-            <button {{action w.transition-to-next}}>
-              Next
-            </button>
-          {{/step-manager}}
-        `);
-        await click('button');
-
-        assert.verify(
-          action(
-            matchContains({
-              from: 'first',
-              to: 'second'
-            })
-          )
-        );
-      });
-
-      test('passes the value when given one', async function(assert) {
-        const action = td.function('did-transition action');
-        this.set('action', action);
-
-        await render(hbs`
-          {{#step-manager did-transition=(action action) as |w|}}
-            {{w.step}}
-            {{w.step}}
-
-            <button {{action w.transition-to-next 'foo'}}>
-              Next
-            </button>
-          {{/step-manager}}
-        `);
-        await click('button');
-
-        assert.verify(
-          action(
-            matchContains({
-              value: 'foo'
-            })
-          )
-        );
-      });
-    });
-  });
-
-  module('providing a `will-transition` action', function() {
-    test('is not fired before entering the initial route', async function(
-      assert
-    ) {
-      const beforeAction = td.function('before action');
-      this.set('beforeAction', beforeAction);
-
-      await render(hbs`
-        {{#step-manager will-transition=(action beforeAction) as |w|}}
-          {{w.step name='first'}}
-        {{/step-manager}}
-      `);
-
-      assert.equal(td.explain(beforeAction).callCount, 0);
-    });
-
-    test('is fired before a named transition', async function(assert) {
-      const beforeAction = td.function('before action');
-      this.set('beforeAction', beforeAction);
-
-      await render(hbs`
-        {{#step-manager will-transition=(action beforeAction) as |w|}}
-          {{w.step name='initial'}}
-          {{w.step name='next'}}
-
-          <button {{action w.transition-to 'next'}}>
-            Next
-          </button>
-        {{/step-manager}}
-      `);
-      await click('button');
-
-      assert.equal(td.explain(beforeAction).callCount, 1);
-    });
-
-    test('is fired before a sequential transition', async function(assert) {
-      const beforeAction = td.function('before action');
-      this.set('beforeAction', beforeAction);
-
-      await render(hbs`
-        {{#step-manager will-transition=(action beforeAction) as |w|}}
-          {{w.step}}
-          {{w.step}}
-
-          <button {{action w.transition-to-next}}>
-            Next
-          </button>
-        {{/step-manager}}
-      `);
-      await click('button');
-
-      assert.equal(td.explain(beforeAction).callCount, 1);
-    });
-
-    module('the arguments', function() {
-      test('passes the destination and source step', async function(assert) {
-        const beforeAction = td.function('before action');
-        this.set('beforeAction', beforeAction);
-
-        await render(hbs`
-          {{#step-manager will-transition=(action beforeAction) as |w|}}
-            {{w.step name='first'}}
-            {{w.step name='second'}}
-
-            <button {{action w.transition-to-next}}>
-              Next
-            </button>
-          {{/step-manager}}
-        `);
-        await click('button');
-
-        assert.verify(
-          beforeAction(
-            matchContains({
-              from: 'first',
-              to: 'second'
-            })
-          )
-        );
-      });
-
-      test('passes the value when given one', async function(assert) {
-        const beforeAction = td.function('before action');
-        this.set('beforeAction', beforeAction);
-
-        await render(hbs`
-          {{#step-manager will-transition=(action beforeAction) as |w|}}
-            {{w.step}}
-            {{w.step}}
-
-            <button {{action w.transition-to-next 'foo'}}>
-              Next
-            </button>
-          {{/step-manager}}
-        `);
-        await click('button');
-
-        assert.verify(
-          beforeAction(
-            matchContains({
-              value: 'foo'
-            })
-          )
-        );
-      });
-
-      test('passes the direction when using transition-to-next or transition-to-previous', async function(
-        assert
-      ) {
-        const beforeAction = td.function('before action');
-        this.set('beforeAction', beforeAction);
-
-        await render(hbs`
-          {{#step-manager will-transition=(action beforeAction) as |w|}}
-            {{w.step}}
-            {{w.step}}
-
-            <button {{action w.transition-to-next}}>
-              Next
-            </button>
-          {{/step-manager}}
-        `);
-        await click('button');
-
-        assert.verify(
-          beforeAction(
-            matchContains({
-              direction: 'next'
-            })
-          )
-        );
-      });
-    });
-
-    test('can wait for a promise to resolve', async function(assert) {
-      let didTransition = false;
-      const waitForMe = function() {
-        return new RSVP.Promise(function(resolve) {
-          run.later(null, resolve, 500);
-        });
-      };
-      this.set('beforeAction', waitForMe);
-      this.set('afterTransition', () => (didTransition = true));
-
-      await render(hbs`
-        {{#step-manager will-transition=(action beforeAction) did-transition=(action afterTransition) as |w|}}
-          {{#w.step name='first'}}
-            <div data-test={{hook 'first'}}></div>
-          {{/w.step}}
-
-          {{#w.step name='second'}}
-            <div data-test={{hook 'second'}}></div>
-          {{/w.step}}
-
-          <button {{action w.transition-to-next}}>
-            Next
-          </button>
-        {{/step-manager}}
-      `);
-
-      assert.equal(didTransition, false);
-
-      await click('button');
-
-      assert.equal(didTransition, true);
-      assert.dom(hook('first')).doesNotExist();
-      assert.dom(hook('second')).exists();
-    });
-
-    test('prevents the transition if the promise resolve to `false`', async function(
-      assert
-    ) {
-      let didTransition = false;
-      const waitForMe = function() {
-        return new RSVP.Promise(function(resolve) {
-          run.later(null, () => resolve(false), 500);
-        });
-      };
-      this.set('beforeAction', waitForMe);
-      this.set('afterTransition', () => (didTransition = true));
-
-      await render(hbs`
-        {{#step-manager will-transition=(action beforeAction) did-transition=(action afterTransition) as |w|}}
-          {{#w.step name='first'}}
-            <div data-test={{hook 'first'}}></div>
-          {{/w.step}}
-
-          {{#w.step name='second'}}
-            <div data-test={{hook 'second'}}></div>
-          {{/w.step}}
-
-          <button {{action w.transition-to-next}}>
-            Next
-          </button>
-        {{/step-manager}}
-      `);
-
-      await click('button');
-
-      assert.equal(didTransition, false);
-      assert.dom(hook('first')).exists();
-      assert.dom(hook('second')).doesNotExist();
-    });
-
-    test('prevents the transition if the promise reject', async function(
-      assert
-    ) {
-      let didTransition = false;
-      const waitForMe = function() {
-        return new RSVP.Promise(function(resolve, reject) {
-          run.later(null, reject, 500);
-        });
-      };
-      this.set('beforeAction', waitForMe);
-      this.set('afterTransition', () => (didTransition = true));
-
-      await render(hbs`
-        {{#step-manager will-transition=(action beforeAction) did-transition=(action afterTransition) as |w|}}
-          {{#w.step name='first'}}
-            <div data-test={{hook 'first'}}></div>
-          {{/w.step}}
-
-          {{#w.step name='second'}}
-            <div data-test={{hook 'second'}}></div>
-          {{/w.step}}
-
-          <button {{action w.transition-to-next}}>
-            Next
-          </button>
-        {{/step-manager}}
-      `);
-
-      await click('button');
-
-      assert.equal(didTransition, false);
-      assert.dom(hook('first')).exists();
-      assert.dom(hook('second')).doesNotExist();
-    });
-
-    test('prevents the transition if it returns `false`', async function(
-      assert
-    ) {
-      const beforeAction = td.function('before action');
-      td.when(beforeAction(matchAnything())).thenReturn(false);
-      this.set('beforeAction', beforeAction);
-
-      await render(hbs`
-        {{#step-manager will-transition=(action beforeAction) as |w|}}
-          {{#w.step name='first'}}
-            <div data-test={{hook 'first'}}></div>
-          {{/w.step}}
-
-          {{#w.step name='second'}}
-            <div data-test={{hook 'second'}}></div>
-          {{/w.step}}
-
-          <button {{action w.transition-to-next}}>
-            Next
-          </button>
-        {{/step-manager}}
-      `);
-
-      await click('button');
-
-      assert.dom(hook('first')).exists();
-      assert.dom(hook('second')).doesNotExist();
-    });
-
-    test("doesn't update loading when destroyed", async function(assert) {
-      let didTransition = false;
-      this.set('beforeAction', function() {
-        return new RSVP.Promise(function(resolve) {
-          run.later(null, resolve, 500);
-        });
-      });
-      this.set('afterTransition', () => (didTransition = true));
-
-      await render(hbs`
-        {{#step-manager will-transition=(action beforeAction) did-transition=(action afterTransition) as |w|}}
-          {{#w.step name='first'}}
-            <div data-test={{hook 'first'}}></div>
-          {{/w.step}}
-
-          {{#w.step name='second'}}
-            <div data-test={{hook 'second'}}></div>
-          {{/w.step}}
-
-          <button {{action w.transition-to-next}}>
-            Next
-          </button>
-        {{/step-manager}}
-      `);
-
-      click('button');
-      await this.clearRender();
-
-      assert.equal(didTransition, false);
-      assert.dom(hook('first')).doesNotExist();
-      assert.dom(hook('second')).doesNotExist();
-    });
-  });
-
   module('assigning step indices', function() {
     test('works outside of a loop', async function(assert) {
       await render(hbs`
@@ -936,9 +518,7 @@ module('Integration: StepManagerComponent', function(hooks) {
       assert.dom(hook('steps')).hasText('bar');
     });
 
-    test('allows for adding more steps after the initial render', async function(
-      assert
-    ) {
+    test('allows for adding more steps after the initial render', async function(assert) {
       await render(hbs`
         {{#step-manager currentStep=(unbound data.firstObject.name) as |w|}}
           <div data-test={{hook 'steps'}}>
