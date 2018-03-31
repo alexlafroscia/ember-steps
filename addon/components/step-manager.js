@@ -64,9 +64,6 @@ export default Component.extend({
     const initialStep = get(this, 'currentStep');
     assert('Missing `initialStep` property', !!initialStep);
 
-    const stepCount = get(this, 'stepCount');
-    assert('Missing `stepCount` property', !!stepCount);
-
     const StateMachine = get(this, 'linear')
       ? LinearStateMachine
       : CircularStateMachine;
