@@ -64,8 +64,6 @@ export default Component.extend({
     const initialStep = get(this, 'currentStep');
     assert('Missing `initialStep` property', !!initialStep);
 
-    this._lastStep = initialStep;
-
     const stepCount = get(this, 'stepCount');
     assert('Missing `stepCount` property', !!stepCount);
 
@@ -97,14 +95,6 @@ export default Component.extend({
    * @private
    */
   _hasRendered: false,
-
-  /**
-   * Used internally to track the previous step
-   *
-   * @property {string} _lastStep
-   * @private
-   */
-  _lastStep: undefined,
 
   hasNextStep: computed('transitions.{currentStep,length}', function() {
     return isPresent(get(this, 'transitions').pickNext());
@@ -158,19 +148,14 @@ export default Component.extend({
   didUpdateAttrs() {
     this._super(...arguments);
 
-    const oldStep = this._lastStep;
     const newStep = this.get('currentStep');
 
     if (typeof newStep === 'undefined') {
       const firstStep = get(this, 'transitions.firstStep');
       get(this, 'transitions').activate(firstStep);
-    }
-
-    if (newStep && oldStep !== newStep) {
+    } else {
       get(this, 'transitions').activate(newStep);
     }
-
-    this._lastStep = newStep;
 
     this._super(...arguments);
   },
