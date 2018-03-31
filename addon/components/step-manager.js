@@ -20,7 +20,7 @@ const layout = hbs`
     transition-to-next=(action 'transition-to-next')
     transition-to-previous=(action 'transition-to-previous')
     currentStep=transitions.currentStep
-    steps=(if _hasRendered transitions.stepArray)
+    steps=transitions.stepArray
   )}}
 `;
 
@@ -86,16 +86,6 @@ export default Component.extend({
    */
   transitions: null,
 
-  /**
-   * Whether the initial render cycle has completed
-   *
-   * Used to prevent a double-render-cycle when yielding an array of steps
-   *
-   * @property {boolean} _hasRendered
-   * @private
-   */
-  _hasRendered: false,
-
   hasNextStep: computed('transitions.{currentStep,length}', function() {
     return isPresent(get(this, 'transitions').pickNext());
   }),
@@ -158,12 +148,6 @@ export default Component.extend({
     }
 
     this._super(...arguments);
-  },
-
-  didInsertElement() {
-    this._super(...arguments);
-
-    set(this, '_hasRendered', true);
   },
 
   actions: {
