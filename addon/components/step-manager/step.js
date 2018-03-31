@@ -8,7 +8,7 @@ export default Component.extend({
   layout: hbs`
     {{#if isActive}}
       {{yield}}
-    {{else if hasInactiveState}}
+    {{else if (hasBlock 'inverse')}}
       {{yield to='inverse'}}
     {{/if}}
   `,
@@ -42,22 +42,5 @@ export default Component.extend({
    */
   isActive: computed('currentStep', 'name', function() {
     return get(this, 'currentStep') === get(this, 'name');
-  }),
-
-  /**
-   * Whether or not an inactive state should be displayed instead of
-   * hiding the step entirely when not visible
-   *
-   * @property {boolean} hasInactiveState
-   * @private
-   */
-  hasInactiveState: false,
-
-  /**
-   * @property {boolean} isVisible
-   * @public
-   */
-  isVisible: computed('isActive', 'hasInactiveState', function() {
-    return get(this, 'hasInactiveState') || get(this, 'isActive');
   })
 });

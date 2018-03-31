@@ -84,7 +84,7 @@ module('step-manger/step', function(hooks) {
       test('renders the inverse block if provided', async function(assert) {
         await render(hbs`
           <div data-test={{hook 'step'}}>
-            {{#step-manager/step name='foo' hasInactiveState=true register-step=(action register)}}
+            {{#step-manager/step name='foo' register-step=(action register)}}
               Active Content
             {{else}}
               Inactive Content
