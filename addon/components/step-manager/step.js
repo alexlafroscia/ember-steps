@@ -1,9 +1,7 @@
 import Component from '@ember/component';
 import { computed, get, observer } from '@ember/object';
-import { isBlank } from '@ember/utils';
 import { assert } from '@ember/debug';
 import hbs from 'htmlbars-inline-precompile';
-import { StepNameError } from 'ember-steps/-private/errors';
 
 export default Component.extend({
   tagName: '',
@@ -19,12 +17,8 @@ export default Component.extend({
     this._super(...arguments);
 
     const name = get(this, 'name');
-    if (isBlank(name)) {
-      throw new StepNameError('Name must be provided');
-    }
-    if (typeof name !== 'string') {
-      throw new StepNameError('Name must be an immutable string');
-    }
+    assert('Step must have a name present', !!name);
+    assert('Step must be a `string`', typeof name === 'string');
 
     this['register-step'](this);
   },

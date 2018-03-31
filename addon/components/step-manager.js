@@ -1,9 +1,9 @@
 import Component from '@ember/component';
 import { set, get } from '@ember/object';
 import { isEmpty } from '@ember/utils';
+import { assert } from '@ember/debug';
 import hbs from 'htmlbars-inline-precompile';
 import StateMachine from 'ember-steps/-private/state-machine';
-import { MissingPropertyError } from 'ember-steps/-private/errors';
 
 const layout = hbs`
   {{yield (hash
@@ -57,16 +57,12 @@ export default Component.extend({
 
     // Set up the state machine
     const initialStep = get(this, 'currentStep');
-    if (!initialStep) {
-      throw new MissingPropertyError('currentStep');
-    }
+    assert('Missing `initialStep` property', !!initialStep);
 
     this._lastStep = initialStep;
 
     const stepCount = get(this, 'stepCount');
-    if (!stepCount) {
-      throw new MissingPropertyError('stepCount');
-    }
+    assert('Missing `stepCount` property', !!stepCount);
 
     set(
       this,
