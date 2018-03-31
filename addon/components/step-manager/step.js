@@ -34,32 +34,6 @@ export default Component.extend({
   }),
 
   /**
-   * Used internally to track the "active" state of the last time the attributes
-   * were updated.
-   *
-   * @property {boolean} _wasActive
-   * @private
-   */
-  _wasActive: false,
-
-  didReceiveAttrs() {
-    this._super(...arguments);
-
-    const isActive = get(this, 'isActive');
-    const wasActive = this._wasActive;
-
-    if (isActive && !wasActive && this['will-enter']) {
-      this['will-enter']();
-    }
-
-    if (!isActive && wasActive && this['will-exit']) {
-      this['will-exit']();
-    }
-
-    this._wasActive = isActive;
-  },
-
-  /**
    * Name used to transition to this step
    *
    * @property {string} name the name for this step

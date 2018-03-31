@@ -119,84 +119,8 @@ module('step-manger/step', function(hooks) {
     });
   });
 
-  module('lifecycle hooks', function() {
-    module('will-enter', function() {
-      test('is called if the step is initially active', async function(assert) {
-        const entranceAction = td.function();
-        this.set('entrance', entranceAction);
-        this.set('currentStep', 'foo');
 
-        await render(hbs`
-          {{step-manager/step
-              name='foo'
-              currentStep=currentStep
-              will-enter=(action entrance)
-              register-step=(action register)}}
-        `);
 
-        this.set('currentStep', 'foo');
-
-        assert.wasCalled(entranceAction);
-      });
-
-      test('is called when the step becomes active', async function(assert) {
-        const entranceAction = td.function();
-        this.set('entrance', entranceAction);
-        this.set('currentStep', 'bar');
-
-        await render(hbs`
-          {{step-manager/step
-              name='foo'
-              currentStep=currentStep
-              will-enter=(action entrance)
-              register-step=(action register)}}
-        `);
-
-        // Activate the step
-        this.set('currentStep', 'foo');
-
-        assert.wasCalled(entranceAction);
-      });
-    });
-
-    module('will-exit', function() {
-      test('is called when the step becomes inactive', async function(assert) {
-        const exitAction = td.function();
-        this.set('exit', exitAction);
-        this.set('currentStep', 'foo');
-
-        await render(hbs`
-          {{step-manager/step
-              name='foo'
-              currentStep=currentStep
-              will-exit=(action exit)
-              register-step=(action register)}}
-        `);
-
-        // Deactivate the step
-        this.set('currentStep', 'bar');
-
-        assert.wasCalled(exitAction);
-      });
-
-      test('is not called when the current step changes to a value that is not the name of the step', async function(assert) {
-        const exitAction = td.function();
-        this.set('exit', exitAction);
-        this.set('currentStep', 'bar');
-
-        await render(hbs`
-          {{step-manager/step
-              name='foo'
-              currentStep=currentStep
-              will-exit=(action exit)
-              register-step=(action register)}}
-        `);
-
-        // Deactivate the step
-        this.set('currentStep', 'baz');
-
-        assert.wasNotCalled(exitAction);
-      });
     });
   });
 });
