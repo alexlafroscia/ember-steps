@@ -16,11 +16,11 @@ const layout = hbs`
     )
     hasNextStep=hasNextStep
     hasPreviousStep=hasPreviousStep
+    currentStep=transitions.currentStep
+    steps=transitions.stepArray
     transition-to=(action 'transition-to')
     transition-to-next=(action 'transition-to-next')
     transition-to-previous=(action 'transition-to-previous')
-    currentStep=transitions.currentStep
-    steps=transitions.stepArray
   )}}
 `;
 
@@ -60,9 +60,7 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    // Set up the state machine
-    const initialStep = get(this, 'currentStep');
-    assert('Missing `initialStep` property', !!initialStep);
+    const initialStep = get(this, 'initialStep') || get(this, 'currentStep');
 
     const StateMachine = get(this, 'linear')
       ? LinearStateMachine
@@ -110,22 +108,19 @@ export default Component.extend({
   },
 
   /**
+   * Optionally can be provided to override the initial step to render
+   *
+   * @property {string} initialStep the initial step
+   * @public
+   */
+  initialStep: null,
+
+  /**
    * The `currentStep` property can be used for providing, or binding to, the
    * name of the current step.
    *
-   * If you only want to provide the initial step, but do not want the target
-   * object's value to be bound to it, you can either:
-   *
-   * - Pass it a value directly, like `currentStep='name'`
-   * - Use the Unbound helper, like `currentStep=(unbound nameOfStep)`
-   *
-   * If you want to bind the value in both directions, you can do so by:
-   *
-   * - Passing a template value directly, like `currentStep=nameOfStep
-   * - Using the Mut helper, like `currentStep=(mut nameOfStep)`
-   *
-   * Providing a mutable value is useful for cases like binding the current
-   * step name to a query param.
+   * If provided, the initial step will come from the value of this property,
+   * and the value will be updated whenever the step changes
    *
    * @property {string} currentStep the current active step
    * @public
@@ -171,16 +166,6 @@ export default Component.extend({
 
     /**
      * Transition to a named step
-     *
-     * If the `currentStep` property was provided as a mutable value, like:
-     *
-     * ```js
-     * {{#step-manager currentStep=(mut step) as |w|}}
-     *   ...
-     * {{/step-manager}}
-     * ```
-     *
-     * Then the external property will be updated to the new step name.
      *
      * @action transition-to
      * @param {string} to the name of the step to transition to

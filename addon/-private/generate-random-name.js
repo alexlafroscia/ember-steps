@@ -1,6 +1,6 @@
-'use strict';
+import { computed } from '@ember/object';
 
-module.exports = function() {
+export function generateRandomName() {
   let s = '';
   const x = 6;
   while (s.length < x && x > 0) {
@@ -11,4 +11,6 @@ module.exports = function() {
         : String.fromCharCode(Math.floor(r * 26) + (r > 0.5 ? 97 : 65));
   }
   return s;
-};
+}
+
+export const macro = computed(generateRandomName);

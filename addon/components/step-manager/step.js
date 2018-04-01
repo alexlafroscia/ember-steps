@@ -2,6 +2,7 @@ import Component from '@ember/component';
 import { computed, get, observer } from '@ember/object';
 import { isPresent } from '@ember/utils';
 import { assert } from '@ember/debug';
+import { macro as randomStringMacro } from '../../-private/generate-random-name';
 import hbs from 'htmlbars-inline-precompile';
 
 export default Component.extend({
@@ -38,7 +39,7 @@ export default Component.extend({
    * @property {string} name the name for this step
    * @public
    */
-  name: null,
+  name: randomStringMacro,
 
   transitions: null,
 

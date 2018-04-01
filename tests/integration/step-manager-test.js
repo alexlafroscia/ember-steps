@@ -11,117 +11,50 @@ module('step-manager', function(hooks) {
   hooks.beforeEach(initializeEmberHook);
 
   module('`currentStep` attribute', function() {
-    module('getting the initial step', function() {
-      test('can use a primitive value', async function(assert) {
-        await render(hbs`
-          {{#step-manager currentStep='second' as |w|}}
-            {{#w.step name='first'}}
-              <div data-test={{hook 'first'}}></div>
-            {{/w.step}}
+    test('setting the initial visible step', async function(assert) {
+      await render(hbs`
+        {{#step-manager currentStep='second' as |w|}}
+          {{#w.step name='first'}}
+            <div data-test={{hook 'first'}}></div>
+          {{/w.step}}
 
-            {{#w.step name='second'}}
-              <div data-test={{hook 'second'}}></div>
-            {{/w.step}}
-          {{/step-manager}}
-        `);
+          {{#w.step name='second'}}
+            <div data-test={{hook 'second'}}></div>
+          {{/w.step}}
+        {{/step-manager}}
+      `);
 
-        assert.dom(hook('first')).doesNotExist();
-        assert.dom(hook('second')).exists();
-      });
-
-      test('can use a value from the `mut` helper', async function(assert) {
-        this.set('currentStep', 'second');
-        await render(hbs`
-          {{#step-manager currentStep=(mut currentStep) as |w|}}
-            {{#w.step name='first'}}
-              <div data-test={{hook 'first'}}></div>
-            {{/w.step}}
-
-            {{#w.step name='second'}}
-              <div data-test={{hook 'second'}}></div>
-            {{/w.step}}
-          {{/step-manager}}
-        `);
-
-        assert.dom(hook('first')).doesNotExist();
-        assert.dom(hook('second')).exists();
-      });
+      assert.dom(hook('first')).doesNotExist();
+      assert.dom(hook('second')).exists();
     });
 
-    module('changing the visible step from the target object', function() {
-      test('changes steps when the property changes', async function(assert) {
-        this.set('step', 'first');
-        await render(hbs`
-          {{#step-manager currentStep=step as |w|}}
-            {{#w.step name='first'}}
-              <div data-test={{hook 'first'}}></div>
-            {{/w.step}}
+    test('changes steps when the property changes', async function(assert) {
+      this.set('step', 'first');
+      await render(hbs`
+        {{#step-manager currentStep=step as |w|}}
+          {{#w.step name='first'}}
+            <div data-test={{hook 'first'}}></div>
+          {{/w.step}}
 
-            {{#w.step name='second'}}
-              <div data-test={{hook 'second'}}></div>
-            {{/w.step}}
-          {{/step-manager}}
-        `);
+          {{#w.step name='second'}}
+            <div data-test={{hook 'second'}}></div>
+          {{/w.step}}
+        {{/step-manager}}
+      `);
 
-        assert.dom(hook('first')).exists();
-        assert.dom(hook('second')).doesNotExist();
+      assert.dom(hook('first')).exists();
+      assert.dom(hook('second')).doesNotExist();
 
-        this.set('step', 'second');
+      this.set('step', 'second');
 
-        assert.dom(hook('first')).doesNotExist();
-        assert.dom(hook('second')).exists();
+      assert.dom(hook('first')).doesNotExist();
+      assert.dom(hook('second')).exists();
 
-        // Important for binding current step to a query param
-        this.set('step', undefined);
+      // Important for binding current step to a query param
+      this.set('step', undefined);
 
-        assert.dom(hook('first')).exists();
-        assert.dom(hook('second')).doesNotExist();
-      });
-
-      test('changes steps when the property changes (with the mut helper)', async function(assert) {
-        this.set('step', 'first');
-        await render(hbs`
-          {{#step-manager currentStep=(mut step) as |w|}}
-            {{#w.step name='first'}}
-              <div data-test={{hook 'first'}}></div>
-            {{/w.step}}
-
-            {{#w.step name='second'}}
-              <div data-test={{hook 'second'}}></div>
-            {{/w.step}}
-          {{/step-manager}}
-        `);
-
-        assert.dom(hook('first')).exists();
-        assert.dom(hook('second')).doesNotExist();
-
-        this.set('step', 'second');
-
-        assert.dom(hook('first')).doesNotExist();
-        assert.dom(hook('second')).exists();
-      });
-
-      skip('throws an error when an invalid step is provided', async function(assert) {
-        this.set('step', 'first');
-        await render(hbs`
-            {{#step-manager currentStep=step as |w|}}
-              {{#w.step name='first'}}
-                <div data-test={{hook 'first'}}></div>
-              {{/w.step}}
-
-              {{#w.step name='second'}}
-                <div data-test={{hook 'second'}}></div>
-              {{/w.step}}
-            {{/step-manager}}
-          `);
-
-        assert.dom(hook('first')).exists();
-        assert.dom(hook('second')).doesNotExist();
-
-        assert.throws(() => {
-          this.set('step', 'foobar');
-        }, Error);
-      });
+      assert.dom(hook('first')).exists();
+      assert.dom(hook('second')).doesNotExist();
     });
 
     module('updating the target object from the component', function() {
@@ -178,6 +111,49 @@ module('step-manager', function(hooks) {
 
         assert.equal(this.get('step'), 'first');
       });
+    });
+  });
+
+  module('`initialStep` attribute', function() {
+    test('it can set the initial visible step', async function(assert) {
+      await render(hbs`
+        {{#step-manager initialStep='second' as |w|}}
+          {{#w.step name='first'}}
+            <div data-test={{hook 'first'}}></div>
+          {{/w.step}}
+
+          {{#w.step name='second'}}
+            <div data-test={{hook 'second'}}></div>
+          {{/w.step}}
+        {{/step-manager}}
+      `);
+
+      assert.dom(hook('first')).doesNotExist();
+      assert.dom(hook('second')).exists();
+    });
+
+    test('it does not update the value as the step changes', async function(assert) {
+      this.set('initialStep', 'second');
+      await render(hbs`
+        {{#step-manager initialStep=initialStep as |w|}}
+          {{#w.step name='first'}}
+            <div data-test={{hook 'first'}}></div>
+          {{/w.step}}
+
+          {{#w.step name='second'}}
+            <div data-test={{hook 'second'}}></div>
+          {{/w.step}}
+
+          <button {{action w.transition-to 'first'}}>
+            To First
+          </button>
+        {{/step-manager}}
+      `);
+
+      await click('button');
+
+      assert.dom(hook('first')).exists();
+      assert.equal(this.get('initialStep'), 'second');
     });
   });
 
