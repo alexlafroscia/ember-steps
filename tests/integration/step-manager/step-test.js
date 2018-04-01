@@ -118,4 +118,58 @@ module('step-manger/step', function(hooks) {
       assert.dom(hook('step')).doesNotExist();
     });
   });
+
+  module('yielding whether the step has a next step', function() {
+    test('when it has a next step', async function(assert) {
+      await render(hbs`
+        {{#step-manager as |w|}}
+          {{#w.step as |step|}}
+            <p>{{step.hasNext}}</p>
+          {{/w.step}}
+          {{w.step}}
+        {{/step-manager}}
+      `);
+
+      assert.dom('p').hasText('true');
+    });
+
+    test('when it does not have a next step', async function(assert) {
+      await render(hbs`
+        {{#step-manager as |w|}}
+          {{#w.step as |step|}}
+            <p>{{step.hasNext}}</p>
+          {{/w.step}}
+        {{/step-manager}}
+      `);
+
+      assert.dom('p').hasText('false');
+    });
+  });
+
+  module('yielding whether the step has a previous step', function() {
+    test('when it has a previous step', async function(assert) {
+      await render(hbs`
+        {{#step-manager currentStep='bar' as |w|}}
+          {{w.step name='foo'}}
+          {{#w.step name='bar' as |step|}}
+            <p>{{step.hasPrevious}}</p>
+          {{/w.step}}
+        {{/step-manager}}
+      `);
+
+      assert.dom('p').hasText('true');
+    });
+
+    test('when it does not have a previous step', async function(assert) {
+      await render(hbs`
+        {{#step-manager as |w|}}
+          {{#w.step as |step|}}
+            <p>{{step.hasPrevious}}</p>
+          {{/w.step}}
+        {{/step-manager}}
+      `);
+
+      assert.dom('p').hasText('false');
+    });
+  });
 });

@@ -160,9 +160,12 @@ export default Component.extend({
      */
     'register-step-component'(stepComponent) {
       const name = get(stepComponent, 'name');
+      const transitions = get(this, 'transitions');
+
+      stepComponent.set('transitions', transitions);
 
       schedule('actions', () => {
-        get(this, 'transitions').addStep(name);
+        transitions.addStep(name);
       });
     },
 

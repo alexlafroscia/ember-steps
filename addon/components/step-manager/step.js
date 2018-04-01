@@ -1,5 +1,6 @@
 import Component from '@ember/component';
 import { computed, get, observer } from '@ember/object';
+import { isPresent } from '@ember/utils';
 import { assert } from '@ember/debug';
 import hbs from 'htmlbars-inline-precompile';
 
@@ -7,7 +8,11 @@ export default Component.extend({
   tagName: '',
   layout: hbs`
     {{#if isActive}}
-      {{yield}}
+      {{yield (hash
+          hasNext=hasNext
+          hasPrevious=hasPrevious
+        )
+      }}
     {{else if (hasBlock 'inverse')}}
       {{yield to='inverse'}}
     {{/if}}
@@ -35,6 +40,8 @@ export default Component.extend({
    */
   name: null,
 
+  transitions: null,
+
   /**
    * Whether this state is currently the active one
    * @property {boolean} isActive
@@ -42,5 +49,17 @@ export default Component.extend({
    */
   isActive: computed('currentStep', 'name', function() {
     return get(this, 'currentStep') === get(this, 'name');
+  }),
+
+  hasNext: computed('transitions.length', function() {
+    const name = get(this, 'name');
+
+    return isPresent(get(this, 'transitions').pickNext(name));
+  }),
+
+  hasPrevious: computed('transitions.length', function() {
+    const name = get(this, 'name');
+
+    return isPresent(get(this, 'transitions').pickPrevious(name));
   })
 });

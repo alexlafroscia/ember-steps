@@ -56,9 +56,11 @@ export default EmberObject.extend({
       set(this, 'firstStep', name);
     }
 
-    // Set the last step, if it hasn't been yet
-    if (!get(this, 'lastStep')) {
-      set(this, 'lastStep', name);
+    // Set the last step to transition to the new one, event if the last step
+    // is this one
+    const lastStep = get(this, 'lastStep');
+    if (lastStep) {
+      set(this, `stepTransitions.${lastStep}`, name);
     }
 
     // Add to the transition map based on the super-class
@@ -79,17 +81,15 @@ export default EmberObject.extend({
     assert('must be implemented by parent class');
   },
 
-  pickNext() {
+  pickNext(currentStep = get(this, 'currentStep')) {
     const transitions = get(this, 'stepTransitions');
-    const currentStep = get(this, 'currentStep');
 
     return transitions[currentStep];
   },
 
-  pickPrevious() {
+  pickPrevious(currentStep = get(this, 'currentStep')) {
     let previous;
     const transitions = get(this, 'stepTransitions');
-    const currentStep = get(this, 'currentStep');
 
     for (const k in transitions) {
       if (transitions[k] === currentStep) {

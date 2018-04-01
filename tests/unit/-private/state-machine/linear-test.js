@@ -38,6 +38,14 @@ module('-private/state-machine/linear', function() {
 
       assert.equal(m.pickNext(), null);
     });
+
+    test('can get the next step from a specific step', function(assert) {
+      const m = new StateMachine();
+      m.addStep('foo');
+      m.addStep('bar');
+
+      assert.equal(m.pickNext('bar'), null);
+    });
   });
 
   module('#pickPrevious', function() {
@@ -59,6 +67,14 @@ module('-private/state-machine/linear', function() {
       m.addStep('bar');
 
       assert.equal(m.pickPrevious(), null);
+    });
+
+    test('can get the previous step from a specific step', function(assert) {
+      const m = new StateMachine();
+      m.addStep('foo');
+      m.addStep('bar');
+
+      assert.equal(m.pickPrevious('bar'), 'foo');
     });
   });
 
