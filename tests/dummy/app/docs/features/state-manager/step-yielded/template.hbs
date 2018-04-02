@@ -1,0 +1,35 @@
+{{#docs-demo as |demo|}}
+  {{#demo.example name='demo-cyclical-steps-step-yielded.hbs'}}
+    {{#step-manager as |w|}}
+      {{#w.step as |step|}}
+        <h3>First</h3>
+        There is a first step: {{step.hasNext}} <br>
+        There is a previous step: {{step.hasPrevious}}
+      {{/w.step}}
+
+      {{#w.step as |step|}}
+        <h3>Second</h3>
+        There is a first step: {{step.hasNext}} <br>
+        There is a previous step: {{step.hasPrevious}}
+      {{/w.step}}
+
+      {{#control-group}}
+        <button
+          onClick={{action w.transition-to-previous}}
+          disabled={{not w.hasPreviousStep}}
+        >
+          Previous
+        </button>
+        <button
+          onClick={{action w.transition-to-next}}
+          disabled={{not w.hasNextStep}}
+        >
+          Next
+        </button>
+      {{/control-group}}
+    {{/step-manager}}
+  {{/demo.example}}
+
+  {{demo.snippet 'demo-cyclical-steps-step-yielded.hbs'}}
+{{/docs-demo}}
+

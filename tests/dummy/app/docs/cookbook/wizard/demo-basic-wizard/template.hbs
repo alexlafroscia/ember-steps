@@ -1,7 +1,7 @@
 {{#docs-demo as |demo|}}
   {{#demo.example name='demo-basic-wizard.hbs'}}
     {{#step-manager as |w|}}
-      {{#w.step name='first'}}
+      {{#w.step}}
         This content is on the first step. You can only go forward.
       {{/w.step}}
 
@@ -9,15 +9,15 @@
         This content is on the second step. You can go forward or backward.
       {{/w.step}}
 
-      {{#w.step name='last'}}
+      {{#w.step}}
         This content is on the third step. You can only go backward.
       {{/w.step}}
 
       {{#control-group}}
-        <button {{action w.transition-to-previous}} disabled={{eq w.currentStep 'first'}}>
+        <button {{action w.transition-to-previous}} disabled={{not w.hasPreviousStep}}>
           Previous
         </button>
-        <button {{action w.transition-to-next}} disabled={{eq w.currentStep 'last'}}>
+        <button {{action w.transition-to-next}} disabled={{not w.hasNextStep}}>
           Next
         </button>
       {{/control-group}}

@@ -1,6 +1,6 @@
 {{docs-header}}
 
-{{#docs-viewer as |viewer|}}
+{{#docs-viewer classNames=(local-class 'viewer') as |viewer|}}
   {{#viewer.nav as |nav|}}
     {{nav.item 'Overview' 'docs.index'}}
     {{nav.item 'Cookbook' 'docs.cookbook'}}
@@ -8,7 +8,7 @@
     {{nav.section 'Features'}}
     {{#nav.subnav as |features|}}
       {{features.item 'Validating Steps' 'docs.features.validating-steps'}}
-      {{features.item 'Cyclical Steps' 'docs.features.cyclical-steps'}}
+      {{features.item 'Linear & Cyclical Flow' 'docs.features.state-manager'}}
     {{/nav.subnav}}
 
     {{nav.section 'Cookbook'}}

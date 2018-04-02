@@ -52,6 +52,7 @@ const layout = hbs`
  * @yield {string} w.currentStep The name of the current step
  * @yield {Array<String>} w.steps All of the step names that are currently defined, in order
  * @public
+ * @hide
  */
 export default Component.extend({
   layout,
