@@ -1,8 +1,8 @@
 {{#docs-demo as |demo|}}
   {{#demo.example name='dynamic-definition-basic-example.hbs'}}
-    {{#step-manager currentStep=(unbound (get data 0)) as |w|}}
+    {{#step-manager as |w|}}
       {{#each data as |content|}}
-        {{#w.step name=(unbound content)}}
+        {{#w.step}}
           {{content}}
         {{/w.step}}
       {{/each}}

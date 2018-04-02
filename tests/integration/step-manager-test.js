@@ -525,10 +525,10 @@ module('step-manager', function(hooks) {
 
     test('allows dynamically creating steps', async function(assert) {
       await render(hbs`
-        {{#step-manager currentStep=(unbound data.firstObject.name) as |w|}}
+        {{#step-manager as |w|}}
           <div data-test={{hook 'steps'}}>
             {{#each data as |item|}}
-              {{#w.step name=(unbound item.name)}}
+              {{#w.step}}
                 <div data-test={{hook 'step' name=item.name}}>
                   {{item.name}}
                 </div>
@@ -555,10 +555,10 @@ module('step-manager', function(hooks) {
 
     test('allows for adding more steps after the initial render', async function(assert) {
       await render(hbs`
-        {{#step-manager linear=false currentStep=(unbound data.firstObject.name) as |w|}}
+        {{#step-manager linear=false as |w|}}
           <div data-test={{hook 'steps'}}>
             {{#each data as |item|}}
-              {{#w.step name=(unbound item.name)}}
+              {{#w.step name=item.name}}
                 <div data-test={{hook 'step' name=item.name}}>
                   {{item.name}}
                 </div>
