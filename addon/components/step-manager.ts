@@ -1,4 +1,4 @@
-import Component from '@ember/component';
+import TaglessComponent from './-tagless';
 import { computed, get, set } from '@ember/object';
 import { isEmpty, isPresent } from '@ember/utils';
 import { schedule } from '@ember/runloop';
@@ -7,22 +7,8 @@ import hbs from 'htmlbars-inline-precompile';
 import CircularStateMachine from 'ember-steps/-private/state-machine/circular';
 import LinearStateMachine from 'ember-steps/-private/state-machine/linear';
 
-const layout = hbs`
-  {{yield (hash
-    step=(component 'step-manager/step'
-      register-step=(action 'register-step-component')
-      currentStep=transitions.currentStep
-      transitions=transitions
-    )
-    hasNextStep=hasNextStep
-    hasPreviousStep=hasPreviousStep
-    currentStep=transitions.currentStep
-    steps=transitions.stepArray
-    transition-to=(action 'transition-to')
-    transition-to-next=(action 'transition-to-next')
-    transition-to-previous=(action 'transition-to-previous')
-  )}}
-`;
+import StateMachine from 'ember-steps/-private/state-machine/-base';
+import StepComponent from './step-manager/step';
 
 /**
  * A component for creating a set of "steps", where only one is visible at a time
@@ -43,7 +29,7 @@ const layout = hbs`
  * {{/step-manager}}
  * ```
  *
- * @class StepManager
+ * @class StepManagerComponent
  * @yield {hash} w
  * @yield {Component} w.step Renders a step
  * @yield {Action} w.transition-to
@@ -54,59 +40,24 @@ const layout = hbs`
  * @public
  * @hide
  */
-export default Component.extend({
-  layout,
-  tagName: '',
-
-  init() {
-    this._super(...arguments);
-
-    const initialStep = get(this, 'initialStep') || get(this, 'currentStep');
-
-    const StateMachine = get(this, 'linear')
-      ? LinearStateMachine
-      : CircularStateMachine;
-
-    set(this, 'transitions', StateMachine.create({ initialStep }));
-  },
-
-  /**
-   * @property {boolean} boolean
-   * @public
-   */
-  linear: true,
-
-  /**
-   * @property {Ember.Object} transitions state machine for transitions
-   * @private
-   */
-  transitions: null,
-
-  hasNextStep: computed('transitions.{currentStep,length}', function() {
-    return isPresent(get(this, 'transitions').pickNext());
-  }),
-
-  hasPreviousStep: computed('transitions.{currentStep,length}', function() {
-    return isPresent(get(this, 'transitions').pickPrevious());
-  }),
-
-  /**
-   * Used internally to transition to a specific named step
-   *
-   * @method doTransition
-   * @param {string} to the name of the step to transition to
-   * @param {string} from the name of the step being transitioned
-   * @private
-   */
-  doTransition(to) {
-    // Update the `currentStep` if it's mutable
-    if (!isEmpty(get(this, 'currentStep'))) {
-      set(this, 'currentStep', to);
-    }
-
-    // Activate the next step
-    get(this, 'transitions').activate(to);
-  },
+export default class StepManagerComponent extends TaglessComponent {
+  layout = hbs`
+    {{yield (hash
+        step=(component 'step-manager/step'
+          register-step=(action 'registerStepComponent')
+          currentStep=transitions.currentStep
+          transitions=transitions
+        )
+        hasNextStep=hasNextStep
+        hasPreviousStep=hasPreviousStep
+        currentStep=transitions.currentStep
+        steps=transitions.stepTransitions
+        transition-to=(action 'transition-to')
+        transition-to-next=(action 'transition-to-next')
+        transition-to-previous=(action 'transition-to-previous')
+      )
+    }}
+  `;
 
   /**
    * Optionally can be provided to override the initial step to render
@@ -114,7 +65,7 @@ export default Component.extend({
    * @property {string} initialStep the initial step
    * @public
    */
-  initialStep: null,
+  initialStep: string;
 
   /**
    * The `currentStep` property can be used for providing, or binding to, the
@@ -126,39 +77,94 @@ export default Component.extend({
    * @property {string} currentStep the current active step
    * @public
    */
-  currentStep: null,
+  currentStep: string;
+
+  /**
+   * @property {boolean} boolean
+   * @public
+   */
+  linear: boolean;
+
+  /**
+   * @property {StateMachine} transitions state machine for transitions
+   * @private
+   */
+  transitions: StateMachine;
+
+  constructor() {
+    super();
+
+    const initialStep: string =
+      get(this, 'initialStep') || get(this, 'currentStep');
+
+    if (!isPresent(this.linear)) {
+      this.linear = true;
+    }
+
+    const StateMachine = this.linear
+      ? LinearStateMachine
+      : CircularStateMachine;
+
+    set(this, 'transitions', new StateMachine(initialStep));
+  }
+
+  hasNextStep = computed('transitions.{currentStep,length}', function() {
+    return isPresent(this.transitions.pickNext());
+  });
+
+  hasPreviousStep = computed('transitions.{currentStep,length}', function() {
+    return isPresent(this.transitions.pickPrevious());
+  });
+
+  /**
+   * Used internally to transition to a specific named step
+   *
+   * @method doTransition
+   * @param {string} to the name of the step to transition to
+   * @param {string} from the name of the step being transitioned
+   * @private
+   */
+  doTransition(to) {
+    // Update the `currentStep` if it's mutable
+    if (!isEmpty(this.currentStep)) {
+      set(this, 'currentStep', to);
+    }
+
+    // Activate the next step
+    this.transitions.activate(to);
+  }
 
   didUpdateAttrs() {
     this._super(...arguments);
 
-    const newStep = this.get('currentStep');
+    const newStep = this.currentStep;
 
     if (typeof newStep === 'undefined') {
-      const firstStep = get(this, 'transitions.firstStep');
-      get(this, 'transitions').activate(firstStep);
+      const firstStep: string = this.transitions.firstStep;
+      this.transitions.activate(firstStep);
     } else {
-      get(this, 'transitions').activate(newStep);
+      this.transitions.activate(newStep);
     }
+  }
 
-    this._super(...arguments);
-  },
-
-  actions: {
+  actions = {
     /**
      * Register a step with the manager
      *
-     * Adds a set to the internal registry of steps by name.  If no name is
-     * provided, a name will be assigned by index.
+     * Adds a step to the internal registry of steps by name.
      *
      * @action register-step-component
      * @param {string} name the name of the step being registered
      * @private
      */
-    'register-step-component'(stepComponent) {
+    registerStepComponent(
+      this: StepManagerComponent,
+      stepComponent: StepComponent
+    ) {
       const name = get(stepComponent, 'name');
-      const transitions = get(this, 'transitions');
+      const transitions = this.transitions;
 
-      stepComponent.set('transitions', transitions);
+      stepComponent.transitions = transitions;
 
       schedule('actions', () => {
         transitions.addStep(name);
@@ -173,7 +179,7 @@ export default Component.extend({
      * @param {*} value the value to pass to the transition actions
      * @public
      */
-    'transition-to'(to) {
+    'transition-to'(this: StepManagerComponent, to: string) {
       this.doTransition(to);
     },
 
@@ -187,8 +193,8 @@ export default Component.extend({
      * @action transition-to-next
      * @public
      */
-    'transition-to-next'() {
-      const to = get(this, 'transitions').pickNext();
+    'transition-to-next'(this: StepManagerComponent) {
+      const to = this.transitions.pickNext();
 
       assert('There is no next step', !!to);
 
@@ -204,12 +210,12 @@ export default Component.extend({
      * @action transition-to-previous
      * @public
      */
-    'transition-to-previous'() {
-      const to = get(this, 'transitions').pickPrevious();
+    'transition-to-previous'(this: StepManagerComponent) {
+      const to = this.transitions.pickPrevious();
 
       assert('There is no previous step', !!to);
 
       this.doTransition(to);
     }
-  }
-});
+  };
+}

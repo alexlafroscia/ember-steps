@@ -28,6 +28,15 @@ module.exports = {
     ]]
   },
   overrides: [
+    // TypeScript files
+    {
+      files: ['**/*.ts'],
+      parser: 'typescript-eslint-parser',
+      rules: {
+        'no-undef': 'off',
+        'no-unused-vars': 'off'
+      }
+    },
     // node files
     {
       files: [

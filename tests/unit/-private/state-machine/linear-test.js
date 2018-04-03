@@ -4,9 +4,7 @@ import StateMachine from 'ember-steps/-private/state-machine/linear';
 module('-private/state-machine/linear', function() {
   module('constructor', function() {
     test('uses the initial step, if provided', function(assert) {
-      const m = new StateMachine({
-        initialStep: 'foo'
-      });
+      const m = new StateMachine('foo');
 
       assert.equal(m.get('currentStep'), 'foo');
     });
@@ -91,15 +89,15 @@ module('-private/state-machine/linear', function() {
     });
 
     test('throws an error if the step name is not valid', function(assert) {
-      assert.throws(() => {
+      assert.expectAssertion(() => {
         this.m.activate('foobar');
-      }, /Step name "foobar" is invalid/);
+      }, /"foobar" does not match an existing step/);
     });
 
     test('throws an error if no step name is provided', function(assert) {
-      assert.throws(() => {
+      assert.expectAssertion(() => {
         this.m.activate();
-      }, /No step name provided/);
+      }, /No step name was provided/);
     });
   });
 
@@ -128,16 +126,16 @@ module('-private/state-machine/linear', function() {
     });
   });
 
-  module('.stepArray', function() {
+  module('.stepTransitions', function() {
     test('exposes an array of step names', function(assert) {
       const m = new StateMachine();
       m.addStep('foo');
       m.addStep('bar');
-      assert.deepEqual(m.get('stepArray'), ['foo', 'bar']);
+      assert.deepEqual(m.get('stepTransitions'), ['foo', 'bar']);
 
       m.addStep('baz');
 
-      assert.deepEqual(m.get('stepArray'), ['foo', 'bar', 'baz']);
+      assert.deepEqual(m.get('stepTransitions'), ['foo', 'bar', 'baz']);
     });
   });
 });

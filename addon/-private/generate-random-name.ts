@@ -1,6 +1,4 @@
-import { computed } from '@ember/object';
-
-export function generateRandomName() {
+export default function generateRandomName(): string {
   let s = '';
   const x = 6;
   while (s.length < x && x > 0) {
@@ -12,5 +10,3 @@ export function generateRandomName() {
   }
   return s;
 }
-
-export const macro = computed(generateRandomName);

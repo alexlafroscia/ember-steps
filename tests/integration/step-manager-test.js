@@ -1,4 +1,4 @@
-import { module, test, skip } from 'qunit';
+import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { initialize as initializeEmberHook, hook } from 'ember-hook';
@@ -294,22 +294,6 @@ module('step-manager', function(hooks) {
       assert.dom(hook('first')).doesNotExist();
       assert.dom(hook('second')).exists();
     });
-
-    skip('errors when transitioning to an invalid step', function(assert) {
-      assert.throws(async () => {
-        await render(hbs`
-          {{#step-manager currentStep='first' as |w|}}
-            <button {{action w.transition-to 'second'}}>
-              Transition to Next
-            </button>
-
-            {{w.step name='first'}}
-          {{/step-manager}}
-        `);
-
-        await click('button');
-      }, Error);
-    });
   });
 
   module('exposing whether there is a next step', function() {
@@ -491,33 +475,6 @@ module('step-manager', function(hooks) {
     });
   });
 
-  module('assigning step indices', function() {
-    test('works outside of a loop', async function(assert) {
-      await render(hbs`
-        {{#step-manager as |w|}}
-          {{#w.step}}
-            <div data-test={{hook 'step' index=0}}></div>
-          {{/w.step}}
-          {{#w.step}}
-            <div data-test={{hook 'step' index=1}}></div>
-          {{/w.step}}
-
-          <button {{action w.transition-to-next}}>
-            Next
-          </button>
-        {{/step-manager}}
-      `);
-
-      assert.dom(hook('step', { index: 0 })).exists();
-      assert.dom(hook('step', { index: 1 })).doesNotExist();
-
-      await click('button');
-
-      assert.dom(hook('step', { index: 0 })).doesNotExist();
-      assert.dom(hook('step', { index: 1 })).exists();
-    });
-  });
-
   module('dynamically creating steps', function(hooks) {
     hooks.beforeEach(function() {
       this.set('data', A([{ name: 'foo' }, { name: 'bar' }]));
@@ -572,7 +529,12 @@ module('step-manager', function(hooks) {
         {{/step-manager}}
       `);
 
+      assert.dom(hook('step', { name: 'foo' })).exists();
+
       await click('button');
+
+      assert.dom(hook('step', { name: 'foo' })).doesNotExist();
+      assert.dom(hook('step', { name: 'bar' })).exists();
 
       this.set('data', A([{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }]));
 

@@ -1,4 +1,4 @@
-import { module, test, skip } from 'qunit';
+import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { render } from '@ember/test-helpers';
@@ -25,23 +25,9 @@ module('step-manger/step', function(hooks) {
 
       assert.wasCalled(registerAction);
     });
-
-    skip('throws an error when not provided a registration action', function(assert) {
-      assert.throws(async () => {
-        await render(hbs`{{step-manager/step}}`);
-      }, Error);
-    });
   });
 
   module('the step name', function() {
-    skip('must be provided', function(assert) {
-      assert.throws(async () => {
-        await render(hbs`
-          {{step-manager/step register-step=(action register)}}
-        `);
-      }, /Name must be provided/);
-    });
-
     test('throws an error when changed', async function(assert) {
       this.set('name', 'foo');
 
@@ -58,7 +44,7 @@ module('step-manger/step', function(hooks) {
   module('rendering', function() {
     test('renders block content when visible', async function(assert) {
       await render(hbs`
-        {{#step-manager/step name='foo' isActive=true register-step=(action register)}}
+        {{#step-manager/step name='foo' currentStep='foo' register-step=(action register)}}
           <div data-test={{hook 'step'}}>
             Foo
           </div>
@@ -100,7 +86,7 @@ module('step-manger/step', function(hooks) {
   module('programmatically controlling visibility', function() {
     test('is visible when active', async function(assert) {
       await render(hbs`
-        {{#step-manager/step name='foo' isActive=true register-step=(action register)}}
+        {{#step-manager/step name='foo' currentStep='foo' register-step=(action register)}}
           <div data-test={{hook 'step'}}></div>
         {{/step-manager/step}}
       `);
@@ -110,7 +96,7 @@ module('step-manger/step', function(hooks) {
 
     test('is invisible when not active', async function(assert) {
       await render(hbs`
-        {{#step-manager/step name='foo' register-step=(action register)}}
+        {{#step-manager/step name='foo' currentStep='bar' register-step=(action register)}}
           <div data-test={{hook 'step'}}></div>
         {{/step-manager/step}}
       `);
