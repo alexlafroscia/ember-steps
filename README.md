@@ -64,7 +64,7 @@ The above examples show the basic idea, but there's more configuration (and powe
 
 ## Compatibility Note
 
-Ember `2.12` is the earliest version that the tests are run against. YMMV with older versions of Ember.
+Ember `2.16` is the earliest version that the tests are run against. If you need support for `2.12` or lower, install `v4.0.0`.
 
 [ember-closure-actions]: https://guides.emberjs.com/v3.0.0/templates/actions/
 [cookbook]: http://alexlafroscia.com/ember-steps/latest/docs/cookbook
