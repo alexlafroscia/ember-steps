@@ -35,7 +35,7 @@ export default class StepComponent extends TaglessComponent {
   transitions: StateMachine;
 
   constructor() {
-    super();
+    super(...arguments);
 
     const nameAttribute = get(this, 'name');
     const name = isEmpty(nameAttribute) ? generateRandomName() : nameAttribute;

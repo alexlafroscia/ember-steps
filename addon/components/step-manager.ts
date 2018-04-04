@@ -92,7 +92,7 @@ export default class StepManagerComponent extends TaglessComponent {
   transitions: StateMachine;
 
   constructor() {
-    super();
+    super(...arguments);
 
     const initialStep: string =
       get(this, 'initialStep') || get(this, 'currentStep');
