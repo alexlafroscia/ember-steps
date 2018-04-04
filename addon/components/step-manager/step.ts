@@ -1,10 +1,11 @@
 import TaglessComponent from '../-tagless';
+// @ts-ignore: Ignore import of compiled template
+import layout from '../../templates/components/step-manager/step';
 import { get, observer, set } from '@ember/object';
 import { isEmpty, isPresent } from '@ember/utils';
 import { assert } from '@ember/debug';
 import { computed } from '@ember-decorators/object';
 import generateRandomName from '../../-private/generate-random-name';
-import hbs from 'htmlbars-inline-precompile';
 
 import StateMachine from '../../-private/state-machine/-base';
 
@@ -13,17 +14,7 @@ function failOnNameChange() {
 }
 
 export default class StepComponent extends TaglessComponent {
-  layout = hbs`
-    {{#if isActive}}
-      {{yield (hash
-          hasNext=hasNext
-          hasPrevious=hasPrevious
-        )
-      }}
-    {{else if (hasBlock 'inverse')}}
-      {{yield to='inverse'}}
-    {{/if}}
-  `;
+  layout = layout;
 
   /**
    * Name used to transition to this step
@@ -38,6 +29,7 @@ export default class StepComponent extends TaglessComponent {
   transitions: StateMachine;
 
   constructor() {
+    // @ts-ignore: Ember type definition is incorrect
     super(...arguments);
 
     const nameAttribute = get(this, 'name');

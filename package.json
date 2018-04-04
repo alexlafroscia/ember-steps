@@ -72,6 +72,7 @@
     "eslint-plugin-ember": "^5.0.0",
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-prettier": "^2.6.0",
+    "ember-cli-htmlbars-inline-precompile": "^1.0.1",
     "loader.js": "^4.6.0",
     "postcss-nested": "^2.1.0",
     "prettier": "^1.11.1",
@@ -82,8 +83,7 @@
   "dependencies": {
     "@ember-decorators/object": "^2.0.0-beta.2",
     "ember-cli-babel": "^6.12.0",
-    "ember-cli-htmlbars": "^2.0.3",
-    "ember-cli-htmlbars-inline-precompile": "^1.0.1"
+    "ember-cli-htmlbars": "^2.0.3"
   },
   "keywords": [
     "ember-addon"

@@ -1,0 +1,9 @@
+{{#if isActive}}
+  {{yield (hash
+      hasNext=hasNext
+      hasPrevious=hasPrevious
+    )
+  }}
+{{else if (hasBlock 'inverse')}}
+  {{yield to='inverse'}}
+{{/if}}

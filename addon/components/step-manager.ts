@@ -1,10 +1,11 @@
 import TaglessComponent from './-tagless';
+// @ts-ignore: Ignore import of compiled template
+import layout from '../templates/components/step-manager';
 import { get, set } from '@ember/object';
 import { isEmpty, isPresent } from '@ember/utils';
 import { schedule } from '@ember/runloop';
 import { assert } from '@ember/debug';
 import { computed } from '@ember-decorators/object';
-import hbs from 'htmlbars-inline-precompile';
 import CircularStateMachine from 'ember-steps/-private/state-machine/circular';
 import LinearStateMachine from 'ember-steps/-private/state-machine/linear';
 
@@ -42,23 +43,7 @@ import StepComponent from './step-manager/step';
  * @hide
  */
 export default class StepManagerComponent extends TaglessComponent {
-  layout = hbs`
-    {{yield (hash
-        step=(component 'step-manager/step'
-          register-step=(action 'registerStepComponent')
-          currentStep=transitions.currentStep
-          transitions=transitions
-        )
-        hasNextStep=hasNextStep
-        hasPreviousStep=hasPreviousStep
-        currentStep=transitions.currentStep
-        steps=transitions.stepTransitions
-        transition-to=(action 'transition-to')
-        transition-to-next=(action 'transition-to-next')
-        transition-to-previous=(action 'transition-to-previous')
-      )
-    }}
-  `;
+  layout = layout;
 
   /**
    * Optionally can be provided to override the initial step to render
@@ -93,6 +78,7 @@ export default class StepManagerComponent extends TaglessComponent {
   transitions: StateMachine;
 
   constructor() {
+    // @ts-ignore: Ember type definition is incorrect
     super(...arguments);
 
     const initialStep: string =

@@ -1,0 +1,15 @@
+{{yield (hash
+    step=(component 'step-manager/step'
+      register-step=(action 'registerStepComponent')
+      currentStep=transitions.currentStep
+      transitions=transitions
+    )
+    hasNextStep=hasNextStep
+    hasPreviousStep=hasPreviousStep
+    currentStep=transitions.currentStep
+    steps=transitions.stepTransitions
+    transition-to=(action 'transition-to')
+    transition-to-next=(action 'transition-to-next')
+    transition-to-previous=(action 'transition-to-previous')
+  )
+}}
