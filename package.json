@@ -80,6 +80,7 @@
     "typescript-eslint-parser": "^14.0.0"
   },
   "dependencies": {
+    "@ember-decorators/object": "^2.0.0-beta.2",
     "ember-cli-babel": "^6.12.0",
     "ember-cli-htmlbars": "^2.0.3",
     "ember-cli-htmlbars-inline-precompile": "^1.0.1"

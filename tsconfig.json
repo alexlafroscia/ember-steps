@@ -11,6 +11,7 @@
     "inlineSources": true,
     "baseUrl": ".",
     "module": "es6",
+    "experimentalDecorators": true,
     "paths": {
       "dummy/tests/*": [
         "tests/*"

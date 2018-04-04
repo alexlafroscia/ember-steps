@@ -15,7 +15,7 @@ module('Integration | Helper | validate-transition', function(hooks) {
     });
 
     await render(hbs`
-      <button onClick={{validate-transition transition with=validator}}>
+      <button {{action (validate-transition transition with=validator)}}>
         Validate
       </button>
     `);
@@ -30,7 +30,7 @@ module('Integration | Helper | validate-transition', function(hooks) {
     this.set('validator', td.function());
 
     await render(hbs`
-      <button onClick={{validate-transition transition with=validator}}>
+      <button {{action (validate-transition transition with=validator)}}>
         Validate
       </button>
     `);
@@ -45,7 +45,7 @@ module('Integration | Helper | validate-transition', function(hooks) {
     this.set('validator', validator);
 
     await render(hbs`
-      <button onClick={{validate-transition transition with=(action validator 'foo' 1)}}>
+      <button {{action (validate-transition transition with=(action validator 'foo' 1))}}>
         Validate
       </button>
     `);

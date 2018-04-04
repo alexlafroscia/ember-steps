@@ -2,7 +2,7 @@ import Ember from 'ember';
 import EmberObject, { set, get } from '@ember/object';
 import { isPresent } from '@ember/utils';
 import { A } from '@ember/array';
-import { readOnly } from '@ember/object/computed';
+import { readOnly } from '@ember-decorators/object/computed';
 import { assert } from '@ember/debug';
 
 /**
@@ -85,5 +85,5 @@ export default abstract class StateMachine extends EmberObject {
    * @property {number} length
    * @public
    */
-  length = readOnly('stepTransitions.length');
+  @readOnly('stepTransitions.length') length: number;
 }

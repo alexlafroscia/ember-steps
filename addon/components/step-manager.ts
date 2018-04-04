@@ -1,8 +1,9 @@
 import TaglessComponent from './-tagless';
-import { computed, get, set } from '@ember/object';
+import { get, set } from '@ember/object';
 import { isEmpty, isPresent } from '@ember/utils';
 import { schedule } from '@ember/runloop';
 import { assert } from '@ember/debug';
+import { computed } from '@ember-decorators/object';
 import hbs from 'htmlbars-inline-precompile';
 import CircularStateMachine from 'ember-steps/-private/state-machine/circular';
 import LinearStateMachine from 'ember-steps/-private/state-machine/linear';
@@ -108,13 +109,15 @@ export default class StepManagerComponent extends TaglessComponent {
     set(this, 'transitions', new StateMachine(initialStep));
   }
 
-  hasNextStep = computed('transitions.{currentStep,length}', function() {
+  @computed('transitions.{currentStep,length}')
+  get hasNextStep() {
     return isPresent(this.transitions.pickNext());
-  });
+  }
 
-  hasPreviousStep = computed('transitions.{currentStep,length}', function() {
+  @computed('transitions.{currentStep,length}')
+  get hasPreviousStep() {
     return isPresent(this.transitions.pickPrevious());
-  });
+  }
 
   /**
    * Used internally to transition to a specific named step

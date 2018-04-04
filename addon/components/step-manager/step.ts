@@ -1,7 +1,8 @@
 import TaglessComponent from '../-tagless';
-import { computed, get, observer, set } from '@ember/object';
+import { get, observer, set } from '@ember/object';
 import { isEmpty, isPresent } from '@ember/utils';
 import { assert } from '@ember/debug';
+import { computed } from '@ember-decorators/object';
 import generateRandomName from '../../-private/generate-random-name';
 import hbs from 'htmlbars-inline-precompile';
 
@@ -32,6 +33,8 @@ export default class StepComponent extends TaglessComponent {
    */
   name: string;
 
+  currentStep: string;
+
   transitions: StateMachine;
 
   constructor() {
@@ -55,19 +58,22 @@ export default class StepComponent extends TaglessComponent {
    * @property {boolean} isActive
    * @private
    */
-  isActive = computed('currentStep', 'name', function(): boolean {
+  @computed('currentStep', 'name')
+  get isActive(): boolean {
     return this.currentStep === this.name;
-  });
+  }
 
-  hasNext = computed('transitions.length', function(): boolean {
+  @computed('transitions.length')
+  get hasNext(): boolean {
     const name = this.name;
 
     return isPresent(this.transitions.pickNext(name));
-  });
+  }
 
-  hasPrevious = computed('transitions.length', function(): boolean {
+  @computed('transitions.length')
+  get hasPrevious(): boolean {
     const name = this.name;
 
     return isPresent(this.transitions.pickPrevious(name));
-  });
+  }
 }
