@@ -9,7 +9,7 @@
   "scripts": {
     "build": "ember build",
     "lint:js": "eslint .",
-    "start": "ember serve",
+    "start": "FASTBOOT_DISABLED=true ember serve",
     "test": "ember try:each",
     "prepublishOnly": "ember ts:precompile",
     "postpublish": "ember ts:clean"
