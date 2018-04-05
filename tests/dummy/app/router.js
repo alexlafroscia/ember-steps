@@ -29,6 +29,7 @@ Router.map(function() {
     this.route('features', function() {
       this.route('validating-steps');
       this.route('state-manager');
+      this.route('inactive');
     });
 
     this.route('cookbook', function() {

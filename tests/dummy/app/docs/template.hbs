@@ -3,12 +3,13 @@
 {{#docs-viewer classNames=(local-class 'viewer') as |viewer|}}
   {{#viewer.nav as |nav|}}
     {{nav.item 'Overview' 'docs.index'}}
-    {{nav.item 'Cookbook' 'docs.cookbook'}}
+    {{nav.item 'Cookbook' 'docs.cookbook.index'}}
 
     {{nav.section 'Features'}}
     {{#nav.subnav as |features|}}
       {{features.item 'Validating Steps' 'docs.features.validating-steps'}}
       {{features.item 'Linear & Cyclical Flow' 'docs.features.state-manager'}}
+      {{features.item 'Inactive State' 'docs.features.inactive'}}
     {{/nav.subnav}}
 
     {{nav.section 'Cookbook'}}
