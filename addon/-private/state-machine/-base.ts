@@ -23,7 +23,7 @@ export default abstract class StateMachine extends EmberObject {
    * @property {A} stepTransitions
    * @private
    */
-  stepTransitions: Ember.MutableArray<any> = A();
+  stepTransitions: Ember.MutableArray<string> = A();
 
   /**
    * @property {string} firstStep
@@ -43,9 +43,9 @@ export default abstract class StateMachine extends EmberObject {
    */
   currentStep: string;
 
-  stepsToRemove: Ember.NativeArray<any> = A();
+  stepsToRemove: Ember.NativeArray<string> = A();
 
-  stepsToAdd: Ember.NativeArray<any> = A();
+  stepsToAdd: Ember.NativeArray<string> = A();
 
   constructor(initialStep: string) {
     super();
@@ -90,7 +90,6 @@ export default abstract class StateMachine extends EmberObject {
     let lastStep;
 
     A(stepsToAdd)
-      // don't add steps that are already included
       .filter(name => !this.stepTransitions.includes(name))
       .forEach(name => {
         // Set the first step, if it hasn't been yet
@@ -100,21 +99,19 @@ export default abstract class StateMachine extends EmberObject {
 
         this.stepTransitions.pushObject(name);
 
-        // Set the current step, if it hasn't been yet
         if (!currentStep) {
           currentStep = name;
         }
 
-        // Set the last step to this new one
         lastStep = name;
       });
 
     setProperties(this, {
       firstStep,
       currentStep,
-      lastStep,
-      stepsToAdd: A()
+      lastStep
     });
+    stepsToAdd.clear();
   }
 
   flushRemoveQueue(this: StateMachine) {
@@ -144,11 +141,11 @@ export default abstract class StateMachine extends EmberObject {
       setProperties(this, {
         firstStep: null,
         currentStep: null,
-        lastStep: null,
-        stepsToRemove: A(),
-        stepTransitions: A()
+        lastStep: null
       });
 
+      stepsToRemove.clear();
+      stepTransitions.clear();
       return;
     }
 
@@ -173,9 +170,9 @@ export default abstract class StateMachine extends EmberObject {
     setProperties(this, {
       firstStep,
       currentStep,
-      lastStep,
-      stepsToRemove: A()
+      lastStep
     });
+    stepsToRemove.clear();
   }
 
   abstract pickNext(currentStep?: string): string;

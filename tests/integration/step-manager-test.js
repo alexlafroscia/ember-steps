@@ -558,10 +558,14 @@ module('step-manager', function(hooks) {
       assert.dom(hook('step', { name: 'baz' })).doesNotExist();
       assert.dom(hook('steps')).hasText('foo');
     });
+  });
+
+  module('dynamically creating and removing steps', function(hooks) {
+    hooks.beforeEach(function() {
+      this.set('data', A([{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }]));
+    });
 
     test('allows for removing steps after initial render', async function(assert) {
-      this.set('data', A([{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }]));
-
       await render(hbs`
         {{#step-manager linear=true as |w|}}
           <div data-test={{hook 'steps'}}>
