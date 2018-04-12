@@ -12,6 +12,7 @@ module('step-manger/step', function(hooks) {
 
   hooks.beforeEach(function() {
     this.set('register', function() {});
+    this.set('remove', function() {});
   });
 
   module('registering with the rendering context', function() {
@@ -20,7 +21,7 @@ module('step-manger/step', function(hooks) {
       this.set('register', registerAction);
 
       await render(hbs`
-        {{step-manager/step name='foo' register-step=(action register)}}
+        {{step-manager/step name='foo' register-step=(action register) remove-step=(action remove)}}
       `);
 
       assert.wasCalled(registerAction);
@@ -32,7 +33,7 @@ module('step-manger/step', function(hooks) {
       this.set('name', 'foo');
 
       await render(hbs`
-        {{step-manager/step name=name register-step=(action register)}}
+        {{step-manager/step name=name register-step=(action register) remove-step=(action remove)}}
       `);
 
       assert.expectAssertion(() => {
@@ -44,7 +45,7 @@ module('step-manger/step', function(hooks) {
   module('rendering', function() {
     test('renders block content when visible', async function(assert) {
       await render(hbs`
-        {{#step-manager/step name='foo' currentStep='foo' register-step=(action register)}}
+        {{#step-manager/step name='foo' currentStep='foo' register-step=(action register) remove-step=(action remove)}}
           <div data-test={{hook 'step'}}>
             Foo
           </div>
@@ -57,7 +58,7 @@ module('step-manger/step', function(hooks) {
     module('when inactive', function() {
       test('is hidden when no alternate state is provided', async function(assert) {
         await render(hbs`
-          {{#step-manager/step name='foo' register-step=(action register)}}
+          {{#step-manager/step name='foo' register-step=(action register) remove-step=(action remove)}}
             <div data-test={{hook 'step'}}>
               Active Content
             </div>
@@ -70,7 +71,7 @@ module('step-manger/step', function(hooks) {
       test('renders the inverse block if provided', async function(assert) {
         await render(hbs`
           <div data-test={{hook 'step'}}>
-            {{#step-manager/step name='foo' register-step=(action register)}}
+            {{#step-manager/step name='foo' register-step=(action register) remove-step=(action remove)}}
               Active Content
             {{else}}
               Inactive Content
@@ -86,7 +87,7 @@ module('step-manger/step', function(hooks) {
   module('programmatically controlling visibility', function() {
     test('is visible when active', async function(assert) {
       await render(hbs`
-        {{#step-manager/step name='foo' currentStep='foo' register-step=(action register)}}
+        {{#step-manager/step name='foo' currentStep='foo' register-step=(action register) remove-step=(action remove)}}
           <div data-test={{hook 'step'}}></div>
         {{/step-manager/step}}
       `);
@@ -96,7 +97,7 @@ module('step-manger/step', function(hooks) {
 
     test('is invisible when not active', async function(assert) {
       await render(hbs`
-        {{#step-manager/step name='foo' currentStep='bar' register-step=(action register)}}
+        {{#step-manager/step name='foo' currentStep='bar' register-step=(action register) remove-step=(action remove)}}
           <div data-test={{hook 'step'}}></div>
         {{/step-manager/step}}
       `);

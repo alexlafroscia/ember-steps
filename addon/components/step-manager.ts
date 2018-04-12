@@ -155,9 +155,16 @@ export default class StepManagerComponent extends TaglessComponent {
 
       stepComponent.transitions = transitions;
 
-      schedule('actions', () => {
-        transitions.addStep(name);
-      });
+      transitions.addStep(name);
+    },
+
+    removeStepComponent(
+      this: StepManagerComponent,
+      stepComponent: StepComponent
+    ) {
+      const name = get(stepComponent, 'name');
+
+      this.transitions.removeStep(name);
     },
 
     /**

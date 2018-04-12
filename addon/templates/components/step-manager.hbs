@@ -1,6 +1,7 @@
 {{yield (hash
     step=(component 'step-manager/step'
       register-step=(action 'registerStepComponent')
+      remove-step=(action 'removeStepComponent')
       currentStep=transitions.currentStep
       transitions=transitions
     )
