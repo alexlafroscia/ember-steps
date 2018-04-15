@@ -559,4 +559,81 @@ module('step-manager', function(hooks) {
       assert.dom(hook('steps')).hasText('foo');
     });
   });
+
+  module('dynamically creating and removing steps', function(hooks) {
+    hooks.beforeEach(function() {
+      this.set('data', A([{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }]));
+    });
+
+    test('allows for removing steps after initial render', async function(assert) {
+      await render(hbs`
+        {{#step-manager linear=true as |w|}}
+          <div data-test={{hook 'steps'}}>
+            {{#each data as |item|}}
+              {{#w.step name=item.name}}
+                <div data-test={{hook 'step' name=item.name}}>
+                  {{item.name}}
+                </div>
+              {{/w.step}}
+            {{/each}}
+          </div>
+
+          <button data-test={{hook 'next'}} {{action w.transition-to-next}}>
+            Next
+          </button>
+          <button data-test={{hook 'back'}} {{action w.transition-to-previous}}>
+            back
+          </button>
+        {{/step-manager}}
+      `);
+
+      this.set('data', A([{ name: 'foo' }, { name: 'baz' }]));
+
+      assert.dom(hook('step', { name: 'foo' })).exists();
+      await click(hook('next'));
+      assert.dom(hook('step', { name: 'baz' })).exists();
+      await click(hook('back'));
+      assert.dom(hook('step', { name: 'foo' })).exists();
+    });
+
+    test('removal of steps works for circular step managers', async function(assert) {
+      this.set(
+        'data',
+        A([{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }, { name: '4' }])
+      );
+
+      await render(hbs`
+        {{#step-manager linear=false as |w|}}
+          <div data-test={{hook 'steps'}}>
+            {{#each data as |item|}}
+              {{#w.step name=item.name}}
+                <div data-test={{hook 'step' name=item.name}}>
+                  {{item.name}}
+                </div>
+              {{/w.step}}
+            {{/each}}
+          </div>
+
+          <button data-test={{hook 'next'}} {{action w.transition-to-next}}>
+            Next
+          </button>
+          <button data-test={{hook 'back'}} {{action w.transition-to-previous}}>
+            back
+          </button>
+        {{/step-manager}}
+      `);
+
+      this.set('data', A([{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }]));
+
+      assert.dom(hook('step', { name: 'foo' })).exists();
+      await click(hook('next'));
+      assert.dom(hook('step', { name: 'bar' })).exists();
+      await click(hook('next'));
+      assert.dom(hook('step', { name: 'baz' })).exists();
+      await click(hook('next'));
+      assert.dom(hook('step', { name: 'foo' })).exists();
+      await click(hook('back'));
+      assert.dom(hook('step', { name: 'baz' })).exists();
+    });
+  });
 });

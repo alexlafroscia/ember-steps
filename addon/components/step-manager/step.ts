@@ -45,6 +45,11 @@ export default class StepComponent extends TaglessComponent {
     this['register-step'](this);
   }
 
+  willDestroyElement() {
+    this.removeObserver('name', this, failOnNameChange);
+    this['remove-step'](this);
+  }
+
   /**
    * Whether this state is currently the active one
    * @property {boolean} isActive
