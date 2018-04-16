@@ -47,6 +47,7 @@ export default class StepComponent extends TaglessComponent {
 
   willDestroyElement() {
     this.removeObserver('name', this, failOnNameChange);
+
     this['remove-step'](this);
   }
 

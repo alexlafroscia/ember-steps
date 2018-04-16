@@ -536,7 +536,7 @@ module('step-manager', function(hooks) {
       assert.dom(hook('step', { name: 'foo' })).doesNotExist();
       assert.dom(hook('step', { name: 'bar' })).exists();
 
-      this.set('data', A([{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }]));
+      this.data.pushObject({ name: 'baz' });
 
       assert.dom(hook('step', { name: 'foo' })).doesNotExist();
       assert.dom(hook('step', { name: 'bar' })).exists();
@@ -587,7 +587,7 @@ module('step-manager', function(hooks) {
         {{/step-manager}}
       `);
 
-      this.set('data', A([{ name: 'foo' }, { name: 'baz' }]));
+      this.data.removeAt(1);
 
       assert.dom(hook('step', { name: 'foo' })).exists();
       await click(hook('next'));
@@ -623,7 +623,7 @@ module('step-manager', function(hooks) {
         {{/step-manager}}
       `);
 
-      this.set('data', A([{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }]));
+      this.data.removeAt(3);
 
       assert.dom(hook('step', { name: 'foo' })).exists();
       await click(hook('next'));

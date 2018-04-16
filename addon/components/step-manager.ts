@@ -95,12 +95,12 @@ export default class StepManagerComponent extends TaglessComponent {
     set(this, 'transitions', new StateMachine(initialStep));
   }
 
-  @computed('transitions.{currentStep,length}')
+  @computed('transitions.currentStep')
   get hasNextStep() {
     return isPresent(this.transitions.pickNext());
   }
 
-  @computed('transitions.{currentStep,length}')
+  @computed('transitions.currentStep')
   get hasPreviousStep() {
     return isPresent(this.transitions.pickPrevious());
   }
@@ -154,7 +154,6 @@ export default class StepManagerComponent extends TaglessComponent {
       const transitions = this.transitions;
 
       stepComponent.transitions = transitions;
-
       transitions.addStep(name);
     },
 
@@ -163,8 +162,7 @@ export default class StepManagerComponent extends TaglessComponent {
       stepComponent: StepComponent
     ) {
       const name = get(stepComponent, 'name');
-
-      this.transitions.removeStep(name);
+      this.transitions.removeStep(name)
     },
 
     /**
