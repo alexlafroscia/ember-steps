@@ -62,7 +62,7 @@ export default abstract class StateMachine extends EmberObject {
 
     this.stepTransitions.pushObject(name);
 
-    return bind(
+    bind(
       this,
       scheduleOnce,
       'actions',
@@ -78,7 +78,7 @@ export default abstract class StateMachine extends EmberObject {
 
     this.stepTransitions.removeObject(name);
 
-    return bind(
+    bind(
       this,
       scheduleOnce,
       'actions',
