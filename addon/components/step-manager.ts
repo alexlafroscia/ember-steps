@@ -95,12 +95,12 @@ export default class StepManagerComponent extends TaglessComponent {
     set(this, 'transitions', new StateMachine(initialStep));
   }
 
-  @computed('transitions.{currentStep,length}')
+  @computed('transitions.currentStep')
   get hasNextStep() {
     return isPresent(this.transitions.pickNext());
   }
 
-  @computed('transitions.{currentStep,length}')
+  @computed('transitions.currentStep')
   get hasPreviousStep() {
     return isPresent(this.transitions.pickPrevious());
   }
@@ -154,17 +154,23 @@ export default class StepManagerComponent extends TaglessComponent {
       const transitions = this.transitions;
 
       stepComponent.transitions = transitions;
-
-      transitions.addStep(name);
+      schedule('render', transitions, transitions.addStep, name);
     },
 
+    /**
+     * Remove a step from the manager.
+     * 
+     * Removes a step by name. It's scheduled after the addition to avoid
+     * removing a step after immediately adding it.
+     */
     removeStepComponent(
       this: StepManagerComponent,
       stepComponent: StepComponent
     ) {
       const name = get(stepComponent, 'name');
+      const transitions = this.transitions;
 
-      this.transitions.removeStep(name);
+      schedule('actions', transitions, transitions.removeStep, name);
     },
 
     /**

@@ -536,7 +536,7 @@ module('step-manager', function(hooks) {
       assert.dom(hook('step', { name: 'foo' })).doesNotExist();
       assert.dom(hook('step', { name: 'bar' })).exists();
 
-      this.set('data', A([{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }]));
+      this.data.pushObject({ name: 'baz' });
 
       assert.dom(hook('step', { name: 'foo' })).doesNotExist();
       assert.dom(hook('step', { name: 'bar' })).exists();
@@ -587,7 +587,7 @@ module('step-manager', function(hooks) {
         {{/step-manager}}
       `);
 
-      this.set('data', A([{ name: 'foo' }, { name: 'baz' }]));
+      this.data.removeAt(1);
 
       assert.dom(hook('step', { name: 'foo' })).exists();
       await click(hook('next'));
@@ -623,7 +623,7 @@ module('step-manager', function(hooks) {
         {{/step-manager}}
       `);
 
-      this.set('data', A([{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }]));
+      this.data.removeAt(3);
 
       assert.dom(hook('step', { name: 'foo' })).exists();
       await click(hook('next'));
@@ -634,6 +634,71 @@ module('step-manager', function(hooks) {
       assert.dom(hook('step', { name: 'foo' })).exists();
       await click(hook('back'));
       assert.dom(hook('step', { name: 'baz' })).exists();
+    });
+
+    test('when steps of the same name are added and removed during one step of data, they remain', async function(assert) {
+      await render(hbs`
+        {{#step-manager linear=false as |w|}}
+          <div data-test={{hook 'steps'}}>
+            {{#each data as |item|}}
+              {{#w.step name=item.name}}
+                <div data-test={{hook 'step' name=item.name}}>
+                  {{item.name}}
+                </div>
+              {{/w.step}}
+            {{/each}}
+          </div>
+
+          <button data-test={{hook 'next'}} {{action w.transition-to-next}}>
+            Next
+          </button>
+          <button data-test={{hook 'back'}} {{action w.transition-to-previous}}>
+            back
+          </button>
+        {{/step-manager}}
+      `);
+      let removeObj = this.data.find(({ name }) => name === 'baz');
+      this.data.removeObject(removeObj);
+      this.data.pushObject(removeObj);
+      assert.dom(hook('step', { name: 'foo' })).exists();
+      await click(hook('next'));
+      assert.dom(hook('step', { name: 'bar' })).exists();
+      await click(hook('next'));
+      assert.dom(hook('step', { name: 'baz' })).exists();
+      await click(hook('next'));
+    });
+
+    test('allows for adding steps to the end of the queue after removal', async function(assert) {
+      await render(hbs`
+      {{#step-manager linear=true as |w|}}
+        <div data-test={{hook 'steps'}}>
+          {{#each data as |item|}}
+            {{#w.step name=item.name}}
+              <div data-test={{hook 'step' name=item.name}}>
+                {{item.name}}
+              </div>
+            {{/w.step}}
+          {{/each}}
+        </div>
+
+        <button data-test={{hook 'next'}} {{action w.transition-to-next}}>
+          Next
+        </button>
+        <button data-test={{hook 'back'}} {{action w.transition-to-previous}}>
+          back
+        </button>
+      {{/step-manager}}
+    `);
+
+      this.data.removeAt(2);
+      this.data.removeAt(1);
+      await this.data.pushObject({ name: '5' });
+
+      assert.dom(hook('step', { name: 'foo' })).exists();
+      await click(hook('next'));
+      assert.dom(hook('step', { name: '5' })).exists();
+      await click(hook('back'));
+      assert.dom(hook('step', { name: 'foo' })).exists();
     });
   });
 });

@@ -56,123 +56,61 @@ export default abstract class StateMachine extends EmberObject {
   }
 
   addStep(this: StateMachine, name: string) {
-    if (this.stepsToAdd.includes(name)) {
+    if (this.stepTransitions.includes(name)) {
       return;
     }
 
-    this.stepsToAdd.push(name);
-    return bind(
+    this.stepTransitions.pushObject(name);
+
+    bind(
       this,
       scheduleOnce,
-      'afterRender',
+      'actions',
       this,
-      this.flushAdditionQueue
+      this.updateFirstCurrentAndLastSteps
     )();
   }
 
   removeStep(this: StateMachine, name: string) {
-    if (this.stepsToRemove.includes(name)) {
+    if (!this.stepTransitions.includes(name)) {
       return;
     }
 
-    this.stepsToRemove.push(name);
-    return bind(this, scheduleOnce, 'render', this, this.flushRemoveQueue)();
+    this.stepTransitions.removeObject(name);
+
+    bind(
+      this,
+      scheduleOnce,
+      'actions',
+      this,
+      this.updateFirstCurrentAndLastSteps
+    )();
   }
 
-  flushAdditionQueue(this: StateMachine) {
-    let { firstStep, currentStep, stepsToAdd, stepTransitions } = getProperties(
-      this,
-      'firstStep',
-      'currentStep',
-      'stepsToAdd',
-      'stepTransitions'
-    );
-    let lastStep;
+  updateFirstCurrentAndLastSteps(this: StateMachine) {
+    const len = get(this.stepTransitions, 'length');
+    let nameIdx = this.stepTransitions.indexOf(this.currentStep);
 
-    A(stepsToAdd)
-      .filter(name => !this.stepTransitions.includes(name))
-      .forEach(name => {
-        // Set the first step, if it hasn't been yet
-        if (!firstStep) {
-          firstStep = name;
-        }
-
-        this.stepTransitions.pushObject(name);
-
-        if (!currentStep) {
-          currentStep = name;
-        }
-
-        lastStep = name;
-      });
-
-    setProperties(this, {
-      firstStep,
-      currentStep,
-      lastStep
-    });
-    stepsToAdd.clear();
-  }
-
-  flushRemoveQueue(this: StateMachine) {
-    let {
-      firstStep,
-      currentStep,
-      lastStep,
-      stepsToRemove,
-      stepsToAdd,
-      stepTransitions
-    } = getProperties(
-      this,
-      'firstStep',
-      'currentStep',
-      'lastStep',
-      'stepsToRemove',
-      'stepsToAdd',
-      'stepTransitions'
-    );
-
-    //don't remove steps that are to be added
-    stepsToRemove = A(
-      stepsToRemove.filter(stepToRemove => !stepsToAdd.includes(stepToRemove))
-    );
-
-    if (get(stepsToRemove, 'length') === get(stepTransitions, 'length')) {
+    if (len === 0) {
       setProperties(this, {
         firstStep: null,
         currentStep: null,
         lastStep: null
       });
 
-      stepsToRemove.clear();
-      stepTransitions.clear();
+      this.stepTransitions.clear();
       return;
     }
 
-    A(stepsToRemove).forEach(name => {
-      this.stepTransitions.removeObject(name);
-
-      if (get(this, 'firstStep') === name) {
-        firstStep = this.stepTransitions.objectAt(0);
-      }
-
-      if (get(this, 'currentStep') === name) {
-        const nameIdx = this.stepTransitions.indexOf(name);
-        currentStep = this.stepTransitions.objectAt(nameIdx);
-      }
-
-      if (get(this, 'lastStep') === name) {
-        const len = get(stepTransitions, 'length');
-        lastStep = this.stepTransitions.objectAt(len - 1);
-      }
-    });
+    if (nameIdx === -1) {
+      nameIdx = 0;
+    }
 
     setProperties(this, {
-      firstStep,
-      currentStep,
-      lastStep
+      firstStep: this.stepTransitions.objectAt(0),
+      currentStep: this.stepTransitions.objectAt(nameIdx),
+      lastStep: this.stepTransitions.objectAt(len - 1)
     });
-    stepsToRemove.clear();
   }
 
   abstract pickNext(currentStep?: string): string;
