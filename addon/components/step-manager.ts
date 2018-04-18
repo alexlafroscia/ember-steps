@@ -6,6 +6,7 @@ import { isEmpty, isPresent } from '@ember/utils';
 import { schedule } from '@ember/runloop';
 import { assert } from '@ember/debug';
 import { computed } from '@ember-decorators/object';
+
 import CircularStateMachine from 'ember-steps/-private/state-machine/circular';
 import LinearStateMachine from 'ember-steps/-private/state-machine/linear';
 
@@ -129,7 +130,7 @@ export default class StepManagerComponent extends TaglessComponent {
     const newStep = this.currentStep;
 
     if (typeof newStep === 'undefined') {
-      const firstStep: string = this.transitions.firstStep;
+      const firstStep = get(this.transitions, 'firstStep');
       this.transitions.activate(firstStep);
     } else {
       this.transitions.activate(newStep);
@@ -155,7 +156,9 @@ export default class StepManagerComponent extends TaglessComponent {
 
       stepComponent.transitions = transitions;
 
-      transitions.addStep(name);
+      schedule('actions', () => {
+        transitions.addStep(name);
+      });
     },
 
     removeStepComponent(
@@ -164,7 +167,9 @@ export default class StepManagerComponent extends TaglessComponent {
     ) {
       const name = get(stepComponent, 'name');
 
-      this.transitions.removeStep(name);
+      schedule('actions', () => {
+        this.transitions.removeStep(name);
+      });
     },
 
     /**

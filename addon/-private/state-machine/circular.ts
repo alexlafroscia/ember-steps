@@ -30,7 +30,7 @@ export default class CircularStateMachine extends BaseStateMachine {
       return previousValue;
     }
 
-    const length = get(get(this, 'stepTransitions'), 'length');
-    return this.stepTransitions.objectAt(length - 1);
+    const lastIndex = get(this, 'length') - 1;
+    return this.stepTransitions.objectAt(lastIndex);
   }
 }
