@@ -297,7 +297,7 @@ module('step-manager', function(hooks) {
   });
 
   module('exposing whether there is a next step', function() {
-    test('linear step managers', async function(assert) {
+    test('linear step manager', async function(assert) {
       await render(hbs`
         {{#step-manager as |w|}}
           <button {{action w.transition-to-next}} disabled={{not w.hasNextStep}}>
@@ -346,8 +346,8 @@ module('step-manager', function(hooks) {
     });
   });
 
-  module('exposing whether there is a next previous', function() {
-    test('linear step managers', async function(assert) {
+  module('exposing whether there is a previous step', function() {
+    test('linear step manager', async function(assert) {
       await render(hbs`
         {{#step-manager as |w|}}
           <button {{action w.transition-to-previous}} disabled={{not w.hasPreviousStep}}>
@@ -510,7 +510,7 @@ module('step-manager', function(hooks) {
       assert.dom(hook('steps')).hasText('bar');
     });
 
-    test('allows for adding more steps after the initial render', async function(assert) {
+    test('allows for replacing the array with one that has additional steps', async function(assert) {
       await render(hbs`
         {{#step-manager linear=false as |w|}}
           <div data-test={{hook 'steps'}}>
@@ -529,43 +529,98 @@ module('step-manager', function(hooks) {
         {{/step-manager}}
       `);
 
-      assert.dom(hook('step', { name: 'foo' })).exists();
+      assert
+        .dom(hook('step', { name: 'foo' }))
+        .exists('Initial step is visible');
 
       await click('button');
 
-      assert.dom(hook('step', { name: 'foo' })).doesNotExist();
-      assert.dom(hook('step', { name: 'bar' })).exists();
+      assert
+        .dom(hook('step', { name: 'foo' }))
+        .doesNotExist('Initial step is no longer visible');
+      assert
+        .dom(hook('step', { name: 'bar' }))
+        .exists('Second step is visible');
 
       this.set('data', A([{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }]));
 
-      assert.dom(hook('step', { name: 'foo' })).doesNotExist();
-      assert.dom(hook('step', { name: 'bar' })).exists();
-      assert.dom(hook('step', { name: 'baz' })).doesNotExist();
+      assert
+        .dom(hook('step', { name: 'bar' }))
+        .exists(
+          'Second step is still visible after replacing the array backing the set of steps'
+        );
 
-      // Check that the previous "last step" now points to the new one
       await click('button');
 
-      assert.dom(hook('step', { name: 'foo' })).doesNotExist();
-      assert.dom(hook('step', { name: 'bar' })).doesNotExist();
-      assert.dom(hook('step', { name: 'baz' })).exists();
-      assert.dom(hook('steps')).hasText('baz');
+      assert
+        .dom(hook('step', { name: 'baz' }))
+        .exists('Advanced to the new step');
 
-      // Check that the new step now points to the first one
       await click('button');
 
-      assert.dom(hook('step', { name: 'foo' })).exists();
-      assert.dom(hook('step', { name: 'bar' })).doesNotExist();
-      assert.dom(hook('step', { name: 'baz' })).doesNotExist();
-      assert.dom(hook('steps')).hasText('foo');
+      assert
+        .dom(hook('step', { name: 'foo' }))
+        .exists('Back to the first step');
+    });
+
+    test('allows for pushing new steps into the array creating the steps', async function(assert) {
+      await render(hbs`
+        {{#step-manager linear=false as |w|}}
+          <div data-test={{hook 'steps'}}>
+            {{#each data as |item|}}
+              {{#w.step name=item.name}}
+                <div data-test={{hook 'step' name=item.name}}>
+                  {{item.name}}
+                </div>
+              {{/w.step}}
+            {{/each}}
+          </div>
+
+          <button {{action w.transition-to-next}}>
+            Next
+          </button>
+        {{/step-manager}}
+      `);
+
+      assert
+        .dom(hook('step', { name: 'foo' }))
+        .exists('Initial step is visible');
+
+      await click('button');
+
+      assert
+        .dom(hook('step', { name: 'foo' }))
+        .doesNotExist('Initial step is no longer visible');
+      assert
+        .dom(hook('step', { name: 'bar' }))
+        .exists('Second step is visible');
+
+      this.get('data').pushObject({ name: 'baz' });
+
+      assert
+        .dom(hook('step', { name: 'bar' }))
+        .exists(
+          'Second step is still visible after replacing the array backing the set of steps'
+        );
+
+      await click('button');
+
+      assert
+        .dom(hook('step', { name: 'baz' }))
+        .exists('Advanced to the new step');
+
+      await click('button');
+
+      assert
+        .dom(hook('step', { name: 'foo' }))
+        .exists('Back to the first step');
     });
   });
 
-  module('dynamically creating and removing steps', function(hooks) {
-    hooks.beforeEach(function() {
-      this.set('data', A([{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }]));
-    });
+  module('dynamically removing steps', function() {
+    test('allows for replacing the array with one that has missing steps', async function(assert) {
+      this.set('data', A([{ name: 'foo' }, { name: 'bar' }]));
 
-    test('allows for removing steps after initial render', async function(assert) {
       await render(hbs`
         {{#step-manager linear=true as |w|}}
           <div data-test={{hook 'steps'}}>
@@ -581,26 +636,23 @@ module('step-manager', function(hooks) {
           <button data-test={{hook 'next'}} {{action w.transition-to-next}}>
             Next
           </button>
-          <button data-test={{hook 'back'}} {{action w.transition-to-previous}}>
-            back
-          </button>
         {{/step-manager}}
       `);
 
-      this.set('data', A([{ name: 'foo' }, { name: 'baz' }]));
+      assert
+        .dom(hook('step', { name: 'foo' }))
+        .exists('The initial step is rendered');
 
-      assert.dom(hook('step', { name: 'foo' })).exists();
-      await click(hook('next'));
-      assert.dom(hook('step', { name: 'baz' })).exists();
-      await click(hook('back'));
-      assert.dom(hook('step', { name: 'foo' })).exists();
+      this.set('data', A([{ name: 'foo' }]));
+
+      assert
+        .dom(hook('step', { name: 'foo' }))
+        .exists('The initial step is still visible');
     });
 
-    test('removal of steps works for circular step managers', async function(assert) {
-      this.set(
-        'data',
-        A([{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }, { name: '4' }])
-      );
+    test('allows for removing a specific step without replacing the whole array', async function(assert) {
+      const stepToRemove = { name: 'bar' };
+      this.set('data', A([{ name: 'foo' }, stepToRemove]));
 
       await render(hbs`
         {{#step-manager linear=false as |w|}}
@@ -617,23 +669,24 @@ module('step-manager', function(hooks) {
           <button data-test={{hook 'next'}} {{action w.transition-to-next}}>
             Next
           </button>
-          <button data-test={{hook 'back'}} {{action w.transition-to-previous}}>
-            back
-          </button>
         {{/step-manager}}
       `);
 
-      this.set('data', A([{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }]));
+      assert
+        .dom(hook('step', { name: 'foo' }))
+        .exists('The initial step is rendered');
 
-      assert.dom(hook('step', { name: 'foo' })).exists();
-      await click(hook('next'));
-      assert.dom(hook('step', { name: 'bar' })).exists();
-      await click(hook('next'));
-      assert.dom(hook('step', { name: 'baz' })).exists();
-      await click(hook('next'));
-      assert.dom(hook('step', { name: 'foo' })).exists();
-      await click(hook('back'));
-      assert.dom(hook('step', { name: 'baz' })).exists();
+      this.get('data').removeObject(stepToRemove);
+
+      assert
+        .dom(hook('step', { name: 'foo' }))
+        .exists('The initial step is still visible');
+
+      await click('button');
+
+      assert
+        .dom(hook('step', { name: 'foo' }))
+        .exists('The initial step is still visible');
     });
   });
 });
