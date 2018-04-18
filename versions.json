@@ -28,5 +28,11 @@
     "tag": "v5.0.0-beta.1",
     "path": "v5.0.0-beta.1",
     "name": "v5.0.0-beta.1"
+  },
+  "v5.0.0-beta.2": {
+    "sha": "ed4f79be952a2b6f7fec8672f5cd738f66b146ff",
+    "tag": "v5.0.0-beta.2",
+    "path": "v5.0.0-beta.2",
+    "name": "v5.0.0-beta.2"
   }
 }
