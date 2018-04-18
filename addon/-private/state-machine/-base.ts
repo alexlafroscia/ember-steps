@@ -61,13 +61,8 @@ export default abstract class StateMachine extends EmberObject {
     }
 
     this.stepsToAdd.push(name);
-    return bind(
-      this,
-      scheduleOnce,
-      'afterRender',
-      this,
-      this.flushAdditionQueue
-    )();
+
+    scheduleOnce('afterRender', this, this.flushAdditionQueue);
   }
 
   removeStep(this: StateMachine, name: string) {
@@ -76,7 +71,8 @@ export default abstract class StateMachine extends EmberObject {
     }
 
     this.stepsToRemove.push(name);
-    return bind(this, scheduleOnce, 'render', this, this.flushRemoveQueue)();
+
+    scheduleOnce('render', this, this.flushRemoveQueue);
   }
 
   flushAdditionQueue(this: StateMachine) {
