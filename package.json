@@ -12,7 +12,9 @@
     "start": "FASTBOOT_DISABLED=true ember serve",
     "test": "ember try:each",
     "prepublishOnly": "ember ts:precompile",
-    "postpublish": "ember ts:clean"
+    "postpublish": "ember ts:clean",
+    "release": "standard-version",
+    "release:beta": "standard-version --prerelease beta"
   },
   "main": "index.js",
   "repository": "https://github.com/alexlafroscia/ember-steps",
@@ -77,6 +79,7 @@
     "postcss-nested": "^2.1.0",
     "prettier": "^1.11.1",
     "qunit-dom": "^0.5.0",
+    "standard-version": "^4.3.0",
     "typescript": "^2.8.1",
     "typescript-eslint-parser": "^14.0.0"
   },
