@@ -9024,8 +9024,8 @@ e.triggerKeyDown=function(e,t){o("keydown",e,t)},e.triggerKeyPress=function(e,t)
 function t(e){var t=require(e,null,null,!0)
 if(!t)throw new Error(e+" must export an initializer.")
 var n=t.default
-return n.name||(n.name=e.slice(e.lastIndexOf("/")+1)),n}Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(e,n){for(var r=n+"/initializers/",i=n+"/instance-initializers/",o=[],s=[],a=Object.keys(requirejs._eak_seen),l=0;l<a.length;l++){var u=a[l]
-0===u.lastIndexOf(r,0)?o.push(u):0===u.lastIndexOf(i,0)&&s.push(u)}(function(e,n){for(var r=0;r<n.length;r++)e.initializer(t(n[r]))})(e,o),function(e,n){for(var r=0;r<n.length;r++)e.instanceInitializer(t(n[r]))}(e,s)}}),define("ember-metrics/metrics-adapters/base",["exports"],function(e){"use strict"
+return n.name||(n.name=e.slice(e.lastIndexOf("/")+1)),n}function n(e,t){return-1!==e.indexOf(t,e.length-t.length)}Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(e,r){for(var i=r+"/initializers/",o=r+"/instance-initializers/",s=[],a=[],l=Object.keys(requirejs._eak_seen),u=0;u<l.length;u++){var c=l[u]
+0===c.lastIndexOf(i,0)?n(c,"-test")||s.push(c):0===c.lastIndexOf(o,0)&&(n(c,"-test")||a.push(c))}(function(e,n){for(var r=0;r<n.length;r++)e.initializer(t(n[r]))})(e,s),function(e,n){for(var r=0;r<n.length;r++)e.instanceInitializer(t(n[r]))}(e,a)}}),define("ember-metrics/metrics-adapters/base",["exports"],function(e){"use strict"
 Object.defineProperty(e,"__esModule",{value:!0})
 var t=Ember.Object,n=Ember.assert,r=Ember.guidFor,i=Ember.typeOf
 e.default=t.extend({init:function(){n("[ember-metrics] "+this.toString()+" must implement the init hook!")},willDestroy:function(){n("[ember-metrics] "+this.toString()+" must implement the willDestroy hook!")},toString:function(){var e="ember-metrics@metrics-adapter:"+("function"===i(this.toStringExtension)?":"+this.toStringExtension():"")+":"+r(this)
@@ -9295,14 +9295,10 @@ else for(var l=e.length-1;l>=0;l--)(o=e[l])&&(a=(s<3?o(a):s>3?o(t,n,a):o(t,n))||
 return s>3&&a&&Object.defineProperty(t,n,a),a},o=function(e){function t(e){(function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")})(this,t)
 var n=function(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
 return!t||"object"!=typeof t&&"function"!=typeof t?e:t}(this,(t.__proto__||Object.getPrototypeOf(t)).call(this))
-return n.stepTransitions=Ember.A(),n.stepsToRemove=Ember.A(),n.stepsToAdd=Ember.A(),e&&Ember.set(n,"currentStep",e),n}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t)
-e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}(t,Ember.Object),n(t,[{key:"addStep",value:function(e){if(!this.stepsToAdd.includes(e))return this.stepsToAdd.push(e),Ember.run.bind(this,Ember.run.scheduleOnce,"afterRender",this,this.flushAdditionQueue)()}},{key:"removeStep",value:function(e){if(!this.stepsToRemove.includes(e))return this.stepsToRemove.push(e),Ember.run.bind(this,Ember.run.scheduleOnce,"render",this,this.flushRemoveQueue)()}},{key:"flushAdditionQueue",value:function(){var e=this,t=Ember.getProperties(this,"firstStep","currentStep","stepsToAdd","stepTransitions"),n=t.firstStep,r=t.currentStep,i=t.stepsToAdd,o=(t.stepTransitions,void 0)
-Ember.A(i).filter(function(t){return!e.stepTransitions.includes(t)}).forEach(function(t){n||(n=t),e.stepTransitions.pushObject(t),r||(r=t),o=t}),Ember.setProperties(this,{firstStep:n,currentStep:r,lastStep:o}),i.clear()}},{key:"flushRemoveQueue",value:function(){var e=this,t=Ember.getProperties(this,"firstStep","currentStep","lastStep","stepsToRemove","stepsToAdd","stepTransitions"),n=t.firstStep,r=t.currentStep,i=t.lastStep,o=t.stepsToRemove,s=t.stepsToAdd,a=t.stepTransitions
-if(o=Ember.A(o.filter(function(e){return!s.includes(e)})),Ember.get(o,"length")===Ember.get(a,"length"))return Ember.setProperties(this,{firstStep:null,currentStep:null,lastStep:null}),o.clear(),void a.clear()
-Ember.A(o).forEach(function(t){if(e.stepTransitions.removeObject(t),Ember.get(e,"firstStep")===t&&(n=e.stepTransitions.objectAt(0)),Ember.get(e,"currentStep")===t){var o=e.stepTransitions.indexOf(t)
-r=e.stepTransitions.objectAt(o)}if(Ember.get(e,"lastStep")===t){var s=Ember.get(a,"length")
-i=e.stepTransitions.objectAt(s-1)}}),Ember.setProperties(this,{firstStep:n,currentStep:r,lastStep:i}),o.clear()}},{key:"activate",value:function(e){Ember.set(this,"currentStep",e)}}]),t}()
-e.default=o,i([(0,t.readOnly)("stepTransitions.length")],o.prototype,"length",void 0)})
+return n.stepTransitions=Ember.A(),e&&Ember.set(n,"currentStep",e),n}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t)
+e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}(t,Ember.Object),n(t,[{key:"addStep",value:function(e){this.stepTransitions.pushObject(e),this.currentStep||Ember.set(this,"currentStep",e)}},{key:"removeStep",value:function(e){var t=this.stepTransitions.indexOf(e)
+this.stepTransitions.removeAt(t)}},{key:"activate",value:function(e){Ember.set(this,"currentStep",e)}}]),t}()
+e.default=o,i([(0,t.readOnly)("stepTransitions.length")],o.prototype,"length",void 0),i([(0,t.readOnly)("stepTransitions.firstObject")],o.prototype,"firstStep",void 0)})
 define("ember-steps/-private/state-machine/circular",["exports","ember-steps/-private/state-machine/-base"],function(e,t){"use strict"
 Object.defineProperty(e,"__esModule",{value:!0})
 var n=function(){function e(e,t){for(var n=0;n<t.length;n++){var r=t[n]
@@ -9312,8 +9308,8 @@ return!t||"object"!=typeof t&&"function"!=typeof t?e:t}(this,(r.__proto__||Objec
 e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}(r,t.default),n(r,[{key:"pickNext",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:this.currentStep,t=this.stepTransitions.indexOf(e),n=this.stepTransitions.objectAt(t+1)
 return n||this.stepTransitions.objectAt(0)}},{key:"pickPrevious",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:this.currentStep,t=this.stepTransitions.indexOf(e),n=this.stepTransitions.objectAt(t-1)
 if(n)return n
-var r=Ember.get(Ember.get(this,"stepTransitions"),"length")
-return this.stepTransitions.objectAt(r-1)}}]),r}()
+var r=Ember.get(this,"length")-1
+return this.stepTransitions.objectAt(r)}}]),r}()
 e.default=r}),define("ember-steps/-private/state-machine/linear",["exports","ember-steps/-private/state-machine/-base"],function(e,t){"use strict"
 Object.defineProperty(e,"__esModule",{value:!0})
 var n=function(){function e(e,t){for(var n=0;n<t.length;n++){var r=t[n]
@@ -9339,8 +9335,8 @@ return o>3&&s&&Object.defineProperty(t,n,s),s},u=function(e){function r(){(funct
 var e=function(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
 return!t||"object"!=typeof t&&"function"!=typeof t?e:t}(this,(r.__proto__||Object.getPrototypeOf(r)).apply(this,arguments))
 e.layout=n.default,e.actions={registerStepComponent:function(e){var t=Ember.get(e,"name"),n=this.transitions
-e.transitions=n,n.addStep(t)},removeStepComponent:function(e){var t=Ember.get(e,"name")
-this.transitions.removeStep(t)},"transition-to":function(e){this.doTransition(e)},"transition-to-next":function(){var e=this.transitions.pickNext()
+e.transitions=n,Ember.run.schedule("actions",function(){n.addStep(t)})},removeStepComponent:function(e){var t=this,n=Ember.get(e,"name")
+Ember.run.schedule("actions",function(){t.transitions.removeStep(n)})},"transition-to":function(e){this.doTransition(e)},"transition-to-next":function(){var e=this.transitions.pickNext()
 this.doTransition(e)},"transition-to-previous":function(){var e=this.transitions.pickPrevious()
 this.doTransition(e)}}
 var t=Ember.get(e,"initialStep")||Ember.get(e,"currentStep")
@@ -9349,7 +9345,7 @@ var s=e.linear?o.default:i.default
 return Ember.set(e,"transitions",new s(t)),e}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t)
 e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}(r,t.default),s(r,[{key:"doTransition",value:function(e){Ember.isEmpty(this.currentStep)||Ember.set(this,"currentStep",e),this.transitions.activate(e)}},{key:"didUpdateAttrs",value:function(){this._super.apply(this,arguments)
 var e=this.currentStep
-if(void 0===e){var t=this.transitions.firstStep
+if(void 0===e){var t=Ember.get(this.transitions,"firstStep")
 this.transitions.activate(t)}else this.transitions.activate(e)}},{key:"hasNextStep",get:function(){return Ember.isPresent(this.transitions.pickNext())}},{key:"hasPreviousStep",get:function(){return Ember.isPresent(this.transitions.pickPrevious())}}]),r}()
 e.default=u,l([(0,r.computed)("transitions.{currentStep,length}")],u.prototype,"hasNextStep",null),l([(0,r.computed)("transitions.{currentStep,length}")],u.prototype,"hasPreviousStep",null)}),define("ember-steps/components/step-manager/step",["exports","ember-steps/components/-tagless","ember-steps/templates/components/step-manager/step","@ember-decorators/object","ember-steps/-private/generate-random-name"],function(e,t,n,r,i){"use strict"
 Object.defineProperty(e,"__esModule",{value:!0})
