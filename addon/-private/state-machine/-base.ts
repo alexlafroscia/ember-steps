@@ -1,10 +1,10 @@
-import Ember from 'ember';
 import EmberObject, {
   set,
   get,
   setProperties,
   getProperties
 } from '@ember/object';
+import MutableArray from '@ember/array/mutable';
 import { isPresent } from '@ember/utils';
 import { A } from '@ember/array';
 import { readOnly } from '@ember-decorators/object/computed';
@@ -23,7 +23,7 @@ export default abstract class StateMachine extends EmberObject {
    * @property {A} stepTransitions
    * @private
    */
-  stepTransitions: Ember.MutableArray<string> = A();
+  stepTransitions: MutableArray<string> = A();
 
   /**
    * @property {string} firstStep
@@ -43,9 +43,9 @@ export default abstract class StateMachine extends EmberObject {
    */
   currentStep: string;
 
-  stepsToRemove: Ember.NativeArray<string> = A();
+  stepsToRemove: MutableArray<string> = A();
 
-  stepsToAdd: Ember.NativeArray<string> = A();
+  stepsToAdd: MutableArray<string> = A();
 
   constructor(initialStep: string) {
     super();
@@ -60,7 +60,7 @@ export default abstract class StateMachine extends EmberObject {
       return;
     }
 
-    this.stepsToAdd.push(name);
+    this.stepsToAdd.pushObject(name);
 
     scheduleOnce('afterRender', this, this.flushAdditionQueue);
   }
@@ -70,7 +70,7 @@ export default abstract class StateMachine extends EmberObject {
       return;
     }
 
-    this.stepsToRemove.push(name);
+    this.stepsToRemove.pushObject(name);
 
     scheduleOnce('render', this, this.flushRemoveQueue);
   }
@@ -85,7 +85,7 @@ export default abstract class StateMachine extends EmberObject {
     );
     let lastStep;
 
-    A(stepsToAdd)
+    stepsToAdd
       .filter(name => !this.stepTransitions.includes(name))
       .forEach(name => {
         // Set the first step, if it hasn't been yet
@@ -145,7 +145,7 @@ export default abstract class StateMachine extends EmberObject {
       return;
     }
 
-    A(stepsToRemove).forEach(name => {
+    stepsToRemove.forEach(name => {
       this.stepTransitions.removeObject(name);
 
       if (get(this, 'firstStep') === name) {
