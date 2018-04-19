@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="5.0.0"></a>
+# [5.0.0](https://github.com/alexlafroscia/ember-steps/compare/v5.0.0-beta.2...v5.0.0) (2018-04-19)
+
+
+
 <a name="5.0.0-beta.2"></a>
 # [5.0.0-beta.2](https://github.com/alexlafroscia/ember-steps/compare/v5.0.0-beta.1...v5.0.0-beta.2) (2018-04-18)
 
