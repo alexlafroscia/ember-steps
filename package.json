@@ -10,7 +10,8 @@
     "build": "ember build",
     "lint:js": "eslint .",
     "start": "FASTBOOT_DISABLED=true ember serve",
-    "test": "ember try:each",
+    "test": "ember test",
+    "test:all": "ember try:each",
     "prepublishOnly": "ember ts:precompile",
     "postpublish": "ember ts:clean",
     "release": "standard-version",
@@ -78,7 +79,7 @@
     "loader.js": "^4.6.0",
     "postcss-nested": "^3.0.0",
     "prettier": "^1.11.1",
-    "qunit-dom": "^0.5.0",
+    "qunit-dom": "^0.6.2",
     "standard-version": "^4.3.0",
     "typescript": "^2.8.1",
     "typescript-eslint-parser": "^14.0.0"
