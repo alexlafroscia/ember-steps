@@ -11,7 +11,7 @@ import { get } from '@ember/object';
  * @hide
  */
 export default class CircularStateMachine extends BaseStateMachine {
-  pickNext(currentStep = this.currentStep): string {
+  pickNext(currentStep = this.currentStep) {
     const currentIndex = this.stepTransitions.indexOf(currentStep);
     const nextValue = this.stepTransitions.objectAt(currentIndex + 1);
 
@@ -22,7 +22,7 @@ export default class CircularStateMachine extends BaseStateMachine {
     return this.stepTransitions.objectAt(0);
   }
 
-  pickPrevious(currentStep = this.currentStep): string {
+  pickPrevious(currentStep = this.currentStep) {
     const currentIndex = this.stepTransitions.indexOf(currentStep);
     const previousValue = this.stepTransitions.objectAt(currentIndex - 1);
 

@@ -11,7 +11,7 @@ import CircularStateMachine from 'ember-steps/-private/state-machine/circular';
 import LinearStateMachine from 'ember-steps/-private/state-machine/linear';
 
 import StateMachine from 'ember-steps/-private/state-machine/-base';
-import StepComponent from './step-manager/step';
+import StepComponent, { StepName } from './step-manager/step';
 
 /**
  * A component for creating a set of "steps", where only one is visible at a time
@@ -38,7 +38,7 @@ import StepComponent from './step-manager/step';
  * @yield {Action} w.transition-to
  * @yield {Action} w.transition-to-next Render the next step
  * @yield {Action} w.transition-to-previous Render the previous step
- * @yield {string} w.currentStep The name of the current step
+ * @yield {StepName} w.currentStep The name of the current step
  * @yield {Array<String>} w.steps All of the step names that are currently defined, in order
  * @public
  * @hide
@@ -46,13 +46,8 @@ import StepComponent from './step-manager/step';
 export default class StepManagerComponent extends TaglessComponent {
   layout = layout;
 
-  /**
-   * Optionally can be provided to override the initial step to render
-   *
-   * @property {string} initialStep the initial step
-   * @public
-   */
-  initialStep: string;
+  /* Optionally can be provided to override the initial step to render */
+  initialStep: StepName;
 
   /**
    * The `currentStep` property can be used for providing, or binding to, the
@@ -60,11 +55,8 @@ export default class StepManagerComponent extends TaglessComponent {
    *
    * If provided, the initial step will come from the value of this property,
    * and the value will be updated whenever the step changes
-   *
-   * @property {string} currentStep the current active step
-   * @public
    */
-  currentStep: string;
+  currentStep: StepName;
 
   /**
    * @property {boolean} boolean
@@ -79,11 +71,9 @@ export default class StepManagerComponent extends TaglessComponent {
   transitions: StateMachine;
 
   constructor() {
-    // @ts-ignore: Ember type definition is incorrect
     super(...arguments);
 
-    const initialStep: string =
-      get(this, 'initialStep') || get(this, 'currentStep');
+    const initialStep = get(this, 'initialStep') || get(this, 'currentStep');
 
     if (!isPresent(this.linear)) {
       this.linear = true;
@@ -106,21 +96,13 @@ export default class StepManagerComponent extends TaglessComponent {
     return isPresent(this.transitions.pickPrevious());
   }
 
-  /**
-   * Used internally to transition to a specific named step
-   *
-   * @method doTransition
-   * @param {string} to the name of the step to transition to
-   * @param {string} from the name of the step being transitioned
-   * @private
-   */
   doTransition(to) {
-    // Update the `currentStep` if it's mutable
+    // If `currentStep` is present, it's probably something the user wants
+    // two-way-bound with the new value
     if (!isEmpty(this.currentStep)) {
       set(this, 'currentStep', to);
     }
 
-    // Activate the next step
     this.transitions.activate(to);
   }
 
@@ -138,15 +120,6 @@ export default class StepManagerComponent extends TaglessComponent {
   }
 
   actions = {
-    /**
-     * Register a step with the manager
-     *
-     * Adds a step to the internal registry of steps by name.
-     *
-     * @action register-step-component
-     * @param {string} name the name of the step being registered
-     * @private
-     */
     registerStepComponent(
       this: StepManagerComponent,
       stepComponent: StepComponent
@@ -172,28 +145,10 @@ export default class StepManagerComponent extends TaglessComponent {
       });
     },
 
-    /**
-     * Transition to a named step
-     *
-     * @action transition-to
-     * @param {string} to the name of the step to transition to
-     * @param {*} value the value to pass to the transition actions
-     * @public
-     */
-    'transition-to'(this: StepManagerComponent, to: string) {
+    'transition-to'(this: StepManagerComponent, to: StepName) {
       this.doTransition(to);
     },
 
-    /**
-     * Transition to the "next" step
-     *
-     * When called, this action will advance from the current step to the next
-     * one, as defined by the order of their insertion into the DOM (AKA, the
-     * order in the template).
-     *
-     * @action transition-to-next
-     * @public
-     */
     'transition-to-next'(this: StepManagerComponent) {
       const to = this.transitions.pickNext();
 
@@ -202,15 +157,6 @@ export default class StepManagerComponent extends TaglessComponent {
       this.doTransition(to);
     },
 
-    /**
-     * Transition to the "previous" step
-     *
-     * When called, this action will go back to the previous step according to
-     * the step which was visited before entering the currentStep
-     *
-     * @action transition-to-previous
-     * @public
-     */
     'transition-to-previous'(this: StepManagerComponent) {
       const to = this.transitions.pickPrevious();
 
