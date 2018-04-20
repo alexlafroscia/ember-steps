@@ -7,7 +7,7 @@ return n.module.exports},loader={noConflict:function(t){var r,i
 for(r in t)t.hasOwnProperty(r)&&n.hasOwnProperty(r)&&(i=t[r],e[i]=e[r],e[r]=n[r])},makeDefaultExport:!0}
 var r=t(),i=(t(),0)
 var o=["require","exports","module"]
-function s(e,t,n,r){this.uuid=i++,this.id=e,this.deps=!t.length&&n.length?o:t,this.module={exports:{}},this.callback=n,this.hasExportsAsDep=!1,this.isAlias=r,this.reified=new Array(t.length),this.state="new"}function a(){}function l(e){this.id=e}function u(e,t,n){for(var i=r[e]||r[e+"/index"];i&&i.isAlias;)i=r[i.id]
+function s(e,t,n,r){this.uuid=i++,this.id=e,this.deps=!t.length&&n.length?o:t,this.module={exports:{}},this.callback=n,this.hasExportsAsDep=!1,this.isAlias=r,this.reified=new Array(t.length),this.state="new"}function a(){}function l(e){this.id=e}function u(e,t,n){for(var i=r[e]||r[e+"/index"];i&&i.isAlias;)i=r[i.id]||r[i.id+"/index"]
 return i||function(e,t){throw new Error("Could not find module `"+e+"` imported from `"+t+"`")}(e,t),n&&"pending"!==i.state&&"finalized"!==i.state&&(i.findDeps(n),n.push(i)),i}function c(e,t){if("."!==e.charAt(0))return e
 for(var n=e.split("/"),r=t.split("/").slice(0,-1),i=0,o=n.length;i<o;i++){var s=n[i]
 if(".."===s){if(0===r.length)throw new Error("Cannot access parent module of root")
@@ -5790,56 +5790,56 @@ this._initBody(i)}function v(e){var t=new FormData
 return e.trim().split("&").forEach(function(e){if(e){var n=e.split("="),r=n.shift().replace(/\+/g," "),i=n.join("=").replace(/\+/g," ")
 t.append(decodeURIComponent(r),decodeURIComponent(i))}}),t}function b(e,t){t||(t={}),this.type="default",this.status=void 0===t.status?200:t.status,this.ok=this.status>=200&&this.status<300,this.statusText="statusText"in t?t.statusText:"OK",this.headers=new h(t.headers),this.url=t.url||"",this._initBody(e)}}(void 0!==t?t:this)
 var r=0
-function i(e){return r--,e}e.Ember.Test?(e.Ember.Test.registerWaiter(function(){return 0===r}),t.default=function(){return r++,t.fetch.apply(t,arguments).then(function(e){return e.clone().blob().then(i,i),e},function(e){throw i(e),e})}):t.default=t.fetch,t.Headers=t.Headers,t.Request=t.Request,t.Response=t.Response}),define("fetch/ajax",["exports"],function(){throw new Error("You included `fetch/ajax` but it was renamed to `ember-fetch/ajax`")})}("undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self?self:this),function(e,t){"function"==typeof define&&define.amd?define(t):"object"==typeof exports?module.exports=t(require,exports,module):e.Tether=t()}(this,function(e,t,n){"use strict"
-var r=function(){function e(e,t){for(var n=0;n<t.length;n++){var r=t[n]
+function i(e){return r--,e}e.Ember.Test?(e.Ember.Test.registerWaiter(function(){return 0===r}),t.default=function(){return r++,t.fetch.apply(t,arguments).then(function(e){return e.clone().blob().then(i,i),e},function(e){throw i(e),e})}):t.default=t.fetch,t.Headers=t.Headers,t.Request=t.Request,t.Response=t.Response}),define("fetch/ajax",["exports"],function(){throw new Error("You included `fetch/ajax` but it was renamed to `ember-fetch/ajax`")})}("undefined"!=typeof window?window:"undefined"!=typeof global?global:"undefined"!=typeof self?self:this),function(e,t){"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?module.exports=t():e.Tether=t()}(this,function(){"use strict"
+var e=function(){function e(e,t){for(var n=0;n<t.length;n++){var r=t[n]
 r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(t,n,r){return n&&e(t.prototype,n),r&&e(t,r),t}}()
-function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var o=void 0
-void 0===o&&(o={modules:[]})
-var s=null
-function a(e){var t=e.getBoundingClientRect(),n={}
+function t(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var n=void 0
+void 0===n&&(n={modules:[]})
+var r=null
+function i(e){var t=e.getBoundingClientRect(),n={}
 for(var r in t)n[r]=t[r]
-if(e.ownerDocument!==document){var i=e.ownerDocument.defaultView.frameElement
-if(i){var o=a(i)
-n.top+=o.top,n.bottom+=o.top,n.left+=o.left,n.right+=o.left}}return n}function l(e){var t=(getComputedStyle(e)||{}).position,n=[]
+if(e.ownerDocument!==document){var o=e.ownerDocument.defaultView.frameElement
+if(o){var s=i(o)
+n.top+=s.top,n.bottom+=s.top,n.left+=s.left,n.right+=s.left}}return n}function o(e){var t=(getComputedStyle(e)||{}).position,n=[]
 if("fixed"===t)return[e]
 for(var r=e;(r=r.parentNode)&&r&&1===r.nodeType;){var i=void 0
 try{i=getComputedStyle(r)}catch(e){}if(void 0===i||null===i)return n.push(r),n
-var o=i,s=o.overflow,a=o.overflowX,l=o.overflowY;/(auto|scroll|overlay)/.test(s+l+a)&&("absolute"!==t||["relative","absolute","fixed"].indexOf(i.position)>=0)&&n.push(r)}return n.push(e.ownerDocument.body),e.ownerDocument!==document&&n.push(e.ownerDocument.defaultView),n}var u,c=(u=0,function(){return++u}),h={},d=function(){var e=s
-e&&document.body.contains(e)||((e=document.createElement("div")).setAttribute("data-tether-id",c()),v(e.style,{top:0,left:0,position:"absolute"}),document.body.appendChild(e),s=e)
+var o=i,s=o.overflow,a=o.overflowX,l=o.overflowY;/(auto|scroll|overlay)/.test(s+l+a)&&("absolute"!==t||["relative","absolute","fixed"].indexOf(i.position)>=0)&&n.push(r)}return n.push(e.ownerDocument.body),e.ownerDocument!==document&&n.push(e.ownerDocument.defaultView),n}var s,a=(s=0,function(){return++s}),l={},u=function(){var e=r
+e&&document.body.contains(e)||((e=document.createElement("div")).setAttribute("data-tether-id",a()),m(e.style,{top:0,left:0,position:"absolute"}),document.body.appendChild(e),r=e)
 var t=e.getAttribute("data-tether-id")
-return void 0===h[t]&&(h[t]=a(e),C(function(){delete h[t]})),h[t]}
-function p(){s&&document.body.removeChild(s),s=null}function f(e){var t=void 0
+return void 0===l[t]&&(l[t]=i(e),x(function(){delete l[t]})),l[t]}
+function c(){r&&document.body.removeChild(r),r=null}function h(e){var t=void 0
 e===document?(t=document,e=document.documentElement):t=e.ownerDocument
-var n=t.documentElement,r=a(e),i=d()
-return r.top-=i.top,r.left-=i.left,void 0===r.width&&(r.width=document.body.scrollWidth-r.left-r.right),void 0===r.height&&(r.height=document.body.scrollHeight-r.top-r.bottom),r.top=r.top-n.clientTop,r.left=r.left-n.clientLeft,r.right=t.body.clientWidth-r.width-r.left,r.bottom=t.body.clientHeight-r.height-r.top,r}function m(e){return e.offsetParent||document.documentElement}var g=null
-function y(){if(g)return g
+var n=t.documentElement,r=i(e),o=u()
+return r.top-=o.top,r.left-=o.left,void 0===r.width&&(r.width=document.body.scrollWidth-r.left-r.right),void 0===r.height&&(r.height=document.body.scrollHeight-r.top-r.bottom),r.top=r.top-n.clientTop,r.left=r.left-n.clientLeft,r.right=t.body.clientWidth-r.width-r.left,r.bottom=t.body.clientHeight-r.height-r.top,r}function d(e){return e.offsetParent||document.documentElement}var p=null
+function f(){if(p)return p
 var e=document.createElement("div")
 e.style.width="100%",e.style.height="200px"
 var t=document.createElement("div")
-v(t.style,{position:"absolute",top:0,left:0,pointerEvents:"none",visibility:"hidden",width:"200px",height:"150px",overflow:"hidden"}),t.appendChild(e),document.body.appendChild(t)
+m(t.style,{position:"absolute",top:0,left:0,pointerEvents:"none",visibility:"hidden",width:"200px",height:"150px",overflow:"hidden"}),t.appendChild(e),document.body.appendChild(t)
 var n=e.offsetWidth
 t.style.overflow="scroll"
 var r=e.offsetWidth
 n===r&&(r=t.clientWidth),document.body.removeChild(t)
 var i=n-r
-return g={width:i,height:i}}function v(){var e=arguments.length<=0||void 0===arguments[0]?{}:arguments[0],t=[]
-return Array.prototype.push.apply(t,arguments),t.slice(1).forEach(function(t){if(t)for(var n in t)({}).hasOwnProperty.call(t,n)&&(e[n]=t[n])}),e}function b(e,t){if(void 0!==e.classList)t.split(" ").forEach(function(t){t.trim()&&e.classList.remove(t)})
-else{var n=new RegExp("(^| )"+t.split(" ").join("|")+"( |$)","gi"),r=E(e).replace(n," ")
-x(e,r)}}function w(e,t){if(void 0!==e.classList)t.split(" ").forEach(function(t){t.trim()&&e.classList.add(t)})
-else{b(e,t)
-var n=E(e)+" "+t
-x(e,n)}}function _(e,t){if(void 0!==e.classList)return e.classList.contains(t)
-var n=E(e)
-return new RegExp("(^| )"+t+"( |$)","gi").test(n)}function E(e){return e.className instanceof e.ownerDocument.defaultView.SVGAnimatedString?e.className.baseVal:e.className}function x(e,t){e.setAttribute("class",t)}function k(e,t,n){n.forEach(function(n){-1===t.indexOf(n)&&_(e,n)&&b(e,n)}),t.forEach(function(t){_(e,t)||w(e,t)})}var S=[],C=function(e){S.push(e)},A=function(){for(var e=void 0;e=S.pop();)e()},O=function(){function e(){i(this,e)}return r(e,[{key:"on",value:function(e,t,n){var r=!(arguments.length<=3||void 0===arguments[3])&&arguments[3]
+return p={width:i,height:i}}function m(){var e=arguments.length<=0||void 0===arguments[0]?{}:arguments[0],t=[]
+return Array.prototype.push.apply(t,arguments),t.slice(1).forEach(function(t){if(t)for(var n in t)({}).hasOwnProperty.call(t,n)&&(e[n]=t[n])}),e}function g(e,t){if(void 0!==e.classList)t.split(" ").forEach(function(t){t.trim()&&e.classList.remove(t)})
+else{var n=new RegExp("(^| )"+t.split(" ").join("|")+"( |$)","gi"),r=b(e).replace(n," ")
+w(e,r)}}function y(e,t){if(void 0!==e.classList)t.split(" ").forEach(function(t){t.trim()&&e.classList.add(t)})
+else{g(e,t)
+var n=b(e)+" "+t
+w(e,n)}}function v(e,t){if(void 0!==e.classList)return e.classList.contains(t)
+var n=b(e)
+return new RegExp("(^| )"+t+"( |$)","gi").test(n)}function b(e){return e.className instanceof e.ownerDocument.defaultView.SVGAnimatedString?e.className.baseVal:e.className}function w(e,t){e.setAttribute("class",t)}function _(e,t,n){n.forEach(function(n){-1===t.indexOf(n)&&v(e,n)&&g(e,n)}),t.forEach(function(t){v(e,t)||y(e,t)})}var E=[],x=function(e){E.push(e)},k=function(){for(var e=void 0;e=E.pop();)e()},S=function(){function n(){t(this,n)}return e(n,[{key:"on",value:function(e,t,n){var r=!(arguments.length<=3||void 0===arguments[3])&&arguments[3]
 void 0===this.bindings&&(this.bindings={}),void 0===this.bindings[e]&&(this.bindings[e]=[]),this.bindings[e].push({handler:t,ctx:n,once:r})}},{key:"once",value:function(e,t,n){this.on(e,t,n,!0)}},{key:"off",value:function(e,t){if(void 0!==this.bindings&&void 0!==this.bindings[e])if(void 0===t)delete this.bindings[e]
 else for(var n=0;n<this.bindings[e].length;)this.bindings[e][n].handler===t?this.bindings[e].splice(n,1):++n}},{key:"trigger",value:function(e){if(void 0!==this.bindings&&this.bindings[e]){for(var t=0,n=arguments.length,r=Array(n>1?n-1:0),i=1;i<n;i++)r[i-1]=arguments[i]
 for(;t<this.bindings[e].length;){var o=this.bindings[e][t],s=o.handler,a=o.ctx,l=o.once,u=a
-void 0===u&&(u=this),s.apply(u,r),l?this.bindings[e].splice(t,1):++t}}}}]),e}()
-o.Utils={getActualBoundingClientRect:a,getScrollParents:l,getBounds:f,getOffsetParent:m,extend:v,addClass:w,removeClass:b,hasClass:_,updateClasses:k,defer:C,flush:A,uniqueId:c,Evented:O,getScrollBarSize:y,removeUtilElements:p}
-var T=function(){return function(e,t){if(Array.isArray(e))return e
+void 0===u&&(u=this),s.apply(u,r),l?this.bindings[e].splice(t,1):++t}}}}]),n}()
+n.Utils={getActualBoundingClientRect:i,getScrollParents:o,getBounds:h,getOffsetParent:d,extend:m,addClass:y,removeClass:g,hasClass:v,updateClasses:_,defer:x,flush:k,uniqueId:a,Evented:S,getScrollBarSize:f,removeUtilElements:c}
+var C=function(){return function(e,t){if(Array.isArray(e))return e
 if(Symbol.iterator in Object(e))return function(e,t){var n=[],r=!0,i=!1,o=void 0
 try{for(var s,a=e[Symbol.iterator]();!(r=(s=a.next()).done)&&(n.push(s.value),!t||n.length!==t);r=!0);}catch(e){i=!0,o=e}finally{try{!r&&a.return&&a.return()}finally{if(i)throw o}}return n}(e,t)
-throw new TypeError("Invalid attempt to destructure non-iterable instance")}}(),R=(r=function(){function e(e,t){for(var n=0;n<t.length;n++){var r=t[n]
+throw new TypeError("Invalid attempt to destructure non-iterable instance")}}(),A=(e=function(){function e(e,t){for(var n=0;n<t.length;n++){var r=t[n]
 r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(t,n,r){return n&&e(t.prototype,n),r&&e(t,r),t}}(),function(e,t,n){for(var r=!0;r;){var i=e,o=t,s=n
 r=!1,null===i&&(i=Function.prototype)
 var a=Object.getOwnPropertyDescriptor(i,o)
@@ -5849,116 +5849,116 @@ if(void 0===l)return
 return l.call(s)}var u=Object.getPrototypeOf(i)
 if(null===u)return
 e=u,t=o,n=s,r=!0,a=u=void 0}})
-function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}if(void 0===o)throw new Error("You must include the utils.js file before tether.js")
-var l=(X=o.Utils).getScrollParents,m=(f=X.getBounds,X.getOffsetParent),w=(v=X.extend,X.addClass),b=X.removeClass,y=(k=X.updateClasses,C=X.defer,A=X.flush,X.getScrollBarSize),p=X.removeUtilElements
-function P(e,t){var n=arguments.length<=2||void 0===arguments[2]?1:arguments[2]
-return e+n>=t&&t>=e-n}var M,N,L,j,I=function(){if("undefined"==typeof document)return""
+function t(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}if(void 0===n)throw new Error("You must include the utils.js file before tether.js")
+var o=(G=n.Utils).getScrollParents,d=(h=G.getBounds,G.getOffsetParent),y=(m=G.extend,G.addClass),g=G.removeClass,f=(_=G.updateClasses,x=G.defer,k=G.flush,G.getScrollBarSize),c=G.removeUtilElements
+function O(e,t){var n=arguments.length<=2||void 0===arguments[2]?1:arguments[2]
+return e+n>=t&&t>=e-n}var T,R,P,M,N=function(){if("undefined"==typeof document)return""
 for(var e=document.createElement("div"),t=["transform","WebkitTransform","OTransform","MozTransform","msTransform"],n=0;n<t.length;++n){var r=t[n]
-if(void 0!==e.style[r])return r}}(),D=[],F=function(){D.forEach(function(e){e.position(!1)}),A()}
-function $(){return"object"==typeof performance&&"function"==typeof performance.now?performance.now():+new Date}M=null,N=null,L=null,j=function e(){if(void 0!==N&&N>16)return N=Math.min(N-16,250),void(L=setTimeout(e,250))
-void 0!==M&&$()-M<10||(null!=L&&(clearTimeout(L),L=null),M=$(),F(),N=$()-M)},"undefined"!=typeof window&&void 0!==window.addEventListener&&["resize","scroll","touchmove"].forEach(function(e){window.addEventListener(e,j)})
-var B={center:"center",left:"right",right:"left"},z={middle:"middle",top:"bottom",bottom:"top"},H={top:0,left:0,middle:"50%",center:"50%",bottom:"100%",right:"100%"},q=function(e){var t=e.left,n=e.top
-return void 0!==H[e.left]&&(t=H[e.left]),void 0!==H[e.top]&&(n=H[e.top]),{left:t,top:n}}
-function U(){for(var e={top:0,left:0},t=arguments.length,n=Array(t),r=0;r<t;r++)n[r]=arguments[r]
+if(void 0!==e.style[r])return r}}(),L=[],j=function(){L.forEach(function(e){e.position(!1)}),k()}
+function I(){return"object"==typeof performance&&"function"==typeof performance.now?performance.now():+new Date}T=null,R=null,P=null,M=function e(){if(void 0!==R&&R>16)return R=Math.min(R-16,250),void(P=setTimeout(e,250))
+void 0!==T&&I()-T<10||(null!=P&&(clearTimeout(P),P=null),T=I(),j(),R=I()-T)},"undefined"!=typeof window&&void 0!==window.addEventListener&&["resize","scroll","touchmove"].forEach(function(e){window.addEventListener(e,M)})
+var D={center:"center",left:"right",right:"left"},F={middle:"middle",top:"bottom",bottom:"top"},$={top:0,left:0,middle:"50%",center:"50%",bottom:"100%",right:"100%"},B=function(e){var t=e.left,n=e.top
+return void 0!==$[e.left]&&(t=$[e.left]),void 0!==$[e.top]&&(n=$[e.top]),{left:t,top:n}}
+function z(){for(var e={top:0,left:0},t=arguments.length,n=Array(t),r=0;r<t;r++)n[r]=arguments[r]
 return n.forEach(function(t){var n=t.top,r=t.left
-"string"==typeof n&&(n=parseFloat(n,10)),"string"==typeof r&&(r=parseFloat(r,10)),e.top+=n,e.left+=r}),e}function V(e,t){return"string"==typeof e.left&&-1!==e.left.indexOf("%")&&(e.left=parseFloat(e.left,10)/100*t.width),"string"==typeof e.top&&-1!==e.top.indexOf("%")&&(e.top=parseFloat(e.top,10)/100*t.height),e}var W=function(e){var t=e.split(" "),n=T(t,2)
-return{top:n[0],left:n[1]}},K=W,G=function(e){function t(e){var n=this
-i(this,t),R(Object.getPrototypeOf(t.prototype),"constructor",this).call(this),this.position=this.position.bind(this),D.push(this),this.history=[],this.setOptions(e,!1),o.modules.forEach(function(e){void 0!==e.initialize&&e.initialize.call(n)}),this.position()}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t)
-e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}(t,O),r(t,[{key:"getClass",value:function(){var e=arguments.length<=0||void 0===arguments[0]?"":arguments[0],t=this.options.classes
+"string"==typeof n&&(n=parseFloat(n,10)),"string"==typeof r&&(r=parseFloat(r,10)),e.top+=n,e.left+=r}),e}function H(e,t){return"string"==typeof e.left&&-1!==e.left.indexOf("%")&&(e.left=parseFloat(e.left,10)/100*t.width),"string"==typeof e.top&&-1!==e.top.indexOf("%")&&(e.top=parseFloat(e.top,10)/100*t.height),e}var q=function(e){var t=e.split(" "),n=C(t,2)
+return{top:n[0],left:n[1]}},U=q,V=function(r){function i(e){var r=this
+t(this,i),A(Object.getPrototypeOf(i.prototype),"constructor",this).call(this),this.position=this.position.bind(this),L.push(this),this.history=[],this.setOptions(e,!1),n.modules.forEach(function(e){void 0!==e.initialize&&e.initialize.call(r)}),this.position()}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t)
+e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}(i,S),e(i,[{key:"getClass",value:function(){var e=arguments.length<=0||void 0===arguments[0]?"":arguments[0],t=this.options.classes
 return void 0!==t&&t[e]?this.options.classes[e]:this.options.classPrefix?this.options.classPrefix+"-"+e:e}},{key:"setOptions",value:function(e){var t=this,n=arguments.length<=1||void 0===arguments[1]||arguments[1]
-this.options=v({offset:"0 0",targetOffset:"0 0",targetAttachment:"auto auto",classPrefix:"tether"},e)
-var r=this.options,i=r.element,o=r.target,s=r.targetModifier
-if(this.element=i,this.target=o,this.targetModifier=s,"viewport"===this.target?(this.target=document.body,this.targetModifier="visible"):"scroll-handle"===this.target&&(this.target=document.body,this.targetModifier="scroll-handle"),["element","target"].forEach(function(e){if(void 0===t[e])throw new Error("Tether Error: Both element and target must be defined")
-void 0!==t[e].jquery?t[e]=t[e][0]:"string"==typeof t[e]&&(t[e]=document.querySelector(t[e]))}),w(this.element,this.getClass("element")),!1!==this.options.addTargetClasses&&w(this.target,this.getClass("target")),!this.options.attachment)throw new Error("Tether Error: You must provide an attachment")
-this.targetAttachment=K(this.options.targetAttachment),this.attachment=K(this.options.attachment),this.offset=W(this.options.offset),this.targetOffset=W(this.options.targetOffset),void 0!==this.scrollParents&&this.disable(),"scroll-handle"===this.targetModifier?this.scrollParents=[this.target]:this.scrollParents=l(this.target),!1!==this.options.enabled&&this.enable(n)}},{key:"getTargetBounds",value:function(){if(void 0===this.targetModifier)return f(this.target)
-if("visible"===this.targetModifier)return this.target===document.body?{top:pageYOffset,left:pageXOffset,height:innerHeight,width:innerWidth}:((o={height:(e=f(this.target)).height,width:e.width,top:e.top,left:e.left}).height=Math.min(o.height,e.height-(pageYOffset-e.top)),o.height=Math.min(o.height,e.height-(e.top+e.height-(pageYOffset+innerHeight))),o.height=Math.min(innerHeight,o.height),o.height-=2,o.width=Math.min(o.width,e.width-(pageXOffset-e.left)),o.width=Math.min(o.width,e.width-(e.left+e.width-(pageXOffset+innerWidth))),o.width=Math.min(innerWidth,o.width),o.width-=2,o.top<pageYOffset&&(o.top=pageYOffset),o.left<pageXOffset&&(o.left=pageXOffset),o)
+this.options=m({offset:"0 0",targetOffset:"0 0",targetAttachment:"auto auto",classPrefix:"tether"},e)
+var r=this.options,i=r.element,s=r.target,a=r.targetModifier
+if(this.element=i,this.target=s,this.targetModifier=a,"viewport"===this.target?(this.target=document.body,this.targetModifier="visible"):"scroll-handle"===this.target&&(this.target=document.body,this.targetModifier="scroll-handle"),["element","target"].forEach(function(e){if(void 0===t[e])throw new Error("Tether Error: Both element and target must be defined")
+void 0!==t[e].jquery?t[e]=t[e][0]:"string"==typeof t[e]&&(t[e]=document.querySelector(t[e]))}),y(this.element,this.getClass("element")),!1!==this.options.addTargetClasses&&y(this.target,this.getClass("target")),!this.options.attachment)throw new Error("Tether Error: You must provide an attachment")
+this.targetAttachment=U(this.options.targetAttachment),this.attachment=U(this.options.attachment),this.offset=q(this.options.offset),this.targetOffset=q(this.options.targetOffset),void 0!==this.scrollParents&&this.disable(),"scroll-handle"===this.targetModifier?this.scrollParents=[this.target]:this.scrollParents=o(this.target),!1!==this.options.enabled&&this.enable(n)}},{key:"getTargetBounds",value:function(){if(void 0===this.targetModifier)return h(this.target)
+if("visible"===this.targetModifier)return this.target===document.body?{top:pageYOffset,left:pageXOffset,height:innerHeight,width:innerWidth}:((o={height:(e=h(this.target)).height,width:e.width,top:e.top,left:e.left}).height=Math.min(o.height,e.height-(pageYOffset-e.top)),o.height=Math.min(o.height,e.height-(e.top+e.height-(pageYOffset+innerHeight))),o.height=Math.min(innerHeight,o.height),o.height-=2,o.width=Math.min(o.width,e.width-(pageXOffset-e.left)),o.width=Math.min(o.width,e.width-(e.left+e.width-(pageXOffset+innerWidth))),o.width=Math.min(innerWidth,o.width),o.width-=2,o.top<pageYOffset&&(o.top=pageYOffset),o.left<pageXOffset&&(o.left=pageXOffset),o)
 if("scroll-handle"===this.targetModifier){var e=void 0,t=this.target
-t===document.body?(t=document.documentElement,e={left:pageXOffset,top:pageYOffset,height:innerHeight,width:innerWidth}):e=f(t)
+t===document.body?(t=document.documentElement,e={left:pageXOffset,top:pageYOffset,height:innerHeight,width:innerWidth}):e=h(t)
 var n=getComputedStyle(t),r=0;(t.scrollWidth>t.clientWidth||[n.overflow,n.overflowX].indexOf("scroll")>=0||this.target!==document.body)&&(r=15)
 var i=e.height-parseFloat(n.borderTopWidth)-parseFloat(n.borderBottomWidth)-r,o={width:15,height:.975*i*(i/t.scrollHeight),left:e.left+e.width-parseFloat(n.borderLeftWidth)-15},s=0
 i<408&&this.target===document.body&&(s=-11e-5*Math.pow(i,2)-.00727*i+22.58),this.target!==document.body&&(o.height=Math.max(o.height,24))
 var a=this.target.scrollTop/(t.scrollHeight-i)
 return o.top=a*(i-o.height-s)+e.top+parseFloat(n.borderTopWidth),this.target===document.body&&(o.height=Math.max(o.height,24)),o}}},{key:"clearCache",value:function(){this._cache={}}},{key:"cache",value:function(e,t){return void 0===this._cache&&(this._cache={}),void 0===this._cache[e]&&(this._cache[e]=t.call(this)),this._cache[e]}},{key:"enable",value:function(){var e=this,t=arguments.length<=0||void 0===arguments[0]||arguments[0]
-!1!==this.options.addTargetClasses&&w(this.target,this.getClass("enabled")),w(this.element,this.getClass("enabled")),this.enabled=!0,this.scrollParents.forEach(function(t){t!==e.target.ownerDocument&&t.addEventListener("scroll",e.position)}),t&&this.position()}},{key:"disable",value:function(){var e=this
-b(this.target,this.getClass("enabled")),b(this.element,this.getClass("enabled")),this.enabled=!1,void 0!==this.scrollParents&&this.scrollParents.forEach(function(t){t.removeEventListener("scroll",e.position)})}},{key:"destroy",value:function(){var e=this
-this.disable(),D.forEach(function(t,n){t===e&&D.splice(n,1)}),0===D.length&&p()}},{key:"updateAttachClasses",value:function(e,t){var n=this
+!1!==this.options.addTargetClasses&&y(this.target,this.getClass("enabled")),y(this.element,this.getClass("enabled")),this.enabled=!0,this.scrollParents.forEach(function(t){t!==e.target.ownerDocument&&t.addEventListener("scroll",e.position)}),t&&this.position()}},{key:"disable",value:function(){var e=this
+g(this.target,this.getClass("enabled")),g(this.element,this.getClass("enabled")),this.enabled=!1,void 0!==this.scrollParents&&this.scrollParents.forEach(function(t){t.removeEventListener("scroll",e.position)})}},{key:"destroy",value:function(){var e=this
+this.disable(),L.forEach(function(t,n){t===e&&L.splice(n,1)}),0===L.length&&c()}},{key:"updateAttachClasses",value:function(e,t){var n=this
 e=e||this.attachment,t=t||this.targetAttachment
 void 0!==this._addAttachClasses&&this._addAttachClasses.length&&this._addAttachClasses.splice(0,this._addAttachClasses.length),void 0===this._addAttachClasses&&(this._addAttachClasses=[])
 var r=this._addAttachClasses
 e.top&&r.push(this.getClass("element-attached")+"-"+e.top),e.left&&r.push(this.getClass("element-attached")+"-"+e.left),t.top&&r.push(this.getClass("target-attached")+"-"+t.top),t.left&&r.push(this.getClass("target-attached")+"-"+t.left)
-var i=[];["left","top","bottom","right","middle","center"].forEach(function(e){i.push(n.getClass("element-attached")+"-"+e),i.push(n.getClass("target-attached")+"-"+e)}),C(function(){void 0!==n._addAttachClasses&&(k(n.element,n._addAttachClasses,i),!1!==n.options.addTargetClasses&&k(n.target,n._addAttachClasses,i),delete n._addAttachClasses)})}},{key:"position",value:function(){var e=this,t=arguments.length<=0||void 0===arguments[0]||arguments[0]
+var i=[];["left","top","bottom","right","middle","center"].forEach(function(e){i.push(n.getClass("element-attached")+"-"+e),i.push(n.getClass("target-attached")+"-"+e)}),x(function(){void 0!==n._addAttachClasses&&(_(n.element,n._addAttachClasses,i),!1!==n.options.addTargetClasses&&_(n.target,n._addAttachClasses,i),delete n._addAttachClasses)})}},{key:"position",value:function(){var e=this,t=arguments.length<=0||void 0===arguments[0]||arguments[0]
 if(this.enabled){this.clearCache()
-var n=function(e,t){var n=e.left,r=e.top
-return"auto"===n&&(n=B[t.left]),"auto"===r&&(r=z[t.top]),{left:n,top:r}}(this.targetAttachment,this.attachment)
-this.updateAttachClasses(this.attachment,n)
-var r=this.cache("element-bounds",function(){return f(e.element)}),i=r.width,s=r.height
-if(0===i&&0===s&&void 0!==this.lastSize){var a=this.lastSize
-i=a.width,s=a.height}else this.lastSize={width:i,height:s}
-var l=this.cache("target-bounds",function(){return e.getTargetBounds()}),u=l,c=V(q(this.attachment),{width:i,height:s}),h=V(q(n),u),d=V(this.offset,{width:i,height:s}),p=V(this.targetOffset,u)
-c=U(c,d),h=U(h,p)
-for(var g=l.left+h.left-c.left,v=l.top+h.top-c.top,b=0;b<o.modules.length;++b){var w=o.modules[b].position.call(this,{left:g,top:v,targetAttachment:n,targetPos:l,elementPos:r,offset:c,targetOffset:h,manualOffset:d,manualTargetOffset:p,scrollbarSize:k,attachment:this.attachment})
+var r=function(e,t){var n=e.left,r=e.top
+return"auto"===n&&(n=D[t.left]),"auto"===r&&(r=F[t.top]),{left:n,top:r}}(this.targetAttachment,this.attachment)
+this.updateAttachClasses(this.attachment,r)
+var i=this.cache("element-bounds",function(){return h(e.element)}),o=i.width,s=i.height
+if(0===o&&0===s&&void 0!==this.lastSize){var a=this.lastSize
+o=a.width,s=a.height}else this.lastSize={width:o,height:s}
+var l=this.cache("target-bounds",function(){return e.getTargetBounds()}),u=l,c=H(B(this.attachment),{width:o,height:s}),p=H(B(r),u),m=H(this.offset,{width:o,height:s}),g=H(this.targetOffset,u)
+c=z(c,m),p=z(p,g)
+for(var y=l.left+p.left-c.left,v=l.top+p.top-c.top,b=0;b<n.modules.length;++b){var w=n.modules[b].position.call(this,{left:y,top:v,targetAttachment:r,targetPos:l,elementPos:i,offset:c,targetOffset:p,manualOffset:m,manualTargetOffset:g,scrollbarSize:S,attachment:this.attachment})
 if(!1===w)return!1
-void 0!==w&&"object"==typeof w&&(v=w.top,g=w.left)}var _={page:{top:v,left:g},viewport:{top:v-pageYOffset,bottom:pageYOffset-v-s+innerHeight,left:g-pageXOffset,right:pageXOffset-g-i+innerWidth}},E=this.target.ownerDocument,x=E.defaultView,k=void 0
-return x.innerHeight>E.documentElement.clientHeight&&(k=this.cache("scrollbar-size",y),_.viewport.bottom-=k.height),x.innerWidth>E.documentElement.clientWidth&&(k=this.cache("scrollbar-size",y),_.viewport.right-=k.width),-1!==["","static"].indexOf(E.body.style.position)&&-1!==["","static"].indexOf(E.body.parentElement.style.position)||(_.page.bottom=E.body.scrollHeight-v-s,_.page.right=E.body.scrollWidth-g-i),void 0!==this.options.optimizations&&!1!==this.options.optimizations.moveElement&&void 0===this.targetModifier&&function(){var t=e.cache("target-offsetparent",function(){return m(e.target)}),n=e.cache("target-offsetparent-bounds",function(){return f(t)}),r=getComputedStyle(t),i=n,o={}
+void 0!==w&&"object"==typeof w&&(v=w.top,y=w.left)}var _={page:{top:v,left:y},viewport:{top:v-pageYOffset,bottom:pageYOffset-v-s+innerHeight,left:y-pageXOffset,right:pageXOffset-y-o+innerWidth}},E=this.target.ownerDocument,x=E.defaultView,S=void 0
+return x.innerHeight>E.documentElement.clientHeight&&(S=this.cache("scrollbar-size",f),_.viewport.bottom-=S.height),x.innerWidth>E.documentElement.clientWidth&&(S=this.cache("scrollbar-size",f),_.viewport.right-=S.width),-1!==["","static"].indexOf(E.body.style.position)&&-1!==["","static"].indexOf(E.body.parentElement.style.position)||(_.page.bottom=E.body.scrollHeight-v-s,_.page.right=E.body.scrollWidth-y-o),void 0!==this.options.optimizations&&!1!==this.options.optimizations.moveElement&&void 0===this.targetModifier&&function(){var t=e.cache("target-offsetparent",function(){return d(e.target)}),n=e.cache("target-offsetparent-bounds",function(){return h(t)}),r=getComputedStyle(t),i=n,o={}
 if(["Top","Left","Bottom","Right"].forEach(function(e){o[e.toLowerCase()]=parseFloat(r["border"+e+"Width"])}),n.right=E.body.scrollWidth-n.left-i.width+o.right,n.bottom=E.body.scrollHeight-n.top-i.height+o.bottom,_.page.top>=n.top+o.top&&_.page.bottom>=n.bottom&&_.page.left>=n.left+o.left&&_.page.right>=n.right){var s=t.scrollTop,a=t.scrollLeft
-_.offset={top:_.page.top-n.top+s-o.top,left:_.page.left-n.left+a-o.left}}}(),this.move(_),this.history.unshift(_),this.history.length>3&&this.history.pop(),t&&A(),!0}}},{key:"move",value:function(e){var t=this
+_.offset={top:_.page.top-n.top+s-o.top,left:_.page.left-n.left+a-o.left}}}(),this.move(_),this.history.unshift(_),this.history.length>3&&this.history.pop(),t&&k(),!0}}},{key:"move",value:function(e){var t=this
 if(void 0!==this.element.parentNode){var n={}
 for(var r in e)for(var i in n[r]={},e[r]){for(var o=!1,s=0;s<this.history.length;++s){var a=this.history[s]
-if(void 0!==a[r]&&!P(a[r][i],e[r][i])){o=!0
+if(void 0!==a[r]&&!O(a[r][i],e[r][i])){o=!0
 break}}o||(n[r][i]=!0)}var l={top:"",left:"",right:"",bottom:""},u=function(e,n){if(!1!==(void 0!==t.options.optimizations?t.options.optimizations.gpu:null)){var r=void 0,i=void 0
 if(e.top?(l.top=0,r=n.top):(l.bottom=0,r=-n.bottom),e.left?(l.left=0,i=n.left):(l.right=0,i=-n.right),window.matchMedia)window.matchMedia("only screen and (min-resolution: 1.3dppx)").matches||window.matchMedia("only screen and (-webkit-min-device-pixel-ratio: 1.3)").matches||(i=Math.round(i),r=Math.round(r))
-l[I]="translateX("+i+"px) translateY("+r+"px)","msTransform"!==I&&(l[I]+=" translateZ(0)")}else e.top?l.top=n.top+"px":l.bottom=n.bottom+"px",e.left?l.left=n.left+"px":l.right=n.right+"px"},c=!1
+l[N]="translateX("+i+"px) translateY("+r+"px)","msTransform"!==N&&(l[N]+=" translateZ(0)")}else e.top?l.top=n.top+"px":l.bottom=n.bottom+"px",e.left?l.left=n.left+"px":l.right=n.right+"px"},c=!1
 if((n.page.top||n.page.bottom)&&(n.page.left||n.page.right)?(l.position="absolute",u(n.page,e.page)):(n.viewport.top||n.viewport.bottom)&&(n.viewport.left||n.viewport.right)?(l.position="fixed",u(n.viewport,e.viewport)):void 0!==n.offset&&n.offset.top&&n.offset.left?function(){l.position="absolute"
-var r=t.cache("target-offsetparent",function(){return m(t.target)})
-m(t.element)!==r&&C(function(){t.element.parentNode.removeChild(t.element),r.appendChild(t.element)}),u(n.offset,e.offset),c=!0}():(l.position="absolute",u({top:!0,left:!0},e.page)),!c)if(this.options.bodyElement)this.element.parentNode!==this.options.bodyElement&&this.options.bodyElement.appendChild(this.element)
-else{for(var h=!0,d=this.element.parentNode;d&&1===d.nodeType&&"BODY"!==d.tagName;){if("static"!==getComputedStyle(d).position){h=!1
-break}d=d.parentNode}h||(this.element.parentNode.removeChild(this.element),this.element.ownerDocument.body.appendChild(this.element))}var p={},f=!1
-for(var i in l){var g=l[i]
-this.element.style[i]!==g&&(f=!0,p[i]=g)}f&&C(function(){v(t.element.style,p),t.trigger("repositioned")})}}}]),t}()
-G.modules=[],o.position=F
-var Q=v(G,o),v=(T=function(){return function(e,t){if(Array.isArray(e))return e
+var r=t.cache("target-offsetparent",function(){return d(t.target)})
+d(t.element)!==r&&x(function(){t.element.parentNode.removeChild(t.element),r.appendChild(t.element)}),u(n.offset,e.offset),c=!0}():(l.position="absolute",u({top:!0,left:!0},e.page)),!c)if(this.options.bodyElement)this.element.parentNode!==this.options.bodyElement&&this.options.bodyElement.appendChild(this.element)
+else{for(var h=!0,p=this.element.parentNode;p&&1===p.nodeType&&"BODY"!==p.tagName;){if("static"!==getComputedStyle(p).position){h=!1
+break}p=p.parentNode}h||(this.element.parentNode.removeChild(this.element),this.element.ownerDocument.body.appendChild(this.element))}var f={},g=!1
+for(var i in l){var y=l[i]
+this.element.style[i]!==y&&(g=!0,f[i]=y)}g&&x(function(){m(t.element.style,f),t.trigger("repositioned")})}}}]),i}()
+V.modules=[],n.position=j
+var W=m(V,n),m=(C=function(){return function(e,t){if(Array.isArray(e))return e
 if(Symbol.iterator in Object(e))return function(e,t){var n=[],r=!0,i=!1,o=void 0
 try{for(var s,a=e[Symbol.iterator]();!(r=(s=a.next()).done)&&(n.push(s.value),!t||n.length!==t);r=!0);}catch(e){i=!0,o=e}finally{try{!r&&a.return&&a.return()}finally{if(i)throw o}}return n}(e,t)
-throw new TypeError("Invalid attempt to destructure non-iterable instance")}}(),f=(X=o.Utils).getBounds,X.extend),Y=(k=X.updateClasses,C=X.defer,["left","top","right","bottom"])
-o.modules.push({position:function(e){var t=this,n=e.top,r=e.left,i=e.targetAttachment
+throw new TypeError("Invalid attempt to destructure non-iterable instance")}}(),h=(G=n.Utils).getBounds,G.extend),K=(_=G.updateClasses,x=G.defer,["left","top","right","bottom"])
+n.modules.push({position:function(e){var t=this,n=e.top,r=e.left,i=e.targetAttachment
 if(!this.options.constraints)return!0
-var o=this.cache("element-bounds",function(){return f(t.element)}),s=o.height,a=o.width
+var o=this.cache("element-bounds",function(){return h(t.element)}),s=o.height,a=o.width
 if(0===a&&0===s&&void 0!==this.lastSize){var l=this.lastSize
-a=l.width,s=l.height}var u=this.cache("target-bounds",function(){return t.getTargetBounds()}),c=u.height,h=u.width,d=[this.getClass("pinned"),this.getClass("out-of-bounds")]
+a=l.width,s=l.height}var u=this.cache("target-bounds",function(){return t.getTargetBounds()}),c=u.height,d=u.width,p=[this.getClass("pinned"),this.getClass("out-of-bounds")]
 this.options.constraints.forEach(function(e){var t=e.outOfBoundsClass,n=e.pinnedClass
-t&&d.push(t),n&&d.push(n)}),d.forEach(function(e){["left","top","right","bottom"].forEach(function(t){d.push(e+"-"+t)})})
-var p=[],m=v({},i),g=v({},this.attachment)
+t&&p.push(t),n&&p.push(n)}),p.forEach(function(e){["left","top","right","bottom"].forEach(function(t){p.push(e+"-"+t)})})
+var f=[],g=m({},i),y=m({},this.attachment)
 return this.options.constraints.forEach(function(e){var o=e.to,l=e.attachment,u=e.pin
 void 0===l&&(l="")
-var d=void 0,y=void 0
-if(l.indexOf(" ")>=0){var v=l.split(" "),b=T(v,2)
-y=b[0],d=b[1]}else d=y=l
-var w=function(e,t){return"scrollParent"===t?t=e.scrollParents[0]:"window"===t&&(t=[pageXOffset,pageYOffset,innerWidth+pageXOffset,innerHeight+pageYOffset]),t===document&&(t=t.documentElement),void 0!==t.nodeType&&function(){var e=t,n=f(t),r=n,i=getComputedStyle(t)
+var p=void 0,m=void 0
+if(l.indexOf(" ")>=0){var v=l.split(" "),b=C(v,2)
+m=b[0],p=b[1]}else p=m=l
+var w=function(e,t){return"scrollParent"===t?t=e.scrollParents[0]:"window"===t&&(t=[pageXOffset,pageYOffset,innerWidth+pageXOffset,innerHeight+pageYOffset]),t===document&&(t=t.documentElement),void 0!==t.nodeType&&function(){var e=t,n=h(t),r=n,i=getComputedStyle(t)
 if(t=[r.left,r.top,n.width+r.left,n.height+r.top],e.ownerDocument!==document){var o=e.ownerDocument.defaultView
-t[0]+=o.pageXOffset,t[1]+=o.pageYOffset,t[2]+=o.pageXOffset,t[3]+=o.pageYOffset}Y.forEach(function(e,n){"Top"===(e=e[0].toUpperCase()+e.substr(1))||"Left"===e?t[n]+=parseFloat(i["border"+e+"Width"]):t[n]-=parseFloat(i["border"+e+"Width"])})}(),t}(t,o)
-"target"!==y&&"both"!==y||(n<w[1]&&"top"===m.top&&(n+=c,m.top="bottom"),n+s>w[3]&&"bottom"===m.top&&(n-=c,m.top="top")),"together"===y&&("top"===m.top&&("bottom"===g.top&&n<w[1]?(n+=c,m.top="bottom",n+=s,g.top="top"):"top"===g.top&&n+s>w[3]&&n-(s-c)>=w[1]&&(n-=s-c,m.top="bottom",g.top="bottom")),"bottom"===m.top&&("top"===g.top&&n+s>w[3]?(n-=c,m.top="top",n-=s,g.top="bottom"):"bottom"===g.top&&n<w[1]&&n+(2*s-c)<=w[3]&&(n+=s-c,m.top="top",g.top="top")),"middle"===m.top&&(n+s>w[3]&&"top"===g.top?(n-=s,g.top="bottom"):n<w[1]&&"bottom"===g.top&&(n+=s,g.top="top"))),"target"!==d&&"both"!==d||(r<w[0]&&"left"===m.left&&(r+=h,m.left="right"),r+a>w[2]&&"right"===m.left&&(r-=h,m.left="left")),"together"===d&&(r<w[0]&&"left"===m.left?"right"===g.left?(r+=h,m.left="right",r+=a,g.left="left"):"left"===g.left&&(r+=h,m.left="right",r-=a,g.left="right"):r+a>w[2]&&"right"===m.left?"left"===g.left?(r-=h,m.left="left",r-=a,g.left="right"):"right"===g.left&&(r-=h,m.left="left",r+=a,g.left="left"):"center"===m.left&&(r+a>w[2]&&"left"===g.left?(r-=a,g.left="right"):r<w[0]&&"right"===g.left&&(r+=a,g.left="left"))),"element"!==y&&"both"!==y||(n<w[1]&&"bottom"===g.top&&(n+=s,g.top="top"),n+s>w[3]&&"top"===g.top&&(n-=s,g.top="bottom")),"element"!==d&&"both"!==d||(r<w[0]&&("right"===g.left?(r+=a,g.left="left"):"center"===g.left&&(r+=a/2,g.left="left")),r+a>w[2]&&("left"===g.left?(r-=a,g.left="right"):"center"===g.left&&(r-=a/2,g.left="right"))),"string"==typeof u?u=u.split(",").map(function(e){return e.trim()}):!0===u&&(u=["top","left","right","bottom"]),u=u||[]
+t[0]+=o.pageXOffset,t[1]+=o.pageYOffset,t[2]+=o.pageXOffset,t[3]+=o.pageYOffset}K.forEach(function(e,n){"Top"===(e=e[0].toUpperCase()+e.substr(1))||"Left"===e?t[n]+=parseFloat(i["border"+e+"Width"]):t[n]-=parseFloat(i["border"+e+"Width"])})}(),t}(t,o)
+"target"!==m&&"both"!==m||(n<w[1]&&"top"===g.top&&(n+=c,g.top="bottom"),n+s>w[3]&&"bottom"===g.top&&(n-=c,g.top="top")),"together"===m&&("top"===g.top&&("bottom"===y.top&&n<w[1]?(n+=c,g.top="bottom",n+=s,y.top="top"):"top"===y.top&&n+s>w[3]&&n-(s-c)>=w[1]&&(n-=s-c,g.top="bottom",y.top="bottom")),"bottom"===g.top&&("top"===y.top&&n+s>w[3]?(n-=c,g.top="top",n-=s,y.top="bottom"):"bottom"===y.top&&n<w[1]&&n+(2*s-c)<=w[3]&&(n+=s-c,g.top="top",y.top="top")),"middle"===g.top&&(n+s>w[3]&&"top"===y.top?(n-=s,y.top="bottom"):n<w[1]&&"bottom"===y.top&&(n+=s,y.top="top"))),"target"!==p&&"both"!==p||(r<w[0]&&"left"===g.left&&(r+=d,g.left="right"),r+a>w[2]&&"right"===g.left&&(r-=d,g.left="left")),"together"===p&&(r<w[0]&&"left"===g.left?"right"===y.left?(r+=d,g.left="right",r+=a,y.left="left"):"left"===y.left&&(r+=d,g.left="right",r-=a,y.left="right"):r+a>w[2]&&"right"===g.left?"left"===y.left?(r-=d,g.left="left",r-=a,y.left="right"):"right"===y.left&&(r-=d,g.left="left",r+=a,y.left="left"):"center"===g.left&&(r+a>w[2]&&"left"===y.left?(r-=a,y.left="right"):r<w[0]&&"right"===y.left&&(r+=a,y.left="left"))),"element"!==m&&"both"!==m||(n<w[1]&&"bottom"===y.top&&(n+=s,y.top="top"),n+s>w[3]&&"top"===y.top&&(n-=s,y.top="bottom")),"element"!==p&&"both"!==p||(r<w[0]&&("right"===y.left?(r+=a,y.left="left"):"center"===y.left&&(r+=a/2,y.left="left")),r+a>w[2]&&("left"===y.left?(r-=a,y.left="right"):"center"===y.left&&(r-=a/2,y.left="right"))),"string"==typeof u?u=u.split(",").map(function(e){return e.trim()}):!0===u&&(u=["top","left","right","bottom"]),u=u||[]
 var _,E,x=[],k=[]
-n<w[1]&&(u.indexOf("top")>=0?(n=w[1],x.push("top")):k.push("top")),n+s>w[3]&&(u.indexOf("bottom")>=0?(n=w[3]-s,x.push("bottom")):k.push("bottom")),r<w[0]&&(u.indexOf("left")>=0?(r=w[0],x.push("left")):k.push("left")),r+a>w[2]&&(u.indexOf("right")>=0?(r=w[2]-a,x.push("right")):k.push("right")),x.length&&(_=void 0,_=void 0!==t.options.pinnedClass?t.options.pinnedClass:t.getClass("pinned"),p.push(_),x.forEach(function(e){p.push(_+"-"+e)})),k.length&&(E=void 0,E=void 0!==t.options.outOfBoundsClass?t.options.outOfBoundsClass:t.getClass("out-of-bounds"),p.push(E),k.forEach(function(e){p.push(E+"-"+e)})),(x.indexOf("left")>=0||x.indexOf("right")>=0)&&(g.left=m.left=!1),(x.indexOf("top")>=0||x.indexOf("bottom")>=0)&&(g.top=m.top=!1),m.top===i.top&&m.left===i.left&&g.top===t.attachment.top&&g.left===t.attachment.left||(t.updateAttachClasses(g,m),t.trigger("update",{attachment:g,targetAttachment:m}))}),C(function(){!1!==t.options.addTargetClasses&&k(t.target,p,d),k(t.element,p,d)}),{top:n,left:r}}})
-var X,f=(X=o.Utils).getBounds,k=X.updateClasses
-C=X.defer
-o.modules.push({position:function(e){var t=this,n=e.top,r=e.left,i=this.cache("element-bounds",function(){return f(t.element)}),o=i.height,s=i.width,a=this.getTargetBounds(),l=n+o,u=r+s,c=[]
+n<w[1]&&(u.indexOf("top")>=0?(n=w[1],x.push("top")):k.push("top")),n+s>w[3]&&(u.indexOf("bottom")>=0?(n=w[3]-s,x.push("bottom")):k.push("bottom")),r<w[0]&&(u.indexOf("left")>=0?(r=w[0],x.push("left")):k.push("left")),r+a>w[2]&&(u.indexOf("right")>=0?(r=w[2]-a,x.push("right")):k.push("right")),x.length&&(_=void 0,_=void 0!==t.options.pinnedClass?t.options.pinnedClass:t.getClass("pinned"),f.push(_),x.forEach(function(e){f.push(_+"-"+e)})),k.length&&(E=void 0,E=void 0!==t.options.outOfBoundsClass?t.options.outOfBoundsClass:t.getClass("out-of-bounds"),f.push(E),k.forEach(function(e){f.push(E+"-"+e)})),(x.indexOf("left")>=0||x.indexOf("right")>=0)&&(y.left=g.left=!1),(x.indexOf("top")>=0||x.indexOf("bottom")>=0)&&(y.top=g.top=!1),g.top===i.top&&g.left===i.left&&y.top===t.attachment.top&&y.left===t.attachment.left||(t.updateAttachClasses(y,g),t.trigger("update",{attachment:y,targetAttachment:g}))}),x(function(){!1!==t.options.addTargetClasses&&_(t.target,f,p),_(t.element,f,p)}),{top:n,left:r}}})
+var G,h=(G=n.Utils).getBounds,_=G.updateClasses
+x=G.defer
+n.modules.push({position:function(e){var t=this,n=e.top,r=e.left,i=this.cache("element-bounds",function(){return h(t.element)}),o=i.height,s=i.width,a=this.getTargetBounds(),l=n+o,u=r+s,c=[]
 n<=a.bottom&&l>=a.top&&["left","right"].forEach(function(e){var t=a[e]
 t!==r&&t!==u||c.push(e)}),r<=a.right&&u>=a.left&&["top","bottom"].forEach(function(e){var t=a[e]
 t!==n&&t!==l||c.push(e)})
-var h=[],d=[]
-return h.push(this.getClass("abutted")),["left","top","right","bottom"].forEach(function(e){h.push(t.getClass("abutted")+"-"+e)}),c.length&&d.push(this.getClass("abutted")),c.forEach(function(e){d.push(t.getClass("abutted")+"-"+e)}),C(function(){!1!==t.options.addTargetClasses&&k(t.target,d,h),k(t.element,d,h)}),!0}})
-T=function(){return function(e,t){if(Array.isArray(e))return e
+var d=[],p=[]
+return d.push(this.getClass("abutted")),["left","top","right","bottom"].forEach(function(e){d.push(t.getClass("abutted")+"-"+e)}),c.length&&p.push(this.getClass("abutted")),c.forEach(function(e){p.push(t.getClass("abutted")+"-"+e)}),x(function(){!1!==t.options.addTargetClasses&&_(t.target,p,d),_(t.element,p,d)}),!0}})
+C=function(){return function(e,t){if(Array.isArray(e))return e
 if(Symbol.iterator in Object(e))return function(e,t){var n=[],r=!0,i=!1,o=void 0
 try{for(var s,a=e[Symbol.iterator]();!(r=(s=a.next()).done)&&(n.push(s.value),!t||n.length!==t);r=!0);}catch(e){i=!0,o=e}finally{try{!r&&a.return&&a.return()}finally{if(i)throw o}}return n}(e,t)
 throw new TypeError("Invalid attempt to destructure non-iterable instance")}}()
-return o.modules.push({position:function(e){var t=e.top,n=e.left
+return n.modules.push({position:function(e){var t=e.top,n=e.left
 if(this.options.shift){var r=this.options.shift
 "function"==typeof this.options.shift&&(r=this.options.shift.call(this,{top:t,left:n}))
 var i=void 0,o=void 0
 if("string"==typeof r){(r=r.split(" "))[1]=r[1]||r[0]
-var s=T(r,2)
+var s=C(r,2)
 i=s[0],o=s[1],i=parseFloat(i,10),o=parseFloat(o,10)}else i=r.top,o=r.left
-return{top:t+=i,left:n+=o}}}}),Q}),"undefined"==typeof FastBoot&&(function(e){"use strict"
+return{top:t+=i,left:n+=o}}}}),W}),"undefined"==typeof FastBoot&&(function(e){"use strict"
 if(!e.jQuery){var t=function(e,n){return new t.fn.init(e,n)}
 t.isWindow=function(e){return e&&e===e.window},t.type=function(e){return e?"object"==typeof e||"function"==typeof e?r[o.call(e)]||"object":typeof e:e+""},t.isArray=Array.isArray||function(e){return"array"===t.type(e)},t.isPlainObject=function(e){var n
 if(!e||"object"!==t.type(e)||e.nodeType||t.isWindow(e))return!1
@@ -8010,7 +8010,7 @@ Object.defineProperty(e,"__esModule",{value:!0}),e.default=t.default.extend()}),
 Object.defineProperty(e,"__esModule",{value:!0}),e.default=t.default.extend()}),define("ember-cli-addon-docs/adapters/project",["exports","ember-cli-addon-docs/adapters/-addon-docs"],function(e,t){"use strict"
 Object.defineProperty(e,"__esModule",{value:!0}),e.default=t.default.extend()})
 define("ember-cli-addon-docs/app-files",["exports"],function(e){"use strict"
-Object.defineProperty(e,"__esModule",{value:!0}),e.default=["app.js","application/route.js","application/template.hbs","components/control-group/component.js","components/control-group/styles.css","components/control-group/template.hbs","components/tab-group/component.js","components/tab-group/styles.css","components/tab-group/template.hbs","config/environment.d.ts","docs/cookbook/dynamic-definition/basic-demo/component.js","docs/cookbook/dynamic-definition/basic-demo/template.hbs","docs/cookbook/dynamic-definition/template.md","docs/cookbook/index/template.md","docs/cookbook/tabs/demo-basic-tabs/template.hbs","docs/cookbook/tabs/demo-with-query-param/component.js","docs/cookbook/tabs/demo-with-query-param/template.hbs","docs/cookbook/tabs/index/template.md","docs/cookbook/tabs/query-param/controller.js","docs/cookbook/tabs/query-param/template.md","docs/cookbook/wizard/demo-basic-wizard/styles.css","docs/cookbook/wizard/demo-basic-wizard/template.hbs","docs/cookbook/wizard/demo-wizard-with-progress-indicator/styles.css","docs/cookbook/wizard/demo-wizard-with-progress-indicator/template.hbs","docs/cookbook/wizard/index/template.md","docs/cookbook/wizard/progress-indicator/template.md","docs/features/index/template.md","docs/features/state-manager/cyclical/template.hbs","docs/features/state-manager/linear/template.hbs","docs/features/state-manager/step-yielded/template.hbs","docs/features/state-manager/template.md","docs/features/validating-steps/basic-usage/component.js","docs/features/validating-steps/basic-usage/template.hbs","docs/features/validating-steps/template.md","docs/features/validating-steps/with-did-transition/component.js","docs/features/validating-steps/with-did-transition/template.hbs","docs/features/validating-steps/with-ember-concurrency/async-password-check.js","docs/features/validating-steps/with-ember-concurrency/component.js","docs/features/validating-steps/with-ember-concurrency/template.hbs","docs/index/template.md","docs/styles.css","docs/template.hbs","index.html","index/route.js","instance-initializers/setup-metrics-context.js","not-found/template.hbs","resolver.js","router.js","styles/app.css","templates/.gitkeep"]}),define("ember-cli-addon-docs/breakpoints",["exports"],function(e){"use strict"
+Object.defineProperty(e,"__esModule",{value:!0}),e.default=["app.js","application/route.js","application/template.hbs","components/control-group/component.js","components/control-group/styles.css","components/control-group/template.hbs","components/tab-group/component.js","components/tab-group/styles.css","components/tab-group/template.hbs","config/environment.d.ts","docs/cookbook/dynamic-definition/basic-demo/component.js","docs/cookbook/dynamic-definition/basic-demo/template.hbs","docs/cookbook/dynamic-definition/template.md","docs/cookbook/index/template.md","docs/cookbook/tabs/demo-basic-tabs/template.hbs","docs/cookbook/tabs/demo-with-query-param/component.js","docs/cookbook/tabs/demo-with-query-param/template.hbs","docs/cookbook/tabs/index/template.md","docs/cookbook/tabs/query-param/controller.js","docs/cookbook/tabs/query-param/template.md","docs/cookbook/wizard/demo-basic-wizard/styles.css","docs/cookbook/wizard/demo-basic-wizard/template.hbs","docs/cookbook/wizard/demo-wizard-with-progress-indicator/styles.css","docs/cookbook/wizard/demo-wizard-with-progress-indicator/template.hbs","docs/cookbook/wizard/index/template.md","docs/cookbook/wizard/progress-indicator/template.md","docs/features/inactive/example-1/template.hbs","docs/features/inactive/template.md","docs/features/index/template.md","docs/features/state-manager/cyclical/template.hbs","docs/features/state-manager/linear/template.hbs","docs/features/state-manager/step-yielded/template.hbs","docs/features/state-manager/template.md","docs/features/validating-steps/basic-usage/component.js","docs/features/validating-steps/basic-usage/template.hbs","docs/features/validating-steps/template.md","docs/features/validating-steps/with-did-transition/component.js","docs/features/validating-steps/with-did-transition/template.hbs","docs/features/validating-steps/with-ember-concurrency/async-password-check.js","docs/features/validating-steps/with-ember-concurrency/component.js","docs/features/validating-steps/with-ember-concurrency/template.hbs","docs/index/template.md","docs/styles.css","docs/template.hbs","index.html","index/route.js","instance-initializers/setup-metrics-context.js","metrics-adapters/google-analytics.js","not-found/template.hbs","resolver.js","router.js","styles/app.css","templates/.gitkeep"]}),define("ember-cli-addon-docs/breakpoints",["exports"],function(e){"use strict"
 Object.defineProperty(e,"__esModule",{value:!0}),e.default={mobile:"(max-width: 767px)",tablet:"(min-width: 768px) and (max-width: 991px)",desktop:"(min-width: 992px) and (max-width: 1200px)"}}),define("ember-cli-addon-docs/components/api/x-class/component",["exports","ember-cli-addon-docs/utils/computed","ember-cli-addon-docs/components/api/x-class/template"],function(e,t,n){"use strict"
 Object.defineProperty(e,"__esModule",{value:!0}),e.default=Ember.Component.extend({layout:n.default,showInherited:!1,showProtected:!1,showPrivate:!1,showDeprecated:!1,accessors:(0,t.memberFilter)("class","accessors"),methods:(0,t.memberFilter)("class","methods"),fields:(0,t.memberFilter)("class","fields"),hasContents:Ember.computed("class",{get:function(){var e=this.get("class")
 return e.get("allFields.length")>0||e.get("allAccessors.length")>0||e.get("allMethods.length")>0}}),actions:{updateFilter:function(e,t){var n=t.target.checked
@@ -9024,8 +9024,8 @@ e.triggerKeyDown=function(e,t){o("keydown",e,t)},e.triggerKeyPress=function(e,t)
 function t(e){var t=require(e,null,null,!0)
 if(!t)throw new Error(e+" must export an initializer.")
 var n=t.default
-return n.name||(n.name=e.slice(e.lastIndexOf("/")+1)),n}Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(e,n){for(var r=n+"/initializers/",i=n+"/instance-initializers/",o=[],s=[],a=Object.keys(requirejs._eak_seen),l=0;l<a.length;l++){var u=a[l]
-0===u.lastIndexOf(r,0)?o.push(u):0===u.lastIndexOf(i,0)&&s.push(u)}(function(e,n){for(var r=0;r<n.length;r++)e.initializer(t(n[r]))})(e,o),function(e,n){for(var r=0;r<n.length;r++)e.instanceInitializer(t(n[r]))}(e,s)}}),define("ember-metrics/metrics-adapters/base",["exports"],function(e){"use strict"
+return n.name||(n.name=e.slice(e.lastIndexOf("/")+1)),n}function n(e,t){return-1!==e.indexOf(t,e.length-t.length)}Object.defineProperty(e,"__esModule",{value:!0}),e.default=function(e,r){for(var i=r+"/initializers/",o=r+"/instance-initializers/",s=[],a=[],l=Object.keys(requirejs._eak_seen),u=0;u<l.length;u++){var c=l[u]
+0===c.lastIndexOf(i,0)?n(c,"-test")||s.push(c):0===c.lastIndexOf(o,0)&&(n(c,"-test")||a.push(c))}(function(e,n){for(var r=0;r<n.length;r++)e.initializer(t(n[r]))})(e,s),function(e,n){for(var r=0;r<n.length;r++)e.instanceInitializer(t(n[r]))}(e,a)}}),define("ember-metrics/metrics-adapters/base",["exports"],function(e){"use strict"
 Object.defineProperty(e,"__esModule",{value:!0})
 var t=Ember.Object,n=Ember.assert,r=Ember.guidFor,i=Ember.typeOf
 e.default=t.extend({init:function(){n("[ember-metrics] "+this.toString()+" must implement the init hook!")},willDestroy:function(){n("[ember-metrics] "+this.toString()+" must implement the willDestroy hook!")},toString:function(){var e="ember-metrics@metrics-adapter:"+("function"===i(this.toStringExtension)?":"+this.toStringExtension():"")+":"+r(this)
@@ -9296,8 +9296,9 @@ return s>3&&a&&Object.defineProperty(t,n,a),a},o=function(e){function t(e){(func
 var n=function(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
 return!t||"object"!=typeof t&&"function"!=typeof t?e:t}(this,(t.__proto__||Object.getPrototypeOf(t)).call(this))
 return n.stepTransitions=Ember.A(),e&&Ember.set(n,"currentStep",e),n}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t)
-e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}(t,Ember.Object),n(t,[{key:"addStep",value:function(e){this.stepTransitions.includes(e)||(Ember.get(this,"firstStep")||Ember.set(this,"firstStep",e),this.stepTransitions.pushObject(e),Ember.get(this,"currentStep")||Ember.set(this,"currentStep",e),Ember.set(this,"lastStep",e))}},{key:"activate",value:function(e){Ember.set(this,"currentStep",e)}}]),t}()
-e.default=o,i([(0,t.readOnly)("stepTransitions.length")],o.prototype,"length",void 0)})
+e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}(t,Ember.Object),n(t,[{key:"addStep",value:function(e){this.stepTransitions.pushObject(e),this.currentStep||Ember.set(this,"currentStep",e)}},{key:"removeStep",value:function(e){var t=this.stepTransitions.indexOf(e)
+this.stepTransitions.removeAt(t)}},{key:"activate",value:function(e){Ember.set(this,"currentStep",e)}}]),t}()
+e.default=o,i([(0,t.readOnly)("stepTransitions.length")],o.prototype,"length",void 0),i([(0,t.readOnly)("stepTransitions.firstObject")],o.prototype,"firstStep",void 0)})
 define("ember-steps/-private/state-machine/circular",["exports","ember-steps/-private/state-machine/-base"],function(e,t){"use strict"
 Object.defineProperty(e,"__esModule",{value:!0})
 var n=function(){function e(e,t){for(var n=0;n<t.length;n++){var r=t[n]
@@ -9307,8 +9308,8 @@ return!t||"object"!=typeof t&&"function"!=typeof t?e:t}(this,(r.__proto__||Objec
 e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}(r,t.default),n(r,[{key:"pickNext",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:this.currentStep,t=this.stepTransitions.indexOf(e),n=this.stepTransitions.objectAt(t+1)
 return n||this.stepTransitions.objectAt(0)}},{key:"pickPrevious",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:this.currentStep,t=this.stepTransitions.indexOf(e),n=this.stepTransitions.objectAt(t-1)
 if(n)return n
-var r=Ember.get(Ember.get(this,"stepTransitions"),"length")
-return this.stepTransitions.objectAt(r-1)}}]),r}()
+var r=Ember.get(this,"length")-1
+return this.stepTransitions.objectAt(r)}}]),r}()
 e.default=r}),define("ember-steps/-private/state-machine/linear",["exports","ember-steps/-private/state-machine/-base"],function(e,t){"use strict"
 Object.defineProperty(e,"__esModule",{value:!0})
 var n=function(){function e(e,t){for(var n=0;n<t.length;n++){var r=t[n]
@@ -9334,7 +9335,8 @@ return o>3&&s&&Object.defineProperty(t,n,s),s},u=function(e){function r(){(funct
 var e=function(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
 return!t||"object"!=typeof t&&"function"!=typeof t?e:t}(this,(r.__proto__||Object.getPrototypeOf(r)).apply(this,arguments))
 e.layout=n.default,e.actions={registerStepComponent:function(e){var t=Ember.get(e,"name"),n=this.transitions
-e.transitions=n,Ember.run.schedule("actions",function(){n.addStep(t)})},"transition-to":function(e){this.doTransition(e)},"transition-to-next":function(){var e=this.transitions.pickNext()
+e.transitions=n,Ember.run.schedule("actions",function(){n.addStep(t)})},removeStepComponent:function(e){var t=this,n=Ember.get(e,"name")
+Ember.run.schedule("actions",function(){t.transitions.removeStep(n)})},"transition-to":function(e){this.doTransition(e)},"transition-to-next":function(){var e=this.transitions.pickNext()
 this.doTransition(e)},"transition-to-previous":function(){var e=this.transitions.pickPrevious()
 this.doTransition(e)}}
 var t=Ember.get(e,"initialStep")||Ember.get(e,"currentStep")
@@ -9343,7 +9345,7 @@ var s=e.linear?o.default:i.default
 return Ember.set(e,"transitions",new s(t)),e}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t)
 e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}(r,t.default),s(r,[{key:"doTransition",value:function(e){Ember.isEmpty(this.currentStep)||Ember.set(this,"currentStep",e),this.transitions.activate(e)}},{key:"didUpdateAttrs",value:function(){this._super.apply(this,arguments)
 var e=this.currentStep
-if(void 0===e){var t=this.transitions.firstStep
+if(void 0===e){var t=Ember.get(this.transitions,"firstStep")
 this.transitions.activate(t)}else this.transitions.activate(e)}},{key:"hasNextStep",get:function(){return Ember.isPresent(this.transitions.pickNext())}},{key:"hasPreviousStep",get:function(){return Ember.isPresent(this.transitions.pickPrevious())}}]),r}()
 e.default=u,l([(0,r.computed)("transitions.{currentStep,length}")],u.prototype,"hasNextStep",null),l([(0,r.computed)("transitions.{currentStep,length}")],u.prototype,"hasPreviousStep",null)}),define("ember-steps/components/step-manager/step",["exports","ember-steps/components/-tagless","ember-steps/templates/components/step-manager/step","@ember-decorators/object","ember-steps/-private/generate-random-name"],function(e,t,n,r,i){"use strict"
 Object.defineProperty(e,"__esModule",{value:!0})
@@ -9359,7 +9361,7 @@ return!t||"object"!=typeof t&&"function"!=typeof t?e:t}(this,(r.__proto__||Objec
 e.layout=n.default
 var t=Ember.get(e,"name"),o=Ember.isEmpty(t)?(0,i.default)():t
 return o!==t&&Ember.set(e,"name",o),e.addObserver("name",e,l),e["register-step"](e),e}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t)
-e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}(r,t.default),o(r,[{key:"isActive",get:function(){return this.currentStep===this.name}},{key:"hasNext",get:function(){var e=this.name
+e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}(r,t.default),o(r,[{key:"willDestroyElement",value:function(){this.removeObserver("name",this,l),this["remove-step"](this)}},{key:"isActive",get:function(){return this.currentStep===this.name}},{key:"hasNext",get:function(){var e=this.name
 return Ember.isPresent(this.transitions.pickNext(e))}},{key:"hasPrevious",get:function(){var e=this.name
 return Ember.isPresent(this.transitions.pickPrevious(e))}}]),r}()
 e.default=u,a([(0,r.computed)("currentStep","name")],u.prototype,"isActive",null),a([(0,r.computed)("transitions.length")],u.prototype,"hasNext",null),a([(0,r.computed)("transitions.length")],u.prototype,"hasPrevious",null)}),define("ember-steps/helpers/validate-transition",["exports"],function(e){"use strict"
@@ -9370,7 +9372,7 @@ try{for(var s,a=e[Symbol.iterator]();!(r=(s=a.next()).done)&&(n.push(s.value),!t
 throw new TypeError("Invalid attempt to destructure non-iterable instance")}}()
 function n(e,n){var r=t(e,1)[0],i=n.with
 return function(){return new Ember.RSVP.Promise(function(e){i(e)}).then(function(){r()})}}e.default=Ember.Helper.helper(n)}),define("ember-steps/templates/components/step-manager",["exports"],function(e){"use strict"
-e.__esModule=!0,e.default=Ember.HTMLBars.template({id:"+Kx9KLqh",block:'{"symbols":["&default"],"statements":[[11,1,[[25,"hash",null,[["step","hasNextStep","hasPreviousStep","currentStep","steps","transition-to","transition-to-next","transition-to-previous"],[[25,"component",["step-manager/step"],[["register-step","currentStep","transitions"],[[25,"action",[[19,0,[]],"registerStepComponent"],null],[20,["transitions","currentStep"]],[20,["transitions"]]]]],[20,["hasNextStep"]],[20,["hasPreviousStep"]],[20,["transitions","currentStep"]],[20,["transitions","stepTransitions"]],[25,"action",[[19,0,[]],"transition-to"],null],[25,"action",[[19,0,[]],"transition-to-next"],null],[25,"action",[[19,0,[]],"transition-to-previous"],null]]]]]],[0,"\\n"]],"hasEval":false}',meta:{moduleName:"ember-steps/templates/components/step-manager.hbs"}})}),define("ember-steps/templates/components/step-manager/step",["exports"],function(e){"use strict"
+e.__esModule=!0,e.default=Ember.HTMLBars.template({id:"bxh/21yb",block:'{"symbols":["&default"],"statements":[[11,1,[[25,"hash",null,[["step","hasNextStep","hasPreviousStep","currentStep","steps","transition-to","transition-to-next","transition-to-previous"],[[25,"component",["step-manager/step"],[["register-step","remove-step","currentStep","transitions"],[[25,"action",[[19,0,[]],"registerStepComponent"],null],[25,"action",[[19,0,[]],"removeStepComponent"],null],[20,["transitions","currentStep"]],[20,["transitions"]]]]],[20,["hasNextStep"]],[20,["hasPreviousStep"]],[20,["transitions","currentStep"]],[20,["transitions","stepTransitions"]],[25,"action",[[19,0,[]],"transition-to"],null],[25,"action",[[19,0,[]],"transition-to-next"],null],[25,"action",[[19,0,[]],"transition-to-previous"],null]]]]]],[0,"\\n"]],"hasEval":false}',meta:{moduleName:"ember-steps/templates/components/step-manager.hbs"}})}),define("ember-steps/templates/components/step-manager/step",["exports"],function(e){"use strict"
 e.__esModule=!0,e.default=Ember.HTMLBars.template({id:"hCpzGl7Y",block:'{"symbols":["&inverse","&default"],"statements":[[4,"if",[[20,["isActive"]]],null,{"statements":[[0,"  "],[11,2,[[25,"hash",null,[["hasNext","hasPrevious"],[[20,["hasNext"]],[20,["hasPrevious"]]]]]]],[0,"\\n"]],"parameters":[]},{"statements":[[4,"if",[[22,1]],null,{"statements":[[0,"  "],[11,1],[0,"\\n"]],"parameters":[]},null]],"parameters":[]}]],"hasEval":false}',meta:{moduleName:"ember-steps/templates/components/step-manager/step.hbs"}})}),define("ember-string-helpers/helpers/format-date",["exports","ember","moment"],function(e,t,n){function r(e,t){var r=e[0],i=t.inputFormat,o="now"===r?(0,n.default)():(0,n.default)(r,i),s=t.format||"dddd, MMMM Do YYYY, h:mm a"
 return void 0===n.default?(console.log("%c{{format-date}} moment is undefined. Formatting disabled.","color: red"),r):o.isValid()?o.format(s):(console.log("%c{{format-date}} invalid date.","color: red"),r)}e.formatDate=r,e.default=t.default.Helper.helper(r)}),define("ember-string-helpers/helpers/format-phone",["exports","ember"],function(e,t){function n(e){var t=e[0]
 return t?String(t).replace(/(\d{3})(\d{3})(\d{4})/,"($1) $2-$3"):(console.warn("%c{{format-phone}} Invalid phone number passed: %s","color: orange;",t),t)}e.formatPhone=n,e.default=t.default.Helper.helper(n)}),define("ember-string-helpers/helpers/lower-case",["exports","ember"],function(e,t){function n(e){return e[0].toLowerCase()}e.lowerCase=n,e.default=t.default.Helper.helper(n)}),define("ember-string-helpers/helpers/number-format",["exports","ember","ember-string-helpers/utils/functions"],function(e,t,n){function r(e,t){var r=String(e[0])||"0",i=void 0!==t.decimals?parseInt(t.decimals):2,o=void 0!==t.decimalPoint?t.decimalPoint:".",s=void 0!==t.thousandsSeparator?t.thousandsSeparator:",",a=!0===t.trimZeros
