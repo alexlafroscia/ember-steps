@@ -13,29 +13,25 @@ function failOnNameChange() {
   assert('The `name` property should never change');
 }
 
+export type StepName = string | number | Symbol;
+
 export default class StepComponent extends TaglessComponent {
   layout = layout;
 
-  /**
-   * Name used to transition to this step
-   *
-   * @property {string} name the name for this step
-   * @public
-   */
-  name: string;
+  name: StepName;
 
-  currentStep: string;
+  currentStep: StepName;
 
   transitions: StateMachine;
 
   constructor() {
-    // @ts-ignore: Ember type definition is incorrect
     super(...arguments);
 
     const nameAttribute = get(this, 'name');
     const name = isEmpty(nameAttribute) ? generateRandomName() : nameAttribute;
 
-    assert('Step name must be a `string`', typeof name === 'string');
+    assert('Step name cannot be a boolean', typeof name !== 'boolean');
+    assert('Step name cannot be an object', typeof name !== 'object');
 
     if (name !== nameAttribute) {
       set(this, 'name', name);

@@ -5,6 +5,8 @@ import { A } from '@ember/array';
 import { readOnly } from '@ember-decorators/object/computed';
 import { assert } from '@ember/debug';
 
+import { StepName } from 'ember-steps/components/step-manager/step';
+
 /**
  * Keeps track of the order of the steps in the step manager, as well as
  * the current step.
@@ -14,15 +16,15 @@ import { assert } from '@ember/debug';
  * @hide
  */
 export default abstract class StateMachine extends EmberObject {
-  protected stepTransitions: MutableArray<string> = A();
+  protected stepTransitions: MutableArray<StepName> = A();
 
-  currentStep: string;
+  currentStep: StepName;
 
   @readOnly('stepTransitions.length') length: number;
 
-  @readOnly('stepTransitions.firstObject') firstStep: string;
+  @readOnly('stepTransitions.firstObject') firstStep: StepName;
 
-  constructor(initialStep: string) {
+  constructor(initialStep: StepName) {
     super();
 
     if (initialStep) {
@@ -30,7 +32,7 @@ export default abstract class StateMachine extends EmberObject {
     }
   }
 
-  addStep(this: StateMachine, name: string) {
+  addStep(this: StateMachine, name: StepName) {
     this.stepTransitions.pushObject(name);
 
     if (!this.currentStep) {
@@ -38,16 +40,16 @@ export default abstract class StateMachine extends EmberObject {
     }
   }
 
-  removeStep(this: StateMachine, name: string) {
+  removeStep(this: StateMachine, name: StepName) {
     const index = this.stepTransitions.indexOf(name);
     this.stepTransitions.removeAt(index);
   }
 
-  abstract pickNext(currentStep?: string): string;
+  abstract pickNext(currentStep?: StepName): StepName;
 
-  abstract pickPrevious(currentStep?: string): string;
+  abstract pickPrevious(currentStep?: StepName): StepName;
 
-  activate(name: string) {
+  activate(name: StepName) {
     assert('No step name was provided', isPresent(name));
     assert(
       `"${name}" does not match an existing step`,

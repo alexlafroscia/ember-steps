@@ -40,6 +40,20 @@ module('step-manger/step', function(hooks) {
         this.set('name', 'bar');
       }, 'The `name` property should never change');
     });
+
+    module('valid types', function() {
+      ['foo', 1, Symbol()].forEach(name => {
+        test(`${typeof name} is supported`, async function(assert) {
+          assert.expect(0);
+
+          this.set('name', name);
+
+          await render(hbs`
+            {{step-manager/step name=name register-step=(action register) remove-step=(action remove)}}
+          `);
+        });
+      });
+    });
   });
 
   module('rendering', function() {
