@@ -2,17 +2,17 @@
 # yarn lockfile v1
 
 
-"@ember-decorators/object@^2.0.0-beta.2":
-  version "2.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@ember-decorators/object/-/object-2.0.0-beta.2.tgz#e1f44c1d554a770fd7da5960794c2cd4da1eb359"
+"@ember-decorators/object@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@ember-decorators/object/-/object-2.0.0.tgz#e24cfe469f509d37eefef2c55e3e539039c34117"
   dependencies:
-    "@ember-decorators/utils" "^2.0.0-beta.4"
+    "@ember-decorators/utils" "^2.0.0"
     ember-cli-babel "^6.6.0"
     ember-compatibility-helpers "^0.1.3"
 
-"@ember-decorators/utils@^2.0.0-beta.4":
-  version "2.0.0-beta.4"
-  resolved "https://registry.yarnpkg.com/@ember-decorators/utils/-/utils-2.0.0-beta.4.tgz#5e3cf9ecf9dd8c1aacf3bfaea11efdda2833bfbd"
+"@ember-decorators/utils@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@ember-decorators/utils/-/utils-2.0.0.tgz#14f1fbd6de4f1d722b15c155287aafc6453943f2"
   dependencies:
     ember-cli-babel "^6.6.0"
     ember-compatibility-helpers "1.0.0-beta.1"
@@ -93,9 +93,9 @@
     "@types/jquery" "*"
     "@types/rsvp" "*"
 
-"@types/ember@*", "@types/ember@^2.8.21":
-  version "2.8.21"
-  resolved "https://registry.yarnpkg.com/@types/ember/-/ember-2.8.21.tgz#4bd9d82875ba7141d3624a849a01fc0c0a92808f"
+"@types/ember@*", "@types/ember@^2.8.22":
+  version "2.8.22"
+  resolved "https://registry.yarnpkg.com/@types/ember/-/ember-2.8.22.tgz#544751b5cf5e87b16ab1565823f3a8c9f00210cc"
   dependencies:
     "@types/handlebars" "*"
     "@types/jquery" "*"
@@ -2167,7 +2167,7 @@ chokidar@1.7.0:
   optionalDependencies:
     fsevents "^1.0.0"
 
-chokidar@^2.0.2, chokidar@^2.0.3:
+chokidar@^2.0.2:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-2.0.3.tgz#dcbd4f6cbb2a55b4799ba8a840ac527e5f4b1176"
   dependencies:
@@ -3591,9 +3591,9 @@ ember-cli-testdouble@^0.1.2:
     ember-cli-babel "^6.6.0"
     testdouble "^3.5.2"
 
-ember-cli-typescript@^1.3.0-beta.1:
-  version "1.3.0-beta.1"
-  resolved "https://registry.yarnpkg.com/ember-cli-typescript/-/ember-cli-typescript-1.3.0-beta.1.tgz#c511ad5ebf2c5eccddbd06d4c60cb98d1f5e1fbb"
+ember-cli-typescript@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/ember-cli-typescript/-/ember-cli-typescript-1.2.1.tgz#92d889e6c9c9fbd7061c3eeec9faa071e8feea54"
   dependencies:
     broccoli-debug "^0.6.4"
     broccoli-funnel "^2.0.1"
@@ -3601,7 +3601,6 @@ ember-cli-typescript@^1.3.0-beta.1:
     broccoli-plugin "^1.2.1"
     broccoli-stew "^1.4.0"
     chalk "^2.3.0"
-    chokidar "^2.0.3"
     debug "^3.1.0"
     ember-cli "~2.18.2"
     ember-cli-get-component-path-option "^1.0.0"
@@ -10312,16 +10311,16 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript-eslint-parser@^14.0.0:
-  version "14.0.0"
-  resolved "https://registry.yarnpkg.com/typescript-eslint-parser/-/typescript-eslint-parser-14.0.0.tgz#c90a8f541c1d96e5c55e2807c61d154e788520f9"
+typescript-eslint-parser@^15.0.0:
+  version "15.0.0"
+  resolved "https://registry.yarnpkg.com/typescript-eslint-parser/-/typescript-eslint-parser-15.0.0.tgz#882fd3d7aabffbab0a7f98d2a59fb9a989c2b37f"
   dependencies:
     lodash.unescape "4.0.1"
     semver "5.5.0"
 
-typescript@^2.8.1:
-  version "2.8.1"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.8.1.tgz#6160e4f8f195d5ba81d4876f9c0cc1fbc0820624"
+typescript@^2.8.3:
+  version "2.8.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.8.3.tgz#5d817f9b6f31bb871835f4edf0089f21abe6c170"
 
 uc.micro@^1.0.0, uc.micro@^1.0.1, uc.micro@^1.0.5:
   version "1.0.5"
