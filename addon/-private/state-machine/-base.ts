@@ -5,7 +5,7 @@ import { A } from '@ember/array';
 import { readOnly } from '@ember-decorators/object/computed';
 import { assert } from '@ember/debug';
 
-import { StepName } from 'ember-steps/components/step-manager/step';
+import { StepName } from '../types';
 
 /**
  * Keeps track of the order of the steps in the step manager, as well as

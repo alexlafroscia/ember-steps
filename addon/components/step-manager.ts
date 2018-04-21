@@ -7,11 +7,12 @@ import { schedule } from '@ember/runloop';
 import { assert } from '@ember/debug';
 import { computed } from '@ember-decorators/object';
 
-import CircularStateMachine from 'ember-steps/-private/state-machine/circular';
-import LinearStateMachine from 'ember-steps/-private/state-machine/linear';
+import StateMachine from '../-private/state-machine/-base';
+import CircularStateMachine from '../-private/state-machine/circular';
+import LinearStateMachine from '../-private/state-machine/linear';
 
-import StateMachine from 'ember-steps/-private/state-machine/-base';
-import StepComponent, { StepName } from './step-manager/step';
+import { StepName } from '../-private/types';
+import StepComponent from './step-manager/step';
 
 /**
  * A component for creating a set of "steps", where only one is visible at a time

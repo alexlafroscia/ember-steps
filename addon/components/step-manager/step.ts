@@ -8,12 +8,11 @@ import { computed } from '@ember-decorators/object';
 import generateRandomName from '../../-private/generate-random-name';
 
 import StateMachine from '../../-private/state-machine/-base';
+import { StepName } from '../../-private/types';
 
 function failOnNameChange() {
   assert('The `name` property should never change');
 }
-
-export type StepName = string | number | Symbol;
 
 export default class StepComponent extends TaglessComponent {
   layout = layout;
