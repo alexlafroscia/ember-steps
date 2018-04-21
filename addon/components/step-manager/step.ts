@@ -5,7 +5,6 @@ import { get, observer, set } from '@ember/object';
 import { isEmpty, isPresent } from '@ember/utils';
 import { assert } from '@ember/debug';
 import { computed } from '@ember-decorators/object';
-import generateRandomName from '../../-private/generate-random-name';
 
 import StateMachine from '../../-private/state-machine/-base';
 import { StepName } from '../../-private/types';
@@ -27,7 +26,9 @@ export default class StepComponent extends TaglessComponent {
     super(...arguments);
 
     const nameAttribute = get(this, 'name');
-    const name = isEmpty(nameAttribute) ? generateRandomName() : nameAttribute;
+    const name = isEmpty(nameAttribute)
+      ? Symbol('generated step name')
+      : nameAttribute;
 
     assert('Step name cannot be a boolean', typeof name !== 'boolean');
     assert('Step name cannot be an object', typeof name !== 'object');
