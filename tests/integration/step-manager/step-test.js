@@ -3,12 +3,9 @@ import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { render } from '@ember/test-helpers';
 import td from 'testdouble';
-import { initialize as initializeEmberHook, hook } from 'ember-hook';
 
 module('step-manger/step', function(hooks) {
   setupRenderingTest(hooks);
-
-  hooks.beforeEach(initializeEmberHook);
 
   hooks.beforeEach(function() {
     this.set('register', function() {});
@@ -60,31 +57,31 @@ module('step-manger/step', function(hooks) {
     test('renders block content when visible', async function(assert) {
       await render(hbs`
         {{#step-manager/step name='foo' currentStep='foo' register-step=(action register) remove-step=(action remove)}}
-          <div data-test={{hook 'step'}}>
+          <div data-test-step>
             Foo
           </div>
         {{/step-manager/step}}
       `);
 
-      assert.dom(hook('step')).hasText('Foo');
+      assert.dom('[data-test-step]').hasText('Foo');
     });
 
     module('when inactive', function() {
       test('is hidden when no alternate state is provided', async function(assert) {
         await render(hbs`
           {{#step-manager/step name='foo' register-step=(action register) remove-step=(action remove)}}
-            <div data-test={{hook 'step'}}>
+            <div data-test-step>
               Active Content
             </div>
           {{/step-manager/step}}
         `);
 
-        assert.dom(hook('step')).doesNotExist();
+        assert.dom('[data-test-step]').doesNotExist();
       });
 
       test('renders the inverse block if provided', async function(assert) {
         await render(hbs`
-          <div data-test={{hook 'step'}}>
+          <div data-test-step>
             {{#step-manager/step name='foo' register-step=(action register) remove-step=(action remove)}}
               Active Content
             {{else}}
@@ -93,7 +90,7 @@ module('step-manger/step', function(hooks) {
           </div>
         `);
 
-        assert.dom(hook('step')).hasText('Inactive Content');
+        assert.dom('[data-test-step]').hasText('Inactive Content');
       });
     });
   });
@@ -102,21 +99,21 @@ module('step-manger/step', function(hooks) {
     test('is visible when active', async function(assert) {
       await render(hbs`
         {{#step-manager/step name='foo' currentStep='foo' register-step=(action register) remove-step=(action remove)}}
-          <div data-test={{hook 'step'}}></div>
+          <div data-test-step></div>
         {{/step-manager/step}}
       `);
 
-      assert.dom(hook('step')).exists();
+      assert.dom('[data-test-step]').exists();
     });
 
     test('is invisible when not active', async function(assert) {
       await render(hbs`
         {{#step-manager/step name='foo' currentStep='bar' register-step=(action register) remove-step=(action remove)}}
-          <div data-test={{hook 'step'}}></div>
+          <div data-test-step></div>
         {{/step-manager/step}}
       `);
 
-      assert.dom(hook('step')).doesNotExist();
+      assert.dom('[data-test-step]').doesNotExist();
     });
   });
 

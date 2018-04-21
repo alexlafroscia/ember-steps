@@ -1,31 +1,28 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import { initialize as initializeEmberHook, hook } from 'ember-hook';
 import { click, findAll, render } from '@ember/test-helpers';
 import { A } from '@ember/array';
 
 module('step-manager', function(hooks) {
   setupRenderingTest(hooks);
 
-  hooks.beforeEach(initializeEmberHook);
-
   module('`currentStep` attribute', function() {
     test('setting the initial visible step', async function(assert) {
       await render(hbs`
         {{#step-manager currentStep='second' as |w|}}
           {{#w.step name='first'}}
-            <div data-test={{hook 'first'}}></div>
+            <div data-test-first></div>
           {{/w.step}}
 
           {{#w.step name='second'}}
-            <div data-test={{hook 'second'}}></div>
+            <div data-test-second></div>
           {{/w.step}}
         {{/step-manager}}
       `);
 
-      assert.dom(hook('first')).doesNotExist();
-      assert.dom(hook('second')).exists();
+      assert.dom('[data-test-first]').doesNotExist();
+      assert.dom('[data-test-second]').exists();
     });
 
     test('changes steps when the property changes', async function(assert) {
@@ -33,28 +30,28 @@ module('step-manager', function(hooks) {
       await render(hbs`
         {{#step-manager currentStep=step as |w|}}
           {{#w.step name='first'}}
-            <div data-test={{hook 'first'}}></div>
+            <div data-test-first></div>
           {{/w.step}}
 
           {{#w.step name='second'}}
-            <div data-test={{hook 'second'}}></div>
+            <div data-test-second></div>
           {{/w.step}}
         {{/step-manager}}
       `);
 
-      assert.dom(hook('first')).exists();
-      assert.dom(hook('second')).doesNotExist();
+      assert.dom('[data-test-first]').exists();
+      assert.dom('[data-test-second]').doesNotExist();
 
       this.set('step', 'second');
 
-      assert.dom(hook('first')).doesNotExist();
-      assert.dom(hook('second')).exists();
+      assert.dom('[data-test-first]').doesNotExist();
+      assert.dom('[data-test-second]').exists();
 
       // Important for binding current step to a query param
       this.set('step', undefined);
 
-      assert.dom(hook('first')).exists();
-      assert.dom(hook('second')).doesNotExist();
+      assert.dom('[data-test-first]').exists();
+      assert.dom('[data-test-second]').doesNotExist();
     });
 
     module('updating the target object from the component', function() {
@@ -119,17 +116,17 @@ module('step-manager', function(hooks) {
       await render(hbs`
         {{#step-manager initialStep='second' as |w|}}
           {{#w.step name='first'}}
-            <div data-test={{hook 'first'}}></div>
+            <div data-test-first></div>
           {{/w.step}}
 
           {{#w.step name='second'}}
-            <div data-test={{hook 'second'}}></div>
+            <div data-test-second></div>
           {{/w.step}}
         {{/step-manager}}
       `);
 
-      assert.dom(hook('first')).doesNotExist();
-      assert.dom(hook('second')).exists();
+      assert.dom('[data-test-first]').doesNotExist();
+      assert.dom('[data-test-second]').exists();
     });
 
     test('it does not update the value as the step changes', async function(assert) {
@@ -137,11 +134,11 @@ module('step-manager', function(hooks) {
       await render(hbs`
         {{#step-manager initialStep=initialStep as |w|}}
           {{#w.step name='first'}}
-            <div data-test={{hook 'first'}}></div>
+            <div data-test-first></div>
           {{/w.step}}
 
           {{#w.step name='second'}}
-            <div data-test={{hook 'second'}}></div>
+            <div data-test-second></div>
           {{/w.step}}
 
           <button {{action w.transition-to 'first'}}>
@@ -152,7 +149,7 @@ module('step-manager', function(hooks) {
 
       await click('button');
 
-      assert.dom(hook('first')).exists();
+      assert.dom('[data-test-first]').exists();
       assert.equal(this.get('initialStep'), 'second');
     });
   });
@@ -161,17 +158,17 @@ module('step-manager', function(hooks) {
     await render(hbs`
       {{#step-manager as |w|}}
         {{#w.step name='first'}}
-          <div data-test={{hook 'first'}}></div>
+          <div data-test-first></div>
         {{/w.step}}
 
         {{#w.step name='second'}}
-          <div data-test={{hook 'second'}}></div>
+          <div data-test-second></div>
         {{/w.step}}
       {{/step-manager}}
     `);
 
-    assert.dom(hook('first')).exists();
-    assert.dom(hook('second')).doesNotExist();
+    assert.dom('[data-test-first]').exists();
+    assert.dom('[data-test-second]').doesNotExist();
   });
 
   test('renders tagless components', async function(assert) {
@@ -190,7 +187,7 @@ module('step-manager', function(hooks) {
     test('exposes the name of the current step', async function(assert) {
       await render(hbs`
         {{#step-manager as |w|}}
-          <div data-test={{hook 'steps'}}>
+          <div data-test-steps>
             {{w.currentStep}}
 
             {{w.step name='foo'}}
@@ -198,14 +195,14 @@ module('step-manager', function(hooks) {
         {{/step-manager}}
       `);
 
-      assert.dom(hook('steps')).hasText('foo');
+      assert.dom('[data-test-steps]').hasText('foo');
     });
 
     module('exposing an array of steps', function() {
       test('can render the array after the steps are defined', async function(assert) {
         await render(hbs`
           {{#step-manager as |w|}}
-            <div data-test={{hook 'active-step'}}>
+            <div data-test-active-step>
               {{#w.step name='foo'}}
                 Foo
               {{/w.step}}
@@ -216,34 +213,34 @@ module('step-manager', function(hooks) {
             </div>
 
             {{#each w.steps as |step|}}
-              <a {{action w.transition-to step}} data-test={{hook 'step-trigger' step=step}}>
+              <a {{action w.transition-to step}} data-test-step-trigger={{step}}>
                 {{step}}
               </a>
             {{/each}}
           {{/step-manager}}
         `);
 
-        assert.dom(hook('step-trigger')).exists({ count: 2 });
-        assert.dom(hook('step-trigger', { step: 'foo' })).hasText('foo');
-        assert.dom(hook('step-trigger', { step: 'bar' })).hasText('bar');
+        assert.dom('[data-test-step-trigger]').exists({ count: 2 });
+        assert.dom('[data-test-step-trigger="foo"]').hasText('foo');
+        assert.dom('[data-test-step-trigger="bar"]').hasText('bar');
 
-        assert.dom(hook('active-step')).hasText('Foo');
+        assert.dom('[data-test-active-step]').hasText('Foo');
 
-        await click(hook('step-trigger', { step: 'bar' }));
+        await click('[data-test-step-trigger="bar"]');
 
-        assert.dom(hook('active-step')).hasText('Bar');
+        assert.dom('[data-test-active-step]').hasText('Bar');
       });
 
       test('can render the array before the steps are defined', async function(assert) {
         await render(hbs`
           {{#step-manager as |w|}}
             {{#each w.steps as |step|}}
-              <a {{action w.transition-to step}} data-test={{hook 'step-trigger' step=step}}>
+              <a {{action w.transition-to step}} data-test-step-trigger={{step}}>
                 {{step}}
               </a>
             {{/each}}
 
-            <div data-test={{hook 'active-step'}}>
+            <div data-test-active-step>
               {{#w.step name='foo'}}
                 Foo
               {{/w.step}}
@@ -255,15 +252,15 @@ module('step-manager', function(hooks) {
           {{/step-manager}}
         `);
 
-        assert.dom(hook('step-trigger')).exists({ count: 2 });
-        assert.dom(hook('step-trigger', { step: 'foo' })).hasText('foo');
-        assert.dom(hook('step-trigger', { step: 'bar' })).hasText('bar');
+        assert.dom('[data-test-step-trigger]').exists({ count: 2 });
+        assert.dom('[data-test-step-trigger="foo"]').hasText('foo');
+        assert.dom('[data-test-step-trigger="bar"]').hasText('bar');
 
-        assert.dom(hook('active-step')).hasText('Foo');
+        assert.dom('[data-test-active-step]').hasText('Foo');
 
-        await click(hook('step-trigger', { step: 'bar' }));
+        await click('[data-test-step-trigger="bar"]');
 
-        assert.dom(hook('active-step')).hasText('Bar');
+        assert.dom('[data-test-active-step]').hasText('Bar');
       });
     });
   });
@@ -277,22 +274,22 @@ module('step-manager', function(hooks) {
           </button>
 
           {{#w.step name='first'}}
-            <div data-test={{hook 'first'}}></div>
+            <div data-test-first></div>
           {{/w.step}}
 
           {{#w.step name='second'}}
-            <div data-test={{hook 'second'}}></div>
+            <div data-test-second></div>
           {{/w.step}}
         {{/step-manager}}
       `);
 
-      assert.dom(hook('first')).exists();
-      assert.dom(hook('second')).doesNotExist();
+      assert.dom('[data-test-first]').exists();
+      assert.dom('[data-test-second]').doesNotExist();
 
       await click('button');
 
-      assert.dom(hook('first')).doesNotExist();
-      assert.dom(hook('second')).exists();
+      assert.dom('[data-test-first]').doesNotExist();
+      assert.dom('[data-test-second]').exists();
     });
   });
 
@@ -305,11 +302,11 @@ module('step-manager', function(hooks) {
           </button>
 
           {{#w.step name='first'}}
-            <div data-test={{hook 'first'}}></div>
+            <div data-test-first></div>
           {{/w.step}}
 
           {{#w.step name='second'}}
-            <div data-test={{hook 'second'}}></div>
+            <div data-test-second></div>
           {{/w.step}}
         {{/step-manager}}
       `);
@@ -329,11 +326,11 @@ module('step-manager', function(hooks) {
           </button>
 
           {{#w.step name='first'}}
-            <div data-test={{hook 'first'}}></div>
+            <div data-test-first></div>
           {{/w.step}}
 
           {{#w.step name='second'}}
-            <div data-test={{hook 'second'}}></div>
+            <div data-test-second></div>
           {{/w.step}}
         {{/step-manager}}
       `);
@@ -355,7 +352,7 @@ module('step-manager', function(hooks) {
           </button>
 
           {{#w.step name='first'}}
-            <div data-test={{hook 'first'}}></div>
+            <div data-test-first></div>
           {{/w.step}}
         {{/step-manager}}
       `);
@@ -371,7 +368,7 @@ module('step-manager', function(hooks) {
           </button>
 
           {{#w.step name='first'}}
-            <div data-test={{hook 'first'}}></div>
+            <div data-test-first></div>
           {{/w.step}}
         {{/step-manager}}
       `);
@@ -390,40 +387,40 @@ module('step-manager', function(hooks) {
             </button>
 
             {{#w.step name='first'}}
-              <div data-test={{hook 'first'}}></div>
+              <div data-test-first></div>
             {{/w.step}}
 
             {{#w.step name='second'}}
-              <div data-test={{hook 'second'}}></div>
+              <div data-test-second></div>
             {{/w.step}}
 
             {{#w.step name='third'}}
-              <div data-test={{hook 'third'}}></div>
+              <div data-test-third></div>
             {{/w.step}}
           {{/step-manager}}
         `);
 
-        assert.dom(hook('first')).exists();
-        assert.dom(hook('second')).doesNotExist();
-        assert.dom(hook('third')).doesNotExist();
+        assert.dom('[data-test-first]').exists();
+        assert.dom('[data-test-second]').doesNotExist();
+        assert.dom('[data-test-third]').doesNotExist();
 
         await click('button');
 
-        assert.dom(hook('first')).doesNotExist();
-        assert.dom(hook('second')).exists();
-        assert.dom(hook('third')).doesNotExist();
+        assert.dom('[data-test-first]').doesNotExist();
+        assert.dom('[data-test-second]').exists();
+        assert.dom('[data-test-third]').doesNotExist();
 
         await click('button');
 
-        assert.dom(hook('first')).doesNotExist();
-        assert.dom(hook('second')).doesNotExist();
-        assert.dom(hook('third')).exists();
+        assert.dom('[data-test-first]').doesNotExist();
+        assert.dom('[data-test-second]').doesNotExist();
+        assert.dom('[data-test-third]').exists();
 
         await click('button');
 
-        assert.dom(hook('first')).exists();
-        assert.dom(hook('second')).doesNotExist();
-        assert.dom(hook('third')).doesNotExist();
+        assert.dom('[data-test-first]').exists();
+        assert.dom('[data-test-second]').doesNotExist();
+        assert.dom('[data-test-third]').doesNotExist();
       });
 
       test('can transition to the previous step', async function(assert) {
@@ -437,40 +434,40 @@ module('step-manager', function(hooks) {
             </button>
 
             {{#w.step name='first'}}
-              <div data-test={{hook 'first'}}></div>
+              <div data-test-first></div>
             {{/w.step}}
 
             {{#w.step name='second'}}
-              <div data-test={{hook 'second'}}></div>
+              <div data-test-second></div>
             {{/w.step}}
 
             {{#w.step name='third'}}
-              <div data-test={{hook 'third'}}></div>
+              <div data-test-third></div>
             {{/w.step}}
           {{/step-manager}}
         `);
 
-        assert.dom(hook('first')).exists();
-        assert.dom(hook('second')).doesNotExist();
-        assert.dom(hook('third')).doesNotExist();
+        assert.dom('[data-test-first]').exists();
+        assert.dom('[data-test-second]').doesNotExist();
+        assert.dom('[data-test-third]').doesNotExist();
 
         await click('#next');
 
-        assert.dom(hook('first')).doesNotExist();
-        assert.dom(hook('second')).exists();
-        assert.dom(hook('third')).doesNotExist();
+        assert.dom('[data-test-first]').doesNotExist();
+        assert.dom('[data-test-second]').exists();
+        assert.dom('[data-test-third]').doesNotExist();
 
         await click('#next');
 
-        assert.dom(hook('first')).doesNotExist();
-        assert.dom(hook('second')).doesNotExist();
-        assert.dom(hook('third')).exists();
+        assert.dom('[data-test-first]').doesNotExist();
+        assert.dom('[data-test-second]').doesNotExist();
+        assert.dom('[data-test-third]').exists();
 
         await click('#previous');
 
-        assert.dom(hook('first')).doesNotExist();
-        assert.dom(hook('second')).exists();
-        assert.dom(hook('third')).doesNotExist();
+        assert.dom('[data-test-first]').doesNotExist();
+        assert.dom('[data-test-second]').exists();
+        assert.dom('[data-test-third]').doesNotExist();
       });
     });
   });
@@ -480,13 +477,13 @@ module('step-manager', function(hooks) {
       this.set('data', A([{ name: 'foo' }, { name: 'bar' }]));
     });
 
-    test('allows dynamically creating steps', async function(assert) {
+    test('allows for defining steps from a data', async function(assert) {
       await render(hbs`
         {{#step-manager as |w|}}
-          <div data-test={{hook 'steps'}}>
+          <div data-test-steps>
             {{#each data as |item|}}
               {{#w.step}}
-                <div data-test={{hook 'step' name=item.name}}>
+                <div data-test-step={{item.name}}>
                   {{item.name}}
                 </div>
               {{/w.step}}
@@ -499,24 +496,24 @@ module('step-manager', function(hooks) {
         {{/step-manager}}
       `);
 
-      assert.dom(hook('step', { name: 'foo' })).exists();
-      assert.dom(hook('step', { name: 'bar' })).doesNotExist();
-      assert.dom(hook('steps')).hasText('foo');
+      assert.dom('[data-test-step="foo"]').exists();
+      assert.dom('[data-test-step="bar"]').doesNotExist();
+      assert.dom('[data-test-steps]').hasText('foo');
 
       await click('button');
 
-      assert.dom(hook('step', { name: 'foo' })).doesNotExist();
-      assert.dom(hook('step', { name: 'bar' })).exists();
-      assert.dom(hook('steps')).hasText('bar');
+      assert.dom('[data-test-step="foo"]').doesNotExist();
+      assert.dom('[data-test-step="bar"]').exists();
+      assert.dom('[data-test-steps]').hasText('bar');
     });
 
     test('allows for replacing the array with one that has additional steps', async function(assert) {
       await render(hbs`
         {{#step-manager linear=false as |w|}}
-          <div data-test={{hook 'steps'}}>
+          <div data-test-steps>
             {{#each data as |item|}}
               {{#w.step name=item.name}}
-                <div data-test={{hook 'step' name=item.name}}>
+                <div data-test-step={{item.name}}>
                   {{item.name}}
                 </div>
               {{/w.step}}
@@ -529,47 +526,39 @@ module('step-manager', function(hooks) {
         {{/step-manager}}
       `);
 
-      assert
-        .dom(hook('step', { name: 'foo' }))
-        .exists('Initial step is visible');
+      assert.dom('[data-test-step="foo"]').exists('Initial step is visible');
 
       await click('button');
 
       assert
-        .dom(hook('step', { name: 'foo' }))
+        .dom('[data-test-step="foo"]')
         .doesNotExist('Initial step is no longer visible');
-      assert
-        .dom(hook('step', { name: 'bar' }))
-        .exists('Second step is visible');
+      assert.dom('[data-test-step="bar"]').exists('Second step is visible');
 
       this.set('data', A([{ name: 'foo' }, { name: 'bar' }, { name: 'baz' }]));
 
       assert
-        .dom(hook('step', { name: 'bar' }))
+        .dom('[data-test-step="bar"]')
         .exists(
           'Second step is still visible after replacing the array backing the set of steps'
         );
 
       await click('button');
 
-      assert
-        .dom(hook('step', { name: 'baz' }))
-        .exists('Advanced to the new step');
+      assert.dom('[data-test-step="baz"]').exists('Advanced to the new step');
 
       await click('button');
 
-      assert
-        .dom(hook('step', { name: 'foo' }))
-        .exists('Back to the first step');
+      assert.dom('[data-test-step="foo"]').exists('Back to the first step');
     });
 
     test('allows for pushing new steps into the array creating the steps', async function(assert) {
       await render(hbs`
         {{#step-manager linear=false as |w|}}
-          <div data-test={{hook 'steps'}}>
+          <div data-test-steps>
             {{#each data as |item|}}
               {{#w.step name=item.name}}
-                <div data-test={{hook 'step' name=item.name}}>
+                <div data-test-step={{item.name}}>
                   {{item.name}}
                 </div>
               {{/w.step}}
@@ -582,38 +571,30 @@ module('step-manager', function(hooks) {
         {{/step-manager}}
       `);
 
-      assert
-        .dom(hook('step', { name: 'foo' }))
-        .exists('Initial step is visible');
+      assert.dom('[data-test-step="foo"]').exists('Initial step is visible');
 
       await click('button');
 
       assert
-        .dom(hook('step', { name: 'foo' }))
+        .dom('[data-test-step="foo"]')
         .doesNotExist('Initial step is no longer visible');
-      assert
-        .dom(hook('step', { name: 'bar' }))
-        .exists('Second step is visible');
+      assert.dom('[data-test-step="bar"]').exists('Second step is visible');
 
       this.get('data').pushObject({ name: 'baz' });
 
       assert
-        .dom(hook('step', { name: 'bar' }))
+        .dom('[data-test-step="bar"]')
         .exists(
           'Second step is still visible after replacing the array backing the set of steps'
         );
 
       await click('button');
 
-      assert
-        .dom(hook('step', { name: 'baz' }))
-        .exists('Advanced to the new step');
+      assert.dom('[data-test-step="baz"]').exists('Advanced to the new step');
 
       await click('button');
 
-      assert
-        .dom(hook('step', { name: 'foo' }))
-        .exists('Back to the first step');
+      assert.dom('[data-test-step="foo"]').exists('Back to the first step');
     });
   });
 
@@ -623,30 +604,26 @@ module('step-manager', function(hooks) {
 
       await render(hbs`
         {{#step-manager linear=true as |w|}}
-          <div data-test={{hook 'steps'}}>
+          <div data-test-steps>
             {{#each data as |item|}}
               {{#w.step name=item.name}}
-                <div data-test={{hook 'step' name=item.name}}>
+                <div data-test-step={{item.name}}>
                   {{item.name}}
                 </div>
               {{/w.step}}
             {{/each}}
           </div>
-
-          <button data-test={{hook 'next'}} {{action w.transition-to-next}}>
-            Next
-          </button>
         {{/step-manager}}
       `);
 
       assert
-        .dom(hook('step', { name: 'foo' }))
+        .dom('[data-test-step="foo"]')
         .exists('The initial step is rendered');
 
       this.set('data', A([{ name: 'foo' }]));
 
       assert
-        .dom(hook('step', { name: 'foo' }))
+        .dom('[data-test-step="foo"]')
         .exists('The initial step is still visible');
     });
 
@@ -656,36 +633,36 @@ module('step-manager', function(hooks) {
 
       await render(hbs`
         {{#step-manager linear=false as |w|}}
-          <div data-test={{hook 'steps'}}>
+          <div data-test-steps>
             {{#each data as |item|}}
               {{#w.step name=item.name}}
-                <div data-test={{hook 'step' name=item.name}}>
+                <div data-test-step={{item.name}}>
                   {{item.name}}
                 </div>
               {{/w.step}}
             {{/each}}
           </div>
 
-          <button data-test={{hook 'next'}} {{action w.transition-to-next}}>
+          <button {{action w.transition-to-next}}>
             Next
           </button>
         {{/step-manager}}
       `);
 
       assert
-        .dom(hook('step', { name: 'foo' }))
+        .dom('[data-test-step="foo"]')
         .exists('The initial step is rendered');
 
       this.get('data').removeObject(stepToRemove);
 
       assert
-        .dom(hook('step', { name: 'foo' }))
+        .dom('[data-test-step="foo"]')
         .exists('The initial step is still visible');
 
       await click('button');
 
       assert
-        .dom(hook('step', { name: 'foo' }))
+        .dom('[data-test-step="foo"]')
         .exists('The initial step is still visible');
     });
   });
