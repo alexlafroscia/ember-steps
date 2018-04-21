@@ -4,6 +4,8 @@ import hbs from 'htmlbars-inline-precompile';
 import { render } from '@ember/test-helpers';
 import td from 'testdouble';
 
+import StepComponent from 'ember-steps/components/step-manager/step';
+
 module('step-manger/step', function(hooks) {
   setupRenderingTest(hooks);
 
@@ -21,7 +23,9 @@ module('step-manger/step', function(hooks) {
         {{step-manager/step name='foo' register-step=(action register) remove-step=(action remove)}}
       `);
 
-      assert.wasCalled(registerAction);
+      assert.verify(registerAction(td.matchers.isA(StepComponent)), {
+        times: 1
+      });
     });
   });
 

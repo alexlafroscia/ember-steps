@@ -3572,7 +3572,15 @@ ember-cli-test-loader@^2.1.0, ember-cli-test-loader@^2.2.0:
   dependencies:
     ember-cli-babel "^6.8.1"
 
-ember-cli-testdouble@^0.1.2:
+ember-cli-testdouble-qunit@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/ember-cli-testdouble-qunit/-/ember-cli-testdouble-qunit-2.0.2.tgz#4edbe71e71d1abff101cb36e780a24586e8ba829"
+  dependencies:
+    broccoli-funnel "^2.0.1"
+    ember-cli-babel "^6.6.0"
+    testdouble-qunit "^2.0.2"
+
+ember-cli-testdouble@^0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/ember-cli-testdouble/-/ember-cli-testdouble-0.1.3.tgz#2cff62e21d7202be945ad055977667929a4a0226"
   dependencies:
@@ -7164,7 +7172,7 @@ lodash@^4.0.0, lodash@^4.6.1:
   version "4.17.4"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.4.tgz#78203a4d1c328ae1d86dca6460e369b57f4055ae"
 
-lodash@^4.1.0, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.17.2, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.5.1, lodash@~4.17.4:
+lodash@^4.1.0, lodash@^4.13.1, lodash@^4.14.0, lodash@^4.15.0, lodash@^4.17.2, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.2.1, lodash@^4.3.0, lodash@^4.5.1, lodash@~4.17.4:
   version "4.17.5"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.5.tgz#99a92d65c0272debe8c96b6057bc8fbfa3bed511"
 
@@ -8549,7 +8557,7 @@ query-string@^5.0.1:
     object-assign "^4.1.0"
     strict-uri-encode "^1.0.0"
 
-quibble@^0.5.1:
+quibble@^0.5.0, quibble@^0.5.1:
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/quibble/-/quibble-0.5.3.tgz#3dfd53206fc6873f61c96f3bece63b69747b4d0c"
   dependencies:
@@ -9105,7 +9113,7 @@ resolve@^1.1.2:
   dependencies:
     path-parse "^1.0.5"
 
-resolve@^1.1.6, resolve@^1.3.0, resolve@^1.3.3, resolve@^1.4.0:
+resolve@^1.1.6, resolve@^1.3.0, resolve@^1.3.2, resolve@^1.3.3, resolve@^1.4.0:
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.7.1.tgz#aadd656374fd298aee895bc026b8297418677fd3"
   dependencies:
@@ -10005,6 +10013,19 @@ term-size@^1.2.0:
   resolved "https://registry.yarnpkg.com/term-size/-/term-size-1.2.0.tgz#458b83887f288fc56d6fffbfad262e26638efa69"
   dependencies:
     execa "^0.7.0"
+
+testdouble-qunit@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/testdouble-qunit/-/testdouble-qunit-2.0.2.tgz#740393c867901b9a814882b50f4c94a9e343fab9"
+
+testdouble@^2.0.0:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/testdouble/-/testdouble-2.1.2.tgz#8a376c5cb9b2c9cea90780b874168aa5b6eeb8a8"
+  dependencies:
+    lodash "^4.15.0"
+    quibble "^0.5.0"
+    resolve "^1.3.2"
+    stringify-object-es5 "^2.5.0"
 
 testdouble@^3.5.2:
   version "3.6.0"
