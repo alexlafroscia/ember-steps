@@ -5,7 +5,7 @@ import { get, set } from '@ember/object';
 import { isEmpty, isPresent } from '@ember/utils';
 import { schedule } from '@ember/runloop';
 import { assert } from '@ember/debug';
-import { computed } from '@ember-decorators/object';
+import { action, computed } from '@ember-decorators/object';
 
 import StateMachine from '../-private/state-machine/-base';
 import CircularStateMachine from '../-private/state-machine/circular';
@@ -97,19 +97,7 @@ export default class StepManagerComponent extends TaglessComponent {
     return isPresent(this.transitions.pickPrevious());
   }
 
-  doTransition(to) {
-    // If `currentStep` is present, it's probably something the user wants
-    // two-way-bound with the new value
-    if (!isEmpty(this.currentStep)) {
-      set(this, 'currentStep', to);
-    }
-
-    this.transitions.activate(to);
-  }
-
   didUpdateAttrs() {
-    this._super(...arguments);
-
     const newStep = this.currentStep;
 
     if (typeof newStep === 'undefined') {
@@ -120,50 +108,53 @@ export default class StepManagerComponent extends TaglessComponent {
     }
   }
 
-  actions = {
-    registerStepComponent(
-      this: StepManagerComponent,
-      stepComponent: StepComponent
-    ) {
-      const name = get(stepComponent, 'name');
-      const transitions = this.transitions;
+  @action
+  registerStepComponent(stepComponent: StepComponent) {
+    const name = get(stepComponent, 'name');
+    const transitions = this.transitions;
 
-      stepComponent.transitions = transitions;
+    stepComponent.transitions = transitions;
 
-      schedule('actions', () => {
-        transitions.addStep(name);
-      });
-    },
+    schedule('actions', () => {
+      transitions.addStep(name);
+    });
+  }
 
-    removeStepComponent(
-      this: StepManagerComponent,
-      stepComponent: StepComponent
-    ) {
-      const name = get(stepComponent, 'name');
+  @action
+  removeStepComponent(stepComponent: StepComponent) {
+    const name = get(stepComponent, 'name');
 
-      schedule('actions', () => {
-        this.transitions.removeStep(name);
-      });
-    },
+    schedule('actions', () => {
+      this.transitions.removeStep(name);
+    });
+  }
 
-    'transition-to'(this: StepManagerComponent, to: StepName) {
-      this.doTransition(to);
-    },
-
-    'transition-to-next'(this: StepManagerComponent) {
-      const to = this.transitions.pickNext();
-
-      assert('There is no next step', !!to);
-
-      this.doTransition(to);
-    },
-
-    'transition-to-previous'(this: StepManagerComponent) {
-      const to = this.transitions.pickPrevious();
-
-      assert('There is no previous step', !!to);
-
-      this.doTransition(to);
+  @action
+  transitionTo(to: StepName) {
+    // If `currentStep` is present, it's probably something the user wants
+    // two-way-bound with the new value
+    if (!isEmpty(this.currentStep)) {
+      set(this, 'currentStep', to);
     }
-  };
+
+    this.transitions.activate(to);
+  }
+
+  @action
+  transitionToNext() {
+    const to = this.transitions.pickNext();
+
+    assert('There is no next step', !!to);
+
+    this.transitionTo(to);
+  }
+
+  @action
+  transitionToPrevious() {
+    const to = this.transitions.pickPrevious();
+
+    assert('There is no previous step', !!to);
+
+    this.transitionTo(to);
+  }
 }
