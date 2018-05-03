@@ -3,9 +3,9 @@
     "assets/assetMap.json": "assets/assetMap.json",
     "assets/dummy-fastboot.js": "assets/dummy-fastboot-f39834c2afad128f95305a0fb922efde.js",
     "assets/dummy.css": "assets/dummy-1be9a25f69b978f8432c1da8c23785c4.css",
-    "assets/dummy.js": "assets/dummy-181c58b62a786edecb40277e5b628013.js",
+    "assets/dummy.js": "assets/dummy-012ba1708cf5e648cd78f5e34eb702ca.js",
     "assets/vendor.css": "assets/vendor-362fea68a650eef7865265099cf6f543.css",
-    "assets/vendor.js": "assets/vendor-4f300373bac8fd75593d5f35e4d9b952.js",
+    "assets/vendor.js": "assets/vendor-e8de4a230ecb9bdf1f00a8809b6e5b60.js",
     "ember-fetch/fastboot-fetch.js": "ember-fetch/fastboot-fetch-805e176077930c98aec5834ae48bd0f2.js"
   },
   "prepend": ""
