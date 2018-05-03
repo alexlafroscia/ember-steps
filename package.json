@@ -82,7 +82,6 @@
     "prettier": "^1.12.1",
     "qunit-dom": "^0.6.2",
     "semantic-release": "^15.2.0",
-    "standard-version": "^4.3.0",
     "testdouble": "^2.0.0",
     "travis-deploy-once": "^5.0.0",
     "typescript": "^2.8.3",
