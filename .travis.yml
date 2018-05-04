@@ -32,6 +32,7 @@ matrix:
     - env: EMBER_TRY_SCENARIO=ember-canary
 
 stages:
+  - lint
   - test
   - name: release
     if: branch = master
@@ -40,6 +41,9 @@ stages:
 
 jobs:
   include:
+    - stage: lint
+      script: yarn lint
+    - script: yarn commitlint-travis
     - stage: release
       script: yarn semantic-release
       env:
@@ -50,7 +54,6 @@ jobs:
       - EMBER_TRY_SCENARIO=ember-default
 
 script:
-  - yarn commitlint-travis
   # Usually, it's ok to finish the test scenario without reverting
   #  to the addon's original dependency state, skipping "cleanup".
-  - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO --skip-cleanup
+  - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO
