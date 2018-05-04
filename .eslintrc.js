@@ -43,6 +43,7 @@ module.exports = {
         'index.js',
         'testem.js',
         'ember-cli-build.js',
+        'commitlint.config.js',
         'config/**/*.js',
         'tests/dummy/config/**/*.js'
       ],
