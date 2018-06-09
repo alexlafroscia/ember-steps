@@ -13,12 +13,12 @@ export default class LinearStateMachine extends BaseStateMachine {
   pickNext(currentStep = this.currentStep) {
     const currentIndex = this.stepTransitions.indexOf(currentStep);
 
-    return this.stepTransitions[currentIndex + 1];
+    return this.stepTransitions.objectAt(currentIndex + 1);
   }
 
   pickPrevious(currentStep = this.currentStep) {
     const currentIndex = this.stepTransitions.indexOf(currentStep);
 
-    return this.stepTransitions[currentIndex - 1];
+    return this.stepTransitions.objectAt(currentIndex - 1);
   }
 }

@@ -7,7 +7,7 @@ import { schedule } from '@ember/runloop';
 import { assert } from '@ember/debug';
 import { action, computed } from '@ember-decorators/object';
 
-import StateMachine from '../-private/state-machine/-base';
+import BaseStateMachine from '../-private/state-machine/-base';
 import CircularStateMachine from '../-private/state-machine/circular';
 import LinearStateMachine from '../-private/state-machine/linear';
 
@@ -48,7 +48,7 @@ export default class StepManagerComponent extends TaglessComponent {
   layout = layout;
 
   /* Optionally can be provided to override the initial step to render */
-  initialStep: StepName;
+  initialStep: StepName | undefined;
 
   /**
    * The `currentStep` property can be used for providing, or binding to, the
@@ -57,19 +57,19 @@ export default class StepManagerComponent extends TaglessComponent {
    * If provided, the initial step will come from the value of this property,
    * and the value will be updated whenever the step changes
    */
-  currentStep: StepName;
+  currentStep: StepName | undefined;
 
   /**
    * @property {boolean} boolean
    * @public
    */
-  linear: boolean;
+  linear!: boolean;
 
   /**
-   * @property {StateMachine} transitions state machine for transitions
+   * @property {BaseStateMachine} transitions state machine for transitions
    * @private
    */
-  transitions: StateMachine;
+  transitions!: BaseStateMachine;
 
   constructor() {
     super(...arguments);
@@ -146,7 +146,7 @@ export default class StepManagerComponent extends TaglessComponent {
 
     assert('There is no next step', !!to);
 
-    this.transitionTo(to);
+    this.transitionTo(to!);
   }
 
   @action
@@ -155,6 +155,6 @@ export default class StepManagerComponent extends TaglessComponent {
 
     assert('There is no previous step', !!to);
 
-    this.transitionTo(to);
+    this.transitionTo(to!);
   }
 }
