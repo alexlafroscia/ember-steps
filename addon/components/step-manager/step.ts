@@ -1,7 +1,7 @@
 import TaglessComponent from '../-tagless';
 // @ts-ignore: Ignore import of compiled template
 import layout from '../../templates/components/step-manager/step';
-import { get, observer, set } from '@ember/object';
+import { get, set } from '@ember/object';
 import { isEmpty, isPresent } from '@ember/utils';
 import { assert } from '@ember/debug';
 import { computed } from '@ember-decorators/object';
@@ -16,11 +16,14 @@ function failOnNameChange() {
 export default class StepComponent extends TaglessComponent {
   layout = layout;
 
-  name: StepName;
+  name!: StepName;
 
-  currentStep: StepName;
+  currentStep!: StepName;
 
-  transitions: StateMachine;
+  transitions!: StateMachine;
+
+  'register-step'!: (stepComponent: StepComponent) => void;
+  'remove-step'!: (stepComponent: StepComponent) => void;
 
   constructor() {
     super(...arguments);
