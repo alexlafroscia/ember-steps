@@ -1,10 +1,11 @@
-import TaglessComponent from '../-tagless';
+import Component from '@ember/component';
 // @ts-ignore: Ignore import of compiled template
 import layout from '../../templates/components/step-manager/step';
 import { get, set } from '@ember/object';
 import { isEmpty, isPresent } from '@ember/utils';
 import { assert } from '@ember/debug';
 import { computed } from '@ember-decorators/object';
+import { tagName } from '@ember-decorators/component';
 
 import StateMachine from '../../-private/state-machine/-base';
 import { StepName } from '../../-private/types';
@@ -13,7 +14,8 @@ function failOnNameChange() {
   assert('The `name` property should never change');
 }
 
-export default class StepComponent extends TaglessComponent {
+@tagName('')
+export default class StepComponent extends Component {
   layout = layout;
 
   name!: StepName;

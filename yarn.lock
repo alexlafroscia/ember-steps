@@ -132,6 +132,13 @@
     babel-runtime "6.26.0"
     execa "0.9.0"
 
+"@ember-decorators/component@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@ember-decorators/component/-/component-2.1.0.tgz#846ad4197a06c9814d02654e947c023d35107cee"
+  dependencies:
+    "@ember-decorators/utils" "^2.1.0"
+    ember-cli-babel "^6.6.0"
+
 "@ember-decorators/object@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@ember-decorators/object/-/object-2.1.0.tgz#725c790c030299a4bc8c15f21048c3c0abc1499c"

@@ -1,4 +1,4 @@
-import TaglessComponent from './-tagless';
+import Component from '@ember/component';
 // @ts-ignore: Ignore import of compiled template
 import layout from '../templates/components/step-manager';
 import { get, set } from '@ember/object';
@@ -6,6 +6,7 @@ import { isEmpty, isPresent } from '@ember/utils';
 import { schedule } from '@ember/runloop';
 import { assert } from '@ember/debug';
 import { action, computed } from '@ember-decorators/object';
+import { tagName } from '@ember-decorators/component';
 
 import BaseStateMachine from '../-private/state-machine/-base';
 import CircularStateMachine from '../-private/state-machine/circular';
@@ -44,7 +45,8 @@ import StepComponent from './step-manager/step';
  * @public
  * @hide
  */
-export default class StepManagerComponent extends TaglessComponent {
+@tagName('')
+export default class StepManagerComponent extends Component {
   layout = layout;
 
   /* Optionally can be provided to override the initial step to render */
