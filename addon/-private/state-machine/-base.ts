@@ -6,14 +6,7 @@ import { readOnly } from '@ember-decorators/object/computed';
 import { assert } from '@ember/debug';
 
 import { StepName } from '../types';
-
-class StepNode {
-  name: StepName;
-
-  constructor(name: StepName) {
-    this.name = name;
-  }
-}
+import StepNode from '../step-node';
 
 /**
  * Keeps track of the order of the steps in the step manager, as well as
@@ -41,7 +34,7 @@ export default abstract class BaseStateMachine extends EmberObject {
   }
 
   addStep(name: StepName) {
-    const node = new StepNode(name);
+    const node = new StepNode(this, name);
     this.stepTransitions.pushObject(node);
 
     if (!this.currentStep) {

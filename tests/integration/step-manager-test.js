@@ -199,68 +199,136 @@ module('step-manager', function(hooks) {
     });
 
     module('exposing an array of steps', function() {
-      test('can render the array after the steps are defined', async function(assert) {
+      test('it exposes whether the step has a next step', async function(assert) {
         await render(hbs`
           {{#step-manager as |w|}}
-            <div data-test-active-step>
-              {{#w.step name='foo'}}
-                Foo
-              {{/w.step}}
-
-              {{#w.step name='bar'}}
-                Bar
-              {{/w.step}}
-            </div>
+            {{w.step name='foo'}}
+            {{w.step name='bar'}}
 
             {{#each w.steps as |step|}}
-              <a {{action w.transition-to step.name}} data-test-step-trigger={{step.name}}>
-                {{step.name}}
-              </a>
+              <p data-test-step={{step.name}}>
+                {{step.hasNext}}
+              </p>
             {{/each}}
           {{/step-manager}}
         `);
 
-        assert.dom('[data-test-step-trigger]').exists({ count: 2 });
-        assert.dom('[data-test-step-trigger="foo"]').hasText('foo');
-        assert.dom('[data-test-step-trigger="bar"]').hasText('bar');
-
-        assert.dom('[data-test-active-step]').hasText('Foo');
-
-        await click('[data-test-step-trigger="bar"]');
-
-        assert.dom('[data-test-active-step]').hasText('Bar');
+        assert
+          .dom('[data-test-step="foo"]')
+          .hasText('true', 'The first step has a next step');
+        assert
+          .dom('[data-test-step="bar"]')
+          .hasText('false', 'The second step does not have a next step');
       });
 
-      test('can render the array before the steps are defined', async function(assert) {
+      test('it exposes whether the step has a previous step', async function(assert) {
         await render(hbs`
           {{#step-manager as |w|}}
+            {{w.step name='foo'}}
+            {{w.step name='bar'}}
+
             {{#each w.steps as |step|}}
-              <a {{action w.transition-to step.name}} data-test-step-trigger={{step.name}}>
-                {{step.name}}
-              </a>
+              <p data-test-step={{step.name}}>
+                {{step.hasPrevious}}
+              </p>
             {{/each}}
-
-            <div data-test-active-step>
-              {{#w.step name='foo'}}
-                Foo
-              {{/w.step}}
-
-              {{#w.step name='bar'}}
-                Bar
-              {{/w.step}}
-            </div>
           {{/step-manager}}
         `);
 
-        assert.dom('[data-test-step-trigger]').exists({ count: 2 });
-        assert.dom('[data-test-step-trigger="foo"]').hasText('foo');
-        assert.dom('[data-test-step-trigger="bar"]').hasText('bar');
+        assert
+          .dom('[data-test-step="foo"]')
+          .hasText('false', 'The first step does not have a previous step');
+        assert
+          .dom('[data-test-step="bar"]')
+          .hasText('true', 'The second step has a previous step');
+      });
 
-        assert.dom('[data-test-active-step]').hasText('Foo');
+      test('it exposes whether the step is active', async function(assert) {
+        await render(hbs`
+          {{#step-manager as |w|}}
+            {{w.step name='foo'}}
+            {{w.step name='bar'}}
 
-        await click('[data-test-step-trigger="bar"]');
+            {{#each w.steps as |step|}}
+              <p data-test-step={{step.name}}>
+                {{step.isActive}}
+              </p>
+            {{/each}}
+          {{/step-manager}}
+        `);
 
-        assert.dom('[data-test-active-step]').hasText('Bar');
+        assert
+          .dom('[data-test-step="foo"]')
+          .hasText('true', 'The first step is active');
+        assert
+          .dom('[data-test-step="bar"]')
+          .hasText('false', 'The second step is not active');
+      });
+
+      module('rendering position', function() {
+        test('can render the array after the steps are defined', async function(assert) {
+          await render(hbs`
+            {{#step-manager as |w|}}
+              <div data-test-active-step>
+                {{#w.step name='foo'}}
+                  Foo
+                {{/w.step}}
+
+                {{#w.step name='bar'}}
+                  Bar
+                {{/w.step}}
+              </div>
+
+              {{#each w.steps as |step|}}
+                <a {{action w.transition-to step.name}} data-test-step-trigger={{step.name}}>
+                  {{step.name}}
+                </a>
+              {{/each}}
+            {{/step-manager}}
+          `);
+
+          assert.dom('[data-test-step-trigger]').exists({ count: 2 });
+          assert.dom('[data-test-step-trigger="foo"]').hasText('foo');
+          assert.dom('[data-test-step-trigger="bar"]').hasText('bar');
+
+          assert.dom('[data-test-active-step]').hasText('Foo');
+
+          await click('[data-test-step-trigger="bar"]');
+
+          assert.dom('[data-test-active-step]').hasText('Bar');
+        });
+
+        test('can render the array before the steps are defined', async function(assert) {
+          await render(hbs`
+            {{#step-manager as |w|}}
+              {{#each w.steps as |step|}}
+                <a {{action w.transition-to step.name}} data-test-step-trigger={{step.name}}>
+                  {{step.name}}
+                </a>
+              {{/each}}
+
+              <div data-test-active-step>
+                {{#w.step name='foo'}}
+                  Foo
+                {{/w.step}}
+
+                {{#w.step name='bar'}}
+                  Bar
+                {{/w.step}}
+              </div>
+            {{/step-manager}}
+          `);
+
+          assert.dom('[data-test-step-trigger]').exists({ count: 2 });
+          assert.dom('[data-test-step-trigger="foo"]').hasText('foo');
+          assert.dom('[data-test-step-trigger="bar"]').hasText('bar');
+
+          assert.dom('[data-test-active-step]').hasText('Foo');
+
+          await click('[data-test-step-trigger="bar"]');
+
+          assert.dom('[data-test-active-step]').hasText('Bar');
+        });
       });
     });
   });
