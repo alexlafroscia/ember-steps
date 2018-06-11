@@ -12,25 +12,41 @@ import { get } from '@ember/object';
  */
 export default class CircularStateMachine extends BaseStateMachine {
   pickNext(currentStep = this.currentStep) {
-    const currentIndex = this.stepTransitions.indexOf(currentStep);
+    const currentIndex = this.stepTransitions
+      .map(node => node.name)
+      .indexOf(currentStep);
     const nextValue = this.stepTransitions.objectAt(currentIndex + 1);
 
     if (nextValue) {
-      return nextValue;
+      return nextValue.name;
     }
 
-    return this.stepTransitions.objectAt(0);
+    const firstObject = this.stepTransitions.objectAt(0);
+
+    if (firstObject) {
+      return firstObject.name;
+    }
+
+    return undefined;
   }
 
   pickPrevious(currentStep = this.currentStep) {
-    const currentIndex = this.stepTransitions.indexOf(currentStep);
+    const currentIndex = this.stepTransitions
+      .map(node => node.name)
+      .indexOf(currentStep);
     const previousValue = this.stepTransitions.objectAt(currentIndex - 1);
 
     if (previousValue) {
-      return previousValue;
+      return previousValue.name;
     }
 
     const lastIndex = get(this, 'length') - 1;
-    return this.stepTransitions.objectAt(lastIndex);
+    const lastObject = this.stepTransitions.objectAt(lastIndex);
+
+    if (lastObject) {
+      return lastObject.name;
+    }
+
+    return undefined;
   }
 }

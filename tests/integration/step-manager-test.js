@@ -213,8 +213,8 @@ module('step-manager', function(hooks) {
             </div>
 
             {{#each w.steps as |step|}}
-              <a {{action w.transition-to step}} data-test-step-trigger={{step}}>
-                {{step}}
+              <a {{action w.transition-to step.name}} data-test-step-trigger={{step.name}}>
+                {{step.name}}
               </a>
             {{/each}}
           {{/step-manager}}
@@ -235,8 +235,8 @@ module('step-manager', function(hooks) {
         await render(hbs`
           {{#step-manager as |w|}}
             {{#each w.steps as |step|}}
-              <a {{action w.transition-to step}} data-test-step-trigger={{step}}>
-                {{step}}
+              <a {{action w.transition-to step.name}} data-test-step-trigger={{step.name}}>
+                {{step.name}}
               </a>
             {{/each}}
 

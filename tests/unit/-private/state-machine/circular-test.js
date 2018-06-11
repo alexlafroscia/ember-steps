@@ -111,15 +111,22 @@ module('-private/state-machine/circular', function() {
   });
 
   module('.stepTransitions', function() {
-    test('exposes an array of step names', function(assert) {
+    test('exposes an array of step objects', function(assert) {
       const m = new StateMachine();
       m.addStep('foo');
       m.addStep('bar');
-      assert.deepEqual(m.get('stepTransitions'), ['foo', 'bar']);
+      assert.deepEqual(m.get('stepTransitions').map(node => node.name), [
+        'foo',
+        'bar'
+      ]);
 
       m.addStep('baz');
 
-      assert.deepEqual(m.get('stepTransitions'), ['foo', 'bar', 'baz']);
+      assert.deepEqual(m.get('stepTransitions').map(node => node.name), [
+        'foo',
+        'bar',
+        'baz'
+      ]);
     });
   });
 });

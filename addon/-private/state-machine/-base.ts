@@ -7,6 +7,14 @@ import { assert } from '@ember/debug';
 
 import { StepName } from '../types';
 
+class StepNode {
+  name: StepName;
+
+  constructor(name: StepName) {
+    this.name = name;
+  }
+}
+
 /**
  * Keeps track of the order of the steps in the step manager, as well as
  * the current step.
@@ -16,7 +24,7 @@ import { StepName } from '../types';
  * @hide
  */
 export default abstract class BaseStateMachine extends EmberObject {
-  protected stepTransitions: MutableArray<StepName> = A();
+  protected stepTransitions: MutableArray<StepNode> = A();
 
   currentStep!: StepName;
 
@@ -33,7 +41,8 @@ export default abstract class BaseStateMachine extends EmberObject {
   }
 
   addStep(name: StepName) {
-    this.stepTransitions.pushObject(name);
+    const node = new StepNode(name);
+    this.stepTransitions.pushObject(node);
 
     if (!this.currentStep) {
       set(this, 'currentStep', name);
@@ -41,7 +50,12 @@ export default abstract class BaseStateMachine extends EmberObject {
   }
 
   removeStep(name: StepName) {
-    const index = this.stepTransitions.indexOf(name);
+    const node = this.stepTransitions.find(node => node.name === name);
+
+    assert('Could not find a step of that name', !!node);
+
+    const index = this.stepTransitions.indexOf(node!);
+
     this.stepTransitions.removeAt(index);
   }
 
@@ -49,11 +63,13 @@ export default abstract class BaseStateMachine extends EmberObject {
 
   abstract pickPrevious(currentStep?: StepName): StepName | undefined;
 
-  activate(name: StepName) {
-    assert('No step name was provided', isPresent(name));
+  activate(step: StepNode | StepName) {
+    const name = step instanceof StepNode ? step.name : step;
+
+    assert('No step name was provided', isPresent(step));
     assert(
       `"${name}" does not match an existing step`,
-      this.stepTransitions.includes(name)
+      this.stepTransitions.map(node => node.name).includes(name)
     );
 
     set(this, 'currentStep', name);
