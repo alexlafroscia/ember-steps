@@ -6,9 +6,11 @@ import StateMachine from './state-machine/-base';
 
 export default class StepNode {
   name: StepName;
+  context: any;
 
-  constructor(private sm: StateMachine, name: StepName) {
+  constructor(private sm: StateMachine, name: StepName, context: any) {
     this.name = name;
+    this.context = context;
   }
 
   get hasNext(): boolean {

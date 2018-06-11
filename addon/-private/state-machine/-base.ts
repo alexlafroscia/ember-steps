@@ -33,8 +33,8 @@ export default abstract class BaseStateMachine extends EmberObject {
     }
   }
 
-  addStep(name: StepName) {
-    const node = new StepNode(this, name);
+  addStep(name: StepName, context: any) {
+    const node = new StepNode(this, name, context);
     this.stepTransitions.pushObject(node);
 
     if (!this.currentStep) {
@@ -50,6 +50,14 @@ export default abstract class BaseStateMachine extends EmberObject {
     const index = this.stepTransitions.indexOf(node!);
 
     this.stepTransitions.removeAt(index);
+  }
+
+  updateContext(name: StepName, context: any) {
+    const node = this.stepTransitions.find(node => node.name === name);
+
+    assert(`"${name}" does not match an existing step`, !!node);
+
+    set(node!, 'context', context);
   }
 
   abstract pickNext(currentStep?: StepName): StepName | undefined;

@@ -19,6 +19,7 @@ export default class StepComponent extends Component {
   layout = layout;
 
   name!: StepName;
+  context!: any;
 
   currentStep!: StepName;
 
@@ -26,6 +27,7 @@ export default class StepComponent extends Component {
 
   'register-step'!: (stepComponent: StepComponent) => void;
   'remove-step'!: (stepComponent: StepComponent) => void;
+  'update-context'!: (stepComponent: StepComponent, context: any) => void;
 
   constructor() {
     super(...arguments);
@@ -42,13 +44,21 @@ export default class StepComponent extends Component {
       set(this, 'name', name);
     }
     this.addObserver('name', this, failOnNameChange);
+    this.addObserver('context', this, this.updateContext);
 
     this['register-step'](this);
   }
 
   willDestroyElement() {
     this.removeObserver('name', this, failOnNameChange);
+    this.removeObserver('context', this, this.updateContext);
     this['remove-step'](this);
+  }
+
+  private updateContext() {
+    const context = get(this, 'context');
+
+    this['update-context'](this, context);
   }
 
   /**

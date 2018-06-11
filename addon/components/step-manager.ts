@@ -113,12 +113,13 @@ export default class StepManagerComponent extends Component {
   @action
   registerStepComponent(stepComponent: StepComponent) {
     const name = get(stepComponent, 'name');
+    const context = get(stepComponent, 'context');
     const transitions = this.transitions;
 
     stepComponent.transitions = transitions;
 
     schedule('actions', () => {
-      transitions.addStep(name);
+      transitions.addStep(name, context);
     });
   }
 
@@ -129,6 +130,13 @@ export default class StepManagerComponent extends Component {
     schedule('actions', () => {
       this.transitions.removeStep(name);
     });
+  }
+
+  @action
+  updateStepContext(stepComponent: StepComponent, context: any) {
+    const name = get(stepComponent, 'name');
+
+    this.transitions.updateContext(name, context);
   }
 
   @action

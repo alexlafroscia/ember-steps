@@ -265,6 +265,76 @@ module('step-manager', function(hooks) {
           .hasText('false', 'The second step is not active');
       });
 
+      module('context', function() {
+        test('it exposes step context', async function(assert) {
+          await render(hbs`
+            {{#step-manager as |w|}}
+              {{w.step name='foo' context='bar'}}
+
+              {{#each w.steps as |step|}}
+                <p data-test-step={{step.name}}>
+                  {{step.context}}
+                </p>
+              {{/each}}
+            {{/step-manager}}
+          `);
+
+          assert.dom('[data-test-step="foo"]').hasText('bar');
+        });
+
+        test('changes to the context are bound', async function(assert) {
+          this.set('context', { prop: 'foo' });
+
+          await render(hbs`
+            {{#step-manager as |w|}}
+              {{w.step name='foo' context=context}}
+
+              {{#each w.steps as |step|}}
+                <p data-test-step={{step.name}}>
+                  {{step.context.prop}}
+                </p>
+              {{/each}}
+            {{/step-manager}}
+          `);
+
+          assert
+            .dom('[data-test-step="foo"]')
+            .hasText('foo', 'Displays the original context value');
+
+          this.set('context.prop', 'bar');
+
+          assert
+            .dom('[data-test-step="foo"]')
+            .hasText('bar', 'Displays the updated context value');
+        });
+
+        test('can handle the context object being replaced', async function(assert) {
+          this.set('context', { prop: 'foo' });
+
+          await render(hbs`
+            {{#step-manager as |w|}}
+              {{w.step name='foo' context=context}}
+
+              {{#each w.steps as |step|}}
+                <p data-test-step={{step.name}}>
+                  {{step.context.prop}}
+                </p>
+              {{/each}}
+            {{/step-manager}}
+          `);
+
+          assert
+            .dom('[data-test-step="foo"]')
+            .hasText('foo', 'Displays the original context value');
+
+          this.set('context', { prop: 'bar' });
+
+          assert
+            .dom('[data-test-step="foo"]')
+            .hasText('bar', 'Displays the updated context value');
+        });
+      });
+
       module('rendering position', function() {
         test('can render the array after the steps are defined', async function(assert) {
           await render(hbs`
