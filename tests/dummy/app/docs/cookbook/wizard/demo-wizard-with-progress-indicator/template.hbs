@@ -21,7 +21,7 @@
           {{#each w.steps as |step|}}
             <button
                 local-class="progress-dot"
-                aria-pressed={{eq w.currentStep step}}
+                aria-pressed={{step.isActive}}
                 {{action w.transition-to step}}>
             </button>
           {{/each}}
