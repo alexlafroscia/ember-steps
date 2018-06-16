@@ -250,9 +250,9 @@ module('step-manager', function(hooks) {
             {{w.step name='bar'}}
 
             {{#each w.steps as |step|}}
-              <p data-test-step={{step.name}}>
+              <button {{action w.transition-to step}} data-test-step={{step.name}}>
                 {{step.isActive}}
-              </p>
+              </button>
             {{/each}}
           {{/step-manager}}
         `);
@@ -263,6 +263,15 @@ module('step-manager', function(hooks) {
         assert
           .dom('[data-test-step="bar"]')
           .hasText('false', 'The second step is not active');
+
+        await click('button[data-test-step="bar"]');
+
+        assert
+          .dom('[data-test-step="foo"]')
+          .hasText('false', 'The first step has been deactivated');
+        assert
+          .dom('[data-test-step="bar"]')
+          .hasText('true', 'The second step has been activated');
       });
 
       test('can transition to a step by passing the node', async function(assert) {

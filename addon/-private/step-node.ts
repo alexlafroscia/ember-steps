@@ -1,14 +1,18 @@
-import { get } from '@ember/object';
+import EmberObject, { get } from '@ember/object';
 import { isPresent } from '@ember/utils';
+
+import { computed } from '@ember-decorators/object';
 
 import { StepName } from './types';
 import StateMachine from './state-machine/-base';
 
-export default class StepNode {
+export default class StepNode extends EmberObject {
   name: StepName;
   context: any;
 
   constructor(private sm: StateMachine, name: StepName, context: any) {
+    super();
+
     this.name = name;
     this.context = context;
   }
@@ -21,6 +25,7 @@ export default class StepNode {
     return isPresent(this.sm.pickPrevious(this.name));
   }
 
+  @computed('sm.currentStep')
   get isActive(): boolean {
     return get(this.sm, 'currentStep') === this.name;
   }
