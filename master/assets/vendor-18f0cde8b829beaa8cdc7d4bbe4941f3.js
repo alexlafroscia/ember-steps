@@ -9077,18 +9077,26 @@ return!t||"object"!=typeof t&&"function"!=typeof t?e:t}(this,(r.__proto__||Objec
 e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}(r,t.default),n(r,[{key:"pickNext",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:this.currentStep,t=this.stepTransitions.map(function(e){return e.name}).indexOf(e),n=this.stepTransitions.objectAt(t+1)
 if(n)return n.name}},{key:"pickPrevious",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:this.currentStep,t=this.stepTransitions.map(function(e){return e.name}).indexOf(e),n=this.stepTransitions.objectAt(t-1)
 if(n)return n.name}}]),r}()
-e.default=r}),define("ember-steps/-private/step-node",["exports"],function(e){"use strict"
+e.default=r}),define("ember-steps/-private/step-node",["exports","@ember-decorators/object"],function(e,t){"use strict"
 Object.defineProperty(e,"__esModule",{value:!0})
-var t=function(){function e(e,t){for(var n=0;n<t.length;n++){var r=t[n]
-r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(t,n,r){return n&&e(t.prototype,n),r&&e(t,r),t}}(),n=function(){function e(t,n,r){(function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")})(this,e),this.sm=t,this.name=n,this.context=r}return t(e,[{key:"hasNext",get:function(){return Ember.isPresent(this.sm.pickNext(this.name))}},{key:"hasPrevious",get:function(){return Ember.isPresent(this.sm.pickPrevious(this.name))}},{key:"isActive",get:function(){return Ember.get(this.sm,"currentStep")===this.name}}]),e}()
-e.default=n}),define("ember-steps/-private/types",[],function(){"use strict"}),define("ember-steps/components/step-manager",["exports","ember-steps/templates/components/step-manager","@ember-decorators/object","@ember-decorators/component","ember-steps/-private/state-machine/circular","ember-steps/-private/state-machine/linear"],function(e,t,n,r,i,o){"use strict"
-Object.defineProperty(e,"__esModule",{value:!0})
-var s=function(){function e(e,t){for(var n=0;n<t.length;n++){var r=t[n]
+var n=function(){function e(e,t){for(var n=0;n<t.length;n++){var r=t[n]
 r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(t,n,r){return n&&e(t.prototype,n),r&&e(t,r),t}}()
-var a="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},l=function(e,t,n,r){var i,o=arguments.length,s=o<3?t:null===r?r=Object.getOwnPropertyDescriptor(t,n):r
-if("object"===("undefined"==typeof Reflect?"undefined":a(Reflect))&&"function"==typeof Reflect.decorate)s=Reflect.decorate(e,t,n,r)
-else for(var l=e.length-1;l>=0;l--)(i=e[l])&&(s=(o<3?i(s):o>3?i(t,n,s):i(t,n))||s)
-return o>3&&s&&Object.defineProperty(t,n,s),s},u=function(e){function n(){(function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")})(this,n)
+var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},i=function(e,t,n,i){var o,s=arguments.length,a=s<3?t:null===i?i=Object.getOwnPropertyDescriptor(t,n):i
+if("object"===("undefined"==typeof Reflect?"undefined":r(Reflect))&&"function"==typeof Reflect.decorate)a=Reflect.decorate(e,t,n,i)
+else for(var l=e.length-1;l>=0;l--)(o=e[l])&&(a=(s<3?o(a):s>3?o(t,n,a):o(t,n))||a)
+return s>3&&a&&Object.defineProperty(t,n,a),a},o=function(e){function t(e,n,r){(function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")})(this,t)
+var i=function(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
+return!t||"object"!=typeof t&&"function"!=typeof t?e:t}(this,(t.__proto__||Object.getPrototypeOf(t)).call(this))
+return i.sm=e,i.name=n,i.context=r,i}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t)
+e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}(t,Ember.Object),n(t,[{key:"hasNext",get:function(){return Ember.isPresent(this.sm.pickNext(this.name))}},{key:"hasPrevious",get:function(){return Ember.isPresent(this.sm.pickPrevious(this.name))}},{key:"isActive",get:function(){return Ember.get(this.sm,"currentStep")===this.name}}]),t}()
+e.default=o,i([(0,t.computed)("sm.currentStep")],o.prototype,"isActive",null)}),define("ember-steps/-private/types",[],function(){"use strict"}),define("ember-steps/components/step-manager",["exports","ember-steps/templates/components/step-manager","@ember-decorators/object","@ember-decorators/component","ember-steps/-private/state-machine/circular","ember-steps/-private/state-machine/linear","ember-steps/-private/step-node"],function(e,t,n,r,i,o,s){"use strict"
+Object.defineProperty(e,"__esModule",{value:!0})
+var a=function(){function e(e,t){for(var n=0;n<t.length;n++){var r=t[n]
+r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(t,n,r){return n&&e(t.prototype,n),r&&e(t,r),t}}()
+var l="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},u=function(e,t,n,r){var i,o=arguments.length,s=o<3?t:null===r?r=Object.getOwnPropertyDescriptor(t,n):r
+if("object"===("undefined"==typeof Reflect?"undefined":l(Reflect))&&"function"==typeof Reflect.decorate)s=Reflect.decorate(e,t,n,r)
+else for(var a=e.length-1;a>=0;a--)(i=e[a])&&(s=(o<3?i(s):o>3?i(t,n,s):i(t,n))||s)
+return o>3&&s&&Object.defineProperty(t,n,s),s},c=function(e){function n(){(function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")})(this,n)
 var e=function(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
 return!t||"object"!=typeof t&&"function"!=typeof t?e:t}(this,(n.__proto__||Object.getPrototypeOf(n)).apply(this,arguments))
 e.layout=t.default
@@ -9096,15 +9104,16 @@ var r=Ember.get(e,"initialStep")||Ember.get(e,"currentStep")
 Ember.isPresent(e.linear)||(e.linear=!0)
 var s=e.linear?o.default:i.default
 return Ember.set(e,"transitions",new s(r)),e}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t)
-e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}(n,Ember.Component),s(n,[{key:"didUpdateAttrs",value:function(){var e=this.currentStep
+e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}(n,Ember.Component),a(n,[{key:"didUpdateAttrs",value:function(){var e=this.currentStep
 if(void 0===e){var t=Ember.get(this.transitions,"firstStep")
 this.transitions.activate(t)}else this.transitions.activate(e)}},{key:"registerStepComponent",value:function(e){var t=Ember.get(e,"name"),n=Ember.get(e,"context"),r=this.transitions
 e.transitions=r,Ember.run.schedule("actions",function(){r.addStep(t,n)})}},{key:"removeStepComponent",value:function(e){var t=this,n=Ember.get(e,"name")
 Ember.run.schedule("actions",function(){t.transitions.removeStep(n)})}},{key:"updateStepContext",value:function(e,t){var n=Ember.get(e,"name")
-this.transitions.updateContext(n,t)}},{key:"transitionTo",value:function(e){Ember.isEmpty(this.currentStep)||Ember.set(this,"currentStep",e),this.transitions.activate(e)}},{key:"transitionToNext",value:function(){var e=this.transitions.pickNext()
+this.transitions.updateContext(n,t)}},{key:"transitionTo",value:function(e){var t=e instanceof s.default?e.name:e
+Ember.isEmpty(this.currentStep)||Ember.set(this,"currentStep",t),this.transitions.activate(t)}},{key:"transitionToNext",value:function(){var e=this.transitions.pickNext()
 this.transitionTo(e)}},{key:"transitionToPrevious",value:function(){var e=this.transitions.pickPrevious()
 this.transitionTo(e)}},{key:"hasNextStep",get:function(){return Ember.isPresent(this.transitions.pickNext())}},{key:"hasPreviousStep",get:function(){return Ember.isPresent(this.transitions.pickPrevious())}}]),n}()
-l([(0,n.computed)("transitions.{currentStep,length}")],u.prototype,"hasNextStep",null),l([(0,n.computed)("transitions.{currentStep,length}")],u.prototype,"hasPreviousStep",null),l([n.action],u.prototype,"registerStepComponent",null),l([n.action],u.prototype,"removeStepComponent",null),l([n.action],u.prototype,"updateStepContext",null),l([n.action],u.prototype,"transitionTo",null),l([n.action],u.prototype,"transitionToNext",null),l([n.action],u.prototype,"transitionToPrevious",null),u=l([(0,r.tagName)("")],u),e.default=u}),define("ember-steps/components/step-manager/step",["exports","ember-steps/templates/components/step-manager/step","@ember-decorators/object","@ember-decorators/component"],function(e,t,n,r){"use strict"
+u([(0,n.computed)("transitions.{currentStep,length}")],c.prototype,"hasNextStep",null),u([(0,n.computed)("transitions.{currentStep,length}")],c.prototype,"hasPreviousStep",null),u([n.action],c.prototype,"registerStepComponent",null),u([n.action],c.prototype,"removeStepComponent",null),u([n.action],c.prototype,"updateStepContext",null),u([n.action],c.prototype,"transitionTo",null),u([n.action],c.prototype,"transitionToNext",null),u([n.action],c.prototype,"transitionToPrevious",null),c=u([(0,r.tagName)("")],c),e.default=c}),define("ember-steps/components/step-manager/step",["exports","ember-steps/templates/components/step-manager/step","@ember-decorators/object","@ember-decorators/component"],function(e,t,n,r){"use strict"
 Object.defineProperty(e,"__esModule",{value:!0})
 var i=function(){function e(e,t){for(var n=0;n<t.length;n++){var r=t[n]
 r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}return function(t,n,r){return n&&e(t.prototype,n),r&&e(t,r),t}}()
