@@ -13,6 +13,7 @@ import CircularStateMachine from '../-private/state-machine/circular';
 import LinearStateMachine from '../-private/state-machine/linear';
 
 import { StepName } from '../-private/types';
+import StepNode from '../-private/step-node';
 import StepComponent from './step-manager/step';
 
 /**
@@ -140,14 +141,16 @@ export default class StepManagerComponent extends Component {
   }
 
   @action
-  transitionTo(to: StepName) {
+  transitionTo(to: StepName | StepNode) {
+    const destination = to instanceof StepNode ? to.name : to;
+
     // If `currentStep` is present, it's probably something the user wants
     // two-way-bound with the new value
     if (!isEmpty(this.currentStep)) {
-      set(this, 'currentStep', to);
+      set(this, 'currentStep', destination);
     }
 
-    this.transitions.activate(to);
+    this.transitions.activate(destination);
   }
 
   @action

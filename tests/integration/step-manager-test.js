@@ -265,6 +265,33 @@ module('step-manager', function(hooks) {
           .hasText('false', 'The second step is not active');
       });
 
+      test('can transition to a step by passing the node', async function(assert) {
+        await render(hbs`
+          {{#step-manager as |w|}}
+            {{#w.step name='foo'}}
+              <p data-test-step="foo">Foo</p>
+            {{/w.step}}
+            {{#w.step name='bar'}}
+              <p data-test-step="bar">Bar</p>
+            {{/w.step}}
+
+            {{#each w.steps as |step|}}
+              <button {{action w.transition-to step}} data-test-transition-to={{step.name}}>
+                {{step.name}}
+              </button>
+            {{/each}}
+          {{/step-manager}}
+        `);
+
+        assert.dom('[data-test-step="foo"]').exists();
+        assert.dom('[data-test-step="bar"]').doesNotExist();
+
+        await click('button[data-test-transition-to="bar"]');
+
+        assert.dom('[data-test-step="foo"]').doesNotExist();
+        assert.dom('[data-test-step="bar"]').exists();
+      });
+
       module('context', function() {
         test('it exposes step context', async function(assert) {
           await render(hbs`
