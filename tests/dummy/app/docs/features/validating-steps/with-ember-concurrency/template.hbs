@@ -10,7 +10,7 @@
         {{#control-group}}
           <button
             disabled={{checkPassword.isRunning}}
-            onClick={{validate-transition w.transition-to-next with=(perform checkPassword)}}
+            onclick={{validate-transition w.transition-to-next with=(perform checkPassword)}}
           >
             Check Password
           </button>
