@@ -42,6 +42,7 @@ module.exports = {
       files: [
         'index.js',
         'testem.js',
+        'blueprints/*/index.js',
         'ember-cli-build.js',
         'commitlint.config.js',
         'config/**/*.js',
