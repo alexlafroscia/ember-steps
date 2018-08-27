@@ -1,6 +1,6 @@
 import EmberObject, { set } from '@ember/object';
 import MutableArray from '@ember/array/mutable';
-import { isPresent } from '@ember/utils';
+import { isBlank, isPresent } from '@ember/utils';
 import { A } from '@ember/array';
 import { readOnly } from '@ember-decorators/object/computed';
 import { assert } from '@ember/debug';
@@ -25,11 +25,11 @@ export default abstract class BaseStateMachine extends EmberObject {
 
   @readOnly('stepTransitions.firstObject') firstStep!: StepName;
 
-  constructor(initialStep?: StepName) {
+  constructor(initialStepName?: StepName) {
     super();
 
-    if (initialStep) {
-      set(this, 'currentStep', initialStep);
+    if (isPresent(initialStepName)) {
+      set(this, 'currentStep', initialStepName!);
     }
   }
 
@@ -37,7 +37,7 @@ export default abstract class BaseStateMachine extends EmberObject {
     const node = new StepNode(this, name, context);
     this.stepTransitions.pushObject(node);
 
-    if (!this.currentStep) {
+    if (isBlank(this.currentStep)) {
       set(this, 'currentStep', name);
     }
   }
