@@ -34,15 +34,23 @@
       "ember-steps/*": [
         "addon/*"
       ],
+      "ember-steps/test-support": [
+        "addon-test-support"
+      ],
+      "ember-steps/test-support/*": [
+        "addon-test-support/*"
+      ],
       "*": [
         "types/*"
       ]
     }
   },
   "include": [
-    "app",
-    "addon",
-    "tests",
-    "types"
+    "app/**/*",
+    "addon/**/*",
+    "tests/**/*",
+    "types/**/*",
+    "test-support/**/*",
+    "addon-test-support/**/*"
   ]
 }
