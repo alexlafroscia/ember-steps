@@ -15,6 +15,14 @@ module('-private/state-machine/linear', function() {
 
       assert.equal(m.get('currentStep'), 'foo');
     });
+
+    test('handling indexes as step names', function(assert) {
+      const m = new StateMachine(0);
+      m.addStep(0);
+      m.addStep(1);
+
+      assert.equal(m.get('currentStep'), 0);
+    });
   });
 
   module('#pickNext', function() {
@@ -43,6 +51,14 @@ module('-private/state-machine/linear', function() {
       m.addStep('bar');
 
       assert.equal(m.pickNext('bar'), null);
+    });
+
+    test('when the next step has a falsy name', function(assert) {
+      const m = new StateMachine(1);
+      m.addStep(1);
+      m.addStep(0);
+
+      assert.equal(m.pickNext(), 0);
     });
   });
 
@@ -73,6 +89,16 @@ module('-private/state-machine/linear', function() {
       m.addStep('bar');
 
       assert.equal(m.pickPrevious('bar'), 'foo');
+    });
+
+    test('when the previous step has a falsy name', function(assert) {
+      const m = new StateMachine(0);
+      m.addStep(0);
+      m.addStep(1);
+
+      m.activate(1);
+
+      assert.equal(m.pickPrevious(), 0);
     });
   });
 
