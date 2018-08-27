@@ -9049,9 +9049,9 @@ else for(var l=e.length-1;l>=0;l--)(o=e[l])&&(a=(s<3?o(a):s>3?o(t,n,a):o(t,n))||
 return s>3&&a&&Object.defineProperty(t,n,a),a},s=function(e){function t(e){(function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")})(this,t)
 var n=function(e,t){if(!e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
 return!t||"object"!=typeof t&&"function"!=typeof t?e:t}(this,(t.__proto__||Object.getPrototypeOf(t)).call(this))
-return n.stepTransitions=Ember.A(),e&&Ember.set(n,"currentStep",e),n}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t)
+return n.stepTransitions=Ember.A(),Ember.isPresent(e)&&Ember.set(n,"currentStep",e),n}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function, not "+typeof t)
 e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,enumerable:!1,writable:!0,configurable:!0}}),t&&(Object.setPrototypeOf?Object.setPrototypeOf(e,t):e.__proto__=t)}(t,Ember.Object),r(t,[{key:"addStep",value:function(e,t){var r=new n.default(this,e,t)
-this.stepTransitions.pushObject(r),this.currentStep||Ember.set(this,"currentStep",e)}},{key:"removeStep",value:function(e){var t=this.stepTransitions.find(function(t){return t.name===e}),n=this.stepTransitions.indexOf(t)
+this.stepTransitions.pushObject(r),Ember.isBlank(this.currentStep)&&Ember.set(this,"currentStep",e)}},{key:"removeStep",value:function(e){var t=this.stepTransitions.find(function(t){return t.name===e}),n=this.stepTransitions.indexOf(t)
 this.stepTransitions.removeAt(n)}},{key:"updateContext",value:function(e,t){var n=this.stepTransitions.find(function(t){return t.name===e})
 Ember.set(n,"context",t)}},{key:"activate",value:function(e){var t=e instanceof n.default?e.name:e
 Ember.set(this,"currentStep",t)}}]),t}()
