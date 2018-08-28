@@ -1,8 +1,8 @@
 import Component from '@ember/component';
 // @ts-ignore: Ignore import of compiled template
 import layout from '../templates/components/step-manager';
-import { get, set } from '@ember/object';
-import { isEmpty, isPresent } from '@ember/utils';
+import { get, getProperties, set } from '@ember/object';
+import { isPresent, isNone } from '@ember/utils';
 import { schedule } from '@ember/runloop';
 import { assert } from '@ember/debug';
 import { action, computed } from '@ember-decorators/object';
@@ -77,7 +77,13 @@ export default class StepManagerComponent extends Component {
   constructor() {
     super(...arguments);
 
-    const initialStep = get(this, 'initialStep') || get(this, 'currentStep');
+    const { initialStep, currentStep } = getProperties(
+      this,
+      'initialStep',
+      'currentStep'
+    );
+
+    const startingStep = isNone(initialStep) ? currentStep : initialStep;
 
     if (!isPresent(this.linear)) {
       this.linear = true;
@@ -87,17 +93,17 @@ export default class StepManagerComponent extends Component {
       ? LinearStateMachine
       : CircularStateMachine;
 
-    set(this, 'transitions', new StateMachine(initialStep));
+    set(this, 'transitions', new StateMachine(startingStep));
   }
 
   @computed('transitions.{currentStep,length}')
   get hasNextStep() {
-    return isPresent(this.transitions.pickNext());
+    return !isNone(this.transitions.pickNext());
   }
 
   @computed('transitions.{currentStep,length}')
   get hasPreviousStep() {
-    return isPresent(this.transitions.pickPrevious());
+    return !isNone(this.transitions.pickPrevious());
   }
 
   didUpdateAttrs() {
@@ -146,7 +152,7 @@ export default class StepManagerComponent extends Component {
 
     // If `currentStep` is present, it's probably something the user wants
     // two-way-bound with the new value
-    if (!isEmpty(this.currentStep)) {
+    if (!isNone(this.currentStep)) {
       set(this, 'currentStep', destination);
     }
 
@@ -157,7 +163,7 @@ export default class StepManagerComponent extends Component {
   transitionToNext() {
     const to = this.transitions.pickNext();
 
-    assert('There is no next step', !!to);
+    assert('There is no next step', !isNone(to));
 
     this.transitionTo(to!);
   }
@@ -166,7 +172,7 @@ export default class StepManagerComponent extends Component {
   transitionToPrevious() {
     const to = this.transitions.pickPrevious();
 
-    assert('There is no previous step', !!to);
+    assert('There is no previous step', !isNone(to));
 
     this.transitionTo(to!);
   }

@@ -2,7 +2,7 @@ import Component from '@ember/component';
 // @ts-ignore: Ignore import of compiled template
 import layout from '../../templates/components/step-manager/step';
 import { get, set } from '@ember/object';
-import { isEmpty, isPresent } from '@ember/utils';
+import { isPresent } from '@ember/utils';
 import { assert } from '@ember/debug';
 import { computed } from '@ember-decorators/object';
 import { tagName } from '@ember-decorators/component';
@@ -33,9 +33,10 @@ export default class StepComponent extends Component {
     super(...arguments);
 
     const nameAttribute = get(this, 'name');
-    const name = isEmpty(nameAttribute)
-      ? Symbol('generated step name')
-      : nameAttribute;
+    const name =
+      typeof nameAttribute === 'undefined'
+        ? Symbol('generated step name')
+        : nameAttribute;
 
     assert('Step name cannot be a boolean', typeof name !== 'boolean');
     assert('Step name cannot be an object', typeof name !== 'object');

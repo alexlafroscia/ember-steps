@@ -840,4 +840,44 @@ module('step-manager', function(hooks) {
         .exists('The initial step is still visible');
     });
   });
+
+  module('edge cases', function() {
+    test('it handles steps with falsy names', async function(assert) {
+      await render(hbs`
+        {{#step-manager initialStep='' as |w|}}
+          {{#w.step name=''}}
+            <div data-test-empty-string></div>
+          {{/w.step}}
+
+          {{#w.step name=0}}
+            <div data-test-zero></div>
+          {{/w.step}}
+
+          <button {{action w.transition-to-previous}} data-test-previous>
+            Previous step
+          </button>
+
+          <button {{action w.transition-to-next}} data-test-next>
+            Next step
+          </button>
+        {{/step-manager}}
+      `);
+
+      assert
+        .dom('[data-test-empty-string]')
+        .exists('Can start on a step with a falsy name');
+
+      await click('[data-test-next]');
+
+      assert
+        .dom('[data-test-zero]')
+        .exists('Can transition to a next step with a falsy name');
+
+      await click('[data-test-previous]');
+
+      assert
+        .dom('[data-test-empty-string]')
+        .exists('Can transition to a previous step with a falsy name');
+    });
+  });
 });

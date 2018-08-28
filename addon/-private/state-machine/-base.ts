@@ -1,9 +1,9 @@
 import EmberObject, { set } from '@ember/object';
 import MutableArray from '@ember/array/mutable';
-import { isBlank, isPresent } from '@ember/utils';
 import { A } from '@ember/array';
 import { readOnly } from '@ember-decorators/object/computed';
 import { assert } from '@ember/debug';
+import { isNone } from '@ember/utils';
 
 import { StepName } from '../types';
 import StepNode from '../step-node';
@@ -28,7 +28,7 @@ export default abstract class BaseStateMachine extends EmberObject {
   constructor(initialStepName?: StepName) {
     super();
 
-    if (isPresent(initialStepName)) {
+    if (!isNone(initialStepName)) {
       set(this, 'currentStep', initialStepName!);
     }
   }
@@ -37,7 +37,7 @@ export default abstract class BaseStateMachine extends EmberObject {
     const node = new StepNode(this, name, context);
     this.stepTransitions.pushObject(node);
 
-    if (isBlank(this.currentStep)) {
+    if (typeof this.currentStep === 'undefined') {
       set(this, 'currentStep', name);
     }
   }
@@ -67,7 +67,7 @@ export default abstract class BaseStateMachine extends EmberObject {
   activate(step: StepNode | StepName) {
     const name = step instanceof StepNode ? step.name : step;
 
-    assert('No step name was provided', isPresent(step));
+    assert('No step name was provided', !isNone(step));
     assert(
       `"${name}" does not match an existing step`,
       this.stepTransitions.map(node => node.name).includes(name)
