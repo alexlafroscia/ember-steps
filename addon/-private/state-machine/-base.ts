@@ -1,11 +1,12 @@
-import EmberObject, { set } from '@ember/object';
+import EmberObject, { set, get } from '@ember/object';
 import MutableArray from '@ember/array/mutable';
 import { A } from '@ember/array';
+import { computed } from '@ember-decorators/object';
 import { readOnly } from '@ember-decorators/object/computed';
 import { assert } from '@ember/debug';
 import { isNone } from '@ember/utils';
 
-import { StepName } from '../types';
+import { StepName, ActivationHook } from '../types';
 import StepNode from '../step-node';
 
 /**
@@ -25,6 +26,13 @@ export default abstract class BaseStateMachine extends EmberObject {
 
   @readOnly('stepTransitions.firstObject') firstStep!: StepName;
 
+  @computed('currentStep')
+  get currentStepNode(): StepNode | undefined {
+    const currentStep = get(this, 'currentStep');
+
+    return this.stepTransitions.find(stepNode => stepNode.name === currentStep);
+  }
+
   constructor(initialStepName?: StepName) {
     super();
 
@@ -33,8 +41,13 @@ export default abstract class BaseStateMachine extends EmberObject {
     }
   }
 
-  addStep(name: StepName, context: any) {
-    const node = new StepNode(this, name, context);
+  addStep(
+    name: StepName,
+    context: any,
+    onActivate: ActivationHook,
+    onDeactivate: ActivationHook
+  ) {
+    const node = new StepNode(this, name, context, onActivate, onDeactivate);
     this.stepTransitions.pushObject(node);
 
     if (typeof this.currentStep === 'undefined') {

@@ -121,12 +121,14 @@ export default class StepManagerComponent extends Component {
   registerStepComponent(stepComponent: StepComponent) {
     const name = get(stepComponent, 'name');
     const context = get(stepComponent, 'context');
+    const onActivate = get(stepComponent, 'onActivate');
+    const onDeactivate = get(stepComponent, 'onDeactivate');
     const transitions = this.transitions;
 
     stepComponent.transitions = transitions;
 
     schedule('actions', () => {
-      transitions.addStep(name, context);
+      transitions.addStep(name, context, onActivate, onDeactivate);
     });
   }
 
@@ -149,6 +151,11 @@ export default class StepManagerComponent extends Component {
   @action
   transitionTo(to: StepName | StepNode) {
     const destination = to instanceof StepNode ? to.name : to;
+    let currentStepNode = get(this, 'transitions.currentStepNode');
+
+    if (currentStepNode && currentStepNode.onDeactivate) {
+      currentStepNode.onDeactivate();
+    }
 
     // If `currentStep` is present, it's probably something the user wants
     // two-way-bound with the new value
@@ -157,6 +164,12 @@ export default class StepManagerComponent extends Component {
     }
 
     this.transitions.activate(destination);
+
+    currentStepNode = get(this, 'transitions.currentStepNode');
+
+    if (currentStepNode && currentStepNode.onActivate) {
+      currentStepNode.onActivate();
+    }
   }
 
   @action
