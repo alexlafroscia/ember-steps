@@ -3,18 +3,28 @@ import { isPresent } from '@ember/utils';
 
 import { computed } from '@ember-decorators/object';
 
-import { StepName } from './types';
+import { StepName, ActivationHook } from './types';
 import StateMachine from './state-machine/-base';
 
 export default class StepNode extends EmberObject {
   name: StepName;
   context: any;
+  onActivate: ActivationHook;
+  onDeactivate: ActivationHook;
 
-  constructor(private sm: StateMachine, name: StepName, context: any) {
+  constructor(
+    private sm: StateMachine,
+    name: StepName,
+    context: any,
+    onActivate: ActivationHook,
+    onDeactivate: ActivationHook
+  ) {
     super();
 
     this.name = name;
     this.context = context;
+    this.onActivate = onActivate;
+    this.onDeactivate = onDeactivate;
   }
 
   get hasNext(): boolean {

@@ -8,7 +8,7 @@ import { computed } from '@ember-decorators/object';
 import { tagName } from '@ember-decorators/component';
 
 import StateMachine from '../../-private/state-machine/-base';
-import { StepName } from '../../-private/types';
+import { StepName, ActivationHook } from '../../-private/types';
 
 function failOnNameChange() {
   assert('The `name` property should never change');
@@ -20,6 +20,8 @@ export default class StepComponent extends Component {
 
   name!: StepName;
   context!: any;
+  onActivate!: ActivationHook;
+  onDeactivate!: ActivationHook;
 
   currentStep!: StepName;
 

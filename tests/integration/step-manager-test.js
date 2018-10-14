@@ -3,6 +3,7 @@ import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { click, findAll, render } from '@ember/test-helpers';
 import { A } from '@ember/array';
+import td from 'testdouble';
 
 module('step-manager', function(hooks) {
   setupRenderingTest(hooks);
@@ -838,6 +839,48 @@ module('step-manager', function(hooks) {
       assert
         .dom('[data-test-step="foo"]')
         .exists('The initial step is still visible');
+    });
+  });
+
+  module('activation hooks', function() {
+    test('onDeactivate action gets called', async function(assert) {
+      const onDeactivate = td.function();
+      this.set('onDeactivate', onDeactivate);
+
+      await render(hbs`
+        {{#step-manager as |w|}}
+          {{w.step name='first' onDeactivate=(action onDeactivate)}}
+          {{w.step name='second'}}
+
+          <button {{action w.transition-to 'second'}}>
+            Next
+          </button>
+        {{/step-manager}}
+      `);
+
+      await click('button');
+
+      assert.verify(onDeactivate());
+    });
+
+    test('onActivate action gets called', async function(assert) {
+      const onActivate = td.function();
+      this.set('onActivate', onActivate);
+
+      await render(hbs`
+        {{#step-manager as |w|}}
+          {{w.step name='first'}}
+          {{w.step name='second' onActivate=(action onActivate)}}
+
+          <button {{action w.transition-to 'second'}}>
+            Next
+          </button>
+        {{/step-manager}}
+      `);
+
+      await click('button');
+
+      assert.verify(onActivate());
     });
   });
 
