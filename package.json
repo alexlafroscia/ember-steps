@@ -26,12 +26,13 @@
     "@semantic-release/git": "^7.0.4",
     "@semantic-release/github": "^5.0.6",
     "@semantic-release/npm": "^5.0.4",
-    "@types/ember": "^2.8.26",
-    "@types/ember-qunit": "^3.0.2",
-    "@types/ember-test-helpers": "^0.7.1",
+    "@types/ember": "^3.0.24",
+    "@types/ember-qunit": "^3.4.2",
+    "@types/ember-test-helpers": "^1.0.3",
     "@types/ember-testing-helpers": "^0.0.3",
-    "@types/qunit": "^2.5.1",
-    "@types/rsvp": "^4.0.1",
+    "@types/ember__test-helpers": "^0.7.5",
+    "@types/qunit": "^2.5.3",
+    "@types/rsvp": "^4.0.2",
     "broccoli-asset-rev": "^2.7.0",
     "chai": "^4.1.2",
     "ember-cli": "~3.5.0",
@@ -51,7 +52,7 @@
     "ember-cli-test-loader": "^2.1.0",
     "ember-cli-testdouble": "^0.1.3",
     "ember-cli-testdouble-qunit": "^2.0.2",
-    "ember-cli-typescript": "^1.3.2",
+    "ember-cli-typescript": "^1.4.4",
     "ember-cli-uglify": "^2.1.0",
     "ember-composable-helpers": "^2.1.0",
     "ember-concurrency": "^0.8.17",
@@ -82,8 +83,8 @@
     "semantic-release": "^15.9.17",
     "testdouble": "^2.0.0",
     "travis-deploy-once": "^5.0.0",
-    "typescript": "^2.9.1",
-    "typescript-eslint-parser": "^15.0.0"
+    "typescript": "^3.1.3",
+    "typescript-eslint-parser": "^20.0.0"
   },
   "dependencies": {
     "@ember-decorators/component": "^2.1.0",
@@ -92,7 +93,11 @@
     "ember-cli-htmlbars": "^3.0.0"
   },
   "resolutions": {
-    "@types/ember": "^2.8.26"
+    "@types/ember": "^3.0.24",
+    "@types/ember-test-helpers": "^1.0.3",
+    "@types/handlebars": "^4.0.39",
+    "@types/jquery": "^3.3.17",
+    "@types/rsvp": "^4.0.2"
   },
   "keywords": ["ember-addon"],
   "repository": "https://github.com/alexlafroscia/ember-steps",
