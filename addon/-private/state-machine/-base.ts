@@ -7,7 +7,9 @@ import { assert } from '@ember/debug';
 import { isNone } from '@ember/utils';
 
 import { StepName, ActivationHook } from '../types';
-import StepNode from '../step-node';
+import StepNode, {
+  PublicProperty as PublicStepNodeProperty
+} from '../step-node';
 
 /**
  * Keeps track of the order of the steps in the step manager, as well as
@@ -65,12 +67,12 @@ export default abstract class BaseStateMachine extends EmberObject {
     this.stepTransitions.removeAt(index);
   }
 
-  updateContext(name: StepName, context: any) {
+  updateStepNode(name: StepName, field: PublicStepNodeProperty, value: any) {
     const node = this.stepTransitions.find(node => node.name === name);
 
     assert(`"${name}" does not match an existing step`, !!node);
 
-    set(node!, 'context', context);
+    set(node!, field, value);
   }
 
   abstract pickNext(currentStep?: StepName): StepName | undefined;

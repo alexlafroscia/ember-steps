@@ -13,7 +13,9 @@ import CircularStateMachine from '../-private/state-machine/circular';
 import LinearStateMachine from '../-private/state-machine/linear';
 
 import { StepName } from '../-private/types';
-import StepNode from '../-private/step-node';
+import StepNode, {
+  PublicProperty as PublicStepNodeProperty
+} from '../-private/step-node';
 import StepComponent from './step-manager/step';
 
 /**
@@ -142,10 +144,14 @@ export default class StepManagerComponent extends Component {
   }
 
   @action
-  updateStepContext(stepComponent: StepComponent, context: any) {
+  updateStepNode(
+    stepComponent: StepComponent,
+    field: PublicStepNodeProperty,
+    value: any
+  ) {
     const name = get(stepComponent, 'name');
 
-    this.transitions.updateContext(name, context);
+    this.transitions.updateStepNode(name, field, value);
   }
 
   @action

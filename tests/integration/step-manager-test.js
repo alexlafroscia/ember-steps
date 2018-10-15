@@ -882,6 +882,54 @@ module('step-manager', function(hooks) {
 
       assert.verify(onActivate());
     });
+
+    test('onActivate action can be updated', async function(assert) {
+      const onActivate = td.function();
+      this.set('onActivate', onActivate);
+
+      const updatedOnActivate = td.function();
+
+      await render(hbs`
+        {{#step-manager as |w|}}
+          {{w.step name='first'}}
+          {{w.step name='second' onActivate=(action onActivate)}}
+
+          <button {{action w.transition-to 'second'}}>
+            Next
+          </button>
+        {{/step-manager}}
+      `);
+
+      this.set('onActivate', updatedOnActivate);
+      await click('button');
+
+      assert.verify(updatedOnActivate());
+      assert.verify(onActivate(), { times: 0, ignoreExtraArgs: true });
+    });
+
+    test('onDeactivate action can be updated', async function(assert) {
+      const onDeactivate = td.function();
+      this.set('onDeactivate', onDeactivate);
+
+      const updatedOnDeactivate = td.function();
+
+      await render(hbs`
+        {{#step-manager as |w|}}
+          {{w.step name='first' onDeactivate=(action onDeactivate)}}
+          {{w.step name='second'}}
+
+          <button {{action w.transition-to 'second'}}>
+            Next
+          </button>
+        {{/step-manager}}
+      `);
+
+      this.set('onDeactivate', updatedOnDeactivate);
+      await click('button');
+
+      assert.verify(updatedOnDeactivate());
+      assert.verify(onDeactivate(), { times: 0, ignoreExtraArgs: true });
+    });
   });
 
   module('edge cases', function() {

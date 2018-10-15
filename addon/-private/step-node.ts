@@ -6,6 +6,8 @@ import { computed } from '@ember-decorators/object';
 import { StepName, ActivationHook } from './types';
 import StateMachine from './state-machine/-base';
 
+export type PublicProperty = 'context' | 'onActivate' | 'onDeactivate';
+
 export default class StepNode extends EmberObject {
   name: StepName;
   context: any;
