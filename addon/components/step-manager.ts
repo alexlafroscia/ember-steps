@@ -157,7 +157,8 @@ export default class StepManagerComponent extends Component {
   @action
   transitionTo(to: StepName | StepNode) {
     const destination = to instanceof StepNode ? to.name : to;
-    let currentStepNode = get(this, 'transitions.currentStepNode');
+    const transitions = get(this, 'transitions');
+    let currentStepNode = get(transitions, 'currentStepNode');
 
     if (currentStepNode && currentStepNode.onDeactivate) {
       currentStepNode.onDeactivate();
@@ -171,7 +172,7 @@ export default class StepManagerComponent extends Component {
 
     this.transitions.activate(destination);
 
-    currentStepNode = get(this, 'transitions.currentStepNode');
+    currentStepNode = get(transitions, 'currentStepNode');
 
     if (currentStepNode && currentStepNode.onActivate) {
       currentStepNode.onActivate();
