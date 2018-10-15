@@ -35,9 +35,9 @@ stages:
   - lint
   - test
   - name: release
-    if: branch = master
+    if: type != pull_request AND branch = master
   - name: docs
-    if: branch = master OR env(TRAVIS_TAG) is present
+    if: type != pull_request AND (branch = master OR env(TRAVIS_TAG) is present)
 
 jobs:
   include:
