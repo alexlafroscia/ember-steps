@@ -3,7 +3,7 @@
 'use strict';
 
 module.exports = {
-  name: 'ember-steps',
+  name: require('./package').name,
 
   shouldIncludeChildAddon(addon) {
     return addon.name.indexOf('dummy') === -1;

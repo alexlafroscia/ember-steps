@@ -1,8 +1,9 @@
-{{yield (hash
-    step=(component 'step-manager/step'
-      register-step=(action 'registerStepComponent')
-      remove-step=(action 'removeStepComponent')
-      update-step-node=(action 'updateStepNode')
+{{yield
+  (hash
+    step=(component "step-manager/step"
+      register-step=(action "registerStepComponent")
+      remove-step=(action "removeStepComponent")
+      update-step-node=(action "updateStepNode")
       currentStep=transitions.currentStep
       transitions=transitions
     )
@@ -10,8 +11,8 @@
     hasPreviousStep=hasPreviousStep
     currentStep=transitions.currentStep
     steps=transitions.stepTransitions
-    transition-to=(action 'transitionTo')
-    transition-to-next=(action 'transitionToNext')
-    transition-to-previous=(action 'transitionToPrevious')
+    transition-to=(action "transitionTo")
+    transition-to-next=(action "transitionToNext")
+    transition-to-previous=(action "transitionToPrevious")
   )
 }}
