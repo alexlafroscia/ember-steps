@@ -1,27 +1,33 @@
 {{docs-header}}
 
-{{#docs-viewer classNames=(local-class 'viewer') as |viewer|}}
+{{#docs-viewer classNames=(local-class "viewer") as |viewer|}}
   {{#viewer.nav as |nav|}}
-    {{nav.item 'Overview' 'docs.index'}}
-    {{nav.item 'Cookbook' 'docs.cookbook.index'}}
+    {{nav.item "Overview" "docs.index"}}
+    {{nav.item "Cookbook" "docs.cookbook.index"}}
 
-    {{nav.section 'Features'}}
+    {{nav.section "Features"}}
     {{#nav.subnav as |features|}}
-      {{features.item 'Validating Steps' 'docs.features.validating-steps'}}
-      {{features.item 'Linear & Cyclical Flow' 'docs.features.state-manager'}}
-      {{features.item 'Inactive State' 'docs.features.inactive'}}
+      {{features.item "Validating Steps" "docs.features.validating-steps"}}
+      {{features.item "Linear & Cyclical Flow" "docs.features.state-manager"}}
+      {{features.item "Inactive State" "docs.features.inactive"}}
     {{/nav.subnav}}
 
-    {{nav.section 'Cookbook'}}
+    {{nav.section "Cookbook"}}
     {{#nav.subnav as |cookbook|}}
-      {{cookbook.item 'Dynamic Definition of Steps' 'docs.cookbook.dynamic-definition'}}
-      {{cookbook.item 'Tabbed Interface' 'docs.cookbook.tabs'}}
+      {{cookbook.item
+        "Dynamic Definition of Steps"
+        "docs.cookbook.dynamic-definition"
+      }}
+      {{cookbook.item "Tabbed Interface" "docs.cookbook.tabs"}}
       {{#nav.subnav as |wizard|}}
-        {{wizard.item 'Bound to Query Param' 'docs.cookbook.tabs.query-param'}}
+        {{wizard.item "Bound to Query Param" "docs.cookbook.tabs.query-param"}}
       {{/nav.subnav}}
-      {{cookbook.item 'Wizard' 'docs.cookbook.wizard'}}
+      {{cookbook.item "Wizard" "docs.cookbook.wizard"}}
       {{#nav.subnav as |wizard|}}
-        {{wizard.item 'With Progress Indicator' 'docs.cookbook.wizard.progress-indicator'}}
+        {{wizard.item
+          "With Progress Indicator"
+          "docs.cookbook.wizard.progress-indicator"
+        }}
       {{/nav.subnav}}
     {{/nav.subnav}}
   {{/viewer.nav}}

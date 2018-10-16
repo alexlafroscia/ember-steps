@@ -1,5 +1,5 @@
 {{#docs-demo as |demo|}}
-  {{#demo.example name='demo-wizard-with-progress-indicator.hbs'}}
+  {{#demo.example name="demo-wizard-with-progress-indicator.hbs"}}
     {{#step-manager as |w|}}
       {{#w.step}}
         This content is on the first step
@@ -20,9 +20,10 @@
         <div local-class="progress-indicators">
           {{#each w.steps as |step|}}
             <button
-                local-class="progress-dot"
-                aria-pressed={{step.isActive}}
-                {{action w.transition-to step}}>
+              local-class="progress-dot"
+              aria-pressed={{step.isActive}}
+              {{action w.transition-to step}}
+            >
             </button>
           {{/each}}
         </div>
@@ -33,5 +34,5 @@
     {{/step-manager}}
   {{/demo.example}}
 
-  {{demo.snippet 'demo-wizard-with-progress-indicator.hbs'}}
+  {{demo.snippet "demo-wizard-with-progress-indicator.hbs"}}
 {{/docs-demo}}

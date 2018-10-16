@@ -1,9 +1,10 @@
 {{#if isActive}}
-  {{yield (hash
+  {{yield
+    (hash
       hasNext=hasNext
       hasPrevious=hasPrevious
     )
   }}
-{{else if (hasBlock 'inverse')}}
-  {{yield to='inverse'}}
+{{else if (hasBlock "inverse")}}
+  {{yield to="inverse"}}
 {{/if}}

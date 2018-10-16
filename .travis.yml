@@ -1,4 +1,3 @@
----
 language: node_js
 node_js:
   - 8
@@ -16,44 +15,37 @@ env:
   global:
     # See https://git.io/vdao3 for details.
     - JOBS=1
-  matrix:
-    # we recommend new addons test the current and previous LTS
-    # as well as latest stable release (bonus points to beta/canary)
-    - EMBER_TRY_SCENARIO=ember-lts-2.16
-    - EMBER_TRY_SCENARIO=ember-lts-2.18
-    - EMBER_TRY_SCENARIO=ember-release
-    - EMBER_TRY_SCENARIO=ember-beta
-    - EMBER_TRY_SCENARIO=ember-canary
-    - EMBER_TRY_SCENARIO=fastboot-addon-tests
-
-matrix:
-  fast_finish: true
-  allow_failures:
-    - env: EMBER_TRY_SCENARIO=ember-canary
-
-stages:
-  - lint
-  - test
-  - name: release
-    if: branch = master
-  - name: docs
-    if: branch = master OR env(TRAVIS_TAG) is present
 
 jobs:
+  fail_fast: true
+  allow_failures:
+    - env: EMBER_TRY_SCENARIO=ember-canary
   include:
-    - stage: lint
-      script: yarn lint
-    - script: yarn commitlint-travis
-    - stage: release
+    - stage: 'Tests'
+      script:
+        - yarn commitlint-travis
+        - yarn lint:js
+        - yarn lint:hbs
+        - yarn test
+        - yarn ember ts:precompile
+
+    # we recommend new addons test the current and previous LTS
+    # as well as latest stable release (bonus points to beta/canary)
+    - stage: 'Additional Tests'
+      env: EMBER_TRY_SCENARIO=ember-lts-2.16
+    - env: EMBER_TRY_SCENARIO=ember-lts-2.18
+    - env: EMBER_TRY_SCENARIO=ember-release
+    - env: EMBER_TRY_SCENARIO=ember-beta
+    - env: EMBER_TRY_SCENARIO=ember-canary
+    - env: EMBER_TRY_SCENARIO=fastboot-addon-tests
+
+    - stage: 'release'
+      name: 'Publish to NPM'
       script: yarn semantic-release
-      env:
-      - EMBER_TRY_SCENARIO=ember-default
-    - stage: docs
+      if: branch = master AND env(TRAVIS_PULL_REQUEST) = false
+    - name: 'Deploy Addon Docs'
       script: yarn ember deploy production
-      env:
-      - EMBER_TRY_SCENARIO=ember-default
+      if: (branch = master OR env(TRAVIS_TAG) is present) AND env(TRAVIS_PULL_REQUEST) = false
 
 script:
-  # Usually, it's ok to finish the test scenario without reverting
-  #  to the addon's original dependency state, skipping "cleanup".
   - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO

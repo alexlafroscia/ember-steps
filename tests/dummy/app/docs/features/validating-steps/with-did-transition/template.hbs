@@ -1,15 +1,15 @@
 {{#docs-demo as |demo|}}
-  {{#demo.example name='validating-steps-did-transition.hbs'}}
+  {{#demo.example name="validating-steps-did-transition.hbs"}}
     {{#step-manager as |w|}}
       {{#w.step}}
         {{input
-            placeholder='Enter password'
-            value=password
+          placeholder="Enter password"
+          value=password
         }}
 
         {{#control-group}}
           <button
-            onclick={{validate-transition w.transition-to-next with=(action 'checkPassword')}}
+            onclick={{validate-transition w.transition-to-next with=(action "checkPassword")}}
           >
             Check Password
           </button>
@@ -20,7 +20,7 @@
         Great job! You got the password right
 
         {{#control-group}}
-          <button {{action (pipe w.transition-to-previous (action 'reset'))}}>
+          <button {{action (pipe w.transition-to-previous (action "reset"))}}>
             Reset
           </button>
         {{/control-group}}
@@ -28,7 +28,7 @@
     {{/step-manager}}
   {{/demo.example}}
 
-  {{demo.snippet name='validating-steps-did-transition.hbs'}}
-  {{demo.snippet name='validating-steps-did-transition.js' label='component.js'}}
+  {{demo.snippet name="validating-steps-did-transition.hbs"}}
+  {{demo.snippet name="validating-steps-did-transition.js" label="component.js"}}
 {{/docs-demo}}
 
