@@ -883,6 +883,48 @@ module('step-manager', function(hooks) {
       assert.verify(onActivate());
     });
 
+    test('onActivate action gets called when the current step property changes', async function(assert) {
+      const onActivate = td.function();
+      this.set('onActivate', onActivate);
+      this.set('tab', 'first');
+
+      await render(hbs`
+        {{#step-manager currentStep=tab as |w|}}
+          {{#w.step name='first'}}
+            This content is on the first tab
+          {{/w.step}}
+
+          {{#w.step name='second' onActivate=(action onActivate)}}
+            This content is on the second tab
+          {{/w.step}}
+        {{/step-manager}}
+      `);
+
+      this.set('tab', 'second');
+      assert.verify(onActivate());
+    });
+
+    test('onDeactivate action gets called when the current step property changes', async function(assert) {
+      const onDeactivate = td.function();
+      this.set('onDeactivate', onDeactivate);
+      this.set('tab', 'first');
+
+      await render(hbs`
+        {{#step-manager currentStep=tab as |w|}}
+          {{#w.step name='first' onDeactivate=(action onDeactivate)}}
+            This content is on the first tab
+          {{/w.step}}
+
+          {{#w.step name='second'}}
+            This content is on the second tab
+          {{/w.step}}
+        {{/step-manager}}
+      `);
+
+      this.set('tab', 'second');
+      assert.verify(onDeactivate());
+    });
+
     test('onActivate action can be updated', async function(assert) {
       const onActivate = td.function();
       this.set('onActivate', onActivate);
