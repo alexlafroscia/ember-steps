@@ -113,9 +113,9 @@ export default class StepManagerComponent extends Component {
 
     if (typeof newStep === 'undefined') {
       const firstStep = get(this.transitions, 'firstStep');
-      this.transitions.activate(firstStep);
+      this.transitionTo(firstStep);
     } else {
-      this.transitions.activate(newStep);
+      this.transitionTo(newStep);
     }
   }
 
