@@ -2,7 +2,7 @@ import EmberObject, { set, get } from '@ember/object';
 import MutableArray from '@ember/array/mutable';
 import { A } from '@ember/array';
 import { computed } from '@ember-decorators/object';
-import { readOnly } from '@ember-decorators/object/computed';
+import { reads } from '@ember-decorators/object/computed';
 import { assert } from '@ember/debug';
 import { isNone } from '@ember/utils';
 
@@ -24,9 +24,9 @@ export default abstract class BaseStateMachine extends EmberObject {
 
   currentStep!: StepName;
 
-  @readOnly('stepTransitions.length') length!: number;
+  @reads('stepTransitions.length') length!: number;
 
-  @readOnly('stepTransitions.firstObject') firstStep!: StepName;
+  @reads('stepTransitions.firstObject') firstStep!: StepName;
 
   @computed('currentStep')
   get currentStepNode(): StepNode | undefined {
