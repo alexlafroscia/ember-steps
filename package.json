@@ -10,7 +10,8 @@
     "test": "ember test",
     "test:all": "ember try:each",
     "prepublishOnly": "ember ts:precompile",
-    "postpublish": "ember ts:clean"
+    "postpublish": "ember ts:clean",
+    "release": "standard-version"
   },
   "main": "index.js",
   "homepage": "https://alexlafroscia.github.io/ember-steps",
@@ -77,6 +78,7 @@
     "postcss-nested": "^3.0.0",
     "prettier": "^1.12.1",
     "qunit-dom": "^0.8.0",
+    "standard-version": "^4.4.0",
     "testdouble": "^2.0.0",
     "travis-deploy-once": "^5.0.0",
     "typescript": "^3.1.3",
@@ -96,7 +98,9 @@
     "@types/rsvp": "^4.0.2",
     "ember-css-modules/broccoli-postcss": "^3.5.3"
   },
-  "keywords": ["ember-addon"],
+  "keywords": [
+    "ember-addon"
+  ],
   "repository": "https://github.com/alexlafroscia/ember-steps",
   "license": "MIT",
   "author": "Alex LaFroscia <alex@lafroscia.com>",
