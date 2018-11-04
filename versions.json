@@ -69,10 +69,15 @@
     "oldPath": "v6.1.1"
   },
   "-latest": {
-    "sha": "8e33c0784b2ca456c7c4c1140f2468fea6a60da9",
-    "tag": "v6.1.1",
     "path": "",
     "name": "Latest",
-    "oldPath": "latest"
+    "sha": "e3eb6319adafc1aba09ef65378d8366e6eaf7c32",
+    "tag": "v6.1.2"
+  },
+  "v6.1.2": {
+    "path": "versions/v6.1.2",
+    "name": "v6.1.2",
+    "sha": "e3eb6319adafc1aba09ef65378d8366e6eaf7c32",
+    "tag": "v6.1.2"
   }
 }
