@@ -76,8 +76,8 @@ export default class StepManagerComponent extends Component {
    */
   transitions!: BaseStateMachine;
 
-  constructor() {
-    super(...arguments);
+  init() {
+    super.init();
 
     const { initialStep, currentStep } = getProperties(
       this,

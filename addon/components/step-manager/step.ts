@@ -36,8 +36,8 @@ export default class StepComponent extends Component {
     value: any
   ) => void;
 
-  constructor() {
-    super(...arguments);
+  init() {
+    super.init();
 
     const nameAttribute = get(this, 'name');
     const name =
@@ -51,6 +51,7 @@ export default class StepComponent extends Component {
     if (name !== nameAttribute) {
       set(this, 'name', name);
     }
+
     this.addObserver('name', this, failOnNameChange);
     this.addObserver('context', this, this.updateContext);
     this.addObserver('onActivate', this, this.updateOnActivate);
