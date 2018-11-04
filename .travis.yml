@@ -39,13 +39,9 @@ jobs:
     - env: EMBER_TRY_SCENARIO=ember-canary
     - env: EMBER_TRY_SCENARIO=fastboot-addon-tests
 
-    - stage: 'release'
-      name: 'Publish to NPM'
-      script: yarn semantic-release
-      if: branch = master AND env(TRAVIS_PULL_REQUEST) = false
-    - name: 'Deploy Addon Docs'
-      script: yarn ember deploy production
-      if: (branch = master OR env(TRAVIS_TAG) is present) AND env(TRAVIS_PULL_REQUEST) = false
+    - stage: deploy
+      if: (branch = master or tag is present) and type = push
+      script: node_modules/.bin/ember deploy production
 
 script:
   - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO
