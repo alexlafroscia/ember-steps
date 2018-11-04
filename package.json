@@ -52,11 +52,11 @@
     "ember-cli-test-loader": "^2.1.0",
     "ember-cli-testdouble": "^0.1.3",
     "ember-cli-testdouble-qunit": "^2.0.2",
-    "ember-cli-typescript": "^1.4.4",
+    "ember-cli-typescript": "^1.5.0",
     "ember-cli-uglify": "^2.1.0",
     "ember-composable-helpers": "^2.1.0",
     "ember-concurrency": "^0.8.17",
-    "ember-css-modules": "^0.7.10",
+    "ember-css-modules": "^1.0.1",
     "ember-disable-prototype-extensions": "^1.1.3",
     "ember-export-application-global": "^2.0.0",
     "ember-fastboot-addon-tests": "^0.4.0",
@@ -97,7 +97,8 @@
     "@types/ember-test-helpers": "^1.0.3",
     "@types/handlebars": "^4.0.39",
     "@types/jquery": "^3.3.17",
-    "@types/rsvp": "^4.0.2"
+    "@types/rsvp": "^4.0.2",
+    "ember-css-modules/broccoli-postcss": "^3.5.3"
   },
   "keywords": ["ember-addon"],
   "repository": "https://github.com/alexlafroscia/ember-steps",
