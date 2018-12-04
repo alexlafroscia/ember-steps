@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.1.3"></a>
+## [6.1.3](https://github.com/alexlafroscia/ember-steps/compare/v6.1.2...v6.1.3) (2018-12-04)
+
+
+
 <a name="6.1.2"></a>
 ## [6.1.2](https://github.com/alexlafroscia/ember-steps/compare/v6.1.1...v6.1.2) (2018-11-04)
 
