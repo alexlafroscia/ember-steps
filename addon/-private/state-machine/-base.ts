@@ -35,14 +35,6 @@ export default abstract class BaseStateMachine extends EmberObject {
     return this.stepTransitions.find(stepNode => stepNode.name === currentStep);
   }
 
-  constructor(initialStepName?: StepName) {
-    super();
-
-    if (!isNone(initialStepName)) {
-      set(this, 'currentStep', initialStepName!);
-    }
-  }
-
   addStep(
     name: StepName,
     context: any,
@@ -75,9 +67,13 @@ export default abstract class BaseStateMachine extends EmberObject {
     set(node!, field, value);
   }
 
-  abstract pickNext(currentStep?: StepName): StepName | undefined;
+  pickNext(_currentStep?: StepName): StepName | undefined {
+    throw new Error('Must implement method');
+  }
 
-  abstract pickPrevious(currentStep?: StepName): StepName | undefined;
+  pickPrevious(_currentStep?: StepName): StepName | undefined {
+    throw new Error('Must implement method');
+  }
 
   activate(step: StepNode | StepName) {
     const name = step instanceof StepNode ? step.name : step;

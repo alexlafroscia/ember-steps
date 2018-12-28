@@ -1,6 +1,4 @@
 import Component from '@ember/component';
-// @ts-ignore: Ignore import of compiled template
-import layout from '../../templates/components/step-manager/step';
 import { get, set } from '@ember/object';
 import { isPresent } from '@ember/utils';
 import { assert } from '@ember/debug';
@@ -10,6 +8,9 @@ import { PublicProperty as PublicStepNodeProperty } from '../../-private/step-no
 
 import StateMachine from '../../-private/state-machine/-base';
 import { StepName, ActivationHook } from '../../-private/types';
+
+// @ts-ignore: Ignore import of compiled template
+import layout from '../../templates/components/step-manager/step';
 
 function failOnNameChange() {
   assert('The `name` property should never change');
