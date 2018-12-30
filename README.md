@@ -64,7 +64,13 @@ The above examples show the basic idea, but there's more configuration (and powe
 
 ## Compatibility Note
 
-Ember `2.16` is the earliest version that the tests are run against. If you need support for `2.12` or lower, install `v4.0.0`.
+The following table can help determine which verison of `ember-steps` work with specific Ember versions
+
+| `ember` Version   | `ember-steps` Version |
+| :---------------- | :-------------------- |
+| `3.4` to latest   | `v7.0.0` or later     |
+| `3.3` to `2.16`   | `v6.1.3`              |
+| `2.12` or earlier | `v4.0.0`              |
 
 [ember-closure-actions]: https://guides.emberjs.com/v3.0.0/templates/actions/
 [cookbook]: http://alexlafroscia.com/ember-steps/docs/cookbook

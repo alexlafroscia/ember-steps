@@ -4,20 +4,20 @@ import StateMachine from 'ember-steps/-private/state-machine/circular';
 module('-private/state-machine/circular', function() {
   module('constructor', function() {
     test('uses the initial step, if provided', function(assert) {
-      const m = new StateMachine('foo');
+      const m = StateMachine.create({ currentStep: 'foo' });
 
       assert.equal(m.get('currentStep'), 'foo');
     });
 
     test('calculates the initial step if necessary', function(assert) {
-      const m = new StateMachine();
+      const m = StateMachine.create();
       m.addStep('foo');
 
       assert.equal(m.get('currentStep'), 'foo');
     });
 
     test('handling indexes as step names', function(assert) {
-      const m = new StateMachine(0);
+      const m = StateMachine.create({ currentStep: 0 });
       m.addStep(0);
       m.addStep(1);
 
@@ -27,7 +27,8 @@ module('-private/state-machine/circular', function() {
 
   module('#pickNext', function() {
     test('can get the next step without advancing', function(assert) {
-      const m = new StateMachine();
+      const m = StateMachine.create();
+
       m.addStep('foo');
       m.addStep('bar');
 
@@ -36,7 +37,7 @@ module('-private/state-machine/circular', function() {
     });
 
     test('the "next" step from the last step is the first', function(assert) {
-      const m = new StateMachine();
+      const m = StateMachine.create();
       m.addStep('foo');
       m.addStep('bar');
 
@@ -46,7 +47,7 @@ module('-private/state-machine/circular', function() {
     });
 
     test('when the next step has a falsy name', function(assert) {
-      const m = new StateMachine(1);
+      const m = StateMachine.create({ currentStep: 1 });
       m.addStep(1);
       m.addStep(0);
 
@@ -56,7 +57,7 @@ module('-private/state-machine/circular', function() {
 
   module('#pickPrevious', function() {
     test('can get the previous step without advancing', function(assert) {
-      const m = new StateMachine();
+      const m = StateMachine.create();
       m.addStep('foo');
       m.addStep('bar');
       m.addStep('baz');
@@ -66,7 +67,7 @@ module('-private/state-machine/circular', function() {
     });
 
     test('the "previous" step from the first step is the last', function(assert) {
-      const m = new StateMachine();
+      const m = StateMachine.create();
       m.addStep('foo');
       m.addStep('bar');
 
@@ -76,7 +77,7 @@ module('-private/state-machine/circular', function() {
     });
 
     test('when the previous step has a falsy name', function(assert) {
-      const m = new StateMachine(0);
+      const m = StateMachine.create({ currentStep: 0 });
       m.addStep(0);
       m.addStep(1);
 
@@ -88,7 +89,7 @@ module('-private/state-machine/circular', function() {
 
   module('#activate', function(hooks) {
     hooks.beforeEach(function() {
-      this.m = new StateMachine();
+      this.m = StateMachine.create();
       this.m.addStep('foo');
       this.m.addStep('bar');
     });
@@ -113,7 +114,7 @@ module('-private/state-machine/circular', function() {
 
   module('.length', function(hooks) {
     hooks.beforeEach(function() {
-      this.m = new StateMachine();
+      this.m = StateMachine.create();
       this.m.addStep('foo');
       this.m.addStep('bar');
     });
@@ -130,7 +131,7 @@ module('-private/state-machine/circular', function() {
 
   module('.currentStep', function() {
     test('exposes the name of the current step', function(assert) {
-      const m = new StateMachine();
+      const m = StateMachine.create();
       m.addStep('foo');
       assert.equal(m.get('currentStep'), 'foo');
     });
@@ -138,7 +139,7 @@ module('-private/state-machine/circular', function() {
 
   module('.stepTransitions', function() {
     test('exposes an array of step objects', function(assert) {
-      const m = new StateMachine();
+      const m = StateMachine.create();
       m.addStep('foo');
       m.addStep('bar');
       assert.deepEqual(m.get('stepTransitions').map(node => node.name), [
