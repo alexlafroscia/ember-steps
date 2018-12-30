@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="7.0.0"></a>
+# [7.0.0](https://github.com/alexlafroscia/ember-steps/compare/v6.1.3...v7.0.0) (2018-12-30)
+
+
+### Chores
+
+* **deps:** upgrade to `ember-cli-typescript@rc.1` ([0c919c4](https://github.com/alexlafroscia/ember-steps/commit/0c919c4))
+
+
+### BREAKING CHANGES
+
+* **deps:** Increased the minimum supported version of Ember to
+  `3.4.0` to align with what native Classes are well-supported by at
+  this time. This was necessary to fix a number of issues that arose
+  with the upgraded version of `ember-cli-typescript`
+
+
+
 <a name="6.1.3"></a>
 ## [6.1.3](https://github.com/alexlafroscia/ember-steps/compare/v6.1.2...v6.1.3) (2018-12-04)
 
