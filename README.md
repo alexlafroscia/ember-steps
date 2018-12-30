@@ -20,7 +20,7 @@ Using `ember-steps` starts with creating a `step-manager`.
 {{/step-manager}}
 ```
 
-Cool, right?  Ehh, it doesn't do much yet -- we need to add some steps.
+Cool, right? Ehh, it doesn't do much yet -- we need to add some steps.
 
 ```handlebars
 {{#step-manager as |w|}}
@@ -34,7 +34,7 @@ Cool, right?  Ehh, it doesn't do much yet -- we need to add some steps.
 {{/step-manager}}
 ```
 
-As you may have guessed, the first `w.step` component, `a`, will be visible initially, and `b` will be invisible.  Note that these names are important.  Why?  Because we need a way to transition between them!
+As you may have guessed, the first `w.step` component, `a`, will be visible initially, and `b` will be invisible. Note that these names are important. Why? Because we need a way to transition between them!
 
 ```handlebars
 {{#step-manager as |w|}}
@@ -56,16 +56,16 @@ As you may have guessed, the first `w.step` component, `a`, will be visible init
 {{/step-manager}}
 ```
 
-The `step-manager` provides a [closure action][ember-closure-actions] that can be called with the name of a step to show that one, instead.  One of the neat features of `ember-steps` is that there is no explicit order to the steps; show all of them, or only some. It's entirely up to you.
+The `step-manager` provides a [closure action][ember-closure-actions] that can be called with the name of a step to show that one, instead. One of the neat features of `ember-steps` is that there is no explicit order to the steps; show all of them, or only some. It's entirely up to you.
 
 ## Not-So-Basic Usage
 
-The above examples show the basic idea, but there's more configuration (and power) available if you need it.  Head over to [the cookbook][cookbook] to read more about what `ember-steps` can do!
+The above examples show the basic idea, but there's more configuration (and power) available if you need it. Head over to [the cookbook][cookbook] to read more about what `ember-steps` can do!
 
 ## Compatibility Note
 
 Ember `2.16` is the earliest version that the tests are run against. If you need support for `2.12` or lower, install `v4.0.0`.
 
 [ember-closure-actions]: https://guides.emberjs.com/v3.0.0/templates/actions/
-[cookbook]: http://alexlafroscia.com/ember-steps/latest/docs/cookbook
+[cookbook]: http://alexlafroscia.com/ember-steps/docs/cookbook
 [hash-helper]: http://emberjs.com/blog/2016/01/15/ember-2-3-released.html#toc_hash-helper
