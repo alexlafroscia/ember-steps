@@ -108,7 +108,7 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
-    "demoURL": "http://alexlafroscia.com/ember-steps/"
+    "demoURL": "https://alexlafroscia.github.io/ember-steps"
   },
   "husky": {
     "hooks": {
