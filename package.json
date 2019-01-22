@@ -25,11 +25,11 @@
     "@ember/optional-features": "^0.6.3",
     "@ember/test-helpers": "^0.7.18",
     "@types/ember": "^3.0.26",
-    "@types/ember-qunit": "^3.4.4",
+    "@types/ember-qunit": "^3.4.5",
     "@types/ember-test-helpers": "^1.0.4",
     "@types/ember-testing-helpers": "^0.0.3",
-    "@types/ember__test-helpers": "^0.7.6",
-    "@types/qunit": "^2.5.3",
+    "@types/ember__test-helpers": "^0.7.7",
+    "@types/qunit": "^2.5.4",
     "@types/rsvp": "^4.0.2",
     "broccoli-asset-rev": "^2.7.0",
     "chai": "^4.1.2",
@@ -81,24 +81,21 @@
     "standard-version": "^4.4.0",
     "testdouble": "^2.0.0",
     "travis-deploy-once": "^5.0.0",
-    "typescript": "^3.2.2",
+    "typescript": "^3.2.4",
     "typescript-eslint-parser": "^20.0.0"
   },
   "dependencies": {
-    "@ember-decorators/babel-transforms": "^3.1.5",
-    "@ember-decorators/component": "^3.1.5",
-    "@ember-decorators/object": "^3.1.5",
-    "ember-cli-babel": "^7.2.0",
+    "@ember-decorators/babel-transforms": "^5.1.1",
+    "@ember-decorators/component": "^5.1.1",
+    "@ember-decorators/object": "^5.1.1",
+    "ember-cli-babel": "^7.3.0",
     "ember-cli-htmlbars": "^3.0.0",
-    "ember-cli-typescript": "^2.0.0-rc.1",
-    "ember-native-class-polyfill": "^1.0.5"
+    "ember-cli-typescript": "^2.0.0-rc.2"
   },
   "resolutions": {
     "ember-css-modules/broccoli-postcss": "^3.5.3"
   },
-  "keywords": [
-    "ember-addon"
-  ],
+  "keywords": ["ember-addon"],
   "repository": "https://github.com/alexlafroscia/ember-steps",
   "license": "MIT",
   "author": "Alex LaFroscia <alex@lafroscia.com>",

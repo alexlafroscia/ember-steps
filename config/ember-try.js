@@ -15,7 +15,8 @@ module.exports = function() {
           name: 'minimum-supported-version',
           npm: {
             devDependencies: {
-              'ember-source': '~3.4.0'
+              'ember-source': '3.4.7',
+              'ember-native-class-polyfill': '^1.0.5'
             }
           }
         },
