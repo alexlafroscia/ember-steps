@@ -85,9 +85,9 @@
     "typescript-eslint-parser": "^20.0.0"
   },
   "dependencies": {
-    "@ember-decorators/babel-transforms": "^3.1.5",
-    "@ember-decorators/component": "^3.1.5",
-    "@ember-decorators/object": "^3.1.5",
+    "@ember-decorators/babel-transforms": "^5.1.1",
+    "@ember-decorators/component": "^5.1.1",
+    "@ember-decorators/object": "^5.1.1",
     "ember-cli-babel": "^7.2.0",
     "ember-cli-htmlbars": "^3.0.0",
     "ember-cli-typescript": "^2.0.0-rc.1",
@@ -96,9 +96,7 @@
   "resolutions": {
     "ember-css-modules/broccoli-postcss": "^3.5.3"
   },
-  "keywords": [
-    "ember-addon"
-  ],
+  "keywords": ["ember-addon"],
   "repository": "https://github.com/alexlafroscia/ember-steps",
   "license": "MIT",
   "author": "Alex LaFroscia <alex@lafroscia.com>",
