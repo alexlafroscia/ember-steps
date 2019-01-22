@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="8.0.0"></a>
+# [8.0.0](https://github.com/alexlafroscia/ember-steps/compare/v7.0.0...v8.0.0) (2019-01-22)
+
+
+### Chores
+
+* **deps:** externalize `ember-native-class-polyfill` ([904cd97](https://github.com/alexlafroscia/ember-steps/commit/904cd97))
+
+
+### BREAKING CHANGES
+
+* **deps:** For Ember `3.4` and `3.5` compatibility, you _must_ install `ember-native-class-polyfill` in your application. This was previously brought in as a dependency, but should not be supplied by the host app.
+
+
+
 <a name="7.0.0"></a>
 # [7.0.0](https://github.com/alexlafroscia/ember-steps/compare/v6.1.3...v7.0.0) (2018-12-30)
 
