@@ -95,7 +95,11 @@ export default class StepManagerComponent extends Component {
       ? LinearStateMachine
       : CircularStateMachine;
 
-    set(this, 'transitions', new StateMachine(startingStep));
+    set(
+      this,
+      'transitions',
+      StateMachine.create({ currentStep: startingStep })
+    );
   }
 
   @computed('transitions.{currentStep,length}')

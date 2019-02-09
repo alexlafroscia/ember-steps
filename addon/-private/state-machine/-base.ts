@@ -2,7 +2,7 @@ import EmberObject, { set, get } from '@ember/object';
 import MutableArray from '@ember/array/mutable';
 import { A } from '@ember/array';
 import { computed } from '@ember-decorators/object';
-import { reads } from '@ember-decorators/object/computed';
+import { readOnly } from '@ember-decorators/object/computed';
 import { assert } from '@ember/debug';
 import { isNone } from '@ember/utils';
 
@@ -24,23 +24,15 @@ export default abstract class BaseStateMachine extends EmberObject {
 
   currentStep!: StepName;
 
-  @reads('stepTransitions.length') length!: number;
+  @readOnly('stepTransitions.length') length!: number;
 
-  @reads('stepTransitions.firstObject') firstStep!: StepName;
+  @readOnly('stepTransitions.firstObject') firstStep!: StepName;
 
   @computed('currentStep')
   get currentStepNode(): StepNode | undefined {
     const currentStep = get(this, 'currentStep');
 
     return this.stepTransitions.find(stepNode => stepNode.name === currentStep);
-  }
-
-  constructor(initialStepName?: StepName) {
-    super();
-
-    if (!isNone(initialStepName)) {
-      set(this, 'currentStep', initialStepName!);
-    }
   }
 
   addStep(
@@ -75,9 +67,13 @@ export default abstract class BaseStateMachine extends EmberObject {
     set(node!, field, value);
   }
 
-  abstract pickNext(currentStep?: StepName): StepName | undefined;
+  pickNext(_currentStep?: StepName): StepName | undefined {
+    throw new Error('Must implement method');
+  }
 
-  abstract pickPrevious(currentStep?: StepName): StepName | undefined;
+  pickPrevious(_currentStep?: StepName): StepName | undefined {
+    throw new Error('Must implement method');
+  }
 
   activate(step: StepNode | StepName) {
     const name = step instanceof StepNode ? step.name : step;
