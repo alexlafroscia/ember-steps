@@ -56,10 +56,10 @@ module('step-manager', function(hooks) {
     });
 
     module('updating the target object from the component', function() {
-      test("mutates the target object's property when a mutable value is provided", async function(assert) {
+      test('onTransition callback is triggered with the current step when step changes', async function(assert) {
         this.set('step', 'first');
         await render(hbs`
-          {{#step-manager currentStep=(mut step) as |w|}}
+          {{#step-manager currentStep=this.step onTransition=(action (mut this.step)) as |w|}}
             {{w.step name='first'}}
             {{w.step name='second'}}
 
@@ -74,10 +74,11 @@ module('step-manager', function(hooks) {
         assert.equal(this.get('step'), 'second');
       });
 
-      test("mutates the target object's property when a regular value is provided", async function(assert) {
+      test("does not mutate the target object's property when a regular value is provided", async function(assert) {
         this.set('step', 'first');
+        this.set('currentStep', null);
         await render(hbs`
-          {{#step-manager currentStep=step as |w|}}
+          {{#step-manager currentStep=step onTransition=(action (mut this.currentStep)) as |w|}}
             {{w.step name='first'}}
             {{w.step name='second'}}
 
@@ -89,7 +90,8 @@ module('step-manager', function(hooks) {
 
         await click('button');
 
-        assert.equal(this.get('step'), 'second');
+        assert.equal(this.get('step'), 'first');
+        assert.equal(this.get('currentStep'), 'second');
       });
 
       test('does not update the target object with an unbound value', async function(assert) {

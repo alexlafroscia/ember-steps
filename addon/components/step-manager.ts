@@ -65,6 +65,11 @@ export default class StepManagerComponent extends Component {
   currentStep: StepName | undefined;
 
   /**
+   * Callback action to be triggered when the current step changes.
+   */
+  onTransition?: Function;
+
+  /**
    * @property {boolean} boolean
    * @public
    */
@@ -168,13 +173,12 @@ export default class StepManagerComponent extends Component {
       currentStepNode.onDeactivate();
     }
 
-    // If `currentStep` is present, it's probably something the user wants
-    // two-way-bound with the new value
-    if (!isNone(this.currentStep)) {
-      set(this, 'currentStep', destination);
-    }
-
     this.transitions.activate(destination);
+
+    // Trigger the provided callback action to notify of step change
+    if (this.onTransition) {
+      this.onTransition(destination);
+    }
 
     currentStepNode = get(transitions, 'currentStepNode');
 
