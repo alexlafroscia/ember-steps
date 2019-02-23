@@ -169,21 +169,23 @@ export default class StepManagerComponent extends Component {
     const transitions = get(this, 'transitions');
     let currentStepNode = get(transitions, 'currentStepNode');
 
-    if (currentStepNode && currentStepNode.onDeactivate) {
-      currentStepNode.onDeactivate();
-    }
+    if (currentStepNode && destination !== currentStepNode.name) {
+      if (currentStepNode && currentStepNode.onDeactivate) {
+        currentStepNode.onDeactivate();
+      }
 
-    this.transitions.activate(destination);
+      this.transitions.activate(destination);
 
-    // Trigger the provided callback action to notify of step change
-    if (this.onTransition) {
-      this.onTransition(destination);
-    }
+      // Trigger the provided callback action to notify of step change
+      if (this.onTransition) {
+        this.onTransition(destination);
+      }
 
-    currentStepNode = get(transitions, 'currentStepNode');
+      currentStepNode = get(transitions, 'currentStepNode');
 
-    if (currentStepNode && currentStepNode.onActivate) {
-      currentStepNode.onActivate();
+      if (currentStepNode && currentStepNode.onActivate) {
+        currentStepNode.onActivate();
+      }
     }
   }
 
