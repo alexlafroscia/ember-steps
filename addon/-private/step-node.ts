@@ -1,4 +1,4 @@
-import EmberObject, { get } from '@ember/object';
+import { get } from '@ember/object';
 import { isPresent } from '@ember/utils';
 
 import { computed } from '@ember-decorators/object';
@@ -8,7 +8,7 @@ import StateMachine from './state-machine/-base';
 
 export type PublicProperty = 'context' | 'onActivate' | 'onDeactivate';
 
-export default class StepNode extends EmberObject {
+export default class StepNode {
   name: StepName;
   context: any;
   onActivate: ActivationHook;
@@ -21,8 +21,6 @@ export default class StepNode extends EmberObject {
     onActivate: ActivationHook,
     onDeactivate: ActivationHook
   ) {
-    super();
-
     this.name = name;
     this.context = context;
     this.onActivate = onActivate;
