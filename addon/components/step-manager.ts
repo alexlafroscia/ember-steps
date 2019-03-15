@@ -71,6 +71,12 @@ export default class StepManagerComponent extends Component {
   linear!: boolean;
 
   /**
+   * @property {boolean} boolean
+   * @private
+   */
+  _watchCurrentStep!: boolean;
+
+  /**
    * @property {BaseStateMachine} transitions state machine for transitions
    * @private
    */
@@ -85,6 +91,7 @@ export default class StepManagerComponent extends Component {
       'currentStep'
     );
 
+    this._watchCurrentStep = isPresent(currentStep);
     const startingStep = isNone(initialStep) ? currentStep : initialStep;
 
     if (!isPresent(this.linear)) {
@@ -113,13 +120,15 @@ export default class StepManagerComponent extends Component {
   }
 
   didUpdateAttrs() {
-    const newStep = this.currentStep;
+    if (this._watchCurrentStep) {
+      const newStep = this.currentStep;
 
-    if (typeof newStep === 'undefined') {
-      const firstStep = get(this.transitions, 'firstStep');
-      this.transitionTo(firstStep);
-    } else {
-      this.transitionTo(newStep);
+      if (typeof newStep === 'undefined') {
+        const firstStep = get(this.transitions, 'firstStep');
+        this.transitionTo(firstStep);
+      } else {
+        this.transitionTo(newStep);
+      }
     }
   }
 

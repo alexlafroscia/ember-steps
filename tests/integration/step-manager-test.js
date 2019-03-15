@@ -109,6 +109,31 @@ module('step-manager', function(hooks) {
 
         assert.equal(this.get('step'), 'first');
       });
+
+      test('does not reset back to first step on any attribute change', async function(assert) {
+        this.set('initialStep', 'second');
+        this.set('randomAttribute', 'initial value');
+
+        await render(hbs`
+          {{#step-manager randomAttribute=randomAttribute initialStep=initialStep as |w|}}
+            {{#w.step name='first'}}
+              <div data-test-first></div>
+            {{/w.step}}
+            {{#w.step name='second'}}
+              <div data-test-second></div>
+            {{/w.step}}
+          {{/step-manager}}
+        `);
+
+        assert.dom('[data-test-second]').exists();
+        assert.dom('[data-test-first]').doesNotExist();
+
+        this.set('initialStep', 'second');
+        this.set('randomAttribute', 'a new value');
+
+        assert.dom('[data-test-second]').exists();
+        assert.dom('[data-test-first]').doesNotExist();
+      });
     });
   });
 
