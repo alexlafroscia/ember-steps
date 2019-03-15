@@ -1,6 +1,6 @@
 {
   "name": "ember-steps",
-  "version": "8.0.1",
+  "version": "8.0.2",
   "description": "Super Simple Series of Steps",
   "scripts": {
     "build": "ember build",
@@ -96,7 +96,9 @@
   "resolutions": {
     "ember-css-modules/broccoli-postcss": "^3.5.3"
   },
-  "keywords": ["ember-addon"],
+  "keywords": [
+    "ember-addon"
+  ],
   "repository": "https://github.com/alexlafroscia/ember-steps",
   "license": "MIT",
   "author": "Alex LaFroscia <alex@lafroscia.com>",
