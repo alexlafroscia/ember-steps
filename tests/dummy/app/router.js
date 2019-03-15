@@ -11,7 +11,10 @@ const Router = EmberRouter.extend({
 
   didTransition() {
     this._super(...arguments);
-    this._trackPage();
+
+    if (window.ga) {
+      this._trackPage();
+    }
   },
 
   _trackPage() {

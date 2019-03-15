@@ -58,6 +58,7 @@
     "ember-disable-prototype-extensions": "^1.1.3",
     "ember-export-application-global": "^2.0.0",
     "ember-fastboot-addon-tests": "^0.4.0",
+    "ember-fetch": "^6.5.0",
     "ember-load-initializers": "^1.1.0",
     "ember-maybe-import-regenerator": "^0.1.6",
     "ember-metrics": "^0.12.1",
@@ -95,9 +96,7 @@
   "resolutions": {
     "ember-css-modules/broccoli-postcss": "^3.5.3"
   },
-  "keywords": [
-    "ember-addon"
-  ],
+  "keywords": ["ember-addon"],
   "repository": "https://github.com/alexlafroscia/ember-steps",
   "license": "MIT",
   "author": "Alex LaFroscia <alex@lafroscia.com>",
