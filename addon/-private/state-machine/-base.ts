@@ -10,6 +10,7 @@ import { StepName, ActivationHook } from '../types';
 import StepNode, {
   PublicProperty as PublicStepNodeProperty
 } from '../step-node';
+import { StepManager } from '../../components/step-manager';
 
 /**
  * Keeps track of the order of the steps in the step manager, as well as
@@ -22,11 +23,25 @@ import StepNode, {
 export default abstract class BaseStateMachine extends EmberObject {
   protected stepTransitions: MutableArray<StepNode> = A();
 
+  /**
+   * The step which the State Machine starts on.
+   *
+   * @type {StepName}
+   * @memberof BaseStateMachine
+   */
+  initialStep!: StepName;
+
+  /**
+   * The currently active step for the StateMachine.
+   *
+   * @type {StepName}
+   * @memberof BaseStateMachine
+   */
   currentStep!: StepName;
 
   @readOnly('stepTransitions.length') length!: number;
 
-  @readOnly('stepTransitions.firstObject') firstStep!: StepName;
+  @readOnly('stepTransitions.firstObject') firstStep!: StepNode;
 
   @computed('currentStep')
   get currentStepNode(): StepNode | undefined {
@@ -39,13 +54,20 @@ export default abstract class BaseStateMachine extends EmberObject {
     name: StepName,
     context: any,
     onActivate: ActivationHook,
-    onDeactivate: ActivationHook
+    onDeactivate: ActivationHook,
+    transitionTo: StepManager.transitionTo
   ) {
     const node = new StepNode(this, name, context, onActivate, onDeactivate);
     this.stepTransitions.pushObject(node);
 
-    if (typeof this.currentStep === 'undefined') {
-      set(this, 'currentStep', name);
+    // Handle setting the first step if none is provided
+    // By using the StepManagers's `transitionTo()`, we ensure that the various hooks are triggered for setting the intiial step
+    if (
+      typeof this.currentStep === 'undefined' &&
+      (!this.initialStep || name === this.initialStep) &&
+      typeof transitionTo === 'function'
+    ) {
+      transitionTo(name);
     }
   }
 
@@ -84,6 +106,16 @@ export default abstract class BaseStateMachine extends EmberObject {
       this.stepTransitions.map(node => node.name).includes(name)
     );
 
+    const prevStepNode = this.currentStepNode;
+    if (prevStepNode instanceof StepNode && prevStepNode.onDeactivate) {
+      prevStepNode.onDeactivate();
+    }
+
     set(this, 'currentStep', name);
+
+    const { currentStepNode } = this;
+    if (currentStepNode instanceof StepNode && currentStepNode.onActivate) {
+      currentStepNode.onActivate();
+    }
   }
 }

@@ -56,18 +56,39 @@ export default class StepManagerComponent extends Component {
   initialStep: StepName | undefined;
 
   /**
-   * The `currentStep` property can be used for providing, or binding to, the
+   * The `currentStep` property can be used for providing, the
    * name of the current step.
    *
+   * NOTE: Since version 9.0, this is no longer 2-way bound property.
+   *
+   * To retrieve the currentStep (after initial render or transition), use the `onTransition` action:
+   * ```hbs
+   * {{#step-manager onTransition={{action (mut this.currentStep)}}as |w|}}
+   *   {{#w.step}}
+   *     The first step
+   *   {{/w.step}}
+   *
+   *   {{#w.step}}
+   *     The second step
+   *   {{/w.step}}
+   *
+   *   <button {{action w.transition-to-next}}>
+   *     Next Step
+   *   </button>
+   * {{/step-manager}}
+   *
+   * The currrent step is: {{this.currentStep}}
+   * ```
+   *
    * If provided, the initial step will come from the value of this property,
-   * and the value will be updated whenever the step changes
+   * and the value will be updated whenever the step changes.
    */
   currentStep: StepName | undefined;
 
   /**
    * Callback action to be triggered when the current step changes.
    */
-  onTransition?: Function;
+  onTransition?: (name: StepName) => void;
 
   /**
    * @property {boolean} boolean
@@ -90,8 +111,6 @@ export default class StepManagerComponent extends Component {
       'currentStep'
     );
 
-    const startingStep = isNone(initialStep) ? currentStep : initialStep;
-
     if (!isPresent(this.linear)) {
       this.linear = true;
     }
@@ -100,10 +119,11 @@ export default class StepManagerComponent extends Component {
       ? LinearStateMachine
       : CircularStateMachine;
 
+    const _initialStep = isNone(initialStep) ? currentStep : initialStep;
     set(
       this,
       'transitions',
-      StateMachine.create({ currentStep: startingStep })
+      StateMachine.create({ initialStep: _initialStep })
     );
   }
 
@@ -118,13 +138,22 @@ export default class StepManagerComponent extends Component {
   }
 
   didUpdateAttrs() {
-    const newStep = this.currentStep;
+    const destination = this.currentStep;
 
-    if (typeof newStep === 'undefined') {
+    if (typeof destination === 'undefined') {
       const firstStep = get(this.transitions, 'firstStep');
-      this.transitionTo(firstStep);
+
+      if (firstStep.name !== this.transitions.currentStep) {
+        this.transitionTo(firstStep);
+      }
     } else {
-      this.transitionTo(newStep);
+      // Need to perform strict check so that the valid, but falsy destination
+      // values of `0` & '' are legal.
+      if (typeof destination !== null) {
+        if (destination !== this.transitions.currentStep) {
+          this.transitionTo(destination);
+        }
+      }
     }
   }
 
@@ -134,12 +163,18 @@ export default class StepManagerComponent extends Component {
     const context = get(stepComponent, 'context');
     const onActivate = get(stepComponent, 'onActivate');
     const onDeactivate = get(stepComponent, 'onDeactivate');
-    const transitions = this.transitions;
+    const { transitions, transitionTo } = this;
 
     stepComponent.transitions = transitions;
 
     schedule('actions', () => {
-      transitions.addStep(name, context, onActivate, onDeactivate);
+      transitions.addStep(
+        name,
+        context,
+        onActivate,
+        onDeactivate,
+        transitionTo
+      );
     });
   }
 
@@ -164,27 +199,21 @@ export default class StepManagerComponent extends Component {
   }
 
   @action
-  transitionTo(to: StepName | StepNode) {
+  transitionTo(to: StepName | StepNode | void) {
     const destination = to instanceof StepNode ? to.name : to;
     const transitions = get(this, 'transitions');
     let currentStepNode = get(transitions, 'currentStepNode');
 
-    if (currentStepNode && destination !== currentStepNode.name) {
-      if (currentStepNode && currentStepNode.onDeactivate) {
-        currentStepNode.onDeactivate();
-      }
+    // Need to perform strict check so that the valid, but falsy destination
+    // values of `0` & '' are legal.
+    if (typeof destination !== null && typeof destination !== 'undefined') {
+      if (!currentStepNode || destination !== currentStepNode.name) {
+        this.transitions.activate(destination);
 
-      this.transitions.activate(destination);
-
-      // Trigger the provided callback action to notify of step change
-      if (this.onTransition) {
-        this.onTransition(destination);
-      }
-
-      currentStepNode = get(transitions, 'currentStepNode');
-
-      if (currentStepNode && currentStepNode.onActivate) {
-        currentStepNode.onActivate();
+        // Trigger the provided callback action to notify of step change
+        if (this.onTransition) {
+          this.onTransition(destination);
+        }
       }
     }
   }

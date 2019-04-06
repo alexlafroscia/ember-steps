@@ -26,7 +26,7 @@ module('step-manager', function(hooks) {
       assert.dom('[data-test-second]').exists();
     });
 
-    test('changes steps when the property changes', async function(assert) {
+    test('transition to step when the argument dynamically changes', async function(assert) {
       this.set('step', 'first');
       await render(hbs`
         {{#step-manager currentStep=step as |w|}}
@@ -76,7 +76,7 @@ module('step-manager', function(hooks) {
 
       test("does not mutate the target object's property when a regular value is provided", async function(assert) {
         this.set('step', 'first');
-        this.set('currentStep', null);
+
         await render(hbs`
           {{#step-manager currentStep=step onTransition=(action (mut this.currentStep)) as |w|}}
             {{w.step name='first'}}
@@ -111,6 +111,34 @@ module('step-manager', function(hooks) {
 
         assert.equal(this.get('step'), 'first');
       });
+    });
+
+    test('it changes active step with `transition-to` action', async function(assert) {
+      this.set('step', 'first');
+
+      await render(hbs`
+        {{#step-manager currentStep=this.step as |w|}}
+          {{#w.step name='first'}}
+            <div data-test-first></div>
+          {{/w.step}}
+
+          {{#w.step name='second'}}
+            <div data-test-second></div>
+          {{/w.step}}
+
+          <button {{action w.transition-to 'second'}}>
+            Next
+          </button>
+        {{/step-manager}}
+      `);
+
+      assert.dom('[data-test-first]').exists();
+      assert.dom('[data-test-second]').doesNotExist();
+
+      await click('button');
+
+      assert.dom('[data-test-first]').doesNotExist();
+      assert.dom('[data-test-second]').exists();
     });
   });
 
@@ -155,11 +183,58 @@ module('step-manager', function(hooks) {
       assert.dom('[data-test-first]').exists();
       assert.equal(this.get('initialStep'), 'second');
     });
+
+    test('is not clobbered by null `currentStep`', async function(assert) {
+      await render(hbs`
+        {{#step-manager initialStep='second' currentStep=null as |w|}}
+          {{#w.step name='first'}}
+            <div data-test-first></div>
+          {{/w.step}}
+
+          {{#w.step name='second'}}
+            <div data-test-second></div>
+          {{/w.step}}
+        {{/step-manager}}
+      `);
+
+      assert.dom('[data-test-first]').doesNotExist();
+      assert.dom('[data-test-second]').exists();
+    });
+
+    test('dynamic `currentStep` takes precendence over `initialStep`', async function(assert) {
+      this.set('currentStep', null);
+
+      await render(hbs`
+        {{#step-manager initialStep='second' currentStep=this.currentStep as |w|}}
+          {{#w.step name='first'}}
+            <div data-test-first></div>
+          {{/w.step}}
+
+          {{#w.step name='second'}}
+            <div data-test-second></div>
+          {{/w.step}}
+
+          {{#w.step name='third'}}
+            <div data-test-third></div>
+          {{/w.step}}
+        {{/step-manager}}
+      `);
+
+      assert.dom('[data-test-first]').doesNotExist();
+      assert.dom('[data-test-second]').exists();
+      assert.dom('[data-test-third]').doesNotExist();
+
+      this.set('currentStep', 'third');
+
+      assert.dom('[data-test-first]').doesNotExist();
+      assert.dom('[data-test-second]').doesNotExist();
+      assert.dom('[data-test-third]').exists();
+    });
   });
 
   test('renders the first step in the DOM if no `currentStep` is present', async function(assert) {
     await render(hbs`
-      {{#step-manager as |w|}}
+      {{#step-manager onTransition=(action (mut this.step)) as |w|}}
         {{#w.step name='first'}}
           <div data-test-first></div>
         {{/w.step}}
@@ -169,6 +244,9 @@ module('step-manager', function(hooks) {
         {{/w.step}}
       {{/step-manager}}
     `);
+
+    // Check that onTransition returns the first step's name
+    assert.equal(this.get('step'), 'first');
 
     assert.dom('[data-test-first]').exists();
     assert.dom('[data-test-second]').doesNotExist();
@@ -865,6 +943,25 @@ module('step-manager', function(hooks) {
       assert.verify(onDeactivate());
     });
 
+    // Test onActivate is triggered for first step
+    test('onActivate action gets called for initialStep', async function(assert) {
+      const onActivate = td.function();
+      this.set('onActivate', onActivate);
+
+      await render(hbs`
+        {{#step-manager initialStep='first' as |w|}}
+          {{w.step name='first' onActivate=(action onActivate)}}
+          {{w.step name='second'}}
+
+          <button {{action w.transition-to 'second'}}>
+            Next
+          </button>
+        {{/step-manager}}
+      `);
+
+      assert.verify(onActivate());
+    });
+
     test('onActivate action gets called', async function(assert) {
       const onActivate = td.function();
       this.set('onActivate', onActivate);
@@ -979,7 +1076,7 @@ module('step-manager', function(hooks) {
   module('edge cases', function() {
     test('it handles steps with falsy names', async function(assert) {
       await render(hbs`
-        {{#step-manager initialStep='' as |w|}}
+        {{#step-manager initialStep='' onTransition=(action (mut this.step)) as |w|}}
           {{#w.step name=''}}
             <div data-test-empty-string></div>
           {{/w.step}}
@@ -1002,17 +1099,26 @@ module('step-manager', function(hooks) {
         .dom('[data-test-empty-string]')
         .exists('Can start on a step with a falsy name');
 
+      // Check that onTransition returns falsy name
+      assert.equal(this.get('step'), '');
+
       await click('[data-test-next]');
 
       assert
         .dom('[data-test-zero]')
         .exists('Can transition to a next step with a falsy name');
 
+      // Check that onTransition returns falsy name
+      assert.equal(this.get('step'), 0);
+
       await click('[data-test-previous]');
 
       assert
         .dom('[data-test-empty-string]')
         .exists('Can transition to a previous step with a falsy name');
+
+      // Check that onTransition returns falsy name
+      assert.equal(this.get('step'), '');
     });
   });
 });

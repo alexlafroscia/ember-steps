@@ -4,14 +4,18 @@ import StateMachine from 'ember-steps/-private/state-machine/circular';
 module('-private/state-machine/circular', function() {
   module('constructor', function() {
     test('uses the initial step, if provided', function(assert) {
-      const m = StateMachine.create({ currentStep: 'foo' });
+      const m = StateMachine.create({ initialStep: 'foo' });
 
-      assert.equal(m.get('currentStep'), 'foo');
+      assert.equal(m.get('initialStep'), 'foo');
     });
 
-    test('calculates the initial step if necessary', function(assert) {
+    test('transitions to the initial step if necessary', function(assert) {
+      const transitionToStub = function(name) {
+        m.currentStep = name;
+      };
+
       const m = StateMachine.create();
-      m.addStep('foo');
+      m.addStep('foo', null, null, null, transitionToStub);
 
       assert.equal(m.get('currentStep'), 'foo');
     });
@@ -27,10 +31,14 @@ module('-private/state-machine/circular', function() {
 
   module('#pickNext', function() {
     test('can get the next step without advancing', function(assert) {
+      const transitionToStub = function(name) {
+        m.currentStep = name;
+      };
+
       const m = StateMachine.create();
 
-      m.addStep('foo');
-      m.addStep('bar');
+      m.addStep('foo', null, null, null, transitionToStub);
+      m.addStep('bar', null, null, null, transitionToStub);
 
       assert.equal(m.pickNext(), 'bar');
       assert.equal(m.get('currentStep'), 'foo');
@@ -57,10 +65,14 @@ module('-private/state-machine/circular', function() {
 
   module('#pickPrevious', function() {
     test('can get the previous step without advancing', function(assert) {
+      const transitionToStub = function(name) {
+        m.currentStep = name;
+      };
+
       const m = StateMachine.create();
-      m.addStep('foo');
-      m.addStep('bar');
-      m.addStep('baz');
+      m.addStep('foo', null, null, null, transitionToStub);
+      m.addStep('bar', null, null, null, transitionToStub);
+      m.addStep('baz', null, null, null, transitionToStub);
 
       assert.equal(m.pickPrevious(), 'baz');
       assert.equal(m.get('currentStep'), 'foo');
@@ -131,8 +143,13 @@ module('-private/state-machine/circular', function() {
 
   module('.currentStep', function() {
     test('exposes the name of the current step', function(assert) {
+      const transitionToStub = function(name) {
+        m.currentStep = name;
+      };
+
       const m = StateMachine.create();
-      m.addStep('foo');
+
+      m.addStep('foo', null, null, null, transitionToStub);
       assert.equal(m.get('currentStep'), 'foo');
     });
   });
