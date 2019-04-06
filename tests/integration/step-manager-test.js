@@ -58,8 +58,10 @@ module('step-manager', function(hooks) {
     module('updating the target object from the component', function() {
       test('onTransition callback is triggered with the current step when step changes', async function(assert) {
         this.set('step', 'first');
+        this.onTransition = td.function();
+
         await render(hbs`
-          {{#step-manager currentStep=this.step onTransition=(action (mut this.step)) as |w|}}
+          {{#step-manager currentStep=this.step onTransition=(action this.onTransition) as |w|}}
             {{w.step name='first'}}
             {{w.step name='second'}}
 
@@ -71,14 +73,15 @@ module('step-manager', function(hooks) {
 
         await click('button');
 
-        assert.equal(this.get('step'), 'second');
+        assert.verify(this.onTransition('second'));
       });
 
       test("does not mutate the target object's property when a regular value is provided", async function(assert) {
         this.set('step', 'first');
+        this.onTransition = td.function();
 
         await render(hbs`
-          {{#step-manager currentStep=step onTransition=(action (mut this.currentStep)) as |w|}}
+          {{#step-manager currentStep=step onTransition=(action this.onTransition) as |w|}}
             {{w.step name='first'}}
             {{w.step name='second'}}
 
@@ -91,7 +94,7 @@ module('step-manager', function(hooks) {
         await click('button');
 
         assert.equal(this.get('step'), 'first');
-        assert.equal(this.get('currentStep'), 'second');
+        assert.verify(this.onTransition('second'));
       });
 
       test('does not update the target object with an unbound value', async function(assert) {
@@ -233,8 +236,10 @@ module('step-manager', function(hooks) {
   });
 
   test('renders the first step in the DOM if no `currentStep` is present', async function(assert) {
+    this.onTransition = td.function();
+
     await render(hbs`
-      {{#step-manager onTransition=(action (mut this.step)) as |w|}}
+      {{#step-manager onTransition=(action this.onTransition) as |w|}}
         {{#w.step name='first'}}
           <div data-test-first></div>
         {{/w.step}}
@@ -246,7 +251,7 @@ module('step-manager', function(hooks) {
     `);
 
     // Check that onTransition returns the first step's name
-    assert.equal(this.get('step'), 'first');
+    assert.verify(this.onTransition('first'));
 
     assert.dom('[data-test-first]').exists();
     assert.dom('[data-test-second]').doesNotExist();
@@ -1075,8 +1080,10 @@ module('step-manager', function(hooks) {
 
   module('edge cases', function() {
     test('it handles steps with falsy names', async function(assert) {
+      this.onTransition = td.function();
+
       await render(hbs`
-        {{#step-manager initialStep='' onTransition=(action (mut this.step)) as |w|}}
+        {{#step-manager initialStep='' onTransition=(action this.onTransition) as |w|}}
           {{#w.step name=''}}
             <div data-test-empty-string></div>
           {{/w.step}}
@@ -1100,7 +1107,7 @@ module('step-manager', function(hooks) {
         .exists('Can start on a step with a falsy name');
 
       // Check that onTransition returns falsy name
-      assert.equal(this.get('step'), '');
+      assert.verify(this.onTransition(''));
 
       await click('[data-test-next]');
 
@@ -1109,7 +1116,7 @@ module('step-manager', function(hooks) {
         .exists('Can transition to a next step with a falsy name');
 
       // Check that onTransition returns falsy name
-      assert.equal(this.get('step'), 0);
+      assert.verify(this.onTransition(0));
 
       await click('[data-test-previous]');
 
@@ -1118,7 +1125,7 @@ module('step-manager', function(hooks) {
         .exists('Can transition to a previous step with a falsy name');
 
       // Check that onTransition returns falsy name
-      assert.equal(this.get('step'), '');
+      assert.verify(this.onTransition(''));
     });
   });
 });
