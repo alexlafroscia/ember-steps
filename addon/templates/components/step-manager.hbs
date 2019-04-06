@@ -4,13 +4,13 @@
       register-step=(action "registerStepComponent")
       remove-step=(action "removeStepComponent")
       update-step-node=(action "updateStepNode")
-      currentStep=transitions.currentStep
-      transitions=transitions
+      currentStep=this.transitions.currentStep
+      transitions=this.transitions
     )
-    hasNextStep=hasNextStep
-    hasPreviousStep=hasPreviousStep
-    currentStep=transitions.currentStep
-    steps=transitions.stepTransitions
+    hasNextStep=this.hasNextStep
+    hasPreviousStep=this.hasPreviousStep
+    currentStep=this.transitions.currentStep
+    steps=this.transitions.stepTransitions
     transition-to=(action "transitionTo")
     transition-to-next=(action "transitionToNext")
     transition-to-previous=(action "transitionToPrevious")
