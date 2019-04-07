@@ -107,7 +107,7 @@ export default class StepManagerComponent extends Component {
    * @type {(StepName | undefined)}
    * @memberof StepManagerComponent
    */
-  private _currentStep: StepName | undefined;
+  _currentStep: StepName | undefined;
 
   /**
    * Callback action to be triggered when the current step changes.
