@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 // @ts-ignore: Ignore import of compiled template
 import layout from '../templates/components/step-manager';
-import { get, getProperties, set } from '@ember/object';
+import { get, set } from '@ember/object';
 import { isPresent, isNone } from '@ember/utils';
 import { schedule } from '@ember/runloop';
 import { assert } from '@ember/debug';
@@ -83,7 +83,31 @@ export default class StepManagerComponent extends Component {
    * If provided, the initial step will come from the value of this property,
    * and the value will be updated whenever the step changes.
    */
-  currentStep: StepName | undefined;
+  set currentStep(destination: StepName | undefined) {
+    if (this.transitions && destination !== this.transitions.currentStep) {
+      if (typeof destination === 'undefined') {
+        // Go back to first step
+        // Allows the clearing of query params to reset the StateMachine
+        this.transitionTo(this.transitions.firstStep);
+
+        // Need to perform strict check so that the valid, but falsy destination
+        // values of `0` & '' are legal.
+      } else if (destination !== null) {
+        this.transitionTo(destination);
+      }
+    }
+
+    this.set('_currentStep', destination);
+  }
+
+  /**
+   * Holds the value passed to the `currentStep` setter.
+   *
+   * @private
+   * @type {(StepName | undefined)}
+   * @memberof StepManagerComponent
+   */
+  private _currentStep: StepName | undefined;
 
   /**
    * Callback action to be triggered when the current step changes.
@@ -105,11 +129,7 @@ export default class StepManagerComponent extends Component {
   init() {
     super.init();
 
-    const { initialStep, currentStep } = getProperties(
-      this,
-      'initialStep',
-      'currentStep'
-    );
+    const { initialStep, _currentStep } = this;
 
     if (!isPresent(this.linear)) {
       this.linear = true;
@@ -119,7 +139,7 @@ export default class StepManagerComponent extends Component {
       ? LinearStateMachine
       : CircularStateMachine;
 
-    const _initialStep = isNone(initialStep) ? currentStep : initialStep;
+    const _initialStep = isNone(initialStep) ? _currentStep : initialStep;
     set(
       this,
       'transitions',
@@ -135,26 +155,6 @@ export default class StepManagerComponent extends Component {
   @computed('transitions.{currentStep,length}')
   get hasPreviousStep() {
     return !isNone(this.transitions.pickPrevious());
-  }
-
-  didUpdateAttrs() {
-    const destination = this.currentStep;
-
-    if (typeof destination === 'undefined') {
-      const firstStep = get(this.transitions, 'firstStep');
-
-      if (firstStep.name !== this.transitions.currentStep) {
-        this.transitionTo(firstStep);
-      }
-    } else {
-      // Need to perform strict check so that the valid, but falsy destination
-      // values of `0` & '' are legal.
-      if (typeof destination !== null) {
-        if (destination !== this.transitions.currentStep) {
-          this.transitionTo(destination);
-        }
-      }
-    }
   }
 
   @action
@@ -206,7 +206,7 @@ export default class StepManagerComponent extends Component {
 
     // Need to perform strict check so that the valid, but falsy destination
     // values of `0` & '' are legal.
-    if (typeof destination !== null && typeof destination !== 'undefined') {
+    if (destination !== null && typeof destination !== 'undefined') {
       if (!currentStepNode || destination !== currentStepNode.name) {
         this.transitions.activate(destination);
 

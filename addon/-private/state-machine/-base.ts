@@ -10,7 +10,7 @@ import { StepName, ActivationHook } from '../types';
 import StepNode, {
   PublicProperty as PublicStepNodeProperty
 } from '../step-node';
-import { StepManager } from '../../components/step-manager';
+import StepManager from '../../components/step-manager';
 
 /**
  * Keeps track of the order of the steps in the step manager, as well as
@@ -32,7 +32,7 @@ export default abstract class BaseStateMachine extends EmberObject {
   initialStep!: StepName;
 
   /**
-   * The currently active step for the StateMachine.
+   * The currently active step for the State Machine.
    *
    * @type {StepName}
    * @memberof BaseStateMachine
@@ -55,13 +55,14 @@ export default abstract class BaseStateMachine extends EmberObject {
     context: any,
     onActivate: ActivationHook,
     onDeactivate: ActivationHook,
-    transitionTo: StepManager.transitionTo
+    transitionTo: StepManager['transitionTo']
   ) {
     const node = new StepNode(this, name, context, onActivate, onDeactivate);
     this.stepTransitions.pushObject(node);
 
-    // Handle setting the first step if none is provided
-    // By using the StepManagers's `transitionTo()`, we ensure that the various hooks are triggered for setting the intiial step
+    // Handle setting the first step if none is provided.
+    // By using the StepManagers's `transitionTo()`, we ensure that the various
+    // hooks are triggered for setting the initial step.
     if (
       typeof this.currentStep === 'undefined' &&
       (!this.initialStep || name === this.initialStep) &&
