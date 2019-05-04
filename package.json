@@ -46,6 +46,7 @@
     "ember-composable-helpers": "^2.1.0",
     "ember-concurrency": "^0.8.26",
     "ember-css-modules": "^1.1.0",
+    "ember-decorators-polyfill": "^1.0.4",
     "ember-disable-prototype-extensions": "^1.1.3",
     "ember-export-application-global": "^2.0.0",
     "ember-fastboot-addon-tests": "^0.5.1",
