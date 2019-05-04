@@ -5404,12 +5404,12 @@ ember-cli-deploy@^1.0.2:
     rsvp "^3.3.3"
     silent-error "^1.0.0"
 
-ember-cli-document-title@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/ember-cli-document-title/-/ember-cli-document-title-0.4.0.tgz#1d0321c443d16b104eca16a8eb42839ecd6737f2"
-  integrity sha512-NWJvINrJWkbhczfrLrPjvwa+On/dXO4QwS7BtEnJA/eQjS/peCWZQdR1psiLqmB9Ew/O3tcOJKKaQHPhVIC/xQ==
+ember-cli-document-title-northm@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/ember-cli-document-title-northm/-/ember-cli-document-title-northm-1.0.3.tgz#c7aa902e12dea3922acf3a21e9a47d1ec7dee314"
+  integrity sha512-xjZlT4SLh11U6vYE7zSccBeDlcB3sE+DY8z9xWUCPoGaeXK5HILS3SIxmcNI0/LWjLhUFERbZoSaNDUp2TILFg==
   dependencies:
-    ember-cli-babel "^6.6.0"
+    ember-cli-babel "^7.0.0"
 
 ember-cli-fastboot@^2.0.4:
   version "2.0.4"
