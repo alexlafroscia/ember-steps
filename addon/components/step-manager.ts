@@ -5,7 +5,7 @@ import { get, getProperties, set } from '@ember/object';
 import { isPresent, isNone } from '@ember/utils';
 import { schedule } from '@ember/runloop';
 import { assert } from '@ember/debug';
-import { action, computed } from '@ember-decorators/object';
+import { action, computed } from '@ember/object';
 import { tagName } from '@ember-decorators/component';
 
 import BaseStateMachine from '../-private/state-machine/-base';

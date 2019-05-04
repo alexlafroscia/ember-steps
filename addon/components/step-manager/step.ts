@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import { get, set } from '@ember/object';
 import { isPresent } from '@ember/utils';
 import { assert } from '@ember/debug';
-import { computed } from '@ember-decorators/object';
+import { computed } from '@ember/object';
 import { tagName } from '@ember-decorators/component';
 import { PublicProperty as PublicStepNodeProperty } from '../../-private/step-node';
 

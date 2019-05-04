@@ -1,7 +1,7 @@
 import { get } from '@ember/object';
 import { isPresent } from '@ember/utils';
 
-import { computed } from '@ember-decorators/object';
+import { computed } from '@ember/object';
 
 import { StepName, ActivationHook } from './types';
 import StateMachine from './state-machine/-base';
