@@ -1,7 +1,7 @@
 import EmberObject, { set, get } from '@ember/object';
 import { A } from '@ember/array';
-import { computed } from '@ember-decorators/object';
-import { readOnly } from '@ember-decorators/object/computed';
+import { computed } from '@ember/object';
+import { readOnly } from '@ember/object/computed';
 import { assert } from '@ember/debug';
 import { isNone } from '@ember/utils';
 

@@ -987,14 +987,6 @@
     "@ember-decorators/utils" "^5.1.1"
     ember-cli-babel "^7.1.3"
 
-"@ember-decorators/object@^5.1.1":
-  version "5.1.1"
-  resolved "https://registry.yarnpkg.com/@ember-decorators/object/-/object-5.1.1.tgz#2bd6bf07ec4b49d45f1278a5f017b321e346c3be"
-  integrity sha512-ZdslF8n6nzOUfUgpcJllKemdkqCzMg5gFN+z869FpVP5B8AmXIPXgd82wOuNgb+HqyvOXDqwiFLAPBmFsrFh4Q==
-  dependencies:
-    "@ember-decorators/utils" "^5.1.1"
-    ember-cli-babel "^7.1.3"
-
 "@ember-decorators/utils@^3.1.0":
   version "3.1.4"
   resolved "https://registry.yarnpkg.com/@ember-decorators/utils/-/utils-3.1.4.tgz#a80f715b20576783f0a5b7baeed57a59a131161e"

@@ -1,7 +1,6 @@
 import { get } from '@ember/object';
 import { isPresent } from '@ember/utils';
-
-import { computed } from '@ember-decorators/object';
+import { computed } from '@ember/object';
 
 export default class StepNode {
   constructor(sm, name, context, onActivate, onDeactivate) {

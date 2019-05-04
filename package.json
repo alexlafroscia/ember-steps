@@ -78,7 +78,6 @@
   },
   "dependencies": {
     "@ember-decorators/component": "^5.1.1",
-    "@ember-decorators/object": "^5.1.1",
     "ember-cli-babel": "^7.7.3",
     "ember-cli-htmlbars": "^3.0.0"
   },
