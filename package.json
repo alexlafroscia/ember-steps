@@ -9,8 +9,6 @@
     "start": "FASTBOOT_DISABLED=true ember serve",
     "test": "ember test",
     "test:all": "ember try:each",
-    "prepublishOnly": "ember ts:precompile",
-    "postpublish": "ember ts:clean",
     "release": "standard-version"
   },
   "main": "index.js",
@@ -24,13 +22,7 @@
     "@commitlint/travis-cli": "^6.2.0",
     "@ember/optional-features": "^0.6.3",
     "@ember/test-helpers": "^0.7.18",
-    "@types/ember": "^3.0.26",
-    "@types/ember-qunit": "^3.4.5",
-    "@types/ember-test-helpers": "^1.0.4",
-    "@types/ember-testing-helpers": "^0.0.3",
-    "@types/ember__test-helpers": "^0.7.7",
-    "@types/qunit": "^2.5.4",
-    "@types/rsvp": "^4.0.2",
+    "babel-eslint": "^10.0.1",
     "broccoli-asset-rev": "^2.7.0",
     "chai": "^4.1.2",
     "ember-cli": "~3.5.0",
@@ -50,7 +42,6 @@
     "ember-cli-test-loader": "^2.1.0",
     "ember-cli-testdouble": "^0.1.3",
     "ember-cli-testdouble-qunit": "^2.0.2",
-    "ember-cli-typescript-blueprints": "^2.0.0-beta.1",
     "ember-cli-uglify": "^2.1.0",
     "ember-composable-helpers": "^2.1.0",
     "ember-concurrency": "^0.8.26",
@@ -82,24 +73,19 @@
     "rsvp": "^4.8.4",
     "standard-version": "^4.4.0",
     "testdouble": "^2.0.0",
-    "travis-deploy-once": "^5.0.0",
-    "typescript": "^3.2.4",
-    "typescript-eslint-parser": "^20.0.0"
+    "travis-deploy-once": "^5.0.0"
   },
   "dependencies": {
     "@ember-decorators/babel-transforms": "^5.1.1",
     "@ember-decorators/component": "^5.1.1",
     "@ember-decorators/object": "^5.1.1",
     "ember-cli-babel": "^7.3.0",
-    "ember-cli-htmlbars": "^3.0.0",
-    "ember-cli-typescript": "^2.0.0-rc.2"
+    "ember-cli-htmlbars": "^3.0.0"
   },
   "resolutions": {
     "ember-css-modules/broccoli-postcss": "^3.5.3"
   },
-  "keywords": [
-    "ember-addon"
-  ],
+  "keywords": ["ember-addon"],
   "repository": "https://github.com/alexlafroscia/ember-steps",
   "license": "MIT",
   "author": "Alex LaFroscia <alex@lafroscia.com>",

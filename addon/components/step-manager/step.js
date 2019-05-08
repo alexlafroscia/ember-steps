@@ -4,10 +4,6 @@ import { isPresent } from '@ember/utils';
 import { assert } from '@ember/debug';
 import { computed } from '@ember-decorators/object';
 import { tagName } from '@ember-decorators/component';
-import { PublicProperty as PublicStepNodeProperty } from '../../-private/step-node';
-
-import StateMachine from '../../-private/state-machine/-base';
-import { StepName, ActivationHook } from '../../-private/types';
 
 // @ts-ignore: Ignore import of compiled template
 import layout from '../../templates/components/step-manager/step';
@@ -20,22 +16,17 @@ function failOnNameChange() {
 export default class StepComponent extends Component {
   layout = layout;
 
-  name!: StepName;
-  context!: any;
-  onActivate!: ActivationHook;
-  onDeactivate!: ActivationHook;
+  name;
+  context;
+  onActivate;
+  onDeactivate;
 
-  currentStep!: StepName;
+  currentStep;
 
-  transitions!: StateMachine;
+  transitions;
 
-  'register-step'!: (stepComponent: StepComponent) => void;
-  'remove-step'!: (stepComponent: StepComponent) => void;
-  'update-step-node'!: (
-    stepComponent: StepComponent,
-    field: PublicStepNodeProperty,
-    value: any
-  ) => void;
+  'register-step';
+  'remove-step';
 
   init() {
     super.init();
@@ -69,19 +60,19 @@ export default class StepComponent extends Component {
     this['remove-step'](this);
   }
 
-  private updateContext() {
+  updateContext() {
     const context = get(this, 'context');
 
     this['update-step-node'](this, 'context', context);
   }
 
-  private updateOnActivate() {
+  updateOnActivate() {
     const onActivate = get(this, 'onActivate');
 
     this['update-step-node'](this, 'onActivate', onActivate);
   }
 
-  private updateOnDeactivate() {
+  updateOnDeactivate() {
     const onDeactivate = get(this, 'onDeactivate');
 
     this['update-step-node'](this, 'onDeactivate', onDeactivate);
@@ -93,19 +84,19 @@ export default class StepComponent extends Component {
    * @private
    */
   @computed('currentStep', 'name')
-  get isActive(): boolean {
+  get isActive() {
     return this.currentStep === this.name;
   }
 
   @computed('transitions.length')
-  get hasNext(): boolean {
+  get hasNext() {
     const name = this.name;
 
     return isPresent(this.transitions.pickNext(name));
   }
 
   @computed('transitions.length')
-  get hasPrevious(): boolean {
+  get hasPrevious() {
     const name = this.name;
 
     return isPresent(this.transitions.pickPrevious(name));
