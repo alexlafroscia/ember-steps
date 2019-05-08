@@ -55,85 +55,94 @@ module('step-manager', function(hooks) {
       assert.dom('[data-test-second]').doesNotExist();
     });
 
-    module('updating the target object from the component', function() {
-      test("mutates the target object's property when a mutable value is provided", async function(assert) {
-        this.set('step', 'first');
-        await render(hbs`
-          {{#step-manager currentStep=(mut step) as |w|}}
-            {{w.step name='first'}}
-            {{w.step name='second'}}
+    test('does not mutate the `currentStep` property', async function(assert) {
+      this.set('step', 'first');
 
-            <button {{action w.transition-to 'second'}}>
-              Next
-            </button>
-          {{/step-manager}}
-        `);
+      await render(hbs`
+        {{#step-manager currentStep=step as |w|}}
+          {{w.step name='first'}}
+          {{w.step name='second'}}
 
-        await click('button');
+          <button {{action w.transition-to 'second'}}>
+            Next
+          </button>
+        {{/step-manager}}
+      `);
 
-        assert.equal(this.get('step'), 'second');
-      });
+      await click('button');
 
-      test("mutates the target object's property when a regular value is provided", async function(assert) {
-        this.set('step', 'first');
-        await render(hbs`
-          {{#step-manager currentStep=step as |w|}}
-            {{w.step name='first'}}
-            {{w.step name='second'}}
+      assert.equal(this.get('step'), 'first');
+    });
 
-            <button {{action w.transition-to 'second'}}>
-              Next
-            </button>
-          {{/step-manager}}
-        `);
+    test('subscribing to step changes', async function(assert) {
+      this.set('step', 'first');
+      this.set('onTransition', td.function());
 
-        await click('button');
+      await render(hbs`
+        {{#step-manager currentStep=step onTransition=onTransition as |w|}}
+          {{w.step name='first'}}
+          {{w.step name='second'}}
 
-        assert.equal(this.get('step'), 'second');
-      });
+          <button {{action w.transition-to 'second'}}>
+            Next
+          </button>
+        {{/step-manager}}
+      `);
 
-      test('does not update the target object with an unbound value', async function(assert) {
-        this.set('step', 'first');
-        await render(hbs`
-          {{#step-manager currentStep=(unbound step) as |w|}}
-            {{w.step name='first'}}
-            {{w.step name='second'}}
+      await click('button');
 
-            <button {{action w.transition-to 'second'}}>
-              Next
-            </button>
-          {{/step-manager}}
-        `);
+      assert.verify(
+        this.onTransition('second'),
+        'Called with the new step name'
+      );
+    });
 
-        await click('button');
+    test('emulating a two-way binding to the current step', async function(assert) {
+      this.set('step', 'first');
 
-        assert.equal(this.get('step'), 'first');
-      });
+      await render(hbs`
+        {{#step-manager currentStep=step onTransition=(action (mut step)) as |w|}}
+          {{w.step name='first'}}
+          {{w.step name='second'}}
 
-      test('does not reset back to first step on any attribute change', async function(assert) {
-        this.set('initialStep', 'second');
-        this.set('randomAttribute', 'initial value');
+          <button {{action w.transition-to 'second'}}>
+            Next
+          </button>
+        {{/step-manager}}
+      `);
 
-        await render(hbs`
-          {{#step-manager randomAttribute=randomAttribute initialStep=initialStep as |w|}}
-            {{#w.step name='first'}}
-              <div data-test-first></div>
-            {{/w.step}}
-            {{#w.step name='second'}}
-              <div data-test-second></div>
-            {{/w.step}}
-          {{/step-manager}}
-        `);
+      await click('button');
 
-        assert.dom('[data-test-second]').exists();
-        assert.dom('[data-test-first]').doesNotExist();
+      assert.equal(
+        this.get('step'),
+        'second',
+        'Step was updated to the new value'
+      );
+    });
 
-        this.set('initialStep', 'second');
-        this.set('randomAttribute', 'a new value');
+    test('does not reset back to first step on any attribute change', async function(assert) {
+      this.set('initialStep', 'second');
+      this.set('randomAttribute', 'initial value');
 
-        assert.dom('[data-test-second]').exists();
-        assert.dom('[data-test-first]').doesNotExist();
-      });
+      await render(hbs`
+        {{#step-manager randomAttribute=randomAttribute initialStep=initialStep as |w|}}
+          {{#w.step name='first'}}
+            <div data-test-first></div>
+          {{/w.step}}
+          {{#w.step name='second'}}
+            <div data-test-second></div>
+          {{/w.step}}
+        {{/step-manager}}
+      `);
+
+      assert.dom('[data-test-second]').exists();
+      assert.dom('[data-test-first]').doesNotExist();
+
+      this.set('initialStep', 'second');
+      this.set('randomAttribute', 'a new value');
+
+      assert.dom('[data-test-second]').exists();
+      assert.dom('[data-test-first]').doesNotExist();
     });
   });
 
