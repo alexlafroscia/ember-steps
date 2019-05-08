@@ -1,15 +1,11 @@
 import EmberObject, { set, get } from '@ember/object';
-import MutableArray from '@ember/array/mutable';
 import { A } from '@ember/array';
 import { computed } from '@ember-decorators/object';
 import { readOnly } from '@ember-decorators/object/computed';
 import { assert } from '@ember/debug';
 import { isNone } from '@ember/utils';
 
-import { StepName, ActivationHook } from '../types';
-import StepNode, {
-  PublicProperty as PublicStepNodeProperty
-} from '../step-node';
+import StepNode from '../step-node';
 
 /**
  * Keeps track of the order of the steps in the step manager, as well as
@@ -19,28 +15,23 @@ import StepNode, {
  * @private
  * @hide
  */
-export default abstract class BaseStateMachine extends EmberObject {
-  protected stepTransitions: MutableArray<StepNode> = A();
+export default class BaseStateMachine extends EmberObject {
+  stepTransitions = A();
 
-  currentStep!: StepName;
+  currentStep;
 
-  @readOnly('stepTransitions.length') length!: number;
+  @readOnly('stepTransitions.length') length;
 
-  @readOnly('stepTransitions.firstObject') firstStep!: StepName;
+  @readOnly('stepTransitions.firstObject') firstStep;
 
   @computed('currentStep')
-  get currentStepNode(): StepNode | undefined {
+  get currentStepNode() {
     const currentStep = get(this, 'currentStep');
 
     return this.stepTransitions.find(stepNode => stepNode.name === currentStep);
   }
 
-  addStep(
-    name: StepName,
-    context: any,
-    onActivate: ActivationHook,
-    onDeactivate: ActivationHook
-  ) {
+  addStep(name, context, onActivate, onDeactivate) {
     const node = new StepNode(this, name, context, onActivate, onDeactivate);
     this.stepTransitions.pushObject(node);
 
@@ -49,33 +40,33 @@ export default abstract class BaseStateMachine extends EmberObject {
     }
   }
 
-  removeStep(name: StepName) {
+  removeStep(name) {
     const node = this.stepTransitions.find(node => node.name === name);
 
     assert('Could not find a step of that name', !!node);
 
-    const index = this.stepTransitions.indexOf(node!);
+    const index = this.stepTransitions.indexOf(node);
 
     this.stepTransitions.removeAt(index);
   }
 
-  updateStepNode(name: StepName, field: PublicStepNodeProperty, value: any) {
+  updateStepNode(name, field, value) {
     const node = this.stepTransitions.find(node => node.name === name);
 
     assert(`"${name}" does not match an existing step`, !!node);
 
-    set(node!, field, value);
+    set(node, field, value);
   }
 
-  pickNext(_currentStep?: StepName): StepName | undefined {
+  pickNext() {
     throw new Error('Must implement method');
   }
 
-  pickPrevious(_currentStep?: StepName): StepName | undefined {
+  pickPrevious() {
     throw new Error('Must implement method');
   }
 
-  activate(step: StepNode | StepName) {
+  activate(step) {
     const name = step instanceof StepNode ? step.name : step;
 
     assert('No step name was provided', !isNone(step));

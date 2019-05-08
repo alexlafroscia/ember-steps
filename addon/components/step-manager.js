@@ -8,15 +8,10 @@ import { assert } from '@ember/debug';
 import { action, computed } from '@ember-decorators/object';
 import { tagName } from '@ember-decorators/component';
 
-import BaseStateMachine from '../-private/state-machine/-base';
 import CircularStateMachine from '../-private/state-machine/circular';
 import LinearStateMachine from '../-private/state-machine/linear';
 
-import { StepName } from '../-private/types';
-import StepNode, {
-  PublicProperty as PublicStepNodeProperty
-} from '../-private/step-node';
-import StepComponent from './step-manager/step';
+import StepNode from '../-private/step-node';
 
 /**
  * A component for creating a set of "steps", where only one is visible at a time
@@ -53,7 +48,7 @@ export default class StepManagerComponent extends Component {
   layout = layout;
 
   /* Optionally can be provided to override the initial step to render */
-  initialStep: StepName | undefined;
+  initialStep;
 
   /**
    * The `currentStep` property can be used for providing, or binding to, the
@@ -61,26 +56,29 @@ export default class StepManagerComponent extends Component {
    *
    * If provided, the initial step will come from the value of this property,
    * and the value will be updated whenever the step changes
+   *
+   * @property {string} currentStep
+   * @public
    */
-  currentStep: StepName | undefined;
+  currentStep;
 
   /**
    * @property {boolean} boolean
    * @public
    */
-  linear!: boolean;
+  linear;
 
   /**
    * @property {boolean} boolean
    * @private
    */
-  _watchCurrentStep!: boolean;
+  _watchCurrentStep;
 
   /**
    * @property {BaseStateMachine} transitions state machine for transitions
    * @private
    */
-  transitions!: BaseStateMachine;
+  transitions;
 
   init() {
     super.init();
@@ -133,7 +131,7 @@ export default class StepManagerComponent extends Component {
   }
 
   @action
-  registerStepComponent(stepComponent: StepComponent) {
+  registerStepComponent(stepComponent) {
     const name = get(stepComponent, 'name');
     const context = get(stepComponent, 'context');
     const onActivate = get(stepComponent, 'onActivate');
@@ -148,7 +146,7 @@ export default class StepManagerComponent extends Component {
   }
 
   @action
-  removeStepComponent(stepComponent: StepComponent) {
+  removeStepComponent(stepComponent) {
     const name = get(stepComponent, 'name');
 
     schedule('actions', () => {
@@ -157,18 +155,14 @@ export default class StepManagerComponent extends Component {
   }
 
   @action
-  updateStepNode(
-    stepComponent: StepComponent,
-    field: PublicStepNodeProperty,
-    value: any
-  ) {
+  updateStepNode(stepComponent, field, value) {
     const name = get(stepComponent, 'name');
 
     this.transitions.updateStepNode(name, field, value);
   }
 
   @action
-  transitionTo(to: StepName | StepNode) {
+  transitionTo(to) {
     const destination = to instanceof StepNode ? to.name : to;
     const transitions = get(this, 'transitions');
     let currentStepNode = get(transitions, 'currentStepNode');
@@ -198,7 +192,7 @@ export default class StepManagerComponent extends Component {
 
     assert('There is no next step', !isNone(to));
 
-    this.transitionTo(to!);
+    this.transitionTo(to);
   }
 
   @action
@@ -207,6 +201,6 @@ export default class StepManagerComponent extends Component {
 
     assert('There is no previous step', !isNone(to));
 
-    this.transitionTo(to!);
+    this.transitionTo(to);
   }
 }

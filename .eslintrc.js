@@ -1,8 +1,12 @@
 module.exports = {
   root: true,
+  parser: 'babel-eslint',
   parserOptions: {
     ecmaVersion: 2017,
-    sourceType: 'module'
+    sourceType: 'module',
+    ecmaFeatures: {
+      legacyDecorators: true
+    }
   },
   plugins: ['ember', 'prettier'],
   extends: ['eslint:recommended', 'plugin:ember/recommended', 'prettier'],
@@ -18,15 +22,6 @@ module.exports = {
     ]
   },
   overrides: [
-    // TypeScript files
-    {
-      files: ['**/*.ts'],
-      parser: 'typescript-eslint-parser',
-      rules: {
-        'no-undef': 'off',
-        'no-unused-vars': 'off'
-      }
-    },
     // node files
     {
       files: [
