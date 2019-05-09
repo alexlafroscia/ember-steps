@@ -877,121 +877,17 @@ module('step-manager', function(hooks) {
   });
 
   module('activation hooks', function() {
-    test('onDeactivate action gets called', async function(assert) {
+    test('using `will-destroy` when a step is deactivated', async function(assert) {
       const onDeactivate = td.function();
       this.set('onDeactivate', onDeactivate);
 
       await render(hbs`
         {{#step-manager as |w|}}
-          {{w.step name='first' onDeactivate=(action onDeactivate)}}
-          {{w.step name='second'}}
-
-          <button {{action w.transition-to 'second'}}>
-            Next
-          </button>
-        {{/step-manager}}
-      `);
-
-      await click('button');
-
-      assert.verify(onDeactivate());
-    });
-
-    test('onActivate action gets called', async function(assert) {
-      const onActivate = td.function();
-      this.set('onActivate', onActivate);
-
-      await render(hbs`
-        {{#step-manager as |w|}}
-          {{w.step name='first'}}
-          {{w.step name='second' onActivate=(action onActivate)}}
-
-          <button {{action w.transition-to 'second'}}>
-            Next
-          </button>
-        {{/step-manager}}
-      `);
-
-      await click('button');
-
-      assert.verify(onActivate());
-    });
-
-    test('onActivate action gets called when the current step property changes', async function(assert) {
-      const onActivate = td.function();
-      this.set('onActivate', onActivate);
-      this.set('tab', 'first');
-
-      await render(hbs`
-        {{#step-manager currentStep=tab as |w|}}
           {{#w.step name='first'}}
-            This content is on the first tab
+            <div {{will-destroy onDeactivate}}>
+              Step Content
+            </div>
           {{/w.step}}
-
-          {{#w.step name='second' onActivate=(action onActivate)}}
-            This content is on the second tab
-          {{/w.step}}
-        {{/step-manager}}
-      `);
-
-      this.set('tab', 'second');
-      assert.verify(onActivate());
-    });
-
-    test('onDeactivate action gets called when the current step property changes', async function(assert) {
-      const onDeactivate = td.function();
-      this.set('onDeactivate', onDeactivate);
-      this.set('tab', 'first');
-
-      await render(hbs`
-        {{#step-manager currentStep=tab as |w|}}
-          {{#w.step name='first' onDeactivate=(action onDeactivate)}}
-            This content is on the first tab
-          {{/w.step}}
-
-          {{#w.step name='second'}}
-            This content is on the second tab
-          {{/w.step}}
-        {{/step-manager}}
-      `);
-
-      this.set('tab', 'second');
-      assert.verify(onDeactivate());
-    });
-
-    test('onActivate action can be updated', async function(assert) {
-      const onActivate = td.function();
-      this.set('onActivate', onActivate);
-
-      const updatedOnActivate = td.function();
-
-      await render(hbs`
-        {{#step-manager as |w|}}
-          {{w.step name='first'}}
-          {{w.step name='second' onActivate=(action onActivate)}}
-
-          <button {{action w.transition-to 'second'}}>
-            Next
-          </button>
-        {{/step-manager}}
-      `);
-
-      this.set('onActivate', updatedOnActivate);
-      await click('button');
-
-      assert.verify(updatedOnActivate());
-      assert.verify(onActivate(), { times: 0, ignoreExtraArgs: true });
-    });
-
-    test('onDeactivate action can be updated', async function(assert) {
-      const onDeactivate = td.function();
-      this.set('onDeactivate', onDeactivate);
-
-      const updatedOnDeactivate = td.function();
-
-      await render(hbs`
-        {{#step-manager as |w|}}
-          {{w.step name='first' onDeactivate=(action onDeactivate)}}
           {{w.step name='second'}}
 
           <button {{action w.transition-to 'second'}}>
@@ -1000,11 +896,33 @@ module('step-manager', function(hooks) {
         {{/step-manager}}
       `);
 
-      this.set('onDeactivate', updatedOnDeactivate);
       await click('button');
 
-      assert.verify(updatedOnDeactivate());
-      assert.verify(onDeactivate(), { times: 0, ignoreExtraArgs: true });
+      assert.verify(onDeactivate(), { ignoreExtraArgs: true });
+    });
+
+    test('using `did-insert` when a step is activated', async function(assert) {
+      const onActivate = td.function();
+      this.set('onActivate', onActivate);
+
+      await render(hbs`
+        {{#step-manager as |w|}}
+          {{w.step name='first'}}
+          {{#w.step name='second'}}
+            <div {{did-insert onActivate}}>
+              Step Content
+            </div>
+          {{/w.step}}
+
+          <button {{action w.transition-to 'second'}}>
+            Next
+          </button>
+        {{/step-manager}}
+      `);
+
+      await click('button');
+
+      assert.verify(onActivate(), { ignoreExtraArgs: true });
     });
   });
 

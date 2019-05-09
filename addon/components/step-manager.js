@@ -144,14 +144,12 @@ export default class StepManagerComponent extends Component {
   registerStepComponent(stepComponent) {
     const name = get(stepComponent, 'name');
     const context = get(stepComponent, 'context');
-    const onActivate = get(stepComponent, 'onActivate');
-    const onDeactivate = get(stepComponent, 'onDeactivate');
     const transitions = this.transitions;
 
     stepComponent.transitions = transitions;
 
     schedule('actions', () => {
-      transitions.addStep(name, context, onActivate, onDeactivate);
+      transitions.addStep(name, context);
     });
   }
 
@@ -174,24 +172,12 @@ export default class StepManagerComponent extends Component {
   @action
   transitionTo(to) {
     const destination = to instanceof StepNode ? to.name : to;
-    const transitions = get(this, 'transitions');
     const onTransition = get(this, 'onTransition');
-    let currentStepNode = get(transitions, 'currentStepNode');
-
-    if (currentStepNode && currentStepNode.onDeactivate) {
-      currentStepNode.onDeactivate();
-    }
 
     this.transitions.activate(destination);
 
     if (onTransition) {
       onTransition(destination);
-    }
-
-    currentStepNode = get(transitions, 'currentStepNode');
-
-    if (currentStepNode && currentStepNode.onActivate) {
-      currentStepNode.onActivate();
     }
   }
 

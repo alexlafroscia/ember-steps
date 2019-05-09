@@ -18,8 +18,6 @@ export default class StepComponent extends Component {
 
   name;
   context;
-  onActivate;
-  onDeactivate;
 
   currentStep;
 
@@ -46,8 +44,6 @@ export default class StepComponent extends Component {
 
     this.addObserver('name', this, failOnNameChange);
     this.addObserver('context', this, this.updateContext);
-    this.addObserver('onActivate', this, this.updateOnActivate);
-    this.addObserver('onDeactivate', this, this.updateOnDeactivate);
 
     this['register-step'](this);
   }
@@ -55,8 +51,6 @@ export default class StepComponent extends Component {
   willDestroyElement() {
     this.removeObserver('name', this, failOnNameChange);
     this.removeObserver('context', this, this.updateContext);
-    this.removeObserver('onActivate', this, this.updateOnActivate);
-    this.removeObserver('onDeactivate', this, this.updateOnDeactivate);
     this['remove-step'](this);
   }
 
@@ -64,18 +58,6 @@ export default class StepComponent extends Component {
     const context = get(this, 'context');
 
     this['update-step-node'](this, 'context', context);
-  }
-
-  updateOnActivate() {
-    const onActivate = get(this, 'onActivate');
-
-    this['update-step-node'](this, 'onActivate', onActivate);
-  }
-
-  updateOnDeactivate() {
-    const onDeactivate = get(this, 'onDeactivate');
-
-    this['update-step-node'](this, 'onDeactivate', onDeactivate);
   }
 
   /**
