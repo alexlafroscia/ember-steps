@@ -76,7 +76,7 @@
     "travis-deploy-once": "^5.0.0"
   },
   "dependencies": {
-    "@ember-decorators/component": "^5.1.1",
+    "@ember-decorators/component": "^5.2.0",
     "ember-cli-babel": "^7.7.3",
     "ember-cli-htmlbars": "^3.0.0",
     "ember-decorators-polyfill": "^1.0.4"
@@ -84,9 +84,7 @@
   "resolutions": {
     "ember-css-modules/broccoli-postcss": "^3.5.3"
   },
-  "keywords": [
-    "ember-addon"
-  ],
+  "keywords": ["ember-addon"],
   "repository": "https://github.com/alexlafroscia/ember-steps",
   "license": "MIT",
   "author": "Alex LaFroscia <alex@lafroscia.com>",
