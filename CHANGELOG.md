@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="9.0.0-beta.0"></a>
+# [9.0.0-beta.0](https://github.com/alexlafroscia/ember-steps/compare/v8.0.2...v9.0.0-beta.0) (2019-05-10)
+
+
+### Bug Fixes
+
+* eslint ignore node_modules ([7c35d33](https://github.com/alexlafroscia/ember-steps/commit/7c35d33))
+* fastboot testing ([cc8b36c](https://github.com/alexlafroscia/ember-steps/commit/cc8b36c))
+* move `ember-decorators-polyfill` to `dependencies` ([7dc7857](https://github.com/alexlafroscia/ember-steps/commit/7dc7857))
+
+
+### Code Refactoring
+
+* remove TypeScript ([5652e28](https://github.com/alexlafroscia/ember-steps/commit/5652e28))
+
+
+### BREAKING CHANGES
+
+* Package no longer provides TypeScript definitions for
+  components. This is unlikely to _actually_ be a breaking change for
+  anyone, but it is better to err on the safe side.
+
+
+
 <a name="8.0.2"></a>
 ## [8.0.2](https://github.com/alexlafroscia/ember-steps/compare/v8.0.1...v8.0.2) (2019-03-15)
 
