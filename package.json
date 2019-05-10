@@ -45,7 +45,7 @@
     "ember-cli-uglify": "^2.1.0",
     "ember-composable-helpers": "^2.1.0",
     "ember-concurrency": "^0.10.0",
-    "ember-css-modules": "^1.1.0",
+    "ember-css-modules": "^1.2.0",
     "ember-disable-prototype-extensions": "^1.1.3",
     "ember-export-application-global": "^2.0.0",
     "ember-fastboot-addon-tests": "^0.5.1",
@@ -81,12 +81,7 @@
     "ember-cli-htmlbars": "^3.0.0",
     "ember-decorators-polyfill": "^1.0.4"
   },
-  "resolutions": {
-    "ember-css-modules/broccoli-postcss": "^3.5.3"
-  },
-  "keywords": [
-    "ember-addon"
-  ],
+  "keywords": ["ember-addon"],
   "repository": "https://github.com/alexlafroscia/ember-steps",
   "license": "MIT",
   "author": "Alex LaFroscia <alex@lafroscia.com>",
