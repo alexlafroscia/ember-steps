@@ -3,7 +3,9 @@ workflow "Build and Test" {
   resolves = [
     "Lint Handlebars",
     "Lint JavaScript",
-    "Run Tests",
+    "Ember Try: Minimum Supported Version",
+    "Ember Try: Ember Release",
+    "Ember Try: Fastboot Addon Tests",
   ]
 }
 
@@ -28,4 +30,22 @@ action "Run Tests" {
   uses = "alexlafroscia/actions-ember-testing@master"
   needs = ["Lint Handlebars", "Lint JavaScript"]
   args = "test"
+}
+
+action "Ember Try: Minimum Supported Version" {
+  uses = "alexlafroscia/actions-ember-testing@master"
+  needs = ["Run Tests"]
+  args = "try:one minimum-supported-version"
+}
+
+action "Ember Try: Ember Release" {
+  uses = "alexlafroscia/actions-ember-testing@master"
+  needs = ["Run Tests"]
+  args = "try:one ember-release"
+}
+
+action "Ember Try: Fastboot Addon Tests" {
+  uses = "alexlafroscia/actions-ember-testing@master"
+  needs = ["Run Tests"]
+  args = "try:one fastboot-addon-tests"
 }
