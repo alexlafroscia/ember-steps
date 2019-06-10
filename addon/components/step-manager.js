@@ -63,6 +63,16 @@ export default class StepManagerComponent extends Component {
   currentStep;
 
   /**
+   * Called when the state machine transitions, if provided
+   *
+   * Passed the new step identifier
+   *
+   * @property {function} onTransition;
+   * @public
+   */
+  onTransition;
+
+  /**
    * @property {boolean} boolean
    * @public
    */
@@ -165,19 +175,18 @@ export default class StepManagerComponent extends Component {
   transitionTo(to) {
     const destination = to instanceof StepNode ? to.name : to;
     const transitions = get(this, 'transitions');
+    const onTransition = get(this, 'onTransition');
     let currentStepNode = get(transitions, 'currentStepNode');
 
     if (currentStepNode && currentStepNode.onDeactivate) {
       currentStepNode.onDeactivate();
     }
 
-    // If `currentStep` is present, it's probably something the user wants
-    // two-way-bound with the new value
-    if (!isNone(this.currentStep)) {
-      set(this, 'currentStep', destination);
-    }
-
     this.transitions.activate(destination);
+
+    if (onTransition) {
+      onTransition(destination);
+    }
 
     currentStepNode = get(transitions, 'currentStepNode');
 
