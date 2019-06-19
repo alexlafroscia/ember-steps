@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="9.0.0"></a>
+# [9.0.0](https://github.com/alexlafroscia/ember-steps/compare/v9.0.0-beta.0...v9.0.0) (2019-06-19)
+
+
+### Chores
+
+* remove activation hooks ([aa2f10d](https://github.com/alexlafroscia/ember-steps/commit/aa2f10d)), closes [#120](https://github.com/alexlafroscia/ember-steps/issues/120) [#129](https://github.com/alexlafroscia/ember-steps/issues/129)
+
+
+### Features
+
+* one-way-bind the `currentStep` property ([72efb43](https://github.com/alexlafroscia/ember-steps/commit/72efb43))
+
+
+### BREAKING CHANGES
+
+* `onActivate` and `onDeactivate` should instead be called by `did-insert` or `will-destroy` on element inside the step definition.
+* `currentStep` no longer updates the value passed in; it is a one-way bi7nding from
+  the context down to the component. If you need to bind a value to the `currentStep`, you can use
+  `onTransition` and the `mut` helper.
+
+Co-authored-by: Lou Greenwood <lougreenwood@me.com>
+
+
+
 <a name="9.0.0-beta.0"></a>
 # [9.0.0-beta.0](https://github.com/alexlafroscia/ember-steps/compare/v8.0.2...v9.0.0-beta.0) (2019-05-10)
 
