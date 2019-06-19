@@ -6,7 +6,6 @@ import { isPresent, isNone } from '@ember/utils';
 import { schedule } from '@ember/runloop';
 import { assert } from '@ember/debug';
 import { action, computed } from '@ember/object';
-import { tagName } from '@ember-decorators/component';
 
 import CircularStateMachine from '../-private/state-machine/circular';
 import LinearStateMachine from '../-private/state-machine/linear';
@@ -43,9 +42,10 @@ import StepNode from '../-private/step-node';
  * @public
  * @hide
  */
-@tagName('')
 export default class StepManagerComponent extends Component {
   layout = layout;
+
+  tagName = '';
 
   /* Optionally can be provided to override the initial step to render */
   initialStep;

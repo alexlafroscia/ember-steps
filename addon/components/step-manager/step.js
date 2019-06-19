@@ -3,7 +3,6 @@ import { get, set } from '@ember/object';
 import { isPresent } from '@ember/utils';
 import { assert } from '@ember/debug';
 import { computed } from '@ember/object';
-import { tagName } from '@ember-decorators/component';
 
 // @ts-ignore: Ignore import of compiled template
 import layout from '../../templates/components/step-manager/step';
@@ -12,9 +11,10 @@ function failOnNameChange() {
   assert('The `name` property should never change');
 }
 
-@tagName('')
 export default class StepComponent extends Component {
   layout = layout;
+
+  tagName = '';
 
   name;
   context;
