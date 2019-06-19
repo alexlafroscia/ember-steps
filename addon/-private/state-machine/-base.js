@@ -31,8 +31,8 @@ export default class BaseStateMachine extends EmberObject {
     return this.stepTransitions.find(stepNode => stepNode.name === currentStep);
   }
 
-  addStep(name, context, onActivate, onDeactivate) {
-    const node = new StepNode(this, name, context, onActivate, onDeactivate);
+  addStep(name, context) {
+    const node = new StepNode(this, name, context);
     this.stepTransitions.pushObject(node);
 
     if (typeof this.currentStep === 'undefined') {
