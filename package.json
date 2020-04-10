@@ -99,5 +99,9 @@
     "hooks": {
       "commit-msg": "commitlint -e $GIT_PARAMS"
     }
+  },
+  "volta": {
+    "node": "12.16.2",
+    "yarn": "1.22.4"
   }
 }
