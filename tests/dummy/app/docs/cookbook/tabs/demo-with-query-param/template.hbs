@@ -9,15 +9,15 @@
       {{/link-to}}
     {{/tab-group}}
 
-    {{#step-manager currentStep=tab as |w|}}
-      {{#w.step name="first"}}
+    <StepManager @currentStep={{tab}} as |w|>
+      <w.step @name="first">
         This content is on the first tab
-      {{/w.step}}
+      </w.step>
 
-      {{#w.step name="second"}}
+      <w.step @name="second">
         This content is on the second tab
-      {{/w.step}}
-    {{/step-manager}}
+      </w.step>
+    </StepManager>
   {{/demo.example}}
 
   {{demo.snippet "cookbook-tabs-with-query-params.hbs"}}

@@ -1,11 +1,8 @@
 {{#docs-demo as |demo|}}
   {{#demo.example name="validating-steps-did-transition.hbs"}}
-    {{#step-manager as |w|}}
-      {{#w.step}}
-        {{input
-          placeholder="Enter password"
-          value=password
-        }}
+    <StepManager as |w|>
+      <w.step>
+        <input placeholder="Enter password" value={{password}}>
 
         {{#control-group}}
           <button
@@ -14,9 +11,9 @@
             Check Password
           </button>
         {{/control-group}}
-      {{/w.step}}
+      </w.step>
 
-      {{#w.step}}
+      <w.step>
         Great job! You got the password right
 
         {{#control-group}}
@@ -24,11 +21,10 @@
             Reset
           </button>
         {{/control-group}}
-      {{/w.step}}
-    {{/step-manager}}
+      </w.step>
+    </StepManager>
   {{/demo.example}}
 
   {{demo.snippet name="validating-steps-did-transition.hbs"}}
   {{demo.snippet name="validating-steps-did-transition.js" label="component.js"}}
 {{/docs-demo}}
-

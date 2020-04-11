@@ -1,11 +1,8 @@
 {{#docs-demo as |demo|}}
   {{#demo.example name="validating-steps-basic-usage.hbs"}}
-    {{#step-manager as |w|}}
-      {{#w.step}}
-        {{input
-          placeholder="Enter password"
-          value=password
-        }}
+    <StepManager as |w|>
+      <w.step>
+        <input placeholder="Enter password" value={{password}}>
 
         {{#control-group}}
           <button
@@ -14,15 +11,14 @@
             Check Password
           </button>
         {{/control-group}}
-      {{/w.step}}
+      </w.step>
 
-      {{#w.step}}
+      <w.step>
         Great job! You got the password right
-      {{/w.step}}
-    {{/step-manager}}
+      </w.step>
+    </StepManager>
   {{/demo.example}}
 
   {{demo.snippet name="validating-steps-basic-usage.hbs"}}
   {{demo.snippet name="validating-steps-basic-usage.js" label="component.js"}}
 {{/docs-demo}}
-
