@@ -1,5 +1,5 @@
-{{#docs-demo as |demo|}}
-  {{#demo.example name="validating-steps-basic-usage.hbs"}}
+<DocsDemo as |demo|>
+  <demo.example @name="validating-steps-basic-usage.hbs">
     <StepManager as |w|>
       <w.step>
         <input placeholder="Enter password" value={{password}}>
@@ -17,8 +17,8 @@
         Great job! You got the password right
       </w.step>
     </StepManager>
-  {{/demo.example}}
+  </demo.example>
 
-  {{demo.snippet name="validating-steps-basic-usage.hbs"}}
-  {{demo.snippet name="validating-steps-basic-usage.js" label="component.js"}}
-{{/docs-demo}}
+  <demo.snippet @name="validating-steps-basic-usage.hbs" />
+  <demo.snippet @name="validating-steps-basic-usage.js" @label="component.js" />
+</DocsDemo>

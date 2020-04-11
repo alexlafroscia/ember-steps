@@ -1,5 +1,5 @@
-{{#docs-demo as |demo|}}
-  {{#demo.example name="dynamic-definition-basic-example.hbs"}}
+<DocsDemo as |demo|>
+  <demo.example @name="dynamic-definition-basic-example.hbs">
     <StepManager as |w|>
       {{#each data as |content|}}
         <w.step>
@@ -16,8 +16,8 @@
         </button>
       {{/control-group}}
     </StepManager>
-  {{/demo.example}}
+  </demo.example>
 
-  {{demo.snippet "dynamic-definition-basic-example.js" label="component.js"}}
-  {{demo.snippet "dynamic-definition-basic-example.hbs"}}
-{{/docs-demo}}
+  <demo.snippet @name="dynamic-definition-basic-example.js" @label="component.js" />
+  <demo.snippet @name="dynamic-definition-basic-example.hbs" />
+</DocsDemo>

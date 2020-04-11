@@ -1,5 +1,5 @@
-{{#docs-demo as |demo|}}
-  {{#demo.example name="demo-wizard-with-progress-indicator.hbs"}}
+<DocsDemo as |demo|>
+  <demo.example @name="demo-wizard-with-progress-indicator.hbs">
     <StepManager as |w|>
       <w.step>
         This content is on the first step
@@ -32,7 +32,7 @@
         </button>
       {{/control-group}}
     </StepManager>
-  {{/demo.example}}
+  </demo.example>
 
-  {{demo.snippet "demo-wizard-with-progress-indicator.hbs"}}
-{{/docs-demo}}
+  <demo.snippet @name="demo-wizard-with-progress-indicator.hbs" />
+</DocsDemo>

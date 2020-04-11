@@ -1,5 +1,5 @@
-{{#docs-demo as |demo|}}
-  {{#demo.example name="cookbook-tabs.hbs"}}
+<DocsDemo as |demo|>
+  <demo.example @name="cookbook-tabs.hbs">
     <StepManager as |w|>
       {{#tab-group}}
         <button
@@ -24,7 +24,7 @@
         This content is on the second tab
       </w.step>
     </StepManager>
-  {{/demo.example}}
+  </demo.example>
 
-  {{demo.snippet "cookbook-tabs.hbs"}}
-{{/docs-demo}}
+  <demo.snippet @name="cookbook-tabs.hbs" />
+</DocsDemo>

@@ -1,5 +1,5 @@
-{{#docs-demo as |demo|}}
-  {{#demo.example name="validating-steps-ember-concurrency.hbs"}}
+<DocsDemo as |demo|>
+  <demo.example @name="validating-steps-ember-concurrency.hbs">
     <StepManager as |w|>
       <w.step>
         <input placeholder="Enter password" value={{password}}>
@@ -18,8 +18,8 @@
         Great job! You got the password right
       </w.step>
     </StepManager>
-  {{/demo.example}}
+  </demo.example>
 
-  {{demo.snippet name="validating-steps-ember-concurrency.hbs"}}
-  {{demo.snippet name="validating-steps-ember-concurrency.js" label="component.js"}}
-{{/docs-demo}}
+  <demo.snippet @name="validating-steps-ember-concurrency.hbs" />
+  <demo.snippet @name="validating-steps-ember-concurrency.js" @label="component.js" />
+</DocsDemo>

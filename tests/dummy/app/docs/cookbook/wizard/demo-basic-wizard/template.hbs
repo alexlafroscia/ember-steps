@@ -1,5 +1,5 @@
-{{#docs-demo as |demo|}}
-  {{#demo.example name="demo-basic-wizard.hbs"}}
+<DocsDemo as |demo|>
+  <demo.example @name="demo-basic-wizard.hbs">
     <StepManager as |w|>
       <w.step>
         This content is on the first step. You can only go forward.
@@ -22,7 +22,7 @@
         </button>
       {{/control-group}}
     </StepManager>
-  {{/demo.example}}
+  </demo.example>
 
-  {{demo.snippet "demo-basic-wizard.hbs"}}
-{{/docs-demo}}
+  <demo.snippet @name="demo-basic-wizard.hbs" />
+</DocsDemo>
