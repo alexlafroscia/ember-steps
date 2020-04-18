@@ -73,6 +73,6 @@ The following table can help determine which verison of `ember-steps` work with 
 | `3.3` to `2.16`                           | `v6.1.3`              |
 | `2.12` or earlier                         | `v4.0.0`              |
 
-[ember-closure-actions]: https://guides.emberjs.com/v3.0.0/templates/actions/
+[ember-closure-actions]: https://guides.emberjs.com/v3.17.0/components/component-state-and-actions/
 [cookbook]: https://alexlafroscia.github.io/ember-steps/docs/cookbook
 [hash-helper]: http://emberjs.com/blog/2016/01/15/ember-2-3-released.html#toc_hash-helper
