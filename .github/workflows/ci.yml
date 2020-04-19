@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        ember-try-scenario: [minimum-supported-version, ember-release, fastboot-addon-tests]
+        ember-try-scenario: [minimum-supported-version, ember-release]
     steps:
     - uses: actions/checkout@v1
     - uses: volta-cli/action@v1
