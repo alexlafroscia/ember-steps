@@ -14,12 +14,17 @@
       </w.step>
 
       {{#control-group}}
-        <button {{action w.transition-to-previous}} disabled={{not w.hasPreviousStep}}>
+        <button
+          type="button"
+          disabled={{not w.hasPreviousStep}}
+          {{action w.transition-to-previous}}
+        >
           Previous
         </button>
         <div local-class="progress-indicators">
           {{#each w.steps as |step|}}
             <button
+              type="button"
               local-class="progress-dot"
               aria-pressed={{step.isActive}}
               {{action w.transition-to step}}
@@ -27,7 +32,11 @@
             </button>
           {{/each}}
         </div>
-        <button {{action w.transition-to-next}} disabled={{not w.hasNextStep}}>
+        <button
+          type="button"
+          disabled={{not w.hasNextStep}}
+          {{action w.transition-to-next}}
+        >
           Next
         </button>
       {{/control-group}}

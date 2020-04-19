@@ -4,7 +4,10 @@
       {{#w.step name="first"}}
         <h1>The first step is active</h1>
       {{else}}
-        <button {{action w.transition-to "first"}}>
+        <button
+          type="button"
+          {{action w.transition-to "first"}}
+        >
           The first step is inactive. Activate it.
         </button>
       {{/w.step}}
@@ -12,7 +15,10 @@
       {{#w.step name="second"}}
         <h1>The second step is active</h1>
       {{else}}
-        <button {{action w.transition-to "second"}}>
+        <button
+          type="button"
+          {{action w.transition-to "second"}}
+        >
           The second step is inactive. Activate it.
         </button>
       {{/w.step}}

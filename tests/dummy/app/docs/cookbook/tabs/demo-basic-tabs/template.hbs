@@ -3,12 +3,14 @@
     <StepManager as |w|>
       {{#tab-group}}
         <button
+          type="button"
           onclick={{action w.transition-to "first"}}
           aria-pressed={{eq w.currentStep "first"}}
         >
           First Tab
         </button>
         <button
+          type="button"
           onclick={{action w.transition-to "second"}}
           aria-pressed={{eq w.currentStep "second"}}
         >

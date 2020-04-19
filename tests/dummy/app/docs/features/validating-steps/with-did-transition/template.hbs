@@ -6,6 +6,7 @@
 
         {{#control-group}}
           <button
+            type="button"
             onclick={{validate-transition w.transition-to-next with=(action "checkPassword")}}
           >
             Check Password
@@ -17,7 +18,10 @@
         Great job! You got the password right
 
         {{#control-group}}
-          <button {{action (pipe w.transition-to-previous (action "reset"))}}>
+          <button
+            type="button"
+            {{action (pipe w.transition-to-previous (action "reset"))}}
+          >
             Reset
           </button>
         {{/control-group}}

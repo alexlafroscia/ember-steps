@@ -11,12 +11,14 @@
 
       {{#control-group}}
         <button
+          type="button"
           onClick={{action w.transition-to-previous}}
           disabled={{not w.hasPreviousStep}}
         >
           Previous
         </button>
         <button
+          type="button"
           onClick={{action w.transition-to-next}}
           disabled={{not w.hasNextStep}}
         >
