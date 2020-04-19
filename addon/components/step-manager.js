@@ -1,7 +1,6 @@
 import Component from '@ember/component';
-// @ts-ignore: Ignore import of compiled template
-import layout from '../templates/components/step-manager';
-import { get, getProperties, set } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
+import { get, getProperties } from '@ember/object';
 import { isPresent, isNone } from '@ember/utils';
 import { schedule } from '@ember/runloop';
 import { assert } from '@ember/debug';
@@ -43,8 +42,6 @@ import StepNode from '../-private/step-node';
  * @hide
  */
 export default class StepManagerComponent extends Component {
-  layout = layout;
-
   tagName = '';
 
   /* Optionally can be provided to override the initial step to render */
@@ -88,7 +85,7 @@ export default class StepManagerComponent extends Component {
    * @property {BaseStateMachine} transitions state machine for transitions
    * @private
    */
-  transitions;
+  @tracked transitions;
 
   init() {
     super.init();
@@ -110,11 +107,7 @@ export default class StepManagerComponent extends Component {
       ? LinearStateMachine
       : CircularStateMachine;
 
-    set(
-      this,
-      'transitions',
-      StateMachine.create({ currentStep: startingStep })
-    );
+    this.transitions = new StateMachine(startingStep);
   }
 
   @computed('transitions.{currentStep,length}')
@@ -132,8 +125,7 @@ export default class StepManagerComponent extends Component {
       const newStep = this.currentStep;
 
       if (typeof newStep === 'undefined') {
-        const firstStep = get(this.transitions, 'firstStep');
-        this.transitionTo(firstStep);
+        this.transitionTo(this.transitions.firstStep);
       } else {
         this.transitionTo(newStep);
       }
@@ -142,23 +134,17 @@ export default class StepManagerComponent extends Component {
 
   @action
   registerStepComponent(stepComponent) {
-    const name = get(stepComponent, 'name');
-    const context = get(stepComponent, 'context');
-    const transitions = this.transitions;
-
-    stepComponent.transitions = transitions;
+    stepComponent.transitions = this.transitions;
 
     schedule('actions', () => {
-      transitions.addStep(name, context);
+      this.transitions.addStep(stepComponent);
     });
   }
 
   @action
   removeStepComponent(stepComponent) {
-    const name = get(stepComponent, 'name');
-
     schedule('actions', () => {
-      this.transitions.removeStep(name);
+      this.transitions.removeStep(stepComponent);
     });
   }
 

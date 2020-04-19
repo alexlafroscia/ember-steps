@@ -1,5 +1,5 @@
-{{#docs-demo as |demo|}}
-  {{#demo.example name="cookbook-tabs-with-query-params.hbs"}}
+<DocsDemo as |demo|>
+  <demo.example @name="cookbook-tabs-with-query-params.hbs">
     {{#tab-group}}
       {{#link-to "docs.cookbook.tabs.query-param" (query-params tab="first")}}
         Link to First Tab
@@ -9,20 +9,20 @@
       {{/link-to}}
     {{/tab-group}}
 
-    {{#step-manager currentStep=tab as |w|}}
-      {{#w.step name="first"}}
+    <StepManager @currentStep={{tab}} as |w|>
+      <w.step @name="first">
         This content is on the first tab
-      {{/w.step}}
+      </w.step>
 
-      {{#w.step name="second"}}
+      <w.step @name="second">
         This content is on the second tab
-      {{/w.step}}
-    {{/step-manager}}
-  {{/demo.example}}
+      </w.step>
+    </StepManager>
+  </demo.example>
 
-  {{demo.snippet "cookbook-tabs-with-query-params.hbs"}}
-  {{demo.snippet
-    "cookbook-tabs-with-query-params-controller.js"
-    label="controller.js"
-  }}
-{{/docs-demo}}
+  <demo.snippet @name="cookbook-tabs-with-query-params.hbs" />
+  <demo.snippet
+    @name="cookbook-tabs-with-query-params-controller.js"
+    @label="controller.js"
+  />
+</DocsDemo>

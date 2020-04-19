@@ -1,6 +1,6 @@
 # ember-steps
 
-[![Build Status](https://travis-ci.org/alexlafroscia/ember-steps.svg?branch=master)](https://travis-ci.org/alexlafroscia/ember-steps)
+![CI](https://github.com/alexlafroscia/ember-steps/workflows/CI/badge.svg)
 
 > Declaratively create wizards, tabs, or any interface with sections of the page that should be shown one-at-a-time
 

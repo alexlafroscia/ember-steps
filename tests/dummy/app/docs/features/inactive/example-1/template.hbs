@@ -1,6 +1,6 @@
-{{#docs-demo as |demo|}}
-  {{#demo.example name="inactive-steps-example-1.hbs"}}
-    {{#step-manager as |w|}}
+<DocsDemo as |demo|>
+  <demo.example @name="inactive-steps-example-1.hbs">
+    <StepManager as |w|>
       {{#w.step name="first"}}
         <h1>The first step is active</h1>
       {{else}}
@@ -16,8 +16,8 @@
           The second step is inactive. Activate it.
         </button>
       {{/w.step}}
-    {{/step-manager}}
-  {{/demo.example}}
+    </StepManager>
+  </demo.example>
 
-  {{demo.snippet "inactive-steps-example-1.hbs"}}
-{{/docs-demo}}
+  <demo.snippet @name="inactive-steps-example-1.hbs" />
+</DocsDemo>
