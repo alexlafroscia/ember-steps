@@ -11,12 +11,12 @@ module('step-manager', function (hooks) {
   module('`currentStep` attribute', function () {
     test('setting the initial visible step', async function (assert) {
       await render(hbs`
-        <StepManager @currentStep='second' as |w|>
-          <w.step @name='first'>
+        <StepManager @currentStep="second" as |w|>
+          <w.step @name="first">
             <div data-test-first></div>
           </w.step>
 
-          <w.step @name='second'>
+          <w.step @name="second">
             <div data-test-second></div>
           </w.step>
         </StepManager>
@@ -29,15 +29,15 @@ module('step-manager', function (hooks) {
     test('changes steps when the property changes', async function (assert) {
       this.set('step', 'first');
       await render(hbs`
-        {{#step-manager currentStep=step as |w|}}
-          {{#w.step name='first'}}
+        <StepManager @currentStep={{step}} as |w|>
+          <w.step @name="first">
             <div data-test-first></div>
-          {{/w.step}}
+          </w.step>
 
-          {{#w.step name='second'}}
+          <w.step @name="second">
             <div data-test-second></div>
-          {{/w.step}}
-        {{/step-manager}}
+          </w.step>
+        </StepManager>
       `);
 
       assert.dom('[data-test-first]').exists();
@@ -477,19 +477,19 @@ module('step-manager', function (hooks) {
   module('transitions to named steps', function () {
     test('can transition to another step', async function (assert) {
       await render(hbs`
-        {{#step-manager currentStep='first' as |w|}}
-          <button {{action w.transition-to 'second'}}>
+        <StepManager @initialStep="first" as |w|>
+          <button {{action w.transition-to "second"}}>
             Transition to Next
           </button>
 
-          {{#w.step name='first'}}
+          <w.step @name="first">
             <div data-test-first></div>
-          {{/w.step}}
+          </w.step>
 
-          {{#w.step name='second'}}
+          <w.step @name="second">
             <div data-test-second></div>
-          {{/w.step}}
-        {{/step-manager}}
+          </w.step>
+        </StepManager>
       `);
 
       assert.dom('[data-test-first]').exists();

@@ -28,8 +28,10 @@ export default class BaseStateMachine {
     return this.nodes.size;
   }
 
-  get firstStep() {
-    return this.nodeArray[0];
+  get firstStepName() {
+    const firstNode = this.nodeArray[0];
+
+    return firstNode && firstNode.name;
   }
 
   get currentStepNode() {
