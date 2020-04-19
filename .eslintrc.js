@@ -1,25 +1,30 @@
+'use strict';
+
 module.exports = {
   root: true,
   parser: 'babel-eslint',
   parserOptions: {
-    ecmaVersion: 2017,
+    ecmaVersion: 2018,
     sourceType: 'module',
     ecmaFeatures: {
       legacyDecorators: true
     }
   },
   plugins: ['ember', 'prettier'],
-  extends: ['eslint:recommended', 'plugin:ember/recommended', 'prettier'],
+  extends: [
+    'eslint:recommended',
+    'plugin:ember/recommended',
+    'plugin:prettier/recommended'
+  ],
   env: {
     browser: true
   },
   rules: {
-    'prettier/prettier': 'error',
-
     'ember/avoid-leaking-state-in-ember-objects': [
       'error',
       ['actions', 'localClassNames', 'queryParams']
-    ]
+    ],
+    'ember/no-jquery': 'error'
   },
   overrides: [
     // node files
@@ -41,8 +46,7 @@ module.exports = {
         'tests/dummy/app/**'
       ],
       parserOptions: {
-        sourceType: 'script',
-        ecmaVersion: 2015
+        sourceType: 'script'
       },
       env: {
         browser: false,

@@ -1,12 +1,21 @@
-import { get } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 import { isPresent } from '@ember/utils';
-import { computed } from '@ember/object';
 
 export default class StepNode {
-  constructor(sm, name, context) {
+  @tracked sm;
+  @tracked component;
+
+  constructor(sm, component) {
     this.sm = sm;
-    this.name = name;
-    this.context = context;
+    this.component = component;
+  }
+
+  get name() {
+    return this.component.name;
+  }
+
+  get context() {
+    return this.component.args.context;
   }
 
   get hasNext() {
@@ -17,8 +26,7 @@ export default class StepNode {
     return isPresent(this.sm.pickPrevious(this.name));
   }
 
-  @computed('sm.currentStep')
   get isActive() {
-    return get(this.sm, 'currentStep') === this.name;
+    return this.sm.currentStep === this.name;
   }
 }

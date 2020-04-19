@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import hbs from 'htmlbars-inline-precompile';
-import { click, findAll, render } from '@ember/test-helpers';
+import { hbs } from 'ember-cli-htmlbars';
+import { click, findAll, render, settled } from '@ember/test-helpers';
 import { A } from '@ember/array';
 import td from 'testdouble';
 
@@ -11,15 +11,15 @@ module('step-manager', function(hooks) {
   module('`currentStep` attribute', function() {
     test('setting the initial visible step', async function(assert) {
       await render(hbs`
-        {{#step-manager currentStep='second' as |w|}}
-          {{#w.step name='first'}}
+        <StepManager @currentStep='second' as |w|>
+          <w.step @name='first'>
             <div data-test-first></div>
-          {{/w.step}}
+          </w.step>
 
-          {{#w.step name='second'}}
+          <w.step @name='second'>
             <div data-test-second></div>
-          {{/w.step}}
-        {{/step-manager}}
+          </w.step>
+        </StepManager>
       `);
 
       assert.dom('[data-test-first]').doesNotExist();
@@ -790,6 +790,7 @@ module('step-manager', function(hooks) {
       assert.dom('[data-test-step="bar"]').exists('Second step is visible');
 
       this.get('data').pushObject({ name: 'baz' });
+      await settled();
 
       assert
         .dom('[data-test-step="bar"]')
@@ -863,66 +864,17 @@ module('step-manager', function(hooks) {
         .exists('The initial step is rendered');
 
       this.get('data').removeObject(stepToRemove);
+      await settled();
 
       assert
         .dom('[data-test-step="foo"]')
-        .exists('The initial step is still visible');
+        .exists('The current step is still visible');
 
       await click('button');
 
       assert
         .dom('[data-test-step="foo"]')
-        .exists('The initial step is still visible');
-    });
-  });
-
-  module('activation hooks', function() {
-    test('using `will-destroy` when a step is deactivated', async function(assert) {
-      const onDeactivate = td.function();
-      this.set('onDeactivate', onDeactivate);
-
-      await render(hbs`
-        {{#step-manager as |w|}}
-          {{#w.step name='first'}}
-            <div {{will-destroy onDeactivate}}>
-              Step Content
-            </div>
-          {{/w.step}}
-          {{w.step name='second'}}
-
-          <button {{action w.transition-to 'second'}}>
-            Next
-          </button>
-        {{/step-manager}}
-      `);
-
-      await click('button');
-
-      assert.verify(onDeactivate(), { ignoreExtraArgs: true });
-    });
-
-    test('using `did-insert` when a step is activated', async function(assert) {
-      const onActivate = td.function();
-      this.set('onActivate', onActivate);
-
-      await render(hbs`
-        {{#step-manager as |w|}}
-          {{w.step name='first'}}
-          {{#w.step name='second'}}
-            <div {{did-insert onActivate}}>
-              Step Content
-            </div>
-          {{/w.step}}
-
-          <button {{action w.transition-to 'second'}}>
-            Next
-          </button>
-        {{/step-manager}}
-      `);
-
-      await click('button');
-
-      assert.verify(onActivate(), { ignoreExtraArgs: true });
+        .exists('Transitioned to the first step, which is the only step');
     });
   });
 

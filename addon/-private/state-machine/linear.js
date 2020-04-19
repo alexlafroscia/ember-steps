@@ -11,10 +11,10 @@ import BaseStateMachine from './-base';
  */
 export default class LinearStateMachine extends BaseStateMachine {
   pickNext(currentStep = this.currentStep) {
-    const currentIndex = this.stepTransitions
+    const currentIndex = this.nodeArray
       .map(node => node.name)
       .indexOf(currentStep);
-    const currentNode = this.stepTransitions.objectAt(currentIndex + 1);
+    const currentNode = this.nodeArray[currentIndex + 1];
 
     if (currentNode) {
       return currentNode.name;
@@ -24,10 +24,10 @@ export default class LinearStateMachine extends BaseStateMachine {
   }
 
   pickPrevious(currentStep = this.currentStep) {
-    const currentIndex = this.stepTransitions
+    const currentIndex = this.nodeArray
       .map(node => node.name)
       .indexOf(currentStep);
-    const currentNode = this.stepTransitions.objectAt(currentIndex - 1);
+    const currentNode = this.nodeArray[currentIndex - 1];
 
     if (currentNode) {
       return currentNode.name;

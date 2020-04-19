@@ -1,7 +1,5 @@
-import EmberObject, { set, get } from '@ember/object';
-import { A } from '@ember/array';
-import { computed } from '@ember/object';
-import { readOnly } from '@ember/object/computed';
+import { TrackedSet } from 'tracked-maps-and-sets';
+import { tracked } from '@glimmer/tracking';
 import { assert } from '@ember/debug';
 import { isNone } from '@ember/utils';
 
@@ -15,47 +13,56 @@ import StepNode from '../step-node';
  * @private
  * @hide
  */
-export default class BaseStateMachine extends EmberObject {
-  stepTransitions = A();
+export default class BaseStateMachine {
+  /** @type {TrackedSet<StepNode>} **/
+  @tracked nodes = new TrackedSet();
 
-  currentStep;
+  /** @type {string} **/
+  @tracked currentStep;
 
-  @readOnly('stepTransitions.length') length;
-
-  @readOnly('stepTransitions.firstObject') firstStep;
-
-  @computed('currentStep')
-  get currentStepNode() {
-    const currentStep = get(this, 'currentStep');
-
-    return this.stepTransitions.find(stepNode => stepNode.name === currentStep);
+  constructor(initialStep) {
+    this.currentStep = initialStep;
   }
 
-  addStep(name, context) {
-    const node = new StepNode(this, name, context);
-    this.stepTransitions.pushObject(node);
+  get length() {
+    return this.nodes.size;
+  }
+
+  get firstStep() {
+    return this.nodeArray[0];
+  }
+
+  get currentStepNode() {
+    return this.nodeArray.find(stepNode => stepNode.name === this.currentStep);
+  }
+
+  get nodeArray() {
+    return [...this.nodes];
+  }
+
+  addStep(stepComponent) {
+    const node = new StepNode(this, stepComponent);
+    this.nodes.add(node);
 
     if (typeof this.currentStep === 'undefined') {
-      set(this, 'currentStep', name);
+      this.currentStep = stepComponent.name;
     }
   }
 
-  removeStep(name) {
-    const node = this.stepTransitions.find(node => node.name === name);
+  removeStep(stepComponent) {
+    const node = this.nodeArray.find(step => step.component === stepComponent);
 
-    assert('Could not find a step of that name', !!node);
+    assert(`Could not find a step with name: ${node.name}`, node);
 
-    const index = this.stepTransitions.indexOf(node);
-
-    this.stepTransitions.removeAt(index);
+    this.nodes.delete(node);
   }
 
   updateStepNode(name, field, value) {
-    const node = this.stepTransitions.find(node => node.name === name);
+    const node = this.nodeArray.find(node => node.name === name);
 
-    assert(`"${name}" does not match an existing step`, !!node);
+    assert(`"${name}" does not match an existing step`, node);
 
-    set(node, field, value);
+    node[field] = value;
   }
 
   pickNext() {
@@ -72,9 +79,9 @@ export default class BaseStateMachine extends EmberObject {
     assert('No step name was provided', !isNone(step));
     assert(
       `"${name}" does not match an existing step`,
-      this.stepTransitions.map(node => node.name).includes(name)
+      this.nodeArray.map(node => node.name).includes(name)
     );
 
-    set(this, 'currentStep', name);
+    this.currentStep = name;
   }
 }
