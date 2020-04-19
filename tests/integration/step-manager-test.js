@@ -5,11 +5,11 @@ import { click, findAll, render, settled } from '@ember/test-helpers';
 import { A } from '@ember/array';
 import td from 'testdouble';
 
-module('step-manager', function(hooks) {
+module('step-manager', function (hooks) {
   setupRenderingTest(hooks);
 
-  module('`currentStep` attribute', function() {
-    test('setting the initial visible step', async function(assert) {
+  module('`currentStep` attribute', function () {
+    test('setting the initial visible step', async function (assert) {
       await render(hbs`
         <StepManager @currentStep='second' as |w|>
           <w.step @name='first'>
@@ -26,7 +26,7 @@ module('step-manager', function(hooks) {
       assert.dom('[data-test-second]').exists();
     });
 
-    test('changes steps when the property changes', async function(assert) {
+    test('changes steps when the property changes', async function (assert) {
       this.set('step', 'first');
       await render(hbs`
         {{#step-manager currentStep=step as |w|}}
@@ -55,7 +55,7 @@ module('step-manager', function(hooks) {
       assert.dom('[data-test-second]').doesNotExist();
     });
 
-    test('does not mutate the `currentStep` property', async function(assert) {
+    test('does not mutate the `currentStep` property', async function (assert) {
       this.set('step', 'first');
 
       await render(hbs`
@@ -74,7 +74,7 @@ module('step-manager', function(hooks) {
       assert.equal(this.get('step'), 'first');
     });
 
-    test('subscribing to step changes', async function(assert) {
+    test('subscribing to step changes', async function (assert) {
       this.set('step', 'first');
       this.set('onTransition', td.function());
 
@@ -97,7 +97,7 @@ module('step-manager', function(hooks) {
       );
     });
 
-    test('emulating a two-way binding to the current step', async function(assert) {
+    test('emulating a two-way binding to the current step', async function (assert) {
       this.set('step', 'first');
 
       await render(hbs`
@@ -120,7 +120,7 @@ module('step-manager', function(hooks) {
       );
     });
 
-    test('does not reset back to first step on any attribute change', async function(assert) {
+    test('does not reset back to first step on any attribute change', async function (assert) {
       this.set('initialStep', 'second');
       this.set('randomAttribute', 'initial value');
 
@@ -146,8 +146,8 @@ module('step-manager', function(hooks) {
     });
   });
 
-  module('`initialStep` attribute', function() {
-    test('it can set the initial visible step', async function(assert) {
+  module('`initialStep` attribute', function () {
+    test('it can set the initial visible step', async function (assert) {
       await render(hbs`
         {{#step-manager initialStep='second' as |w|}}
           {{#w.step name='first'}}
@@ -164,7 +164,7 @@ module('step-manager', function(hooks) {
       assert.dom('[data-test-second]').exists();
     });
 
-    test('it does not update the value as the step changes', async function(assert) {
+    test('it does not update the value as the step changes', async function (assert) {
       this.set('initialStep', 'second');
       await render(hbs`
         {{#step-manager initialStep=initialStep as |w|}}
@@ -189,7 +189,7 @@ module('step-manager', function(hooks) {
     });
   });
 
-  test('renders the first step in the DOM if no `currentStep` is present', async function(assert) {
+  test('renders the first step in the DOM if no `currentStep` is present', async function (assert) {
     await render(hbs`
       {{#step-manager as |w|}}
         {{#w.step name='first'}}
@@ -206,7 +206,7 @@ module('step-manager', function(hooks) {
     assert.dom('[data-test-second]').doesNotExist();
   });
 
-  test('renders tagless components', async function(assert) {
+  test('renders tagless components', async function (assert) {
     await render(hbs`
       <div id="steps">
         {{#step-manager as |w|}}
@@ -218,8 +218,8 @@ module('step-manager', function(hooks) {
     assert.equal(findAll('#steps *').length, 0);
   });
 
-  module('`yield`-ed data', function() {
-    test('exposes the name of the current step', async function(assert) {
+  module('`yield`-ed data', function () {
+    test('exposes the name of the current step', async function (assert) {
       await render(hbs`
         {{#step-manager as |w|}}
           <div data-test-steps>
@@ -233,8 +233,8 @@ module('step-manager', function(hooks) {
       assert.dom('[data-test-steps]').hasText('foo');
     });
 
-    module('exposing an array of steps', function() {
-      test('it exposes whether the step has a next step', async function(assert) {
+    module('exposing an array of steps', function () {
+      test('it exposes whether the step has a next step', async function (assert) {
         await render(hbs`
           {{#step-manager as |w|}}
             {{w.step name='foo'}}
@@ -256,7 +256,7 @@ module('step-manager', function(hooks) {
           .hasText('false', 'The second step does not have a next step');
       });
 
-      test('it exposes whether the step has a previous step', async function(assert) {
+      test('it exposes whether the step has a previous step', async function (assert) {
         await render(hbs`
           {{#step-manager as |w|}}
             {{w.step name='foo'}}
@@ -278,7 +278,7 @@ module('step-manager', function(hooks) {
           .hasText('true', 'The second step has a previous step');
       });
 
-      test('it exposes whether the step is active', async function(assert) {
+      test('it exposes whether the step is active', async function (assert) {
         await render(hbs`
           {{#step-manager as |w|}}
             {{w.step name='foo'}}
@@ -309,7 +309,7 @@ module('step-manager', function(hooks) {
           .hasText('true', 'The second step has been activated');
       });
 
-      test('can transition to a step by passing the node', async function(assert) {
+      test('can transition to a step by passing the node', async function (assert) {
         await render(hbs`
           {{#step-manager as |w|}}
             {{#w.step name='foo'}}
@@ -336,8 +336,8 @@ module('step-manager', function(hooks) {
         assert.dom('[data-test-step="bar"]').exists();
       });
 
-      module('context', function() {
-        test('it exposes step context', async function(assert) {
+      module('context', function () {
+        test('it exposes step context', async function (assert) {
           await render(hbs`
             {{#step-manager as |w|}}
               {{w.step name='foo' context='bar'}}
@@ -353,7 +353,7 @@ module('step-manager', function(hooks) {
           assert.dom('[data-test-step="foo"]').hasText('bar');
         });
 
-        test('changes to the context are bound', async function(assert) {
+        test('changes to the context are bound', async function (assert) {
           this.set('context', { prop: 'foo' });
 
           await render(hbs`
@@ -379,7 +379,7 @@ module('step-manager', function(hooks) {
             .hasText('bar', 'Displays the updated context value');
         });
 
-        test('can handle the context object being replaced', async function(assert) {
+        test('can handle the context object being replaced', async function (assert) {
           this.set('context', { prop: 'foo' });
 
           await render(hbs`
@@ -406,8 +406,8 @@ module('step-manager', function(hooks) {
         });
       });
 
-      module('rendering position', function() {
-        test('can render the array after the steps are defined', async function(assert) {
+      module('rendering position', function () {
+        test('can render the array after the steps are defined', async function (assert) {
           await render(hbs`
             {{#step-manager as |w|}}
               <div data-test-active-step>
@@ -439,7 +439,7 @@ module('step-manager', function(hooks) {
           assert.dom('[data-test-active-step]').hasText('Bar');
         });
 
-        test('can render the array before the steps are defined', async function(assert) {
+        test('can render the array before the steps are defined', async function (assert) {
           await render(hbs`
             {{#step-manager as |w|}}
               {{#each w.steps as |step|}}
@@ -474,8 +474,8 @@ module('step-manager', function(hooks) {
     });
   });
 
-  module('transitions to named steps', function() {
-    test('can transition to another step', async function(assert) {
+  module('transitions to named steps', function () {
+    test('can transition to another step', async function (assert) {
       await render(hbs`
         {{#step-manager currentStep='first' as |w|}}
           <button {{action w.transition-to 'second'}}>
@@ -502,8 +502,8 @@ module('step-manager', function(hooks) {
     });
   });
 
-  module('exposing whether there is a next step', function() {
-    test('linear step manager', async function(assert) {
+  module('exposing whether there is a next step', function () {
+    test('linear step manager', async function (assert) {
       await render(hbs`
         {{#step-manager as |w|}}
           <button {{action w.transition-to-next}} disabled={{not w.hasNextStep}}>
@@ -527,7 +527,7 @@ module('step-manager', function(hooks) {
       assert.dom('button').hasAttribute('disabled');
     });
 
-    test('circular step manager', async function(assert) {
+    test('circular step manager', async function (assert) {
       await render(hbs`
         {{#step-manager linear=false as |w|}}
           <button {{action w.transition-to-next}} disabled={{not w.hasNextStep}}>
@@ -552,8 +552,8 @@ module('step-manager', function(hooks) {
     });
   });
 
-  module('exposing whether there is a previous step', function() {
-    test('linear step manager', async function(assert) {
+  module('exposing whether there is a previous step', function () {
+    test('linear step manager', async function (assert) {
       await render(hbs`
         {{#step-manager as |w|}}
           <button {{action w.transition-to-previous}} disabled={{not w.hasPreviousStep}}>
@@ -569,7 +569,7 @@ module('step-manager', function(hooks) {
       assert.dom('button').hasAttribute('disabled');
     });
 
-    test('circular step manager', async function(assert) {
+    test('circular step manager', async function (assert) {
       await render(hbs`
         {{#step-manager linear=false as |w|}}
           <button {{action w.transition-to-next}} disabled={{not w.hasPreviousStep}}>
@@ -586,9 +586,9 @@ module('step-manager', function(hooks) {
     });
   });
 
-  module('transition to anonymous steps', function() {
-    module('with the circular state manager', function() {
-      test('can transition to the next step', async function(assert) {
+  module('transition to anonymous steps', function () {
+    module('with the circular state manager', function () {
+      test('can transition to the next step', async function (assert) {
         await render(hbs`
           {{#step-manager linear=false as |w|}}
             <button {{action w.transition-to-next}}>
@@ -632,7 +632,7 @@ module('step-manager', function(hooks) {
         assert.dom('[data-test-third]').doesNotExist();
       });
 
-      test('can transition to the previous step', async function(assert) {
+      test('can transition to the previous step', async function (assert) {
         await render(hbs`
           {{#step-manager linear=false as |w|}}
             <button id='previous' {{action w.transition-to-previous}}>
@@ -681,12 +681,12 @@ module('step-manager', function(hooks) {
     });
   });
 
-  module('dynamically creating steps', function(hooks) {
-    hooks.beforeEach(function() {
+  module('dynamically creating steps', function (hooks) {
+    hooks.beforeEach(function () {
       this.set('data', A([{ name: 'foo' }, { name: 'bar' }]));
     });
 
-    test('allows for defining steps from a data', async function(assert) {
+    test('allows for defining steps from a data', async function (assert) {
       await render(hbs`
         {{#step-manager as |w|}}
           <div data-test-steps>
@@ -716,7 +716,7 @@ module('step-manager', function(hooks) {
       assert.dom('[data-test-steps]').hasText('bar');
     });
 
-    test('allows for replacing the array with one that has additional steps', async function(assert) {
+    test('allows for replacing the array with one that has additional steps', async function (assert) {
       await render(hbs`
         {{#step-manager linear=false as |w|}}
           <div data-test-steps>
@@ -761,7 +761,7 @@ module('step-manager', function(hooks) {
       assert.dom('[data-test-step="foo"]').exists('Back to the first step');
     });
 
-    test('allows for pushing new steps into the array creating the steps', async function(assert) {
+    test('allows for pushing new steps into the array creating the steps', async function (assert) {
       await render(hbs`
         {{#step-manager linear=false as |w|}}
           <div data-test-steps>
@@ -808,8 +808,8 @@ module('step-manager', function(hooks) {
     });
   });
 
-  module('dynamically removing steps', function() {
-    test('allows for replacing the array with one that has missing steps', async function(assert) {
+  module('dynamically removing steps', function () {
+    test('allows for replacing the array with one that has missing steps', async function (assert) {
       this.set('data', A([{ name: 'foo' }, { name: 'bar' }]));
 
       await render(hbs`
@@ -837,7 +837,7 @@ module('step-manager', function(hooks) {
         .exists('The initial step is still visible');
     });
 
-    test('allows for removing a specific step without replacing the whole array', async function(assert) {
+    test('allows for removing a specific step without replacing the whole array', async function (assert) {
       const stepToRemove = { name: 'bar' };
       this.set('data', A([{ name: 'foo' }, stepToRemove]));
 
@@ -878,8 +878,8 @@ module('step-manager', function(hooks) {
     });
   });
 
-  module('edge cases', function() {
-    test('it handles steps with falsy names', async function(assert) {
+  module('edge cases', function () {
+    test('it handles steps with falsy names', async function (assert) {
       await render(hbs`
         {{#step-manager initialStep='' as |w|}}
           {{#w.step name=''}}

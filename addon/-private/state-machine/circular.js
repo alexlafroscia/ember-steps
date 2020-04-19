@@ -12,7 +12,7 @@ import BaseStateMachine from './-base';
 export default class CircularStateMachine extends BaseStateMachine {
   pickNext(currentStep = this.currentStep) {
     const currentIndex = this.nodeArray
-      .map(node => node.name)
+      .map((node) => node.name)
       .indexOf(currentStep);
     const nextValue = this.nodeArray[currentIndex + 1];
 
@@ -31,7 +31,7 @@ export default class CircularStateMachine extends BaseStateMachine {
 
   pickPrevious(currentStep = this.currentStep) {
     const currentIndex = this.nodeArray
-      .map(node => node.name)
+      .map((node) => node.name)
       .indexOf(currentStep);
     const previousValue = this.nodeArray[currentIndex - 1];
 

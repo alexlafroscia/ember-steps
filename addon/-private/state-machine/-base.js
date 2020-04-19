@@ -33,7 +33,9 @@ export default class BaseStateMachine {
   }
 
   get currentStepNode() {
-    return this.nodeArray.find(stepNode => stepNode.name === this.currentStep);
+    return this.nodeArray.find(
+      (stepNode) => stepNode.name === this.currentStep
+    );
   }
 
   get nodeArray() {
@@ -50,7 +52,9 @@ export default class BaseStateMachine {
   }
 
   removeStep(stepComponent) {
-    const node = this.nodeArray.find(step => step.component === stepComponent);
+    const node = this.nodeArray.find(
+      (step) => step.component === stepComponent
+    );
 
     assert(`Could not find a step with name: ${node.name}`, node);
 
@@ -58,7 +62,7 @@ export default class BaseStateMachine {
   }
 
   updateStepNode(name, field, value) {
-    const node = this.nodeArray.find(node => node.name === name);
+    const node = this.nodeArray.find((node) => node.name === name);
 
     assert(`"${name}" does not match an existing step`, node);
 
@@ -79,7 +83,7 @@ export default class BaseStateMachine {
     assert('No step name was provided', !isNone(step));
     assert(
       `"${name}" does not match an existing step`,
-      this.nodeArray.map(node => node.name).includes(name)
+      this.nodeArray.map((node) => node.name).includes(name)
     );
 
     this.currentStep = name;

@@ -49,7 +49,7 @@ export default GoogleAnalyticsAdapter.extend({
       }
 
       if (require) {
-        require.forEach(plugin => {
+        require.forEach((plugin) => {
           window.ga('require', plugin);
         });
       }
@@ -58,5 +58,5 @@ export default GoogleAnalyticsAdapter.extend({
         window.ga('set', 'sendHitTask', null);
       }
     }
-  }
+  },
 });

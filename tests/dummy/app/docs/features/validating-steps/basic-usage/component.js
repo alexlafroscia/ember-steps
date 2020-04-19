@@ -11,7 +11,7 @@ export default Component.extend({
       if (password === 'password') {
         resolve();
       }
-    }
-  }
+    },
+  },
 });
 // END-SNIPPET

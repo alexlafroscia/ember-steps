@@ -15,7 +15,7 @@ export default Component.extend({
 
     reset() {
       this.set('password', '');
-    }
-  }
+    },
+  },
 });
 // END-SNIPPET

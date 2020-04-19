@@ -12,7 +12,7 @@ import BaseStateMachine from './-base';
 export default class LinearStateMachine extends BaseStateMachine {
   pickNext(currentStep = this.currentStep) {
     const currentIndex = this.nodeArray
-      .map(node => node.name)
+      .map((node) => node.name)
       .indexOf(currentStep);
     const currentNode = this.nodeArray[currentIndex + 1];
 
@@ -25,7 +25,7 @@ export default class LinearStateMachine extends BaseStateMachine {
 
   pickPrevious(currentStep = this.currentStep) {
     const currentIndex = this.nodeArray
-      .map(node => node.name)
+      .map((node) => node.name)
       .indexOf(currentStep);
     const currentNode = this.nodeArray[currentIndex - 1];
 

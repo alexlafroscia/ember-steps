@@ -7,5 +7,5 @@ module.exports = {
 
   shouldIncludeChildAddon(addon) {
     return addon.name.indexOf('dummy') === -1;
-  }
+  },
 };

@@ -6,16 +6,16 @@ import td from 'testdouble';
 
 import StepComponent from 'ember-steps/components/step-manager/step';
 
-module('step-manger/step', function(hooks) {
+module('step-manger/step', function (hooks) {
   setupRenderingTest(hooks);
 
-  hooks.beforeEach(function() {
-    this.set('register', function() {});
-    this.set('remove', function() {});
+  hooks.beforeEach(function () {
+    this.set('register', function () {});
+    this.set('remove', function () {});
   });
 
-  module('registering with the rendering context', function() {
-    test('registers itself with the step manager', async function(assert) {
+  module('registering with the rendering context', function () {
+    test('registers itself with the step manager', async function (assert) {
       const registerAction = td.function();
       this.set('register', registerAction);
 
@@ -24,13 +24,13 @@ module('step-manger/step', function(hooks) {
       `);
 
       assert.verify(registerAction(td.matchers.isA(StepComponent)), {
-        times: 1
+        times: 1,
       });
     });
   });
 
-  module('the step name', function() {
-    test('throws an error when changed', async function(assert) {
+  module('the step name', function () {
+    test('throws an error when changed', async function (assert) {
       this.set('name', 'foo');
 
       await render(hbs`
@@ -42,9 +42,9 @@ module('step-manger/step', function(hooks) {
       }, 'The `name` property should never change');
     });
 
-    module('valid types', function() {
-      ['foo', 1, Symbol()].forEach(name => {
-        test(`${typeof name} is supported`, async function(assert) {
+    module('valid types', function () {
+      ['foo', 1, Symbol()].forEach((name) => {
+        test(`${typeof name} is supported`, async function (assert) {
           assert.expect(0);
 
           this.set('name', name);
@@ -57,8 +57,8 @@ module('step-manger/step', function(hooks) {
     });
   });
 
-  module('rendering', function() {
-    test('renders block content when visible', async function(assert) {
+  module('rendering', function () {
+    test('renders block content when visible', async function (assert) {
       await render(hbs`
         {{#step-manager/step name='foo' currentStep='foo' register-step=(action register) remove-step=(action remove)}}
           <div data-test-step>
@@ -70,8 +70,8 @@ module('step-manger/step', function(hooks) {
       assert.dom('[data-test-step]').hasText('Foo');
     });
 
-    module('when inactive', function() {
-      test('is hidden when no alternate state is provided', async function(assert) {
+    module('when inactive', function () {
+      test('is hidden when no alternate state is provided', async function (assert) {
         await render(hbs`
           {{#step-manager/step name='foo' register-step=(action register) remove-step=(action remove)}}
             <div data-test-step>
@@ -83,7 +83,7 @@ module('step-manger/step', function(hooks) {
         assert.dom('[data-test-step]').doesNotExist();
       });
 
-      test('renders the inverse block if provided', async function(assert) {
+      test('renders the inverse block if provided', async function (assert) {
         await render(hbs`
           <div data-test-step>
             {{#step-manager/step name='foo' register-step=(action register) remove-step=(action remove)}}
@@ -99,8 +99,8 @@ module('step-manger/step', function(hooks) {
     });
   });
 
-  module('programmatically controlling visibility', function() {
-    test('is visible when active', async function(assert) {
+  module('programmatically controlling visibility', function () {
+    test('is visible when active', async function (assert) {
       await render(hbs`
         {{#step-manager/step name='foo' currentStep='foo' register-step=(action register) remove-step=(action remove)}}
           <div data-test-step></div>
@@ -110,7 +110,7 @@ module('step-manger/step', function(hooks) {
       assert.dom('[data-test-step]').exists();
     });
 
-    test('is invisible when not active', async function(assert) {
+    test('is invisible when not active', async function (assert) {
       await render(hbs`
         {{#step-manager/step name='foo' currentStep='bar' register-step=(action register) remove-step=(action remove)}}
           <div data-test-step></div>
@@ -121,8 +121,8 @@ module('step-manger/step', function(hooks) {
     });
   });
 
-  module('yielding whether the step has a next step', function() {
-    test('when it has a next step', async function(assert) {
+  module('yielding whether the step has a next step', function () {
+    test('when it has a next step', async function (assert) {
       await render(hbs`
         {{#step-manager as |w|}}
           {{#w.step as |step|}}
@@ -135,7 +135,7 @@ module('step-manger/step', function(hooks) {
       assert.dom('p').hasText('true');
     });
 
-    test('when it does not have a next step', async function(assert) {
+    test('when it does not have a next step', async function (assert) {
       await render(hbs`
         {{#step-manager as |w|}}
           {{#w.step as |step|}}
@@ -148,8 +148,8 @@ module('step-manger/step', function(hooks) {
     });
   });
 
-  module('yielding whether the step has a previous step', function() {
-    test('when it has a previous step', async function(assert) {
+  module('yielding whether the step has a previous step', function () {
+    test('when it has a previous step', async function (assert) {
       await render(hbs`
         {{#step-manager currentStep='bar' as |w|}}
           {{w.step name='foo'}}
@@ -162,7 +162,7 @@ module('step-manger/step', function(hooks) {
       assert.dom('p').hasText('true');
     });
 
-    test('when it does not have a previous step', async function(assert) {
+    test('when it does not have a previous step', async function (assert) {
       await render(hbs`
         {{#step-manager as |w|}}
           {{#w.step as |step|}}

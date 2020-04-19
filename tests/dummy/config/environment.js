@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(environment) {
+module.exports = function (environment) {
   const ENV = {
     modulePrefix: 'dummy',
     environment,
@@ -13,8 +13,8 @@ module.exports = function(environment) {
       },
       EXTEND_PROTOTYPES: {
         // Prevent Ember Data from overriding Date.parse.
-        Date: false
-      }
+        Date: false,
+      },
     },
 
     APP: {
@@ -22,7 +22,7 @@ module.exports = function(environment) {
       // when it is created
     },
     fastboot: {
-      hostWhitelist: [/^localhost:\d+$/]
+      hostWhitelist: [/^localhost:\d+$/],
     },
     metricsAdapters: [
       {
@@ -35,10 +35,10 @@ module.exports = function(environment) {
           // Use verbose tracing of GA events
           trace: environment === 'development',
           // Ensure development env hits aren't sent to GA
-          sendHitTask: environment !== 'development'
-        }
-      }
-    ]
+          sendHitTask: environment !== 'development',
+        },
+      },
+    ],
   };
 
   if (environment === 'development') {

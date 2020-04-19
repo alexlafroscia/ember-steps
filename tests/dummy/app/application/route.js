@@ -8,5 +8,5 @@ export default Route.extend({
     }
 
     return `ember-steps – ${tokens.join(' ')}`;
-  }
+  },
 });

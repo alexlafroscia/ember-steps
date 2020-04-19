@@ -26,25 +26,25 @@ export default class Router extends EmberRouter {
   }
 }
 
-Router.map(function() {
-  this.route('docs', function() {
-    this.route('features', function() {
+Router.map(function () {
+  this.route('docs', function () {
+    this.route('features', function () {
       this.route('validating-steps');
       this.route('state-manager');
       this.route('inactive');
     });
 
-    this.route('cookbook', function() {
+    this.route('cookbook', function () {
       this.route('dynamic-definition');
-      this.route('tabs', function() {
+      this.route('tabs', function () {
         this.route('query-param');
       });
-      this.route('wizard', function() {
+      this.route('wizard', function () {
         this.route('progress-indicator');
       });
     });
 
-    this.route('api', function() {
+    this.route('api', function () {
       this.route('item', { path: '/*path' });
     });
   });

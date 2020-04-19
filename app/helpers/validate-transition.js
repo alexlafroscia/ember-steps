@@ -1,4 +1,4 @@
 export {
   default,
-  validateTransition
+  validateTransition,
 } from 'ember-steps/helpers/validate-transition';
