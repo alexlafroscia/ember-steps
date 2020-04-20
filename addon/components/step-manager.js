@@ -10,12 +10,30 @@ import LinearStateMachine from '../-private/state-machine/linear';
 
 import StepNode from '../-private/step-node';
 
+/**
+ * ```hbs
+ * <StepManager as |w|>
+ *   <w.step @name="first">
+ *     <h1>First Step</h1>
+ *   </w.step>
+ *   <w.step @name="second">
+ *     <h1>Second Step</h1>
+ *   </w.step>
+ * </StepManager>
+ * ```
+ *
+ * @class StepManagerComponent
+ * @yield {Hash} w Wizard Properties
+ * @yield {StepComponent} w.step The component to create steps
+ * @yield {boolean} w.hasNextStep Whether or not the current step has a "next" step
+ * @yield {boolean} w.hasPreviousStep Whether or not the current step has a "previous" step
+ * @yield {string} w.currentStep Reflects the name of the active step
+ * @yield {Array<StepNode>} w.steps The steps registered to the step manager
+ * @yield {Action} w.transition-to Transition to a step by name
+ * @yield {Action} w.transition-to-next Transition to the "next" step
+ * @yield {Action} w.transition-to-previous Transition to the "previous" step
+ */
 export default class StepManagerComponent extends Component {
-  /** @type {boolean} */
-  get linear() {
-    return isPresent(this.args.linear) ? this.args.linear : true;
-  }
-
   /** @type {BaseStateMachine} state machine for transitions */
   @tracked transitions;
 
@@ -38,17 +56,35 @@ export default class StepManagerComponent extends Component {
     });
   }
 
-  /** @type {boolean} */
+  /**
+   * Whether to use a "Circular" or "Linear" state machine
+   * @type {boolean}
+   * @private
+   */
+  get linear() {
+    return isPresent(this.args.linear) ? this.args.linear : true;
+  }
+
+  /**
+   * Whether or not the current step has a "next" step
+   * @type {boolean}
+   */
   get hasNextStep() {
     return !isNone(this.transitions.pickNext());
   }
 
-  /** @type {boolean} */
+  /**
+   * Whether or not the current step has a "previous" step
+   * @type {boolean}
+   */
   get hasPreviousStep() {
     return !isNone(this.transitions.pickPrevious());
   }
 
-  /** @type {string} */
+  /**
+   * Reflects the name of the active step
+   * @type {string}
+   */
   get currentStep() {
     const newStep =
       typeof this.args.currentStep !== 'undefined'
