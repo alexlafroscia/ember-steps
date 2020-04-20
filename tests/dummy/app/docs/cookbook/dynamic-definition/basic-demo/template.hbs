@@ -1,20 +1,26 @@
 <DocsDemo as |demo|>
   <demo.example @name="dynamic-definition-basic-example.hbs">
     <StepManager as |w|>
-      {{#each data as |content|}}
+      {{#each this.data as |content|}}
         <w.step>
           {{content}}
         </w.step>
       {{/each}}
 
-      {{#control-group}}
-        <button type="button" {{action w.transition-to-previous}}>
+      <ControlGroup>
+        <button
+          type="button"
+          {{on "click" w.transition-to-previous}}
+        >
           Previous
         </button>
-        <button type="button" {{action w.transition-to-next}}>
+        <button
+          type="button"
+          {{on "click" w.transition-to-next}}
+        >
           Next
         </button>
-      {{/control-group}}
+      </ControlGroup>
     </StepManager>
   </demo.example>
 

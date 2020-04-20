@@ -6,7 +6,7 @@
       {{else}}
         <button
           type="button"
-          {{action w.transition-to "first"}}
+          {{on "click" (fn w.transition-to "first")}}
         >
           The first step is inactive. Activate it.
         </button>
@@ -17,7 +17,7 @@
       {{else}}
         <button
           type="button"
-          {{action w.transition-to "second"}}
+          {{on "click" (fn w.transition-to "second")}}
         >
           The second step is inactive. Activate it.
         </button>

@@ -9,22 +9,22 @@
         Second step has both a "next" and "previous" step
       </w.step>
 
-      {{#control-group}}
+      <ControlGroup>
         <button
           type="button"
-          onClick={{action w.transition-to-previous}}
           disabled={{not w.hasPreviousStep}}
+          {{on "click" w.transition-to-previous}}
         >
           Previous
         </button>
         <button
           type="button"
-          onClick={{action w.transition-to-next}}
           disabled={{not w.hasNextStep}}
+          {{on "click" w.transition-to-next}}
         >
           Next
         </button>
-      {{/control-group}}
+      </ControlGroup>
     </StepManager>
   </demo.example>
 

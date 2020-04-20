@@ -1,22 +1,22 @@
 <DocsDemo as |demo|>
   <demo.example @name="cookbook-tabs.hbs">
     <StepManager as |w|>
-      {{#tab-group}}
+      <TabGroup>
         <button
           type="button"
-          onclick={{action w.transition-to "first"}}
           aria-pressed={{eq w.currentStep "first"}}
+          {{on "click" (fn w.transition-to "first")}}
         >
           First Tab
         </button>
         <button
           type="button"
-          onclick={{action w.transition-to "second"}}
           aria-pressed={{eq w.currentStep "second"}}
+          {{on "click" (fn w.transition-to "second")}}
         >
           Second Tab
         </button>
-      {{/tab-group}}
+      </TabGroup>
 
       <w.step @name="first">
         This content is on the first tab

@@ -1,6 +1,6 @@
 # ember-steps
 
-[![Build Status](https://travis-ci.org/alexlafroscia/ember-steps.svg?branch=master)](https://travis-ci.org/alexlafroscia/ember-steps)
+[![CI](https://github.com/alexlafroscia/ember-steps/workflows/CI/badge.svg)](https://github.com/alexlafroscia/ember-steps/actions?query=workflow%3ACI)
 
 > Declaratively create wizards, tabs, or any interface with sections of the page that should be shown one-at-a-time
 
@@ -12,7 +12,7 @@ ember install ember-steps
 
 ## Basic Usage
 
-Using `ember-steps` starts with creating a `step-manager`.
+Using `ember-steps` starts with creating a `<StepManager>`.
 
 ```handlebars
 <StepManager as |w|>
@@ -41,7 +41,7 @@ As you may have guessed, the first `w.step` component, `a`, will be visible init
   <w.step @name="a">
     This is the first step!
 
-    <button {{action w.transition-to 'b'}}>
+    <button {{on "click" (fn w.transition-to "b")}}>
       Next, please!
     </button>
   </w.step>
@@ -49,14 +49,14 @@ As you may have guessed, the first `w.step` component, `a`, will be visible init
   <w.step @name="b">
     This is the second step!
 
-    <button {{action w.transition-to 'a'}}>
+    <button {{on "click" (fn w.transition-to "a")}}>
       Wait, go back!
     </button>
   </w.step>
 </StepManager>
 ```
 
-The `step-manager` provides a [closure action][ember-closure-actions] that can be called with the name of a step to show that one, instead.  One of the neat features of `ember-steps` is that there is no explicit order to the steps; show all of them, or only some. It's entirely up to you.
+The `<StepManager>` provides a [closure action][ember-closure-actions] that can be called with the name of a step to show that one, instead.  One of the neat features of `ember-steps` is that there is no explicit order to the steps; show all of them, or only some. It's entirely up to you.
 
 ## Not-So-Basic Usage
 

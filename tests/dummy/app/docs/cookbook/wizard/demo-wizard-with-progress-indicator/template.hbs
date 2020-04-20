@@ -13,11 +13,11 @@
         This content is on the third step
       </w.step>
 
-      {{#control-group}}
+      <ControlGroup>
         <button
           type="button"
           disabled={{not w.hasPreviousStep}}
-          {{action w.transition-to-previous}}
+          {{on "click" w.transition-to-previous}}
         >
           Previous
         </button>
@@ -27,7 +27,7 @@
               type="button"
               local-class="progress-dot"
               aria-pressed={{step.isActive}}
-              {{action w.transition-to step}}
+              {{on "click" (fn w.transition-to step)}}
             >
             </button>
           {{/each}}
@@ -35,11 +35,11 @@
         <button
           type="button"
           disabled={{not w.hasNextStep}}
-          {{action w.transition-to-next}}
+          {{on "click" w.transition-to-next}}
         >
           Next
         </button>
-      {{/control-group}}
+      </ControlGroup>
     </StepManager>
   </demo.example>
 

@@ -1,21 +1,21 @@
 // BEGIN-SNIPPET validating-steps-did-transition.js
 import Component from '@ember/component';
+import { action } from '@ember/object';
+import { tracked } from '@glimmer/tracking';
 
-export default Component.extend({
-  password: '',
+export default class extends Component {
+  @tracked password = '';
 
-  actions: {
-    checkPassword(resolve) {
-      const password = this.get('password');
+  @action
+  checkPassword(resolve) {
+    if (this.password === 'password') {
+      resolve();
+    }
+  }
 
-      if (password === 'password') {
-        resolve();
-      }
-    },
-
-    reset() {
-      this.set('password', '');
-    },
-  },
-});
+  @action
+  reset() {
+    this.password = '';
+  }
+}
 // END-SNIPPET
