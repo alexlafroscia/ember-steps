@@ -70,8 +70,7 @@
     "qunit-dom": "^1.1.0",
     "standard-version": "^4.4.0",
     "testdouble": "^3.13.1",
-    "testdouble-qunit": "^2.1.1",
-    "travis-deploy-once": "^5.0.0"
+    "testdouble-qunit": "^2.1.1"
   },
   "keywords": [
     "ember-addon"
