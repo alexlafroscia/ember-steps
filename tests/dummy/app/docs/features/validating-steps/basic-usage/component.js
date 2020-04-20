@@ -1,17 +1,16 @@
 // BEGIN-SNIPPET validating-steps-basic-usage.js
 import Component from '@ember/component';
+import { tracked } from '@glimmer/tracking';
+import { action } from '@ember/object';
 
-export default Component.extend({
-  password: '',
+export default class extends Component {
+  @tracked password = '';
 
-  actions: {
-    checkPassword(resolve) {
-      const password = this.get('password');
-
-      if (password === 'password') {
-        resolve();
-      }
-    },
-  },
-});
+  @action
+  checkPassword(resolve) {
+    if (this.password === 'password') {
+      resolve();
+    }
+  }
+}
 // END-SNIPPET

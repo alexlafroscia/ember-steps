@@ -2,25 +2,29 @@
   <demo.example @name="validating-steps-did-transition.hbs">
     <StepManager as |w|>
       <w.step>
-        <input placeholder="Enter password" value={{password}}>
+        <input placeholder="Enter password" value={{this.password}}>
 
-        {{#control-group}}
+        <ControlGroup>
           <button
-            onclick={{validate-transition w.transition-to-next with=(action "checkPassword")}}
+            type="button"
+            onclick={{validate-transition w.transition-to-next with=this.checkPassword}}
           >
             Check Password
           </button>
-        {{/control-group}}
+        </ControlGroup>
       </w.step>
 
       <w.step>
         Great job! You got the password right
 
-        {{#control-group}}
-          <button {{action (pipe w.transition-to-previous (action "reset"))}}>
+        <ControlGroup>
+          <button
+            type="button"
+            {{on "click" (pipe w.transition-to-previous this.reset)}}
+          >
             Reset
           </button>
-        {{/control-group}}
+        </ControlGroup>
       </w.step>
     </StepManager>
   </demo.example>

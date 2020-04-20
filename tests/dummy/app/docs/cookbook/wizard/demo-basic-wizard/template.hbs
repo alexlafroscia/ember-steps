@@ -13,14 +13,22 @@
         This content is on the third step. You can only go backward.
       </w.step>
 
-      {{#control-group}}
-        <button {{action w.transition-to-previous}} disabled={{not w.hasPreviousStep}}>
+      <ControlGroup>
+        <button
+          type="button"
+          disabled={{not w.hasPreviousStep}}
+          {{on "click" w.transition-to-previous}}
+        >
           Previous
         </button>
-        <button {{action w.transition-to-next}} disabled={{not w.hasNextStep}}>
+        <button
+          type="button"
+          disabled={{not w.hasNextStep}}
+          {{on "click" w.transition-to-next}}
+        >
           Next
         </button>
-      {{/control-group}}
+      </ControlGroup>
     </StepManager>
   </demo.example>
 

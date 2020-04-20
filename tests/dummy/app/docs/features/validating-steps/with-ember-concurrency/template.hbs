@@ -2,16 +2,17 @@
   <demo.example @name="validating-steps-ember-concurrency.hbs">
     <StepManager as |w|>
       <w.step>
-        <input placeholder="Enter password" value={{password}}>
+        <input placeholder="Enter password" value={{this.password}}>
 
-        {{#control-group}}
+        <ControlGroup>
           <button
-            disabled={{checkPassword.isRunning}}
-            onclick={{validate-transition w.transition-to-next with=(perform checkPassword)}}
+            type="button"
+            disabled={{this.checkPassword.isRunning}}
+            {{on "click" (validate-transition w.transition-to-next with=(perform this.checkPassword))}}
           >
             Check Password
           </button>
-        {{/control-group}}
+        </ControlGroup>
       </w.step>
 
       <w.step>

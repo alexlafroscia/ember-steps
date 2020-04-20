@@ -13,24 +13,33 @@
         This content is on the third step
       </w.step>
 
-      {{#control-group}}
-        <button {{action w.transition-to-previous}} disabled={{not w.hasPreviousStep}}>
+      <ControlGroup>
+        <button
+          type="button"
+          disabled={{not w.hasPreviousStep}}
+          {{on "click" w.transition-to-previous}}
+        >
           Previous
         </button>
         <div local-class="progress-indicators">
           {{#each w.steps as |step|}}
             <button
+              type="button"
               local-class="progress-dot"
               aria-pressed={{step.isActive}}
-              {{action w.transition-to step}}
+              {{on "click" (fn w.transition-to step)}}
             >
             </button>
           {{/each}}
         </div>
-        <button {{action w.transition-to-next}} disabled={{not w.hasNextStep}}>
+        <button
+          type="button"
+          disabled={{not w.hasNextStep}}
+          {{on "click" w.transition-to-next}}
+        >
           Next
         </button>
-      {{/control-group}}
+      </ControlGroup>
     </StepManager>
   </demo.example>
 

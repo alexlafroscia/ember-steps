@@ -15,48 +15,48 @@ ember install ember-steps
 Using `ember-steps` starts with creating a `step-manager`.
 
 ```handlebars
-{{#step-manager as |w|}}
+<StepManager as |w|>
   We'll put some cool stuff in here in a moment
-{{/step-manager}}
+</StepManager>
 ```
 
 Cool, right? Ehh, it doesn't do much yet -- we need to add some steps.
 
 ```handlebars
-{{#step-manager as |w|}}
-  {{#w.step name='a'}}
+<StepManager as |w|>
+  <w.step @name="a">
     This is the first step!
-  {{/w.step}}
+  </w.step>
 
-  {{#w.step name='b'}}
+  <w.step @name="b">
     This is the second step!
-  {{/w.step}}
-{{/step-manager}}
+  </w.step>
+</StepManager>
 ```
 
 As you may have guessed, the first `w.step` component, `a`, will be visible initially, and `b` will be invisible. Note that these names are important. Why? Because we need a way to transition between them!
 
 ```handlebars
-{{#step-manager as |w|}}
-  {{#w.step name='a'}}
+<StepManager as |w|>
+  <w.step @name="a">
     This is the first step!
 
-    <button {{action w.transition-to 'b'}}>
+    <button {{on "click" (fn w.transition-to "b")}}>
       Next, please!
     </button>
-  {{/w.step}}
+  </w.step>
 
-  {{#w.step name='b'}}
+  <w.step @name="b">
     This is the second step!
 
-    <button {{action w.transition-to 'a'}}>
+    <button {{on "click" (fn w.transition-to "a")}}>
       Wait, go back!
     </button>
-  {{/w.step}}
-{{/step-manager}}
+  </w.step>
+</StepManager>
 ```
 
-The `step-manager` provides a [closure action][ember-closure-actions] that can be called with the name of a step to show that one, instead. One of the neat features of `ember-steps` is that there is no explicit order to the steps; show all of them, or only some. It's entirely up to you.
+The `<StepManager>` provides a [closure action][ember-closure-actions] that can be called with the name of a step to show that one, instead. One of the neat features of `ember-steps` is that there is no explicit order to the steps; show all of them, or only some. It's entirely up to you.
 
 ## Not-So-Basic Usage
 
