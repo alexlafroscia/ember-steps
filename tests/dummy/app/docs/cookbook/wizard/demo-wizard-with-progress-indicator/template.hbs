@@ -21,17 +21,15 @@
         >
           Previous
         </button>
-        <div local-class="progress-indicators">
+        <ProgressIndicators>
           {{#each w.steps as |step|}}
-            <button
-              type="button"
-              local-class="progress-dot"
-              aria-pressed={{step.isActive}}
+            <ProgressDot
+              class={{if step.hasNext 'docs-mr-2'}}
+              @isActive={{step.isActive}}
               {{on "click" (fn w.transition-to step)}}
-            >
-            </button>
+            />
           {{/each}}
-        </div>
+        </ProgressIndicators>
         <button
           type="button"
           disabled={{not w.hasNextStep}}

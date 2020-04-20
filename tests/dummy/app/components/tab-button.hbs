@@ -1,0 +1,12 @@
+<button
+  type="button"
+  aria-pressed={{@isActive}}
+  class="
+    docs-border docs-border-grey-light docs-border-b-0 docs-py-2 docs-px-3 focus:docs-outline-none
+    {{unless @isActive 'docs-bg-grey-light'}}
+  "
+  ...attributes
+>
+  {{yield}}
+</button>
+

@@ -17,10 +17,6 @@ module.exports = function (defaults) {
     'ember-composable-helpers': {
       only: ['pipe'],
     },
-
-    cssModules: {
-      plugins: [require('postcss-nested')],
-    },
   });
 
   return app.toTree();

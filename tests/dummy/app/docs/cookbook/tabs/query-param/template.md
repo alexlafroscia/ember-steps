@@ -5,18 +5,18 @@ Often times, you might want to store the active tab in the URL, so that the user
 <DocsDemo as |demo|>
   <demo.example @name="cookbook-tabs-with-query-params.hbs">
     <TabGroup>
-      <LinkTo
+      <TabLink
         @route="docs.cookbook.tabs.query-param"
         @query={{hash tab="first"}}
       >
         Link to First Tab
-      </LinkTo>
-      <LinkTo
+      </TabLink>
+      <TabLink
         @route="docs.cookbook.tabs.query-param"
         @query={{hash tab="second"}}
       >
         Link to Second Tab
-      </LinkTo>
+      </TabLink>
     </TabGroup>
 
     <StepManager @currentStep={{this.tab}} as |w|>

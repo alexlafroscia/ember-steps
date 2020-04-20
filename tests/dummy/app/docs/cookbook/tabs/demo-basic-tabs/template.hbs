@@ -2,20 +2,18 @@
   <demo.example @name="cookbook-tabs.hbs">
     <StepManager as |w|>
       <TabGroup>
-        <button
-          type="button"
-          aria-pressed={{eq w.currentStep "first"}}
+        <TabButton
+          @isActive={{eq w.currentStep "first"}}
           {{on "click" (fn w.transition-to "first")}}
         >
           First Tab
-        </button>
-        <button
-          type="button"
-          aria-pressed={{eq w.currentStep "second"}}
+        </TabButton>
+        <TabButton
+          @isActive={{eq w.currentStep "second"}}
           {{on "click" (fn w.transition-to "second")}}
         >
           Second Tab
-        </button>
+        </TabButton>
       </TabGroup>
 
       <w.step @name="first">
