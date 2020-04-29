@@ -68,7 +68,7 @@
     "loader.js": "^4.7.0",
     "prettier": "^2.0.5",
     "qunit-dom": "^1.1.0",
-    "standard-version": "^4.4.0",
+    "standard-version": "^7.1.0",
     "testdouble": "^3.13.1",
     "testdouble-qunit": "^2.1.1"
   },
