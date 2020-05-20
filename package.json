@@ -19,7 +19,7 @@
   "dependencies": {
     "@glimmer/component": "^1.0.0",
     "@glimmer/tracking": "^1.0.0",
-    "ember-cli-babel": "^7.18.0",
+    "ember-cli-babel": "^7.20.0",
     "ember-cli-htmlbars": "^5.1.2",
     "tracked-maps-and-sets": "^2.1.0"
   },
