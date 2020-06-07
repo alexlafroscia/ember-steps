@@ -64,7 +64,15 @@ The above examples show the basic idea, but there's more configuration (and powe
 
 ## Compatibility Note
 
-Ember `2.12` is the earliest version that the tests are run against. YMMV with older versions of Ember.
+The following table can help determine which verison of `ember-steps` work with specific Ember versions
+
+| `ember` Version   | `ember-steps` Version |
+|:------------------|:----------------------|
+| `3.13+`           | `v10.0.0`             |
+| `3.6`             | `v9.0.0`              |
+| `3.4` to `3.6`    | `v7.0.0`              |
+| `3.3` to `2.16`   | `v6.1.3`              |
+| `2.12` or earlier | `v4.0.0`              |
 
 [ember-closure-actions]: https://guides.emberjs.com/v3.0.0/templates/actions/
 [hash-helper]: http://emberjs.com/blog/2016/01/15/ember-2-3-released.html#toc_hash-helper
