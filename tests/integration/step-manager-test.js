@@ -12,13 +12,13 @@ module('step-manager', function (hooks) {
     test('setting the initial visible step', async function (assert) {
       await render(hbs`
         <StepManager @currentStep="second" as |w|>
-          <w.step @name="first">
+          <w.Step @name="first">
             <div data-test-first></div>
-          </w.step>
+          </w.Step>
 
-          <w.step @name="second">
+          <w.Step @name="second">
             <div data-test-second></div>
-          </w.step>
+          </w.Step>
         </StepManager>
       `);
 
@@ -31,13 +31,13 @@ module('step-manager', function (hooks) {
 
       await render(hbs`
         <StepManager @currentStep={{step}} as |w|>
-          <w.step @name="first">
+          <w.Step @name="first">
             <div data-test-first></div>
-          </w.step>
+          </w.Step>
 
-          <w.step @name="second">
+          <w.Step @name="second">
             <div data-test-second></div>
-          </w.step>
+          </w.Step>
         </StepManager>
       `);
 
@@ -77,8 +77,8 @@ module('step-manager', function (hooks) {
 
       await render(hbs`
         {{#step-manager currentStep=step as |w|}}
-          {{w.step name='first'}}
-          {{w.step name='second'}}
+          {{w.Step name='first'}}
+          {{w.Step name='second'}}
 
           <button {{action w.transition-to 'second'}}>
             Next
@@ -97,8 +97,8 @@ module('step-manager', function (hooks) {
 
       await render(hbs`
         {{#step-manager currentStep=step onTransition=onTransition as |w|}}
-          {{w.step name='first'}}
-          {{w.step name='second'}}
+          {{w.Step name='first'}}
+          {{w.Step name='second'}}
 
           <button {{action w.transition-to 'second'}}>
             Next
@@ -119,8 +119,8 @@ module('step-manager', function (hooks) {
 
       await render(hbs`
         {{#step-manager currentStep=step onTransition=(action (mut step)) as |w|}}
-          {{w.step name='first'}}
-          {{w.step name='second'}}
+          {{w.Step name='first'}}
+          {{w.Step name='second'}}
 
           <button {{action w.transition-to 'second'}}>
             Next
@@ -143,12 +143,12 @@ module('step-manager', function (hooks) {
 
       await render(hbs`
         {{#step-manager randomAttribute=randomAttribute initialStep=initialStep as |w|}}
-          {{#w.step name='first'}}
+          {{#w.Step name='first'}}
             <div data-test-first></div>
-          {{/w.step}}
-          {{#w.step name='second'}}
+          {{/w.Step}}
+          {{#w.Step name='second'}}
             <div data-test-second></div>
-          {{/w.step}}
+          {{/w.Step}}
         {{/step-manager}}
       `);
 
@@ -167,13 +167,13 @@ module('step-manager', function (hooks) {
     test('it can set the initial visible step', async function (assert) {
       await render(hbs`
         {{#step-manager initialStep='second' as |w|}}
-          {{#w.step name='first'}}
+          {{#w.Step name='first'}}
             <div data-test-first></div>
-          {{/w.step}}
+          {{/w.Step}}
 
-          {{#w.step name='second'}}
+          {{#w.Step name='second'}}
             <div data-test-second></div>
-          {{/w.step}}
+          {{/w.Step}}
         {{/step-manager}}
       `);
 
@@ -185,13 +185,13 @@ module('step-manager', function (hooks) {
       this.set('initialStep', 'second');
       await render(hbs`
         {{#step-manager initialStep=initialStep as |w|}}
-          {{#w.step name='first'}}
+          {{#w.Step name='first'}}
             <div data-test-first></div>
-          {{/w.step}}
+          {{/w.Step}}
 
-          {{#w.step name='second'}}
+          {{#w.Step name='second'}}
             <div data-test-second></div>
-          {{/w.step}}
+          {{/w.Step}}
 
           <button {{action w.transition-to 'first'}}>
             To First
@@ -209,13 +209,13 @@ module('step-manager', function (hooks) {
   test('renders the first step in the DOM if no `currentStep` is present', async function (assert) {
     await render(hbs`
       {{#step-manager as |w|}}
-        {{#w.step name='first'}}
+        {{#w.Step name='first'}}
           <div data-test-first></div>
-        {{/w.step}}
+        {{/w.Step}}
 
-        {{#w.step name='second'}}
+        {{#w.Step name='second'}}
           <div data-test-second></div>
-        {{/w.step}}
+        {{/w.Step}}
       {{/step-manager}}
     `);
 
@@ -227,7 +227,7 @@ module('step-manager', function (hooks) {
     await render(hbs`
       <div id="steps">
         {{#step-manager as |w|}}
-          {{w.step}}
+          {{w.Step}}
         {{/step-manager}}
       </div>
     `);
@@ -242,7 +242,7 @@ module('step-manager', function (hooks) {
           <div data-test-steps>
             {{w.currentStep}}
 
-            {{w.step name='foo'}}
+            {{w.Step name='foo'}}
           </div>
         {{/step-manager}}
       `);
@@ -254,8 +254,8 @@ module('step-manager', function (hooks) {
       test('it exposes whether the step has a next step', async function (assert) {
         await render(hbs`
           {{#step-manager as |w|}}
-            {{w.step name='foo'}}
-            {{w.step name='bar'}}
+            {{w.Step name='foo'}}
+            {{w.Step name='bar'}}
 
             {{#each w.steps as |step|}}
               <p data-test-step={{step.name}}>
@@ -276,8 +276,8 @@ module('step-manager', function (hooks) {
       test('it exposes whether the step has a previous step', async function (assert) {
         await render(hbs`
           {{#step-manager as |w|}}
-            {{w.step name='foo'}}
-            {{w.step name='bar'}}
+            {{w.Step name='foo'}}
+            {{w.Step name='bar'}}
 
             {{#each w.steps as |step|}}
               <p data-test-step={{step.name}}>
@@ -298,8 +298,8 @@ module('step-manager', function (hooks) {
       test('it exposes whether the step is active', async function (assert) {
         await render(hbs`
           {{#step-manager as |w|}}
-            {{w.step name='foo'}}
-            {{w.step name='bar'}}
+            {{w.Step name='foo'}}
+            {{w.Step name='bar'}}
 
             {{#each w.steps as |step|}}
               <button {{action w.transition-to step}} data-test-step={{step.name}}>
@@ -329,12 +329,12 @@ module('step-manager', function (hooks) {
       test('can transition to a step by passing the node', async function (assert) {
         await render(hbs`
           {{#step-manager as |w|}}
-            {{#w.step name='foo'}}
+            {{#w.Step name='foo'}}
               <p data-test-step="foo">Foo</p>
-            {{/w.step}}
-            {{#w.step name='bar'}}
+            {{/w.Step}}
+            {{#w.Step name='bar'}}
               <p data-test-step="bar">Bar</p>
-            {{/w.step}}
+            {{/w.Step}}
 
             {{#each w.steps as |step|}}
               <button {{action w.transition-to step}} data-test-transition-to={{step.name}}>
@@ -357,7 +357,7 @@ module('step-manager', function (hooks) {
         test('it exposes step context', async function (assert) {
           await render(hbs`
             {{#step-manager as |w|}}
-              {{w.step name='foo' context='bar'}}
+              {{w.Step name='foo' context='bar'}}
 
               {{#each w.steps as |step|}}
                 <p data-test-step={{step.name}}>
@@ -375,7 +375,7 @@ module('step-manager', function (hooks) {
 
           await render(hbs`
             {{#step-manager as |w|}}
-              {{w.step name='foo' context=context}}
+              {{w.Step name='foo' context=context}}
 
               {{#each w.steps as |step|}}
                 <p data-test-step={{step.name}}>
@@ -401,7 +401,7 @@ module('step-manager', function (hooks) {
 
           await render(hbs`
             {{#step-manager as |w|}}
-              {{w.step name='foo' context=context}}
+              {{w.Step name='foo' context=context}}
 
               {{#each w.steps as |step|}}
                 <p data-test-step={{step.name}}>
@@ -428,13 +428,13 @@ module('step-manager', function (hooks) {
           await render(hbs`
             {{#step-manager as |w|}}
               <div data-test-active-step>
-                {{#w.step name='foo'}}
+                {{#w.Step name='foo'}}
                   Foo
-                {{/w.step}}
+                {{/w.Step}}
 
-                {{#w.step name='bar'}}
+                {{#w.Step name='bar'}}
                   Bar
-                {{/w.step}}
+                {{/w.Step}}
               </div>
 
               {{#each w.steps as |step|}}
@@ -466,13 +466,13 @@ module('step-manager', function (hooks) {
               {{/each}}
 
               <div data-test-active-step>
-                {{#w.step name='foo'}}
+                {{#w.Step name='foo'}}
                   Foo
-                {{/w.step}}
+                {{/w.Step}}
 
-                {{#w.step name='bar'}}
+                {{#w.Step name='bar'}}
                   Bar
-                {{/w.step}}
+                {{/w.Step}}
               </div>
             {{/step-manager}}
           `);
@@ -499,13 +499,13 @@ module('step-manager', function (hooks) {
             Transition to Next
           </button>
 
-          <w.step @name="first">
+          <w.Step @name="first">
             <div data-test-first></div>
-          </w.step>
+          </w.Step>
 
-          <w.step @name="second">
+          <w.Step @name="second">
             <div data-test-second></div>
-          </w.step>
+          </w.Step>
         </StepManager>
       `);
 
@@ -527,13 +527,13 @@ module('step-manager', function (hooks) {
             Next!
           </button>
 
-          {{#w.step name='first'}}
+          {{#w.Step name='first'}}
             <div data-test-first></div>
-          {{/w.step}}
+          {{/w.Step}}
 
-          {{#w.step name='second'}}
+          {{#w.Step name='second'}}
             <div data-test-second></div>
-          {{/w.step}}
+          {{/w.Step}}
         {{/step-manager}}
       `);
 
@@ -551,13 +551,13 @@ module('step-manager', function (hooks) {
             Next!
           </button>
 
-          {{#w.step name='first'}}
+          {{#w.Step name='first'}}
             <div data-test-first></div>
-          {{/w.step}}
+          {{/w.Step}}
 
-          {{#w.step name='second'}}
+          {{#w.Step name='second'}}
             <div data-test-second></div>
-          {{/w.step}}
+          {{/w.Step}}
         {{/step-manager}}
       `);
 
@@ -577,9 +577,9 @@ module('step-manager', function (hooks) {
             Next!
           </button>
 
-          {{#w.step name='first'}}
+          {{#w.Step name='first'}}
             <div data-test-first></div>
-          {{/w.step}}
+          {{/w.Step}}
         {{/step-manager}}
       `);
 
@@ -593,9 +593,9 @@ module('step-manager', function (hooks) {
             Next!
           </button>
 
-          {{#w.step name='first'}}
+          {{#w.Step name='first'}}
             <div data-test-first></div>
-          {{/w.step}}
+          {{/w.Step}}
         {{/step-manager}}
       `);
 
@@ -612,17 +612,17 @@ module('step-manager', function (hooks) {
               Next!
             </button>
 
-            {{#w.step name='first'}}
+            {{#w.Step name='first'}}
               <div data-test-first></div>
-            {{/w.step}}
+            {{/w.Step}}
 
-            {{#w.step name='second'}}
+            {{#w.Step name='second'}}
               <div data-test-second></div>
-            {{/w.step}}
+            {{/w.Step}}
 
-            {{#w.step name='third'}}
+            {{#w.Step name='third'}}
               <div data-test-third></div>
-            {{/w.step}}
+            {{/w.Step}}
           {{/step-manager}}
         `);
 
@@ -659,17 +659,17 @@ module('step-manager', function (hooks) {
               Next!
             </button>
 
-            {{#w.step name='first'}}
+            {{#w.Step name='first'}}
               <div data-test-first></div>
-            {{/w.step}}
+            {{/w.Step}}
 
-            {{#w.step name='second'}}
+            {{#w.Step name='second'}}
               <div data-test-second></div>
-            {{/w.step}}
+            {{/w.Step}}
 
-            {{#w.step name='third'}}
+            {{#w.Step name='third'}}
               <div data-test-third></div>
-            {{/w.step}}
+            {{/w.Step}}
           {{/step-manager}}
         `);
 
@@ -708,11 +708,11 @@ module('step-manager', function (hooks) {
         {{#step-manager as |w|}}
           <div data-test-steps>
             {{#each data as |item|}}
-              {{#w.step}}
+              {{#w.Step}}
                 <div data-test-step={{item.name}}>
                   {{item.name}}
                 </div>
-              {{/w.step}}
+              {{/w.Step}}
             {{/each}}
           </div>
 
@@ -738,11 +738,11 @@ module('step-manager', function (hooks) {
         {{#step-manager linear=false as |w|}}
           <div data-test-steps>
             {{#each data as |item|}}
-              {{#w.step name=item.name}}
+              {{#w.Step name=item.name}}
                 <div data-test-step={{item.name}}>
                   {{item.name}}
                 </div>
-              {{/w.step}}
+              {{/w.Step}}
             {{/each}}
           </div>
 
@@ -783,11 +783,11 @@ module('step-manager', function (hooks) {
         {{#step-manager linear=false as |w|}}
           <div data-test-steps>
             {{#each data as |item|}}
-              {{#w.step name=item.name}}
+              {{#w.Step name=item.name}}
                 <div data-test-step={{item.name}}>
                   {{item.name}}
                 </div>
-              {{/w.step}}
+              {{/w.Step}}
             {{/each}}
           </div>
 
@@ -833,11 +833,11 @@ module('step-manager', function (hooks) {
         {{#step-manager linear=true as |w|}}
           <div data-test-steps>
             {{#each data as |item|}}
-              {{#w.step name=item.name}}
+              {{#w.Step name=item.name}}
                 <div data-test-step={{item.name}}>
                   {{item.name}}
                 </div>
-              {{/w.step}}
+              {{/w.Step}}
             {{/each}}
           </div>
         {{/step-manager}}
@@ -862,11 +862,11 @@ module('step-manager', function (hooks) {
         {{#step-manager linear=false as |w|}}
           <div data-test-steps>
             {{#each data as |item|}}
-              {{#w.step name=item.name}}
+              {{#w.Step name=item.name}}
                 <div data-test-step={{item.name}}>
                   {{item.name}}
                 </div>
-              {{/w.step}}
+              {{/w.Step}}
             {{/each}}
           </div>
 
@@ -899,13 +899,13 @@ module('step-manager', function (hooks) {
     test('it handles steps with falsy names', async function (assert) {
       await render(hbs`
         {{#step-manager initialStep='' as |w|}}
-          {{#w.step name=''}}
+          {{#w.Step name=''}}
             <div data-test-empty-string></div>
-          {{/w.step}}
+          {{/w.Step}}
 
-          {{#w.step name=0}}
+          {{#w.Step name=0}}
             <div data-test-zero></div>
-          {{/w.step}}
+          {{/w.Step}}
 
           <button {{action w.transition-to-previous}} data-test-previous>
             Previous step

@@ -1,7 +1,7 @@
 <DocsDemo as |demo|>
   <demo.example @name="validating-steps-did-transition.hbs">
     <StepManager as |w|>
-      <w.step>
+      <w.Step>
         <input placeholder="Enter password" value={{this.password}}>
 
         <ControlGroup>
@@ -12,9 +12,9 @@
             Check Password
           </button>
         </ControlGroup>
-      </w.step>
+      </w.Step>
 
-      <w.step>
+      <w.Step>
         Great job! You got the password right
 
         <ControlGroup>
@@ -25,7 +25,7 @@
             Reset
           </button>
         </ControlGroup>
-      </w.step>
+      </w.Step>
     </StepManager>
   </demo.example>
 

@@ -20,13 +20,13 @@ Often times, you might want to store the active tab in the URL, so that the user
     </TabGroup>
 
     <StepManager @currentStep={{this.tab}} as |w|>
-      <w.step @name="first">
+      <w.Step @name="first">
         This content is on the first tab
-      </w.step>
+      </w.Step>
 
-      <w.step @name="second">
+      <w.Step @name="second">
         This content is on the second tab
-      </w.step>
+      </w.Step>
     </StepManager>
   </demo.example>
 

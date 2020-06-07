@@ -1,13 +1,13 @@
 <DocsDemo as |demo|>
   <demo.example @name="demo-cyclical-steps-cyclical.hbs">
     <StepManager @linear={{false}} as |w|>
-      <w.step>
+      <w.Step>
         First step has both a "next" and "previous" step
-      </w.step>
+      </w.Step>
 
-      <w.step>
+      <w.Step>
         Second step has both a "next" and "previous" step
-      </w.step>
+      </w.Step>
 
       <ControlGroup>
         <button

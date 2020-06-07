@@ -13,18 +13,18 @@ import StepNode from '../-private/step-node';
 /**
  * ```hbs
  * <StepManager as |w|>
- *   <w.step @name="first">
+ *   <w.Step @name="first">
  *     <h1>First Step</h1>
- *   </w.step>
- *   <w.step @name="second">
+ *   </w.Step>
+ *   <w.Step @name="second">
  *     <h1>Second Step</h1>
- *   </w.step>
+ *   </w.Step>
  * </StepManager>
  * ```
  *
  * @class StepManagerComponent
  * @yield {Hash} w Wizard Properties
- * @yield {StepComponent} w.step The component to create steps
+ * @yield {StepComponent} w.Step The component to create steps
  * @yield {boolean} w.hasNextStep Whether or not the current step has a "next" step
  * @yield {boolean} w.hasPreviousStep Whether or not the current step has a "previous" step
  * @yield {string} w.currentStep Reflects the name of the active step

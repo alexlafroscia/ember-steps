@@ -1,17 +1,17 @@
 <DocsDemo as |demo|>
   <demo.example @name="demo-cyclical-steps-step-yielded.hbs">
     <StepManager as |w|>
-      <w.step as |step|>
+      <w.Step as |step|>
         <h3>First</h3>
         There is a first step: {{step.hasNext}} <br>
         There is a previous step: {{step.hasPrevious}}
-      </w.step>
+      </w.Step>
 
-      <w.step as |step|>
+      <w.Step as |step|>
         <h3>Second</h3>
         There is a first step: {{step.hasNext}} <br>
         There is a previous step: {{step.hasPrevious}}
-      </w.step>
+      </w.Step>
 
       <ControlGroup>
         <button
