@@ -6063,7 +6063,7 @@ ember-cli-babel@^6.0.0, ember-cli-babel@^6.0.0-beta.4, ember-cli-babel@^6.10.0, 
     ember-cli-version-checker "^2.1.2"
     semver "^5.5.0"
 
-ember-cli-babel@^7.1.0, ember-cli-babel@^7.1.2, ember-cli-babel@^7.1.3, ember-cli-babel@^7.1.4, ember-cli-babel@^7.10.0, ember-cli-babel@^7.11.0, ember-cli-babel@^7.11.1, ember-cli-babel@^7.12.0, ember-cli-babel@^7.13.2, ember-cli-babel@^7.17.2, ember-cli-babel@^7.18.0, ember-cli-babel@^7.19.0, ember-cli-babel@^7.20.5, ember-cli-babel@^7.7.3, ember-cli-babel@^7.8.0, ember-cli-babel@^7.9.0:
+ember-cli-babel@^7.0.0, ember-cli-babel@^7.1.0, ember-cli-babel@^7.1.2, ember-cli-babel@^7.1.3, ember-cli-babel@^7.1.4, ember-cli-babel@^7.10.0, ember-cli-babel@^7.11.0, ember-cli-babel@^7.11.1, ember-cli-babel@^7.12.0, ember-cli-babel@^7.13.2, ember-cli-babel@^7.17.2, ember-cli-babel@^7.18.0, ember-cli-babel@^7.19.0, ember-cli-babel@^7.20.5, ember-cli-babel@^7.7.3, ember-cli-babel@^7.8.0, ember-cli-babel@^7.9.0:
   version "7.20.5"
   resolved "https://registry.yarnpkg.com/ember-cli-babel/-/ember-cli-babel-7.20.5.tgz#ab60dcf7371f4d86d41c2596c6d050470e283074"
   integrity sha512-lWvKqJPQ1KJigWKmxREqFbXgZd2/nFKMg3chiiNejpsAIgGLPXGFLwpMQ7QYCRrlims7D/bnDgFvXuOLkw0fcQ==
@@ -6174,12 +6174,12 @@ ember-cli-deploy@^1.0.2:
     rsvp "^3.3.3"
     silent-error "^1.0.0"
 
-ember-cli-document-title@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/ember-cli-document-title/-/ember-cli-document-title-0.4.0.tgz#1d0321c443d16b104eca16a8eb42839ecd6737f2"
-  integrity sha512-NWJvINrJWkbhczfrLrPjvwa+On/dXO4QwS7BtEnJA/eQjS/peCWZQdR1psiLqmB9Ew/O3tcOJKKaQHPhVIC/xQ==
+ember-cli-document-title-northm@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/ember-cli-document-title-northm/-/ember-cli-document-title-northm-1.0.3.tgz#c7aa902e12dea3922acf3a21e9a47d1ec7dee314"
+  integrity sha512-xjZlT4SLh11U6vYE7zSccBeDlcB3sE+DY8z9xWUCPoGaeXK5HILS3SIxmcNI0/LWjLhUFERbZoSaNDUp2TILFg==
   dependencies:
-    ember-cli-babel "^6.6.0"
+    ember-cli-babel "^7.0.0"
 
 ember-cli-fastboot-testing@^0.4.0:
   version "0.4.0"
