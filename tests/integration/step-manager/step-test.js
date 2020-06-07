@@ -2,31 +2,13 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { hbs } from 'ember-cli-htmlbars';
 import { render } from '@ember/test-helpers';
-import td from 'testdouble';
-
-import StepComponent from 'ember-steps/components/step-manager/step';
 
 module('step-manger/step', function (hooks) {
   setupRenderingTest(hooks);
 
   hooks.beforeEach(function () {
-    this.set('register', function () {});
-    this.set('remove', function () {});
-  });
-
-  module('registering with the rendering context', function () {
-    test('registers itself with the step manager', async function (assert) {
-      const registerAction = td.function();
-      this.set('register', registerAction);
-
-      await render(hbs`
-        {{step-manager/step name='foo' register-step=(action register) remove-step=(action remove)}}
-      `);
-
-      assert.verify(registerAction(td.matchers.isA(StepComponent)), {
-        times: 1,
-      });
-    });
+    this.register = function () {};
+    this.remove = function () {};
   });
 
   module('the step name', function () {
@@ -34,7 +16,7 @@ module('step-manger/step', function (hooks) {
       this.set('name', 'foo');
 
       await render(hbs`
-        {{step-manager/step name=name register-step=(action register) remove-step=(action remove)}}
+        {{step-manager/step name=name register-step=this.register remove-step=this.remove}}
       `);
 
       assert.expectAssertion(() => {
@@ -43,16 +25,34 @@ module('step-manger/step', function (hooks) {
     });
 
     module('valid types', function () {
-      ['foo', 1, Symbol()].forEach((name) => {
-        test(`${typeof name} is supported`, async function (assert) {
-          assert.expect(0);
+      test('`string` is supported', async function (assert) {
+        this.set('name', 'foo');
 
-          this.set('name', name);
+        await render(hbs`
+          {{step-manager/step name=name register-step=this.register remove-step=this.remove}}
+        `);
 
-          await render(hbs`
-            {{step-manager/step name=name register-step=(action register) remove-step=(action remove)}}
-          `);
-        });
+        assert.ok(true);
+      });
+
+      test('`number` is supported', async function (assert) {
+        assert.expect(0);
+
+        this.set('name', 1);
+
+        await render(hbs`
+          {{step-manager/step name=name register-step=this.register remove-step=this.remove}}
+        `);
+      });
+
+      test('`Symbol` is supported', async function (assert) {
+        assert.expect(0);
+
+        this.set('name', Symbol());
+
+        await render(hbs`
+          {{step-manager/step name=name register-step=this.register remove-step=this.remove}}
+        `);
       });
     });
   });
@@ -60,7 +60,7 @@ module('step-manger/step', function (hooks) {
   module('rendering', function () {
     test('renders block content when visible', async function (assert) {
       await render(hbs`
-        {{#step-manager/step name='foo' currentStep='foo' register-step=(action register) remove-step=(action remove)}}
+        {{#step-manager/step name='foo' currentStep='foo' register-step=this.register remove-step=this.remove}}
           <div data-test-step>
             Foo
           </div>
@@ -73,7 +73,7 @@ module('step-manger/step', function (hooks) {
     module('when inactive', function () {
       test('is hidden when no alternate state is provided', async function (assert) {
         await render(hbs`
-          {{#step-manager/step name='foo' register-step=(action register) remove-step=(action remove)}}
+          {{#step-manager/step name='foo' register-step=this.register remove-step=this.remove}}
             <div data-test-step>
               Active Content
             </div>
@@ -86,7 +86,7 @@ module('step-manger/step', function (hooks) {
       test('renders the inverse block if provided', async function (assert) {
         await render(hbs`
           <div data-test-step>
-            {{#step-manager/step name='foo' register-step=(action register) remove-step=(action remove)}}
+            {{#step-manager/step name='foo' register-step=this.register remove-step=this.remove}}
               Active Content
             {{else}}
               Inactive Content
@@ -102,7 +102,7 @@ module('step-manger/step', function (hooks) {
   module('programmatically controlling visibility', function () {
     test('is visible when active', async function (assert) {
       await render(hbs`
-        {{#step-manager/step name='foo' currentStep='foo' register-step=(action register) remove-step=(action remove)}}
+        {{#step-manager/step name='foo' currentStep='foo' register-step=this.register remove-step=this.remove}}
           <div data-test-step></div>
         {{/step-manager/step}}
       `);
@@ -112,7 +112,7 @@ module('step-manger/step', function (hooks) {
 
     test('is invisible when not active', async function (assert) {
       await render(hbs`
-        {{#step-manager/step name='foo' currentStep='bar' register-step=(action register) remove-step=(action remove)}}
+        {{#step-manager/step name='foo' currentStep='bar' register-step=this.register remove-step=this.remove}}
           <div data-test-step></div>
         {{/step-manager/step}}
       `);

@@ -1,10 +1,9 @@
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { get, getProperties } from '@ember/object';
 import { isPresent, isNone } from '@ember/utils';
 import { schedule } from '@ember/runloop';
 import { assert } from '@ember/debug';
-import { action, computed } from '@ember/object';
+import { action } from '@ember/object';
 
 import CircularStateMachine from '../-private/state-machine/circular';
 import LinearStateMachine from '../-private/state-machine/linear';
@@ -12,124 +11,98 @@ import LinearStateMachine from '../-private/state-machine/linear';
 import StepNode from '../-private/step-node';
 
 /**
- * A component for creating a set of "steps", where only one is visible at a time
- *
  * ```hbs
- * {{#step-manager as |w|}}
- *   {{#w.step}}
- *     The first step
- *   {{/w.step}}
- *
- *   {{#w.step}}
- *     The second step
- *   {{/w.step}}
- *
- *   <button {{action w.transition-to-next}}>
- *     Next Step
- *   </button>
- * {{/step-manager}}
+ * <StepManager as |w|>
+ *   <w.step @name="first">
+ *     <h1>First Step</h1>
+ *   </w.step>
+ *   <w.step @name="second">
+ *     <h1>Second Step</h1>
+ *   </w.step>
+ * </StepManager>
  * ```
  *
  * @class StepManagerComponent
- * @yield {hash} w
- * @yield {Component} w.step Renders a step
- * @yield {Action} w.transition-to
- * @yield {Action} w.transition-to-next Render the next step
- * @yield {Action} w.transition-to-previous Render the previous step
- * @yield {StepName} w.currentStep The name of the current step
- * @yield {Array<String>} w.steps All of the step names that are currently defined, in order
- * @public
- * @hide
+ * @yield {Hash} w Wizard Properties
+ * @yield {StepComponent} w.step The component to create steps
+ * @yield {boolean} w.hasNextStep Whether or not the current step has a "next" step
+ * @yield {boolean} w.hasPreviousStep Whether or not the current step has a "previous" step
+ * @yield {string} w.currentStep Reflects the name of the active step
+ * @yield {Array<StepNode>} w.steps The steps registered to the step manager
+ * @yield {Action} w.transition-to Transition to a step by name
+ * @yield {Action} w.transition-to-next Transition to the "next" step
+ * @yield {Action} w.transition-to-previous Transition to the "previous" step
  */
 export default class StepManagerComponent extends Component {
-  tagName = '';
-
-  /* Optionally can be provided to override the initial step to render */
-  initialStep;
-
-  /**
-   * The `currentStep` property can be used for providing, or binding to, the
-   * name of the current step.
-   *
-   * If provided, the initial step will come from the value of this property,
-   * and the value will be updated whenever the step changes
-   *
-   * @property {string} currentStep
-   * @public
-   */
-  currentStep;
-
-  /**
-   * Called when the state machine transitions, if provided
-   *
-   * Passed the new step identifier
-   *
-   * @property {function} onTransition;
-   * @public
-   */
-  onTransition;
-
-  /**
-   * @property {boolean} boolean
-   * @public
-   */
-  linear;
-
-  /**
-   * @property {boolean} boolean
-   * @private
-   */
-  _watchCurrentStep;
-
-  /**
-   * @property {BaseStateMachine} transitions state machine for transitions
-   * @private
-   */
+  /** @type {BaseStateMachine} state machine for transitions */
   @tracked transitions;
 
-  init() {
-    super.init();
+  constructor(...args) {
+    super(...args);
 
-    const { initialStep, currentStep } = getProperties(
-      this,
-      'initialStep',
-      'currentStep'
-    );
+    const { initialStep, currentStep } = this.args;
 
     this._watchCurrentStep = isPresent(currentStep);
     const startingStep = isNone(initialStep) ? currentStep : initialStep;
-
-    if (!isPresent(this.linear)) {
-      this.linear = true;
-    }
 
     const StateMachine = this.linear
       ? LinearStateMachine
       : CircularStateMachine;
 
     this.transitions = new StateMachine(startingStep);
+
+    schedule('afterRender', this, function () {
+      this._initialRegistrationComplete = true;
+    });
   }
 
-  @computed('transitions.{currentStep,length}')
+  /**
+   * Whether to use a "Circular" or "Linear" state machine
+   * @type {boolean}
+   * @private
+   */
+  get linear() {
+    return isPresent(this.args.linear) ? this.args.linear : true;
+  }
+
+  /**
+   * Whether or not the current step has a "next" step
+   * @type {boolean}
+   */
   get hasNextStep() {
     return !isNone(this.transitions.pickNext());
   }
 
-  @computed('transitions.{currentStep,length}')
+  /**
+   * Whether or not the current step has a "previous" step
+   * @type {boolean}
+   */
   get hasPreviousStep() {
     return !isNone(this.transitions.pickPrevious());
   }
 
-  didUpdateAttrs() {
-    if (this._watchCurrentStep) {
-      const newStep = this.currentStep;
+  /**
+   * Reflects the name of the active step
+   * @type {string}
+   */
+  get currentStep() {
+    const newStep =
+      typeof this.args.currentStep !== 'undefined'
+        ? this.args.currentStep
+        : this.transitions.firstStepName;
+    const { currentStep } = this.transitions;
 
-      if (typeof newStep === 'undefined') {
-        this.transitionTo(this.transitions.firstStep);
-      } else {
+    if (
+      this._watchCurrentStep &&
+      this._initialRegistrationComplete &&
+      newStep !== currentStep
+    ) {
+      schedule('actions', this, function () {
         this.transitionTo(newStep);
-      }
+      });
     }
+
+    return this.transitions.currentStep;
   }
 
   @action
@@ -150,7 +123,7 @@ export default class StepManagerComponent extends Component {
 
   @action
   updateStepNode(stepComponent, field, value) {
-    const name = get(stepComponent, 'name');
+    const name = stepComponent.name;
 
     this.transitions.updateStepNode(name, field, value);
   }
@@ -158,12 +131,13 @@ export default class StepManagerComponent extends Component {
   @action
   transitionTo(to) {
     const destination = to instanceof StepNode ? to.name : to;
-    const onTransition = get(this, 'onTransition');
 
-    this.transitions.activate(destination);
+    if (to !== this.transitions.currentStep) {
+      this.transitions.activate(destination);
 
-    if (onTransition) {
-      onTransition(destination);
+      if (this.args.onTransition) {
+        this.args.onTransition(destination);
+      }
     }
   }
 

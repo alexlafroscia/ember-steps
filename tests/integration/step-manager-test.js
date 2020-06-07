@@ -11,12 +11,12 @@ module('step-manager', function (hooks) {
   module('`currentStep` attribute', function () {
     test('setting the initial visible step', async function (assert) {
       await render(hbs`
-        <StepManager @currentStep='second' as |w|>
-          <w.step @name='first'>
+        <StepManager @currentStep="second" as |w|>
+          <w.step @name="first">
             <div data-test-first></div>
           </w.step>
 
-          <w.step @name='second'>
+          <w.step @name="second">
             <div data-test-second></div>
           </w.step>
         </StepManager>
@@ -28,31 +28,48 @@ module('step-manager', function (hooks) {
 
     test('changes steps when the property changes', async function (assert) {
       this.set('step', 'first');
-      await render(hbs`
-        {{#step-manager currentStep=step as |w|}}
-          {{#w.step name='first'}}
-            <div data-test-first></div>
-          {{/w.step}}
 
-          {{#w.step name='second'}}
+      await render(hbs`
+        <StepManager @currentStep={{step}} as |w|>
+          <w.step @name="first">
+            <div data-test-first></div>
+          </w.step>
+
+          <w.step @name="second">
             <div data-test-second></div>
-          {{/w.step}}
-        {{/step-manager}}
+          </w.step>
+        </StepManager>
       `);
 
-      assert.dom('[data-test-first]').exists();
-      assert.dom('[data-test-second]').doesNotExist();
+      await assert.waitFor(() => {
+        assert.dom('[data-test-first]').exists('First step initially rendered');
+        assert
+          .dom('[data-test-second]')
+          .doesNotExist('Second step initially not rendered');
+      });
 
       this.set('step', 'second');
 
-      assert.dom('[data-test-first]').doesNotExist();
-      assert.dom('[data-test-second]').exists();
+      await assert.waitFor(() => {
+        assert
+          .dom('[data-test-first]')
+          .doesNotExist('First step hidden after update');
+        assert
+          .dom('[data-test-second]')
+          .exists('Second step visible after update');
+      });
 
-      // Important for binding current step to a query param
-      this.set('step', undefined);
+      await assert.waitFor(() => {
+        // Important for binding current step to a query param
+        this.set('step', undefined);
 
-      assert.dom('[data-test-first]').exists();
-      assert.dom('[data-test-second]').doesNotExist();
+        assert
+          .dom('[data-test-first]')
+          .exists('First step visible after reset');
+        assert
+          .dom('[data-test-second]')
+          .doesNotExist('Second step visible after reset');
+      });
     });
 
     test('does not mutate the `currentStep` property', async function (assert) {
@@ -477,19 +494,19 @@ module('step-manager', function (hooks) {
   module('transitions to named steps', function () {
     test('can transition to another step', async function (assert) {
       await render(hbs`
-        {{#step-manager currentStep='first' as |w|}}
-          <button {{action w.transition-to 'second'}}>
+        <StepManager @initialStep="first" as |w|>
+          <button {{action w.transition-to "second"}}>
             Transition to Next
           </button>
 
-          {{#w.step name='first'}}
+          <w.step @name="first">
             <div data-test-first></div>
-          {{/w.step}}
+          </w.step>
 
-          {{#w.step name='second'}}
+          <w.step @name="second">
             <div data-test-second></div>
-          {{/w.step}}
-        {{/step-manager}}
+          </w.step>
+        </StepManager>
       `);
 
       assert.dom('[data-test-first]').exists();
