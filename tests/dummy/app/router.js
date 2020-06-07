@@ -49,5 +49,7 @@ Router.map(function () {
     });
   });
 
+  this.route('fastboot-test');
+
   this.route('not-found', { path: '/*path' });
 });
