@@ -24,35 +24,35 @@ Cool, right?  Ehh, it doesn't do much yet -- we need to add some steps.
 
 ```handlebars
 <StepManager as |w|>
-  <w.step @name="a">
+  <w.Step @name="a">
     This is the first step!
-  </w.step>
+  </w.Step>
 
-  <w.step @name="b">
+  <w.Step @name="b">
     This is the second step!
-  </w.step>
+  </w.Step>
 </StepManager>
 ```
 
-As you may have guessed, the first `w.step` component, `a`, will be visible initially, and `b` will be invisible.  Note that these names are important.  Why?  Because we need a way to transition between them!
+As you may have guessed, the first `w.Step` component, `a`, will be visible initially, and `b` will be invisible.  Note that these names are important.  Why?  Because we need a way to transition between them!
 
 ```handlebars
 <StepManager as |w|>
-  <w.step @name="a">
+  <w.Step @name="a">
     This is the first step!
 
     <button {{on "click" (fn w.transition-to "b")}}>
       Next, please!
     </button>
-  </w.step>
+  </w.Step>
 
-  <w.step @name="b">
+  <w.Step @name="b">
     This is the second step!
 
     <button {{on "click" (fn w.transition-to "a")}}>
       Wait, go back!
     </button>
-  </w.step>
+  </w.Step>
 </StepManager>
 ```
 

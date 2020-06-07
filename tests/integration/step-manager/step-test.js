@@ -125,10 +125,10 @@ module('step-manger/step', function (hooks) {
     test('when it has a next step', async function (assert) {
       await render(hbs`
         {{#step-manager as |w|}}
-          {{#w.step as |step|}}
+          {{#w.Step as |step|}}
             <p>{{step.hasNext}}</p>
-          {{/w.step}}
-          {{w.step}}
+          {{/w.Step}}
+          {{w.Step}}
         {{/step-manager}}
       `);
 
@@ -138,9 +138,9 @@ module('step-manger/step', function (hooks) {
     test('when it does not have a next step', async function (assert) {
       await render(hbs`
         {{#step-manager as |w|}}
-          {{#w.step as |step|}}
+          {{#w.Step as |step|}}
             <p>{{step.hasNext}}</p>
-          {{/w.step}}
+          {{/w.Step}}
         {{/step-manager}}
       `);
 
@@ -152,10 +152,10 @@ module('step-manger/step', function (hooks) {
     test('when it has a previous step', async function (assert) {
       await render(hbs`
         {{#step-manager currentStep='bar' as |w|}}
-          {{w.step name='foo'}}
-          {{#w.step name='bar' as |step|}}
+          {{w.Step name='foo'}}
+          {{#w.Step name='bar' as |step|}}
             <p>{{step.hasPrevious}}</p>
-          {{/w.step}}
+          {{/w.Step}}
         {{/step-manager}}
       `);
 
@@ -165,9 +165,9 @@ module('step-manger/step', function (hooks) {
     test('when it does not have a previous step', async function (assert) {
       await render(hbs`
         {{#step-manager as |w|}}
-          {{#w.step as |step|}}
+          {{#w.Step as |step|}}
             <p>{{step.hasPrevious}}</p>
-          {{/w.step}}
+          {{/w.Step}}
         {{/step-manager}}
       `);
 

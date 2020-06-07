@@ -1,7 +1,7 @@
 <DocsDemo as |demo|>
   <demo.example @name="inactive-steps-example-1.hbs">
     <StepManager as |w|>
-      {{#w.step name="first"}}
+      {{#w.Step name="first"}}
         <h1>The first step is active</h1>
       {{else}}
         <button
@@ -10,9 +10,9 @@
         >
           The first step is inactive. Activate it.
         </button>
-      {{/w.step}}
+      {{/w.Step}}
 
-      {{#w.step name="second"}}
+      {{#w.Step name="second"}}
         <h1>The second step is active</h1>
       {{else}}
         <button
@@ -21,7 +21,7 @@
         >
           The second step is inactive. Activate it.
         </button>
-      {{/w.step}}
+      {{/w.Step}}
     </StepManager>
   </demo.example>
 

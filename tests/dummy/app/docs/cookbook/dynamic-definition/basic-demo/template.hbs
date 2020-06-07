@@ -2,9 +2,9 @@
   <demo.example @name="dynamic-definition-basic-example.hbs">
     <StepManager as |w|>
       {{#each this.data as |content|}}
-        <w.step>
+        <w.Step>
           {{content}}
-        </w.step>
+        </w.Step>
       {{/each}}
 
       <ControlGroup>

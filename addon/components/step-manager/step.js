@@ -6,9 +6,9 @@ import { guidFor } from '@ember/object/internals';
 
 /**
  * ```hbs
- * <w.step @name="first">
+ * <w.Step @name="first">
  *   <h1>First Step</h1>
- * </w.step>
+ * </w.Step>
  * ```
  *
  * @class StepComponent
