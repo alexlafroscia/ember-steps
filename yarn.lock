@@ -12737,6 +12737,11 @@ qunit-dom@^1.1.0:
     broccoli-funnel "^3.0.2"
     broccoli-merge-trees "^4.2.0"
 
+qunit-wait-for@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/qunit-wait-for/-/qunit-wait-for-1.2.1.tgz#1fe0d50fe09097da29f748ccf1621e2c3c0bc8e1"
+  integrity sha512-kUd304+VB+O7gywexyl8gKaWh5HqlxE1McIENJ9RQn4PGQioiiZHrA+6029yLncEF9Xc/fkVfaXV1+OjvgAXBQ==
+
 qunit@^2.9.3:
   version "2.9.3"
   resolved "https://registry.yarnpkg.com/qunit/-/qunit-2.9.3.tgz#9522a088e76f0782f70a45db92f2fd14db311bcc"

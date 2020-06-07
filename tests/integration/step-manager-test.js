@@ -41,27 +41,35 @@ module('step-manager', function (hooks) {
         </StepManager>
       `);
 
-      assert.dom('[data-test-first]').exists('First step initially rendered');
-      assert
-        .dom('[data-test-second]')
-        .doesNotExist('Second step initially not rendered');
+      await assert.waitFor(() => {
+        assert.dom('[data-test-first]').exists('First step initially rendered');
+        assert
+          .dom('[data-test-second]')
+          .doesNotExist('Second step initially not rendered');
+      });
 
       this.set('step', 'second');
 
-      assert
-        .dom('[data-test-first]')
-        .doesNotExist('First step hidden after update');
-      assert
-        .dom('[data-test-second]')
-        .exists('Second step visible after update');
+      await assert.waitFor(() => {
+        assert
+          .dom('[data-test-first]')
+          .doesNotExist('First step hidden after update');
+        assert
+          .dom('[data-test-second]')
+          .exists('Second step visible after update');
+      });
 
-      // Important for binding current step to a query param
-      this.set('step', undefined);
+      await assert.waitFor(() => {
+        // Important for binding current step to a query param
+        this.set('step', undefined);
 
-      assert.dom('[data-test-first]').exists('First step visible after reset');
-      assert
-        .dom('[data-test-second]')
-        .doesNotExist('Second step visible after reset');
+        assert
+          .dom('[data-test-first]')
+          .exists('First step visible after reset');
+        assert
+          .dom('[data-test-second]')
+          .doesNotExist('Second step visible after reset');
+      });
     });
 
     test('does not mutate the `currentStep` property', async function (assert) {
