@@ -88,7 +88,7 @@ module('step-manager', function (hooks) {
 
       await click('button');
 
-      assert.equal(this.get('step'), 'first');
+      assert.equal(this.step, 'first');
     });
 
     test('subscribing to step changes', async function (assert) {
@@ -130,11 +130,7 @@ module('step-manager', function (hooks) {
 
       await click('button');
 
-      assert.equal(
-        this.get('step'),
-        'second',
-        'Step was updated to the new value'
-      );
+      assert.equal(this.step, 'second', 'Step was updated to the new value');
     });
 
     test('does not reset back to first step on any attribute change', async function (assert) {
@@ -202,7 +198,7 @@ module('step-manager', function (hooks) {
       await click('button');
 
       assert.dom('[data-test-first]').exists();
-      assert.equal(this.get('initialStep'), 'second');
+      assert.equal(this.initialStep, 'second');
     });
   });
 
@@ -806,7 +802,7 @@ module('step-manager', function (hooks) {
         .doesNotExist('Initial step is no longer visible');
       assert.dom('[data-test-step="bar"]').exists('Second step is visible');
 
-      this.get('data').pushObject({ name: 'baz' });
+      this.data.pushObject({ name: 'baz' });
       await settled();
 
       assert
@@ -880,7 +876,7 @@ module('step-manager', function (hooks) {
         .dom('[data-test-step="foo"]')
         .exists('The initial step is rendered');
 
-      this.get('data').removeObject(stepToRemove);
+      this.data.removeObject(stepToRemove);
       await settled();
 
       assert
