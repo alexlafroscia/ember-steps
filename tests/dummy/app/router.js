@@ -1,29 +1,9 @@
 import EmberRouter from '@ember/routing/router';
-import { get } from '@ember/object';
-import { run } from '@ember/runloop';
-import { inject as service } from '@ember/service';
 import config from './config/environment';
 
 export default class Router extends EmberRouter {
-  @service('metrics') metrics;
-
   location = config.locationType;
   rootURL = config.rootURL;
-
-  didTransition() {
-    super.didTransition(...arguments);
-
-    if (window.ga) {
-      run.scheduleOnce('afterRender', this, this._trackPage);
-    }
-  }
-
-  _trackPage() {
-    const page = this.get('url');
-    const title = this.getWithDefault('currentRouteName', 'unknown');
-
-    get(this, 'metrics').trackPage({ page, title });
-  }
 }
 
 Router.map(function () {
