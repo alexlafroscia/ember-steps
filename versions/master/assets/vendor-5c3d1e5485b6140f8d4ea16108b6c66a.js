@@ -4187,7 +4187,7 @@ for(var ye in a("instrument",!0),ve)ve.hasOwnProperty(ye)&&pe(ye,ve[ye])}var ge=
 e.default=ge})),t("ember")}(),function(){if("undefined"==typeof FastBoot){var e=document.getElementById("fastboot-body-start")
 if(e&&"function"==typeof Ember.ViewUtils.isSerializationFirstNode&&Ember.ViewUtils.isSerializationFirstNode(e.nextSibling)){Ember.ApplicationInstance.reopen({_bootSync:function(e){return void 0===e&&(e={_renderMode:"rehydrate"}),this._super(e)}}),e.parentNode.removeChild(e)
 var t=document.getElementById("fastboot-body-end")
-t.parentNode.removeChild(t)}}}(),"undefined"==typeof FastBoot&&
+t&&t.parentNode.removeChild(t)}}}(),"undefined"==typeof FastBoot&&
 /*!
  * clipboard.js v2.0.4
  * https://zenorocha.github.io/clipboard.js
@@ -5650,8 +5650,8 @@ e.default=r})),define("ember-cli-clipboard/templates/components/copy-button",["e
 Object.defineProperty(e,"__esModule",{value:!0}),e.default=void 0
 var t=Ember.HTMLBars.template({id:"oiks9R4U",block:'{"symbols":["&default"],"statements":[[18,1,null],[2,"\\n"]],"hasEval":false,"upvars":[]}',meta:{moduleName:"ember-cli-clipboard/templates/components/copy-button.hbs"}})
 e.default=t})),define("ember-cli-fastboot/instance-initializers/clear-double-boot",["exports"],(function(e){"use strict"
-function t(){var e=document.getElementById("fastboot-body-start")
-if(e){for(var t=document.getElementById("fastboot-body-end"),r=document.querySelectorAll('[type="fastboot/shoebox"]'),n=[],i=0;i<r.length;i++)n.push(r[i])
+function t(){var e=document.getElementById("fastboot-body-start"),t=document.getElementById("fastboot-body-end")
+if(e&&t){for(var r=document.querySelectorAll('[type="fastboot/shoebox"]'),n=[],i=0;i<r.length;i++)n.push(r[i])
 var o,a=e.parentElement
 do{o=e.nextSibling,a.removeChild(e),e=o}while(o&&o!==t&&n.indexOf(o)<0)
 t.parentElement.removeChild(t)}}Object.defineProperty(e,"__esModule",{value:!0}),e.clearHtml=t,e.default=void 0
