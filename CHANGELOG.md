@@ -1,6 +1,22 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [10.0.0](https://github.com/alexlafroscia/ember-steps/compare/v9.0.0...v10.0.0) (2020-06-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* The `Step` component is now yielded as `w.Step`, using the capitalization to denote the fact that the thing being yielded is a component
+* This addon now requires an Octane-compatible version of Ember (3.13+)
+
+### Bug Fixes
+
+* upgrade `ember-cli-document-title` ([1eb3dc9](https://github.com/alexlafroscia/ember-steps/commit/1eb3dc9e96da008d0360df069a05b9f3b6a2046e))
+
+
+* modernize addon ([f699a69](https://github.com/alexlafroscia/ember-steps/commit/f699a69553a862b380cd6a9b606949a22111ae63))
+* yield step component as `Step` ([af0d926](https://github.com/alexlafroscia/ember-steps/commit/af0d9261307a6169692985ec04436e0783c95a72)), closes [#166](https://github.com/alexlafroscia/ember-steps/issues/166)
 
 <a name="9.0.0"></a>
 # [9.0.0](https://github.com/alexlafroscia/ember-steps/compare/v9.0.0-beta.0...v9.0.0) (2019-06-19)
