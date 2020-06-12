@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { hbs } from 'ember-cli-htmlbars';
-import { click, findAll, render, settled } from '@ember/test-helpers';
+import { click, render, settled } from '@ember/test-helpers';
 import { A } from '@ember/array';
 import td from 'testdouble';
 
@@ -30,7 +30,7 @@ module('step-manager', function (hooks) {
       this.set('step', 'first');
 
       await render(hbs`
-        <StepManager @currentStep={{step}} as |w|>
+        <StepManager @currentStep={{this.step}} as |w|>
           <w.Step @name="first">
             <div data-test-first></div>
           </w.Step>
@@ -76,19 +76,19 @@ module('step-manager', function (hooks) {
       this.set('step', 'first');
 
       await render(hbs`
-        {{#step-manager currentStep=step as |w|}}
-          {{w.Step name='first'}}
-          {{w.Step name='second'}}
+        <StepManager @currentStep={{this.step}} as |w|>
+          <w.Step @name='first' />
+          <w.Step @name='second' />
 
-          <button {{action w.transition-to 'second'}}>
+          <button type="button" {{on 'click' (fn w.transition-to 'second')}}>
             Next
           </button>
-        {{/step-manager}}
+        </StepManager>
       `);
 
       await click('button');
 
-      assert.equal(this.get('step'), 'first');
+      assert.equal(this.step, 'first');
     });
 
     test('subscribing to step changes', async function (assert) {
@@ -96,14 +96,14 @@ module('step-manager', function (hooks) {
       this.set('onTransition', td.function());
 
       await render(hbs`
-        {{#step-manager currentStep=step onTransition=onTransition as |w|}}
-          {{w.Step name='first'}}
-          {{w.Step name='second'}}
+        <StepManager @currentStep={{this.step}} @onTransition={{this.onTransition}} as |w|>
+          <w.Step @name='first' />
+          <w.Step @name='second' />
 
-          <button {{action w.transition-to 'second'}}>
+          <button type="button" {{on 'click' (fn w.transition-to 'second')}}>
             Next
           </button>
-        {{/step-manager}}
+        </StepManager>
       `);
 
       await click('button');
@@ -116,65 +116,39 @@ module('step-manager', function (hooks) {
 
     test('emulating a two-way binding to the current step', async function (assert) {
       this.set('step', 'first');
+      this.onTransition = (step) => {
+        this.set('step', step);
+      };
 
       await render(hbs`
-        {{#step-manager currentStep=step onTransition=(action (mut step)) as |w|}}
-          {{w.Step name='first'}}
-          {{w.Step name='second'}}
+        <StepManager @currentStep={{this.step}} @onTransition={{this.onTransition}} as |w|>
+          <w.Step @name='first' />
+          <w.Step @name='second' />
 
-          <button {{action w.transition-to 'second'}}>
+          <button type="button" {{on 'click' (fn w.transition-to 'second')}}>
             Next
           </button>
-        {{/step-manager}}
+        </StepManager>
       `);
 
       await click('button');
 
-      assert.equal(
-        this.get('step'),
-        'second',
-        'Step was updated to the new value'
-      );
-    });
-
-    test('does not reset back to first step on any attribute change', async function (assert) {
-      this.set('initialStep', 'second');
-      this.set('randomAttribute', 'initial value');
-
-      await render(hbs`
-        {{#step-manager randomAttribute=randomAttribute initialStep=initialStep as |w|}}
-          {{#w.Step name='first'}}
-            <div data-test-first></div>
-          {{/w.Step}}
-          {{#w.Step name='second'}}
-            <div data-test-second></div>
-          {{/w.Step}}
-        {{/step-manager}}
-      `);
-
-      assert.dom('[data-test-second]').exists();
-      assert.dom('[data-test-first]').doesNotExist();
-
-      this.set('initialStep', 'second');
-      this.set('randomAttribute', 'a new value');
-
-      assert.dom('[data-test-second]').exists();
-      assert.dom('[data-test-first]').doesNotExist();
+      assert.equal(this.step, 'second', 'Step was updated to the new value');
     });
   });
 
   module('`initialStep` attribute', function () {
     test('it can set the initial visible step', async function (assert) {
       await render(hbs`
-        {{#step-manager initialStep='second' as |w|}}
-          {{#w.Step name='first'}}
+        <StepManager @initialStep="second" as |w|>
+          <w.Step @name='first'>
             <div data-test-first></div>
-          {{/w.Step}}
+          </w.Step>
 
-          {{#w.Step name='second'}}
+          <w.Step @name="second">
             <div data-test-second></div>
-          {{/w.Step}}
-        {{/step-manager}}
+          </w.Step>
+        </StepManager>
       `);
 
       assert.dom('[data-test-first]').doesNotExist();
@@ -183,40 +157,41 @@ module('step-manager', function (hooks) {
 
     test('it does not update the value as the step changes', async function (assert) {
       this.set('initialStep', 'second');
+
       await render(hbs`
-        {{#step-manager initialStep=initialStep as |w|}}
-          {{#w.Step name='first'}}
+        <StepManager @initialStep={{this.initialStep}} as |w|>
+          <w.Step @name='first'>
             <div data-test-first></div>
-          {{/w.Step}}
+          </w.Step>
 
-          {{#w.Step name='second'}}
+          <w.Step @name='second'>
             <div data-test-second></div>
-          {{/w.Step}}
+          </w.Step>
 
-          <button {{action w.transition-to 'first'}}>
+          <button type="button" {{on 'click' (fn w.transition-to 'first')}}>
             To First
           </button>
-        {{/step-manager}}
+        </StepManager>
       `);
 
       await click('button');
 
       assert.dom('[data-test-first]').exists();
-      assert.equal(this.get('initialStep'), 'second');
+      assert.equal(this.initialStep, 'second');
     });
   });
 
   test('renders the first step in the DOM if no `currentStep` is present', async function (assert) {
     await render(hbs`
-      {{#step-manager as |w|}}
-        {{#w.Step name='first'}}
+      <StepManager as |w|>
+        <w.Step @name='first'>
           <div data-test-first></div>
-        {{/w.Step}}
+        </w.Step>
 
-        {{#w.Step name='second'}}
+        <w.Step @name='second'>
           <div data-test-second></div>
-        {{/w.Step}}
-      {{/step-manager}}
+        </w.Step>
+      </StepManager>
     `);
 
     assert.dom('[data-test-first]').exists();
@@ -226,25 +201,25 @@ module('step-manager', function (hooks) {
   test('renders tagless components', async function (assert) {
     await render(hbs`
       <div id="steps">
-        {{#step-manager as |w|}}
-          {{w.Step}}
-        {{/step-manager}}
+        <StepManager as |w|>
+          <w.Step />
+        </StepManager>
       </div>
     `);
 
-    assert.equal(findAll('#steps *').length, 0);
+    assert.dom('#steps *').doesNotExist();
   });
 
   module('`yield`-ed data', function () {
     test('exposes the name of the current step', async function (assert) {
       await render(hbs`
-        {{#step-manager as |w|}}
+        <StepManager as |w|>
           <div data-test-steps>
             {{w.currentStep}}
 
-            {{w.Step name='foo'}}
+            <w.Step @name='foo' />
           </div>
-        {{/step-manager}}
+        </StepManager>
       `);
 
       assert.dom('[data-test-steps]').hasText('foo');
@@ -253,16 +228,16 @@ module('step-manager', function (hooks) {
     module('exposing an array of steps', function () {
       test('it exposes whether the step has a next step', async function (assert) {
         await render(hbs`
-          {{#step-manager as |w|}}
-            {{w.Step name='foo'}}
-            {{w.Step name='bar'}}
+          <StepManager as |w|>
+            <w.Step @name='foo' />
+            <w.Step @name='bar' />
 
             {{#each w.steps as |step|}}
               <p data-test-step={{step.name}}>
                 {{step.hasNext}}
               </p>
             {{/each}}
-          {{/step-manager}}
+          </StepManager>
         `);
 
         assert
@@ -275,16 +250,16 @@ module('step-manager', function (hooks) {
 
       test('it exposes whether the step has a previous step', async function (assert) {
         await render(hbs`
-          {{#step-manager as |w|}}
-            {{w.Step name='foo'}}
-            {{w.Step name='bar'}}
+          <StepManager as |w|>
+            <w.Step @name='foo' />
+            <w.Step @name='bar' />
 
             {{#each w.steps as |step|}}
               <p data-test-step={{step.name}}>
                 {{step.hasPrevious}}
               </p>
             {{/each}}
-          {{/step-manager}}
+          </StepManager>
         `);
 
         assert
@@ -297,16 +272,20 @@ module('step-manager', function (hooks) {
 
       test('it exposes whether the step is active', async function (assert) {
         await render(hbs`
-          {{#step-manager as |w|}}
-            {{w.Step name='foo'}}
-            {{w.Step name='bar'}}
+          <StepManager as |w|>
+            <w.Step @name='foo' />
+            <w.Step @name='bar' />
 
             {{#each w.steps as |step|}}
-              <button {{action w.transition-to step}} data-test-step={{step.name}}>
+              <button
+                type="button"
+                data-test-step={{step.name}}
+                {{on 'click' (fn w.transition-to step)}}
+              >
                 {{step.isActive}}
               </button>
             {{/each}}
-          {{/step-manager}}
+          </StepManager>
         `);
 
         assert
@@ -328,20 +307,24 @@ module('step-manager', function (hooks) {
 
       test('can transition to a step by passing the node', async function (assert) {
         await render(hbs`
-          {{#step-manager as |w|}}
-            {{#w.Step name='foo'}}
+          <StepManager as |w|>
+            <w.Step @name='foo'>
               <p data-test-step="foo">Foo</p>
-            {{/w.Step}}
-            {{#w.Step name='bar'}}
+            </w.Step>
+            <w.Step @name='bar'>
               <p data-test-step="bar">Bar</p>
-            {{/w.Step}}
+            </w.Step>
 
             {{#each w.steps as |step|}}
-              <button {{action w.transition-to step}} data-test-transition-to={{step.name}}>
+              <button
+                type="button"
+                data-test-transition-to={{step.name}}
+                {{on 'click' (fn w.transition-to step)}}
+              >
                 {{step.name}}
               </button>
             {{/each}}
-          {{/step-manager}}
+          </StepManager>
         `);
 
         assert.dom('[data-test-step="foo"]').exists();
@@ -356,15 +339,15 @@ module('step-manager', function (hooks) {
       module('context', function () {
         test('it exposes step context', async function (assert) {
           await render(hbs`
-            {{#step-manager as |w|}}
-              {{w.Step name='foo' context='bar'}}
+            <StepManager as |w|>
+              <w.Step @name='foo' @context='bar' />
 
               {{#each w.steps as |step|}}
                 <p data-test-step={{step.name}}>
                   {{step.context}}
                 </p>
               {{/each}}
-            {{/step-manager}}
+            </StepManager>
           `);
 
           assert.dom('[data-test-step="foo"]').hasText('bar');
@@ -374,15 +357,15 @@ module('step-manager', function (hooks) {
           this.set('context', { prop: 'foo' });
 
           await render(hbs`
-            {{#step-manager as |w|}}
-              {{w.Step name='foo' context=context}}
+            <StepManager as |w|>
+              <w.Step @name='foo' @context={{this.context}} />
 
               {{#each w.steps as |step|}}
                 <p data-test-step={{step.name}}>
                   {{step.context.prop}}
                 </p>
               {{/each}}
-            {{/step-manager}}
+            </StepManager>
           `);
 
           assert
@@ -400,15 +383,15 @@ module('step-manager', function (hooks) {
           this.set('context', { prop: 'foo' });
 
           await render(hbs`
-            {{#step-manager as |w|}}
-              {{w.Step name='foo' context=context}}
+            <StepManager as |w|>
+              <w.Step @name='foo' @context={{this.context}} />
 
               {{#each w.steps as |step|}}
                 <p data-test-step={{step.name}}>
                   {{step.context.prop}}
                 </p>
               {{/each}}
-            {{/step-manager}}
+            </StepManager>
           `);
 
           assert
@@ -426,23 +409,27 @@ module('step-manager', function (hooks) {
       module('rendering position', function () {
         test('can render the array after the steps are defined', async function (assert) {
           await render(hbs`
-            {{#step-manager as |w|}}
+            <StepManager as |w|>
               <div data-test-active-step>
-                {{#w.Step name='foo'}}
+                <w.Step @name='foo'>
                   Foo
-                {{/w.Step}}
+                </w.Step>
 
-                {{#w.Step name='bar'}}
+                <w.Step @name='bar'>
                   Bar
-                {{/w.Step}}
+                </w.Step>
               </div>
 
               {{#each w.steps as |step|}}
-                <a {{action w.transition-to step.name}} data-test-step-trigger={{step.name}}>
+                <button
+                  type="button"
+                  data-test-step-trigger={{step.name}}
+                  {{on 'click' (fn w.transition-to step.name)}}
+                >
                   {{step.name}}
-                </a>
+                </button>
               {{/each}}
-            {{/step-manager}}
+            </StepManager>
           `);
 
           assert.dom('[data-test-step-trigger]').exists({ count: 2 });
@@ -458,23 +445,27 @@ module('step-manager', function (hooks) {
 
         test('can render the array before the steps are defined', async function (assert) {
           await render(hbs`
-            {{#step-manager as |w|}}
+            <StepManager as |w|>
               {{#each w.steps as |step|}}
-                <a {{action w.transition-to step.name}} data-test-step-trigger={{step.name}}>
+                <button
+                  type="button"
+                  data-test-step-trigger={{step.name}}
+                  {{on 'click' (fn w.transition-to step.name)}}
+                >
                   {{step.name}}
-                </a>
+                </button>
               {{/each}}
 
               <div data-test-active-step>
-                {{#w.Step name='foo'}}
+                <w.Step @name='foo'>
                   Foo
-                {{/w.Step}}
+                </w.Step>
 
-                {{#w.Step name='bar'}}
+                <w.Step @name='bar'>
                   Bar
-                {{/w.Step}}
+                </w.Step>
               </div>
-            {{/step-manager}}
+            </StepManager>
           `);
 
           assert.dom('[data-test-step-trigger]').exists({ count: 2 });
@@ -495,7 +486,10 @@ module('step-manager', function (hooks) {
     test('can transition to another step', async function (assert) {
       await render(hbs`
         <StepManager @initialStep="first" as |w|>
-          <button {{action w.transition-to "second"}}>
+          <button
+            type="button"
+            {{on 'click' (fn w.transition-to "second")}}
+          >
             Transition to Next
           </button>
 
@@ -522,19 +516,23 @@ module('step-manager', function (hooks) {
   module('exposing whether there is a next step', function () {
     test('linear step manager', async function (assert) {
       await render(hbs`
-        {{#step-manager as |w|}}
-          <button {{action w.transition-to-next}} disabled={{not w.hasNextStep}}>
+        <StepManager as |w|>
+          <button
+            type="button"
+            disabled={{not w.hasNextStep}}
+            {{on 'click' w.transition-to-next}}
+          >
             Next!
           </button>
 
-          {{#w.Step name='first'}}
+          <w.Step @name='first'>
             <div data-test-first></div>
-          {{/w.Step}}
+          </w.Step>
 
-          {{#w.Step name='second'}}
+          <w.Step @name='second'>
             <div data-test-second></div>
-          {{/w.Step}}
-        {{/step-manager}}
+          </w.Step>
+        </StepManager>
       `);
 
       assert.dom('button').doesNotHaveAttribute('disabled');
@@ -546,19 +544,23 @@ module('step-manager', function (hooks) {
 
     test('circular step manager', async function (assert) {
       await render(hbs`
-        {{#step-manager linear=false as |w|}}
-          <button {{action w.transition-to-next}} disabled={{not w.hasNextStep}}>
+        <StepManager @linear={{false}} as |w|>
+          <button
+            type="button"
+            disabled={{not w.hasNextStep}}
+            {{on 'click' w.transition-to-next}}
+          >
             Next!
           </button>
 
-          {{#w.Step name='first'}}
+          <w.Step @name='first'>
             <div data-test-first></div>
-          {{/w.Step}}
+          </w.Step>
 
-          {{#w.Step name='second'}}
+          <w.Step @name='second'>
             <div data-test-second></div>
-          {{/w.Step}}
-        {{/step-manager}}
+          </w.Step>
+        </StepManager>
       `);
 
       assert.dom('button').doesNotHaveAttribute('disabled');
@@ -572,15 +574,19 @@ module('step-manager', function (hooks) {
   module('exposing whether there is a previous step', function () {
     test('linear step manager', async function (assert) {
       await render(hbs`
-        {{#step-manager as |w|}}
-          <button {{action w.transition-to-previous}} disabled={{not w.hasPreviousStep}}>
+        <StepManager as |w|>
+          <button
+            type="button"
+            disabled={{not w.hasPreviousStep}}
+            {{on 'click' w.transition-to-previous}}
+          >
             Next!
           </button>
 
-          {{#w.Step name='first'}}
+          <w.Step @name='first'>
             <div data-test-first></div>
-          {{/w.Step}}
-        {{/step-manager}}
+          </w.Step>
+        </StepManager>
       `);
 
       assert.dom('button').hasAttribute('disabled');
@@ -588,15 +594,19 @@ module('step-manager', function (hooks) {
 
     test('circular step manager', async function (assert) {
       await render(hbs`
-        {{#step-manager linear=false as |w|}}
-          <button {{action w.transition-to-next}} disabled={{not w.hasPreviousStep}}>
+        <StepManager @linear={{false}} as |w|>
+          <button
+            type="button"
+            disabled={{not w.hasPreviousStep}}
+            {{on 'click' w.transition-to-next}}
+          >
             Next!
           </button>
 
-          {{#w.Step name='first'}}
+          <w.Step @name='first'>
             <div data-test-first></div>
-          {{/w.Step}}
-        {{/step-manager}}
+          </w.Step>
+        </StepManager>
       `);
 
       assert.dom('button').doesNotHaveAttribute('disabled');
@@ -607,23 +617,23 @@ module('step-manager', function (hooks) {
     module('with the circular state manager', function () {
       test('can transition to the next step', async function (assert) {
         await render(hbs`
-          {{#step-manager linear=false as |w|}}
-            <button {{action w.transition-to-next}}>
+          <StepManager @linear={{false}} as |w|>
+            <button type="button" {{on 'click' w.transition-to-next}}>
               Next!
             </button>
 
-            {{#w.Step name='first'}}
+            <w.Step @name='first'>
               <div data-test-first></div>
-            {{/w.Step}}
+            </w.Step>
 
-            {{#w.Step name='second'}}
+            <w.Step @name='second'>
               <div data-test-second></div>
-            {{/w.Step}}
+            </w.Step>
 
-            {{#w.Step name='third'}}
+            <w.Step @name='third'>
               <div data-test-third></div>
-            {{/w.Step}}
-          {{/step-manager}}
+            </w.Step>
+          </StepManager>
         `);
 
         assert.dom('[data-test-first]').exists();
@@ -651,45 +661,53 @@ module('step-manager', function (hooks) {
 
       test('can transition to the previous step', async function (assert) {
         await render(hbs`
-          {{#step-manager linear=false as |w|}}
-            <button id='previous' {{action w.transition-to-previous}}>
+          <StepManager @linear={{false}} as |w|>
+            <button
+              type="button"
+              data-test-previous
+              {{on 'click' w.transition-to-previous}}
+            >
               Previous!
             </button>
-            <button id='next' {{action w.transition-to-next}}>
+            <button
+              type="button"
+              data-test-next
+              {{on 'click' w.transition-to-next}}
+            >
               Next!
             </button>
 
-            {{#w.Step name='first'}}
+            <w.Step @name='first'>
               <div data-test-first></div>
-            {{/w.Step}}
+            </w.Step>
 
-            {{#w.Step name='second'}}
+            <w.Step @name='second'>
               <div data-test-second></div>
-            {{/w.Step}}
+            </w.Step>
 
-            {{#w.Step name='third'}}
+            <w.Step @name='third'>
               <div data-test-third></div>
-            {{/w.Step}}
-          {{/step-manager}}
+            </w.Step>
+          </StepManager>
         `);
 
         assert.dom('[data-test-first]').exists();
         assert.dom('[data-test-second]').doesNotExist();
         assert.dom('[data-test-third]').doesNotExist();
 
-        await click('#next');
+        await click('[data-test-next]');
 
         assert.dom('[data-test-first]').doesNotExist();
         assert.dom('[data-test-second]').exists();
         assert.dom('[data-test-third]').doesNotExist();
 
-        await click('#next');
+        await click('[data-test-next]');
 
         assert.dom('[data-test-first]').doesNotExist();
         assert.dom('[data-test-second]').doesNotExist();
         assert.dom('[data-test-third]').exists();
 
-        await click('#previous');
+        await click('[data-test-previous]');
 
         assert.dom('[data-test-first]').doesNotExist();
         assert.dom('[data-test-second]').exists();
@@ -705,21 +723,21 @@ module('step-manager', function (hooks) {
 
     test('allows for defining steps from a data', async function (assert) {
       await render(hbs`
-        {{#step-manager as |w|}}
+        <StepManager as |w|>
           <div data-test-steps>
-            {{#each data as |item|}}
-              {{#w.Step}}
+            {{#each this.data as |item|}}
+              <w.Step>
                 <div data-test-step={{item.name}}>
                   {{item.name}}
                 </div>
-              {{/w.Step}}
+              </w.Step>
             {{/each}}
           </div>
 
-          <button {{action w.transition-to-next}}>
+          <button type="button" {{on 'click' w.transition-to-next}}>
             Next
           </button>
-        {{/step-manager}}
+        </StepManager>
       `);
 
       assert.dom('[data-test-step="foo"]').exists();
@@ -735,21 +753,21 @@ module('step-manager', function (hooks) {
 
     test('allows for replacing the array with one that has additional steps', async function (assert) {
       await render(hbs`
-        {{#step-manager linear=false as |w|}}
+        <StepManager @linear={{false}} as |w|>
           <div data-test-steps>
-            {{#each data as |item|}}
-              {{#w.Step name=item.name}}
+            {{#each this.data as |item|}}
+              <w.Step @name={{item.name}}>
                 <div data-test-step={{item.name}}>
                   {{item.name}}
                 </div>
-              {{/w.Step}}
+              </w.Step>
             {{/each}}
           </div>
 
-          <button {{action w.transition-to-next}}>
+          <button type="button" {{on 'click' w.transition-to-next}}>
             Next
           </button>
-        {{/step-manager}}
+        </StepManager>
       `);
 
       assert.dom('[data-test-step="foo"]').exists('Initial step is visible');
@@ -780,21 +798,21 @@ module('step-manager', function (hooks) {
 
     test('allows for pushing new steps into the array creating the steps', async function (assert) {
       await render(hbs`
-        {{#step-manager linear=false as |w|}}
+        <StepManager @linear={{false}} as |w|>
           <div data-test-steps>
-            {{#each data as |item|}}
-              {{#w.Step name=item.name}}
+            {{#each this.data as |item|}}
+              <w.Step @name={{item.name}}>
                 <div data-test-step={{item.name}}>
                   {{item.name}}
                 </div>
-              {{/w.Step}}
+              </w.Step>
             {{/each}}
           </div>
 
-          <button {{action w.transition-to-next}}>
+          <button type="button" {{on 'click' w.transition-to-next}}>
             Next
           </button>
-        {{/step-manager}}
+        </StepManager>
       `);
 
       assert.dom('[data-test-step="foo"]').exists('Initial step is visible');
@@ -806,7 +824,7 @@ module('step-manager', function (hooks) {
         .doesNotExist('Initial step is no longer visible');
       assert.dom('[data-test-step="bar"]').exists('Second step is visible');
 
-      this.get('data').pushObject({ name: 'baz' });
+      this.data.pushObject({ name: 'baz' });
       await settled();
 
       assert
@@ -830,17 +848,17 @@ module('step-manager', function (hooks) {
       this.set('data', A([{ name: 'foo' }, { name: 'bar' }]));
 
       await render(hbs`
-        {{#step-manager linear=true as |w|}}
+        <StepManager @linear={{true}} as |w|>
           <div data-test-steps>
-            {{#each data as |item|}}
-              {{#w.Step name=item.name}}
+            {{#each this.data as |item|}}
+              <w.Step @name={{item.name}}>
                 <div data-test-step={{item.name}}>
                   {{item.name}}
                 </div>
-              {{/w.Step}}
+              </w.Step>
             {{/each}}
           </div>
-        {{/step-manager}}
+        </StepManager>
       `);
 
       assert
@@ -859,28 +877,28 @@ module('step-manager', function (hooks) {
       this.set('data', A([{ name: 'foo' }, stepToRemove]));
 
       await render(hbs`
-        {{#step-manager linear=false as |w|}}
+        <StepManager @linear={{false}} as |w|>
           <div data-test-steps>
-            {{#each data as |item|}}
-              {{#w.Step name=item.name}}
+            {{#each this.data as |item|}}
+              <w.Step @name={{item.name}}>
                 <div data-test-step={{item.name}}>
                   {{item.name}}
                 </div>
-              {{/w.Step}}
+              </w.Step>
             {{/each}}
           </div>
 
-          <button {{action w.transition-to-next}}>
+          <button type="button" {{on 'click' w.transition-to-next}}>
             Next
           </button>
-        {{/step-manager}}
+        </StepManager>
       `);
 
       assert
         .dom('[data-test-step="foo"]')
         .exists('The initial step is rendered');
 
-      this.get('data').removeObject(stepToRemove);
+      this.data.removeObject(stepToRemove);
       await settled();
 
       assert
@@ -898,23 +916,31 @@ module('step-manager', function (hooks) {
   module('edge cases', function () {
     test('it handles steps with falsy names', async function (assert) {
       await render(hbs`
-        {{#step-manager initialStep='' as |w|}}
-          {{#w.Step name=''}}
+        <StepManager @initialStep='' as |w|>
+          <w.Step @name=''>
             <div data-test-empty-string></div>
-          {{/w.Step}}
+          </w.Step>
 
-          {{#w.Step name=0}}
+          <w.Step @name={{0}}>
             <div data-test-zero></div>
-          {{/w.Step}}
+          </w.Step>
 
-          <button {{action w.transition-to-previous}} data-test-previous>
+          <button
+            type="button"
+            data-test-previous
+            {{on 'click' w.transition-to-previous}}
+          >
             Previous step
           </button>
 
-          <button {{action w.transition-to-next}} data-test-next>
+          <button
+            type="button"
+            data-test-next
+            {{on 'click' w.transition-to-next}}
+          >
             Next step
           </button>
-        {{/step-manager}}
+        </StepManager>
       `);
 
       assert
