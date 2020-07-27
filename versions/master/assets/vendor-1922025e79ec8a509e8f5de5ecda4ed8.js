@@ -89,7 +89,7 @@ return o.next=o}}return{next:E}}function E(){return{value:void 0,done:!0}}}("obj
  *            Portions Copyright 2008-2011 Apple Inc. All rights reserved.
  * @license   Licensed under MIT license
  *            See https://raw.github.com/emberjs/ember.js/master/LICENSE
- * @version   3.20.1
+ * @version   3.20.2
  */
 var e,t,r
 mainContext=this,function(){var n,i
@@ -2763,7 +2763,8 @@ var a=vr.initial(e,t,{self:r,dynamicScope:o,treeBuilder:n,handle:i})
 return new yr(a)},e.renderSync=gr,e.dynamicAttribute=Re,e.clientBuilder=function(e,t){return F.forInitialRender(e,t)},e.isSerializationFirstNode=_r,e.rehydrationBuilder=function(e,t){return wr.forInitialRender(e,t)},e.destroy=M,e.registerDestructor=S,e.unregisterDestructor=function(e,t,r){void 0===r&&(r=!1)
 0
 var n=k(e),i=!0===r?"eagerDestructors":"destructors"
-n[i]=x(n[i],t,!1)},e.associateDestroyableChild=O,e.isDestroying=N,e.isDestroyed=function(e){return 2===k(e).state}
+n[i]=x(n[i],t,!1)},e.associateDestroyableChild=O,e.isDestroying=N,e.isDestroyed=function(e){var t=_.get(e)
+return void 0!==t&&t.state>=2}
 e.setScheduleDestroy=function(t){e._scheduleDestroy=R=t},e.setScheduleDestroyed=function(t){e._scheduleDestroyed=C=t},e._destroyChildren=j,e.TEMPLATE_ONLY_COMPONENT=e.SimpleComponentManager=e._scheduleDestroyed=e._scheduleDestroy=e.assertDestroyablesDestroyed=e.enableDestroyableTracking=e.SERIALIZATION_FIRST_NODE_STRING=e.RehydrateBuilder=e.RemoteLiveBlock=e.UpdatableBlockImpl=e.NewElementBuilder=e.SimpleDynamicAttribute=e.DynamicAttribute=e.CapturedPositionalArgumentsImpl=e.CapturedNamedArgumentsImpl=e.CapturedArgumentsImpl=e.EMPTY_ARGS=e.LowLevelVM=e.UpdatingVM=e.UNDEFINED_REFERENCE=e.PrimitiveReference=e.NULL_REFERENCE=e.ConditionalReference=e.ScopeImpl=e.EnvironmentImpl=e.DefaultDynamicScope=e.DOMTreeConstruction=e.IDOMChanges=e.DOMChanges=e.MINIMAL_CAPABILITIES=e.DEFAULT_CAPABILITIES=e.CurriedComponentDefinition=e.CursorImpl=e.ConcreteBounds=void 0
 var u=(0,r.symbol)("INNER_VM"),l=(0,r.symbol)("DESTROYABLE_STACK"),c=(0,r.symbol)("STACKS"),d=(0,r.symbol)("REGISTERS"),f=(0,r.symbol)("HEAP"),h=(0,r.symbol)("CONSTANTS"),p=(0,r.symbol)("ARGS"),m=((0,r.symbol)("PC"),function(e,t){this.element=e,this.nextSibling=t})
 e.CursorImpl=m
@@ -2789,7 +2790,8 @@ var A,P,T,C=function(){}
 function M(e){var t=k(e)
 if(!(t.state>=1)){var r=t.parents,n=t.children,i=t.eagerDestructors,o=t.destructors
 t.state=1,w(n,M),w(i,(function(t){return t(e)})),w(o,(function(t){return R(e,t)})),C((function(){w(r,(function(t){return function(e,t){var r=k(t)
-0===r.state&&(r.children=x(r.children,e))}(e,t)})),t.state=2}))}}function j(e){w(k(e).children,M)}function N(e){return k(e).state>=1}e._scheduleDestroyed=C,e.enableDestroyableTracking=A,e.assertDestroyablesDestroyed=P
+0===r.state&&(r.children=x(r.children,e))}(e,t)})),t.state=2}))}}function j(e){w(k(e).children,M)}function N(e){var t=_.get(e)
+return void 0!==t&&t.state>=1}e._scheduleDestroyed=C,e.enableDestroyableTracking=A,e.assertDestroyablesDestroyed=P
 var I=function(){function e(e){this.node=e}return e.prototype.firstNode=function(){return this.node},e}(),D=function(){function e(e){this.node=e}return e.prototype.lastNode=function(){return this.node},e}(),L=(0,r.symbol)("CURSOR_STACK"),F=function(){function e(e,t,n){this.constructing=null,this.operations=null,this[T]=new r.Stack,this.modifierStack=new r.Stack,this.blockStack=new r.Stack,this.pushElement(t,n),this.env=e,this.dom=e.getAppendOperations(),this.updateOperations=e.getDOM()}e.forInitialRender=function(e,t){return new this(e,t.element,t.nextSibling).initialize()},e.resume=function(e,t){var r=new this(e,t.parentElement(),t.reset(e)).initialize()
 return r.pushLiveBlock(t),r}
 var n=e.prototype
@@ -3771,7 +3773,7 @@ z.Test=U.Test,z.Test.Adapter=U.Adapter,z.Test.QUnitAdapter=U.QUnitAdapter,z.setu
 var q=z
 e.default=q,n.IS_NODE?n.module.exports=z:r.context.exports.Ember=r.context.exports.Em=z})),e("ember/version",["exports"],(function(e){"use strict"
 Object.defineProperty(e,"__esModule",{value:!0}),e.default=void 0
-e.default="3.20.1"})),e("node-module/index",["exports"],(function(e){"use strict"
+e.default="3.20.2"})),e("node-module/index",["exports"],(function(e){"use strict"
 Object.defineProperty(e,"__esModule",{value:!0}),e.require=e.module=e.IS_NODE=void 0
 var t,r,n="object"==typeof module&&"function"==typeof module.require
 e.IS_NODE=n,e.module=t,e.require=r,n?(e.module=t=module,e.require=r=module.require):(e.module=t=null,e.require=r=null)})),e("route-recognizer",["exports"],(function(e){"use strict"
