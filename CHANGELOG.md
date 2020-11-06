@@ -4,78 +4,66 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [10.0.0](https://github.com/alexlafroscia/ember-steps/compare/v9.0.0...v10.0.0) (2020-06-12)
 
-
 ### ⚠ BREAKING CHANGES
 
-* The `Step` component is now yielded as `w.Step`, using the capitalization to denote the fact that the thing being yielded is a component
-* This addon now requires an Octane-compatible version of Ember (3.13+)
+- The `Step` component is now yielded as `w.Step`, using the capitalization to denote the fact that the thing being yielded is a component
+- This addon now requires an Octane-compatible version of Ember (3.13+)
 
 ### Bug Fixes
 
-* upgrade `ember-cli-document-title` ([1eb3dc9](https://github.com/alexlafroscia/ember-steps/commit/1eb3dc9e96da008d0360df069a05b9f3b6a2046e))
+- upgrade `ember-cli-document-title` ([1eb3dc9](https://github.com/alexlafroscia/ember-steps/commit/1eb3dc9e96da008d0360df069a05b9f3b6a2046e))
 
-
-* modernize addon ([f699a69](https://github.com/alexlafroscia/ember-steps/commit/f699a69553a862b380cd6a9b606949a22111ae63))
-* yield step component as `Step` ([af0d926](https://github.com/alexlafroscia/ember-steps/commit/af0d9261307a6169692985ec04436e0783c95a72)), closes [#166](https://github.com/alexlafroscia/ember-steps/issues/166)
+- modernize addon ([f699a69](https://github.com/alexlafroscia/ember-steps/commit/f699a69553a862b380cd6a9b606949a22111ae63))
+- yield step component as `Step` ([af0d926](https://github.com/alexlafroscia/ember-steps/commit/af0d9261307a6169692985ec04436e0783c95a72)), closes [#166](https://github.com/alexlafroscia/ember-steps/issues/166)
 
 <a name="9.0.0"></a>
-# [9.0.0](https://github.com/alexlafroscia/ember-steps/compare/v9.0.0-beta.0...v9.0.0) (2019-06-19)
 
+# [9.0.0](https://github.com/alexlafroscia/ember-steps/compare/v9.0.0-beta.0...v9.0.0) (2019-06-19)
 
 ### Chores
 
-* remove activation hooks ([aa2f10d](https://github.com/alexlafroscia/ember-steps/commit/aa2f10d)), closes [#120](https://github.com/alexlafroscia/ember-steps/issues/120) [#129](https://github.com/alexlafroscia/ember-steps/issues/129)
-
+- remove activation hooks ([aa2f10d](https://github.com/alexlafroscia/ember-steps/commit/aa2f10d)), closes [#120](https://github.com/alexlafroscia/ember-steps/issues/120) [#129](https://github.com/alexlafroscia/ember-steps/issues/129)
 
 ### Features
 
-* one-way-bind the `currentStep` property ([72efb43](https://github.com/alexlafroscia/ember-steps/commit/72efb43))
-
+- one-way-bind the `currentStep` property ([72efb43](https://github.com/alexlafroscia/ember-steps/commit/72efb43))
 
 ### BREAKING CHANGES
 
-* `onActivate` and `onDeactivate` should instead be called by `did-insert` or `will-destroy` on element inside the step definition.
-* `currentStep` no longer updates the value passed in; it is a one-way bi7nding from
+- `onActivate` and `onDeactivate` should instead be called by `did-insert` or `will-destroy` on element inside the step definition.
+- `currentStep` no longer updates the value passed in; it is a one-way bi7nding from
   the context down to the component. If you need to bind a value to the `currentStep`, you can use
   `onTransition` and the `mut` helper.
 
 Co-authored-by: Lou Greenwood <lougreenwood@me.com>
 
-
-
 <a name="9.0.0-beta.0"></a>
-# [9.0.0-beta.0](https://github.com/alexlafroscia/ember-steps/compare/v8.0.2...v9.0.0-beta.0) (2019-05-10)
 
+# [9.0.0-beta.0](https://github.com/alexlafroscia/ember-steps/compare/v8.0.2...v9.0.0-beta.0) (2019-05-10)
 
 ### Bug Fixes
 
-* eslint ignore node_modules ([7c35d33](https://github.com/alexlafroscia/ember-steps/commit/7c35d33))
-* fastboot testing ([cc8b36c](https://github.com/alexlafroscia/ember-steps/commit/cc8b36c))
-* move `ember-decorators-polyfill` to `dependencies` ([7dc7857](https://github.com/alexlafroscia/ember-steps/commit/7dc7857))
-
+- eslint ignore node_modules ([7c35d33](https://github.com/alexlafroscia/ember-steps/commit/7c35d33))
+- fastboot testing ([cc8b36c](https://github.com/alexlafroscia/ember-steps/commit/cc8b36c))
+- move `ember-decorators-polyfill` to `dependencies` ([7dc7857](https://github.com/alexlafroscia/ember-steps/commit/7dc7857))
 
 ### Code Refactoring
 
-* remove TypeScript ([5652e28](https://github.com/alexlafroscia/ember-steps/commit/5652e28))
-
+- remove TypeScript ([5652e28](https://github.com/alexlafroscia/ember-steps/commit/5652e28))
 
 ### BREAKING CHANGES
 
-* Package no longer provides TypeScript definitions for
+- Package no longer provides TypeScript definitions for
   components. This is unlikely to _actually_ be a breaking change for
   anyone, but it is better to err on the safe side.
 
-
-
 <a name="8.0.2"></a>
-## [8.0.2](https://github.com/alexlafroscia/ember-steps/compare/v8.0.1...v8.0.2) (2019-03-15)
 
+## [8.0.2](https://github.com/alexlafroscia/ember-steps/compare/v8.0.1...v8.0.2) (2019-03-15)
 
 ### Bug Fixes
 
-* avoid resetting the step manager on any attribute changes ([569991a](https://github.com/alexlafroscia/ember-steps/commit/569991a))
-
-
+- avoid resetting the step manager on any attribute changes ([569991a](https://github.com/alexlafroscia/ember-steps/commit/569991a))
 
 <a name="8.0.1"></a>
 
@@ -83,7 +71,7 @@ Co-authored-by: Lou Greenwood <lougreenwood@me.com>
 
 ### Chores
 
-* removes inheritance from EmberObject from StepNode ([c4f8e8](https://github.com/alexlafroscia/ember-steps/commit/c4f8e8))
+- removes inheritance from EmberObject from StepNode ([c4f8e8](https://github.com/alexlafroscia/ember-steps/commit/c4f8e8))
 
 <a name="8.0.0"></a>
 
@@ -91,11 +79,11 @@ Co-authored-by: Lou Greenwood <lougreenwood@me.com>
 
 ### Chores
 
-* **deps:** externalize `ember-native-class-polyfill` ([904cd97](https://github.com/alexlafroscia/ember-steps/commit/904cd97))
+- **deps:** externalize `ember-native-class-polyfill` ([904cd97](https://github.com/alexlafroscia/ember-steps/commit/904cd97))
 
 ### BREAKING CHANGES
 
-* **deps:** For Ember `3.4` and `3.5` compatibility, you _must_ install `ember-native-class-polyfill` in your application. This was previously brought in as a dependency, but should not be supplied by the host app.
+- **deps:** For Ember `3.4` and `3.5` compatibility, you _must_ install `ember-native-class-polyfill` in your application. This was previously brought in as a dependency, but should not be supplied by the host app.
 
 <a name="7.0.0"></a>
 
@@ -103,11 +91,11 @@ Co-authored-by: Lou Greenwood <lougreenwood@me.com>
 
 ### Chores
 
-* **deps:** upgrade to `ember-cli-typescript@rc.1` ([0c919c4](https://github.com/alexlafroscia/ember-steps/commit/0c919c4))
+- **deps:** upgrade to `ember-cli-typescript@rc.1` ([0c919c4](https://github.com/alexlafroscia/ember-steps/commit/0c919c4))
 
 ### BREAKING CHANGES
 
-* **deps:** Increased the minimum supported version of Ember to
+- **deps:** Increased the minimum supported version of Ember to
   `3.4.0` to align with what native Classes are well-supported by at
   this time. This was necessary to fix a number of issues that arose
   with the upgraded version of `ember-cli-typescript`
@@ -122,8 +110,8 @@ Co-authored-by: Lou Greenwood <lougreenwood@me.com>
 
 ### Bug Fixes
 
-* add action hooks when current step property changes ([1ddda66](https://github.com/alexlafroscia/ember-steps/commit/1ddda66))
-* add compatibility with Ember 3.6+ ([3523a4c](https://github.com/alexlafroscia/ember-steps/commit/3523a4c))
+- add action hooks when current step property changes ([1ddda66](https://github.com/alexlafroscia/ember-steps/commit/1ddda66))
+- add compatibility with Ember 3.6+ ([3523a4c](https://github.com/alexlafroscia/ember-steps/commit/3523a4c))
 
 <a name="5.0.1"></a>
 
@@ -131,7 +119,7 @@ Co-authored-by: Lou Greenwood <lougreenwood@me.com>
 
 ### Bug Fixes
 
-* Allow string, name, or symbol step names ([2615f9e](https://github.com/alexlafroscia/ember-steps/commit/2615f9e)), closes [#103](https://github.com/alexlafroscia/ember-steps/issues/103)
+- Allow string, name, or symbol step names ([2615f9e](https://github.com/alexlafroscia/ember-steps/commit/2615f9e)), closes [#103](https://github.com/alexlafroscia/ember-steps/issues/103)
 
 <a name="5.0.0"></a>
 
@@ -143,12 +131,12 @@ Co-authored-by: Lou Greenwood <lougreenwood@me.com>
 
 ### Bug Fixes
 
-* Fix TypeScript compilation errors ([c11bbb7](https://github.com/alexlafroscia/ember-steps/commit/c11bbb7))
-* Simplify step addition/removal logic ([9535dfe](https://github.com/alexlafroscia/ember-steps/commit/9535dfe))
+- Fix TypeScript compilation errors ([c11bbb7](https://github.com/alexlafroscia/ember-steps/commit/c11bbb7))
+- Simplify step addition/removal logic ([9535dfe](https://github.com/alexlafroscia/ember-steps/commit/9535dfe))
 
 ### Features
 
-* Step manager now handles removal ([14f3e50](https://github.com/alexlafroscia/ember-steps/commit/14f3e50))
+- Step manager now handles removal ([14f3e50](https://github.com/alexlafroscia/ember-steps/commit/14f3e50))
 
 <a name="5.0.0-beta.1"></a>
 
@@ -156,8 +144,8 @@ Co-authored-by: Lou Greenwood <lougreenwood@me.com>
 
 ### Features
 
-* Rewritten in TypeScript ([a94e9a](https://github.com/alexlafroscia/ember-steps/commit/a94e9a))
+- Rewritten in TypeScript ([a94e9a](https://github.com/alexlafroscia/ember-steps/commit/a94e9a))
 
 ### BREAKING CHANGES
 
-* Drop support for Ember 2.12 ([191403](https://github.com/alexlafroscia/ember-steps/commit/191403))
+- Drop support for Ember 2.12 ([191403](https://github.com/alexlafroscia/ember-steps/commit/191403))

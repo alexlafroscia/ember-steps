@@ -1,29 +1,29 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "ember test",
-            "type": "node",
-            "request": "launch",
-            "program": "${workspaceRoot}/node_modules/.bin/ember",
-            "args": ["test"],
-            "sourceMaps": false,
-            "outDir": null,
-            "env": {
-                "DEBUG": "ember-wizard:*"
-            }
-        },
-        {
-            "name": "ember test --serve",
-            "type": "node",
-            "request": "launch",
-            "program": "${workspaceRoot}/node_modules/.bin/ember",
-            "args": ["test", "--serve"],
-            "sourceMaps": false,
-            "outDir": null,
-            "env": {
-                "DEBUG": "ember-wizard:*"
-            }
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "ember test",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/node_modules/.bin/ember",
+      "args": ["test"],
+      "sourceMaps": false,
+      "outDir": null,
+      "env": {
+        "DEBUG": "ember-wizard:*"
+      }
+    },
+    {
+      "name": "ember test --serve",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceRoot}/node_modules/.bin/ember",
+      "args": ["test", "--serve"],
+      "sourceMaps": false,
+      "outDir": null,
+      "env": {
+        "DEBUG": "ember-wizard:*"
+      }
+    }
+  ]
 }

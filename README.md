@@ -67,7 +67,7 @@ The above examples show the basic idea, but there's more configuration (and powe
 The following table can help determine which verison of `ember-steps` work with specific Ember versions
 
 | `ember` Version   | `ember-steps` Version |
-|:------------------|:----------------------|
+| :---------------- | :-------------------- |
 | `3.13+`           | `v10.0.0`             |
 | `3.6`             | `v9.0.0`              |
 | `3.4` to `3.6`    | `v7.0.0`              |

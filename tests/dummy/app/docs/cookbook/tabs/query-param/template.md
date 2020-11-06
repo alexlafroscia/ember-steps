@@ -3,21 +3,19 @@
 Often times, you might want to store the active tab in the URL, so that the user can come back to the same place they left off. This also allows you to use regular `link-to` helpers to transition between tabs. Just make sure that the query param that's passed in is always equal to a valid step name.
 
 <DocsDemo as |demo|>
-  <demo.example @name="cookbook-tabs-with-query-params.hbs">
-    <TabGroup>
-      <TabLink
-        @route="docs.cookbook.tabs.query-param"
-        @query={{hash tab="first"}}
-      >
-        Link to First Tab
-      </TabLink>
-      <TabLink
-        @route="docs.cookbook.tabs.query-param"
-        @query={{hash tab="second"}}
-      >
-        Link to Second Tab
-      </TabLink>
-    </TabGroup>
+<demo.example @name="cookbook-tabs-with-query-params.hbs">
+<TabGroup>
+<TabLink
+@route="docs.cookbook.tabs.query-param"
+@query={{hash tab="first"}} >
+Link to First Tab
+</TabLink>
+<TabLink
+@route="docs.cookbook.tabs.query-param"
+@query={{hash tab="second"}} >
+Link to Second Tab
+</TabLink>
+</TabGroup>
 
     <StepManager @currentStep={{this.tab}} as |w|>
       <w.Step @name="first">
@@ -28,11 +26,12 @@ Often times, you might want to store the active tab in the URL, so that the user
         This content is on the second tab
       </w.Step>
     </StepManager>
-  </demo.example>
 
-  <demo.snippet @name="cookbook-tabs-with-query-params.hbs" />
-  <demo.snippet
-    @name="cookbook-tabs-with-query-params-controller.js"
-    @label="controller.js"
-  />
+</demo.example>
+
+<demo.snippet @name="cookbook-tabs-with-query-params.hbs" />
+<demo.snippet
+@name="cookbook-tabs-with-query-params-controller.js"
+@label="controller.js"
+/>
 </DocsDemo>
