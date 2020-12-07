@@ -6313,8 +6313,8 @@ if("Map"===r||"Set"===r)return Array.from(e)
 if("Arguments"===r||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(r))return u(e,t)}(e,t)||function(){throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function u(e,t){(null==t||t>e.length)&&(t=e.length)
 for(var r=0,n=new Array(t);r<t;r++)n[r]=e[r]
 return n}function l(e){return(l="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function c(e){return"function"==typeof e}function d(e){var t=function(e){return"function"==typeof e.initializer?e.initializer.call(void 0):"function"==typeof e.get?e.get.call(void 0):e.value?e.value:void 0}(e)
-return c(t)||function(e){return"object"===l(e)&&null!==e&&c(e.perform)}(t)?(0,r.task)(t):void 0}function f(e){return(0,r.taskGroup)()}function p(e,t){return Object.entries(e).reduce((function(e,t){var r=s(t,2),n=r[0],i=r[1]
-return!0===i?e[n]():e[n](i)}),t)}function h(e){var r=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{}
+return c(t)||function(e){return"object"===l(e)&&null!==e&&c(e.perform)}(t)?(0,r.task)(t):void 0}function f(e){return(0,r.taskGroup)()}function p(e,t){for(var r=0,n=Object.keys(e);r<n.length;r++){var i=n[r],o=e[i]
+!0===o&&t[i](),t[i](o)}return t}function h(e){var r=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{}
 return(0,t.decoratorWithParams)((function(t,n,i){var a=arguments.length>3&&void 0!==arguments[3]?arguments[3]:[],u=s(a,1),l=u[0],c=i.initializer,d=i.value
 return delete i.initializer,delete i.value,p(o(o({},r),l),e(o(o({},i),{},{initializer:c,value:d})))(t,n,i)}))}Object.defineProperty(e,"__esModule",{value:!0}),Object.defineProperty(e,"lastValue",{enumerable:!0,get:function(){return n.default}}),e.enqueueTaskGroup=e.keepLatestTaskGroup=e.dropTaskGroup=e.restartableTaskGroup=e.taskGroup=e.enqueueTask=e.keepLatestTask=e.dropTask=e.restartableTask=e.task=void 0
 var m=h(d)
