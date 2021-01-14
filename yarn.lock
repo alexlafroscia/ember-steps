@@ -15719,9 +15719,9 @@ tr46@~0.0.1:
   integrity sha1-gYT9NH2snNwYWZLzpmIuFLnZq2o=
 
 tracked-maps-and-sets@^2.1.0:
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/tracked-maps-and-sets/-/tracked-maps-and-sets-2.2.0.tgz#94b1e79733d358021983519255ca70d8c8cd3585"
-  integrity sha512-zg70p8VYCWXFrHtnfnGE7QCVGBVqfsZAdfwf9PeZR4j7NmBJmIJFMbYi+xodnnL6y6wzpv4IHKgOwHs+PiEm6g==
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/tracked-maps-and-sets/-/tracked-maps-and-sets-2.2.1.tgz#323dd40540c561e8b0ffdec8bf129c68ec5025f9"
+  integrity sha512-XYrXh6L/GpGmVmG3KcN/qoDyi4FxHh8eZY/BA/RuoxynskV+GZSfwrX3R+5DR2CIkzkCx4zi4kkDRg1AMDfDhg==
   dependencies:
     "@glimmer/tracking" "^1.0.0"
     ember-cli-babel "^7.17.2"
