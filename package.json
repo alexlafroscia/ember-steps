@@ -73,7 +73,7 @@
     "qunit-wait-for": "^2.0.0",
     "standard-version": "^9.0.0",
     "testdouble": "^3.16.0",
-    "testdouble-qunit": "^2.1.1"
+    "testdouble-qunit": "^3.0.0"
   },
   "keywords": [
     "ember-addon"
