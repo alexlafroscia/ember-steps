@@ -15366,10 +15366,10 @@ terser@^4.3.9:
     source-map "~0.6.1"
     source-map-support "~0.5.12"
 
-testdouble-qunit@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/testdouble-qunit/-/testdouble-qunit-2.1.1.tgz#3f5e8ff7a6bdeb9d75941e88100efeef823089a2"
-  integrity sha512-1+2oA5oVogN9PwbshcnC4TneJhRgHSRi1pTPaDfDTM+w41yrLJzH95GK249BvELPs3Tmd9JQ6xkr8fs5DKsmow==
+testdouble-qunit@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/testdouble-qunit/-/testdouble-qunit-3.0.0.tgz#142e7fe32cbd3d3f442cd8539f236dea63db2fa8"
+  integrity sha512-zd2IKz5eELq4bZPDG0HYE6JTALGibUvrOy9OD05JiiE+4/UEFBDDG7P0tWjJfP5rk2Vm+gK9Do02a/xtvWe+jA==
 
 testdouble@^3.16.0:
   version "3.16.1"
