@@ -7196,9 +7196,9 @@ ember-concurrency-decorators@^2.0.0:
     ember-maybe-import-regenerator "^0.1.6"
 
 ember-concurrency@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/ember-concurrency/-/ember-concurrency-2.0.0.tgz#5ec729ce6f3971bb652be4504c8e5a06333029b6"
-  integrity sha512-qFpxIaWdBcWM3fjN6CrNaXNTBRVbdympyQMM30GYMoyVKxM0JhzlOelPtGOKkG9uL3dAB5phJ0bfKtoO5x6mnQ==
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/ember-concurrency/-/ember-concurrency-2.0.1.tgz#4326d6ed90241d8009c5035916dab1ebe58c6f9e"
+  integrity sha512-5cT1Id1n8I1F1d7xqtxD8LnqLfyxxlAbDxHazODmncwEyevkuLHxAMtw7HrcoDx8wr4zO59t3R2c+dnWJHNmsw==
   dependencies:
     "@glimmer/tracking" "^1.0.2"
     ember-cli-babel "^7.22.1"
