@@ -6417,7 +6417,9 @@ e.race=o
 var a=c(Ember.RSVP,"hash",l)
 e.hash=a
 var s=c(Ember.RSVP,"hashSettled",l)
-function u(e){return e}function l(e){return Object.keys(e).map((function(t){return e[t]}))}function c(e,n,i){return function(o){var a=i(o),s=Ember.RSVP.defer()
+function u(e){return e}function l(e){return Object.keys(e).map((function(t){return e[t]}))}function c(e,n,i){return function(o){var a=i(o)
+a.forEach((function(e){e&&e instanceof t.TaskInstance&&(e.executor.asyncErrorsHandled=!0)}))
+var s=Ember.RSVP.defer()
 e[n](o).then(s.resolve,s.reject)
 var u=!1,l=function(){u||(u=!0,a.forEach((function(e){e&&(e instanceof t.TaskInstance?e.cancel():"function"==typeof e[r.cancelableSymbol]&&e[r.cancelableSymbol]())})))},c=s.promise.finally(l)
 return c[r.cancelableSymbol]=l,c}}e.hashSettled=s})),define("ember-concurrency/-private/ember-environment",["exports","ember-concurrency/-private/external/environment"],(function(e,t){"use strict"
@@ -6619,7 +6621,7 @@ this.advanceIndex(r)&&(n.errored?this.finalize(n.value,i.COMPLETION_ERROR):this.
 break
 case n.YIELDABLE_THROW:this.finalize(t,i.COMPLETION_ERROR)}}},{key:"handleYieldedUnknownThenable",value:function(e){var t=this,r=this.index
 e.then((function(e){t.proceedChecked(r,n.YIELDABLE_CONTINUE,e)}),(function(e){t.proceedChecked(r,n.YIELDABLE_THROW,e)}))}},{key:"advanceIndex",value:function(e){if(this.index===e)return++this.index}},{key:"handleYieldedValue",value:function(e){var t=e.value
-t?t instanceof n.RawValue?this.proceedWithSimpleValue(t.value):(this.addDisposer(t[n.cancelableSymbol]),t[n.yieldableSymbol]?this.invokeYieldable(t):"function"==typeof t.then?this.handleYieldedUnknownThenable(t):this.proceedWithSimpleValue(t)):this.proceedWithSimpleValue(t)}},{key:"proceedWithSimpleValue",value:function(e){this.proceedAsync(n.YIELDABLE_CONTINUE,e)}},{key:"addDisposer",value:function(e){"function"==typeof e&&this.disposers.push(e)}},{key:"dispose",value:function(){var e=this.disposers
+t?(this.addDisposer(t[n.cancelableSymbol]),t[n.yieldableSymbol]?this.invokeYieldable(t):"function"==typeof t.then?this.handleYieldedUnknownThenable(t):this.proceedWithSimpleValue(t)):this.proceedWithSimpleValue(t)}},{key:"proceedWithSimpleValue",value:function(e){this.proceedAsync(n.YIELDABLE_CONTINUE,e)}},{key:"addDisposer",value:function(e){"function"==typeof e&&this.disposers.push(e)}},{key:"dispose",value:function(){var e=this.disposers
 0!==e.length&&(this.disposers=[],e.forEach((function(e){return e()})))}},{key:"generatorStep",value:function(e,t){u.push(this)
 var r=this.generatorState.step(e,t)
 if(u.pop(),this._expectsLinkedYield){var n=r.value
@@ -6697,7 +6699,7 @@ if(t){var a=o(this).constructor
 r=Reflect.construct(n,arguments,a)}else r=n.apply(this,arguments)
 return i(this,r)}}function i(e,t){return!t||"object"!==_typeof(t)&&"function"!=typeof t?function(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
 return e}(e):t}function o(e){return(o=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function a(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function s(e,t){for(var r=0;r<t.length;r++){var n=t[r]
-n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function u(e,t,r){return t&&s(e.prototype,t),r&&s(e,r),e}Object.defineProperty(e,"__esModule",{value:!0}),e.animationFrame=function(){return new c},e.raw=function(e){return new h(e)},e.rawTimeout=function(e){return new d(e)},e.RawValue=e.forever=e.Yieldable=e.YIELDABLE_CANCEL=e.YIELDABLE_RETURN=e.YIELDABLE_THROW=e.YIELDABLE_CONTINUE=e.yieldableSymbol=e.cancelableSymbol=void 0
+n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n)}}function u(e,t,r){return t&&s(e.prototype,t),r&&s(e,r),e}Object.defineProperty(e,"__esModule",{value:!0}),e.animationFrame=function(){return new c},e.rawTimeout=function(e){return new d(e)},e.forever=e.Yieldable=e.YIELDABLE_CANCEL=e.YIELDABLE_RETURN=e.YIELDABLE_THROW=e.YIELDABLE_CONTINUE=e.yieldableSymbol=e.cancelableSymbol=void 0
 e.cancelableSymbol="__ec_cancel__"
 e.yieldableSymbol="__ec_yieldable__"
 e.YIELDABLE_CONTINUE="next"
@@ -6721,9 +6723,7 @@ var r=n(i)
 function i(e){var t
 return a(this,i),(t=r.call(this)).ms=e,t.timerId=null,t}return u(i,[{key:"__ec_yieldable__",value:function(e,t){this.timerId=setTimeout((function(){e.proceed(t,"next",e._result)}),this.ms)}},{key:"__ec_cancel__",value:function(){clearTimeout(this.timerId),this.timerId=null}}]),i}(l)
 var p=new f
-e.forever=p
-var h=function e(t){a(this,e),this.value=t}
-e.RawValue=h})),define("ember-concurrency/-private/helpers",["exports"],(function(e){"use strict"
+e.forever=p})),define("ember-concurrency/-private/helpers",["exports"],(function(e){"use strict"
 function t(e){return function(e){if(Array.isArray(e))return r(e)}(e)||function(e){if("undefined"!=typeof Symbol&&Symbol.iterator in Object(e))return Array.from(e)}(e)||function(e,t){if(!e)return
 if("string"==typeof e)return r(e,t)
 var n=Object.prototype.toString.call(e).slice(8,-1)
@@ -6925,7 +6925,7 @@ e.Task=b,a.TRACKED_INITIAL_TASK_STATE&&Object.defineProperties(b.prototype,a.TRA
 var g=function(e){p(o,e)
 var t=m(o)
 function o(e){var r
-return c(this,o),(r=t.call(this,e)).taskObj=e.taskObj,r._encapsulatedTaskStates=new WeakMap,r._encapsulatedTaskInstanceProxies=new WeakMap,r}return d(o,[{key:"_taskInstanceFactory",value:function(e,t){var o=Ember.getOwner(this.context),a=Ember.Object.extend(this.taskObj).create()
+return c(this,o),(r=t.call(this,e)).taskObj=e.taskObj,r._encapsulatedTaskStates=new WeakMap,r._encapsulatedTaskInstanceProxies=new WeakMap,r}return d(o,[{key:"_taskInstanceFactory",value:function(e,t){var o=Ember.getOwner(this.context),a=Ember.Object.extend(this.taskObj).create({context:this.context})
 Ember.setOwner(a,o)
 var s=new r.TaskInstance({task:this,args:e,executor:new n.TaskInstanceExecutor({generatorFactory:function(){return a.perform.apply(a,e)},env:i.EMBER_ENVIRONMENT,debug:this.debug}),performType:t,hasEnabledEvents:this.hasEnabledEvents})
 return this._encapsulatedTaskStates.set(s,a),this._wrappedEncapsulatedTaskInstance(s)}},{key:"_wrappedEncapsulatedTaskInstance",value:function(e){if(!e)return null
