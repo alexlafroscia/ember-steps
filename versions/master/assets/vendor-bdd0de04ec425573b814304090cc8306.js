@@ -4882,7 +4882,8 @@ return function(){var r,n=l(e)
 if(t){var i=l(this).constructor
 r=Reflect.construct(n,arguments,i)}else r=n.apply(this,arguments)
 return u(this,r)}}function u(e,t){return!t||"object"!==_typeof(t)&&"function"!=typeof t?function(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called")
-return e}(e):t}function l(e){return(l=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}var c=Ember._componentManagerCapabilities("3.13",{destructor:!0,asyncLifecycleCallbacks:!1,updateHook:!1}),f=Ember.destroy,d=Ember._registerDestructor,p=function(e){(function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function")
+return e}(e):t}function l(e){return(l=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}r.setDestroyed,r.setDestroying
+var c=Ember._componentManagerCapabilities("3.13",{destructor:!0,asyncLifecycleCallbacks:!1,updateHook:!1}),f=Ember.destroy,d=Ember._registerDestructor,p=function(e){(function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function")
 e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&a(e,t)})(p,e)
 var t,r,u,c=s(p)
 function p(){return n(this,p),c.apply(this,arguments)}return t=p,(r=[{key:"createComponent",value:function(e,t){var r=o(l(p.prototype),"createComponent",this).call(this,e,t)
