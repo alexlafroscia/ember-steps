@@ -14541,9 +14541,9 @@ qunit-dom@^1.1.0:
     ember-cli-version-checker "^5.1.1"
 
 qunit-wait-for@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/qunit-wait-for/-/qunit-wait-for-2.0.0.tgz#f90f4a1c554bf8405222b5a361063747b23f023f"
-  integrity sha512-ASDc/Xlx0QxrBRX2j1/PBLJVw0HW/I6DYL6ipmLy3r5X8uP0pYLNxPq7cU7iGg0ZOCriB7OUi4If2M9XGUxmsw==
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/qunit-wait-for/-/qunit-wait-for-2.0.1.tgz#97d88420e7fa3bc6b1b39a1e39e1ed79eba35e6a"
+  integrity sha512-4DGUovQcu/U+s8n8KrkVSNYD1RlzzoXSpPy0pvTfOWhXRVGwE4LccSpGzG+9/0PFMACxJhO+K4F8F35eL4o9iA==
 
 qunit@^2.9.3:
   version "2.9.3"
