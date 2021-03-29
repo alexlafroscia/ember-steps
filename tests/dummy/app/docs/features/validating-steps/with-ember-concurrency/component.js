@@ -1,5 +1,5 @@
 // BEGIN-SNIPPET validating-steps-ember-concurrency.js
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { task } from 'ember-concurrency-decorators';
 import asyncPasswordCheck from './async-password-check';

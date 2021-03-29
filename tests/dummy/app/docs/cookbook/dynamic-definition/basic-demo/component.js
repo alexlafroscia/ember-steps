@@ -1,4 +1,4 @@
-import Component from '@ember/component';
+import Component from '@glimmer/component';
 
 // BEGIN-SNIPPET dynamic-definition-basic-example.js
 export default class extends Component {
