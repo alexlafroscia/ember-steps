@@ -25,6 +25,8 @@ module.exports = {
       ['actions', 'localClassNames', 'queryParams'],
     ],
     'ember/no-jquery': 'error',
+
+    'ember/no-side-effects': 'off',
   },
   overrides: [
     // node files
