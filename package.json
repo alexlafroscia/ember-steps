@@ -59,7 +59,7 @@
     "ember-qunit": "^4.6.0",
     "ember-qunit-assert-helpers": "^0.2.2",
     "ember-resolver": "^8.0.0",
-    "ember-source": "~3.26.0",
+    "ember-source": "~3.27.1",
     "ember-source-channel-url": "^3.0.0",
     "ember-template-lint": "^2.8.0",
     "ember-truth-helpers": "^3.0.0",
