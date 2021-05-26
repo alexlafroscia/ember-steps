@@ -98,6 +98,11 @@
     "*.js": "eslint --fix",
     "*.{md,json,yml}": "prettier --write"
   },
+  "standard-version": {
+    "scripts": {
+      "postchangelog": "prettier --write CHANGELOG.md"
+    }
+  },
   "volta": {
     "node": "12.16.2",
     "yarn": "1.22.4"
