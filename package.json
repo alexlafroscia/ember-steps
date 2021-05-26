@@ -1,6 +1,6 @@
 {
   "name": "ember-steps",
-  "version": "10.0.0",
+  "version": "10.0.1",
   "description": "Ember addon for declaratively creating wizards, tabbed UIs, and more",
   "scripts": {
     "build": "ember build",

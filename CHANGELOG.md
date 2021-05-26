@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [10.0.1](https://github.com/alexlafroscia/ember-steps/compare/v10.0.0...v10.0.1) (2021-05-26)
+
+### Bug Fixes
+
+- use (has-block) instead of (hasBlock) per RFC [#689](https://github.com/alexlafroscia/ember-steps/issues/689) ([cf3fa6a](https://github.com/alexlafroscia/ember-steps/commit/cf3fa6a225dd87c9ca1f09fe505ba7b400e33097))
+
 ## [10.0.0](https://github.com/alexlafroscia/ember-steps/compare/v9.0.0...v10.0.0) (2020-06-12)
 
 ### ⚠ BREAKING CHANGES
