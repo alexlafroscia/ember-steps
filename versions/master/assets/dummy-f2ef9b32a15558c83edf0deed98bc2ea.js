@@ -215,7 +215,7 @@ e.default=l})),define("dummy/initializers/add-modals-container",["exports","embe
 var n={name:"add-modals-container",initialize:t.default}
 e.default=n})),define("dummy/initializers/container-debug-adapter",["exports","ember-resolver/resolvers/classic/container-debug-adapter"],(function(e,t){Object.defineProperty(e,"__esModule",{value:!0}),e.default=void 0
 var n={name:"container-debug-adapter",initialize:function(){var e=arguments[1]||arguments[0]
-e.register("container-debug-adapter:main",t.default),e.inject("container-debug-adapter:main","namespace","application:main")}}
+e.register("container-debug-adapter:main",t.default)}}
 e.default=n})),define("dummy/initializers/ember-concurrency",["exports","ember-concurrency/initializers/ember-concurrency"],(function(e,t){Object.defineProperty(e,"__esModule",{value:!0}),Object.defineProperty(e,"default",{enumerable:!0,get:function(){return t.default}})})),define("dummy/initializers/ember-data",["exports","ember-data/setup-container"],(function(e,t){Object.defineProperty(e,"__esModule",{value:!0}),e.default=void 0
 var n={name:"ember-data",initialize:t.default}
 e.default=n})),define("dummy/initializers/ember-keyboard-first-responder-inputs",["exports","ember-keyboard/initializers/ember-keyboard-first-responder-inputs"],(function(e,t){Object.defineProperty(e,"__esModule",{value:!0}),Object.defineProperty(e,"default",{enumerable:!0,get:function(){return t.default}}),Object.defineProperty(e,"initialize",{enumerable:!0,get:function(){return t.initialize}})})),define("dummy/initializers/ember-responsive-breakpoints",["exports","ember-responsive/initializers/responsive"],(function(e,t){Object.defineProperty(e,"__esModule",{value:!0}),e.default=void 0
