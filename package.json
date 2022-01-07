@@ -71,7 +71,7 @@
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-prettier": "^4.0.0",
     "husky": "^7.0.1",
-    "lint-staged": "^11.0.0",
+    "lint-staged": "^12.1.6",
     "loader.js": "^4.7.0",
     "pinst": "^2.1.4",
     "prettier": "^2.0.5",
