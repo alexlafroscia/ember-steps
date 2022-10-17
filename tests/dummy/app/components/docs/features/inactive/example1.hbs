@@ -1,0 +1,23 @@
+<DocsDemo as |demo|>
+  <demo.example @name='inactive-steps-example-1.hbs'>
+    <StepManager as |w|>
+      {{#w.Step name='first'}}
+        <h1>The first step is active</h1>
+      {{else}}
+        <button type='button' {{on 'click' (fn w.transition-to 'first')}}>
+          The first step is inactive. Activate it.
+        </button>
+      {{/w.Step}}
+
+      {{#w.Step name='second'}}
+        <h1>The second step is active</h1>
+      {{else}}
+        <button type='button' {{on 'click' (fn w.transition-to 'second')}}>
+          The second step is inactive. Activate it.
+        </button>
+      {{/w.Step}}
+    </StepManager>
+  </demo.example>
+
+  <demo.snippet @name='inactive-steps-example-1.hbs' />
+</DocsDemo>

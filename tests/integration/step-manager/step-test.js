@@ -16,7 +16,7 @@ module('step-manger/step', function (hooks) {
       this.set('name', 'foo');
 
       await render(hbs`
-        {{step-manager/step name=name register-step=this.register remove-step=this.remove}}
+        <StepManager::Step @name={{this.name}} @register-step={{this.register}} @remove-step={{this.remove}}/>
       `);
 
       assert.expectAssertion(() => {
@@ -29,7 +29,7 @@ module('step-manger/step', function (hooks) {
         this.set('name', 'foo');
 
         await render(hbs`
-          {{step-manager/step name=name register-step=this.register remove-step=this.remove}}
+          <StepManager::Step @name={{this.name}} @register-step={{this.register}} @remove-step={{this.remove}}/>
         `);
 
         assert.ok(true);
@@ -41,7 +41,7 @@ module('step-manger/step', function (hooks) {
         this.set('name', 1);
 
         await render(hbs`
-          {{step-manager/step name=name register-step=this.register remove-step=this.remove}}
+          <StepManager::Step @name={{this.name}} @register-step={{this.register}} @remove-step={{this.remove}}/>
         `);
       });
 
@@ -51,7 +51,7 @@ module('step-manger/step', function (hooks) {
         this.set('name', Symbol());
 
         await render(hbs`
-          {{step-manager/step name=name register-step=this.register remove-step=this.remove}}
+          <StepManager::Step @name={{this.name}} @register-step={{this.register}} @remove-step={{this.remove}}/>
         `);
       });
     });
@@ -60,11 +60,11 @@ module('step-manger/step', function (hooks) {
   module('rendering', function () {
     test('renders block content when visible', async function (assert) {
       await render(hbs`
-        {{#step-manager/step name='foo' currentStep='foo' register-step=this.register remove-step=this.remove}}
+        <StepManager::Step @name='foo' @currentStep='foo' @register-step={{this.register}} @remove-step={{this.remove}}>
           <div data-test-step>
             Foo
           </div>
-        {{/step-manager/step}}
+        </StepManager::Step>
       `);
 
       assert.dom('[data-test-step]').hasText('Foo');
@@ -73,11 +73,11 @@ module('step-manger/step', function (hooks) {
     module('when inactive', function () {
       test('is hidden when no alternate state is provided', async function (assert) {
         await render(hbs`
-          {{#step-manager/step name='foo' register-step=this.register remove-step=this.remove}}
+          <StepManager::Step @name='foo' @register-step={{this.register}} @remove-step={{this.remove}}>
             <div data-test-step>
               Active Content
             </div>
-          {{/step-manager/step}}
+          </StepManager::Step>
         `);
 
         assert.dom('[data-test-step]').doesNotExist();
@@ -86,11 +86,14 @@ module('step-manger/step', function (hooks) {
       test('renders the inverse block if provided', async function (assert) {
         await render(hbs`
           <div data-test-step>
-            {{#step-manager/step name='foo' register-step=this.register remove-step=this.remove}}
-              Active Content
-            {{else}}
-              Inactive Content
-            {{/step-manager/step}}
+            <StepManager::Step @name='foo' @register-step={{this.register}} @remove-step={{this.remove}}>
+              <:default>
+                Active Content
+              </:default>
+              <:else>
+                Inactive Content
+              </:else>
+            </StepManager::Step>
           </div>
         `);
 
@@ -102,9 +105,9 @@ module('step-manger/step', function (hooks) {
   module('programmatically controlling visibility', function () {
     test('is visible when active', async function (assert) {
       await render(hbs`
-        {{#step-manager/step name='foo' currentStep='foo' register-step=this.register remove-step=this.remove}}
-          <div data-test-step></div>
-        {{/step-manager/step}}
+        <StepManager::Step @name='foo' @currentStep='foo' @register-step={{this.register}} @remove-step={{this.remove}}>
+          <div data-test-step> </div>
+        </StepManager::Step>
       `);
 
       assert.dom('[data-test-step]').exists();
@@ -112,9 +115,9 @@ module('step-manger/step', function (hooks) {
 
     test('is invisible when not active', async function (assert) {
       await render(hbs`
-        {{#step-manager/step name='foo' currentStep='bar' register-step=this.register remove-step=this.remove}}
-          <div data-test-step></div>
-        {{/step-manager/step}}
+        <StepManager::Step @name='foo' @currentStep='bar' @register-step={{this.register}} @remove-step={{this.remove}}>
+          <div data-test-step> </div>
+        </StepManager::Step>
       `);
 
       assert.dom('[data-test-step]').doesNotExist();
@@ -124,12 +127,12 @@ module('step-manger/step', function (hooks) {
   module('yielding whether the step has a next step', function () {
     test('when it has a next step', async function (assert) {
       await render(hbs`
-        {{#step-manager as |w|}}
-          {{#w.Step as |step|}}
+        <StepManager as |W| >
+          <W.Step as |step| >
             <p>{{step.hasNext}}</p>
-          {{/w.Step}}
-          {{w.Step}}
-        {{/step-manager}}
+          </W.Step>
+          <W.Step />
+        </StepManager>
       `);
 
       assert.dom('p').hasText('true');
@@ -137,11 +140,11 @@ module('step-manger/step', function (hooks) {
 
     test('when it does not have a next step', async function (assert) {
       await render(hbs`
-        {{#step-manager as |w|}}
-          {{#w.Step as |step|}}
+        <StepManager as |W| >
+          <W.Step as |step| >
             <p>{{step.hasNext}}</p>
-          {{/w.Step}}
-        {{/step-manager}}
+          </W.Step>
+        </StepManager>
       `);
 
       assert.dom('p').hasText('false');
@@ -151,12 +154,12 @@ module('step-manger/step', function (hooks) {
   module('yielding whether the step has a previous step', function () {
     test('when it has a previous step', async function (assert) {
       await render(hbs`
-        {{#step-manager currentStep='bar' as |w|}}
-          {{w.Step name='foo'}}
-          {{#w.Step name='bar' as |step|}}
+        <StepManager @currentStep="bar" as |W| >
+          <W.Step @name="foo" />
+          <W.Step @name="bar" as |step| >
             <p>{{step.hasPrevious}}</p>
-          {{/w.Step}}
-        {{/step-manager}}
+          </W.Step>
+        </StepManager>
       `);
 
       assert.dom('p').hasText('true');
@@ -164,11 +167,11 @@ module('step-manger/step', function (hooks) {
 
     test('when it does not have a previous step', async function (assert) {
       await render(hbs`
-        {{#step-manager as |w|}}
-          {{#w.Step as |step|}}
+        <StepManager as |W| >
+          <W.Step as |step| >
             <p>{{step.hasPrevious}}</p>
-          {{/w.Step}}
-        {{/step-manager}}
+          </W.Step>
+        </StepManager>
       `);
 
       assert.dom('p').hasText('false');

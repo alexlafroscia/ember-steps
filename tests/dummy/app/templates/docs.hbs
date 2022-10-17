@@ -1,0 +1,48 @@
+<DocsHeader />
+
+<DocsViewer as |viewer|>
+  <viewer.nav as |nav|>
+    <nav.item @label='Overview' @route='docs.index' />
+    <nav.item @label='Features' @route='docs.features.index' />
+    <nav.item @label='Cookbook' @route='docs.cookbook.index' />
+
+    <nav.section @label='Features' />
+    <nav.subnav as |features|>
+      <features.item
+        @label='Validating Steps'
+        @route='docs.features.validating-steps'
+      />
+      <features.item
+        @label='Linear & Cyclical Flow'
+        @route='docs.features.state-manager'
+      />
+      <features.item @label='Inactive State' @route='docs.features.inactive' />
+    </nav.subnav>
+
+    <nav.section @label='Cookbook' />
+    <nav.subnav as |cookbook|>
+      <cookbook.item
+        @label='Dynamic Definition of Steps'
+        @route='docs.cookbook.dynamic-definition'
+      />
+      <cookbook.item @label='Tabbed Interface' @route='docs.cookbook.tabs' />
+      <cookbook.item
+        @label='Tabbed interface Bound to Query Param'
+        @route='docs.cookbook.tabs-query-param'
+      />
+      <cookbook.item @label='Wizard' @route='docs.cookbook.wizard' />
+      <cookbook.item
+        @label='Wizard With Progress Indicator'
+        @route='docs.cookbook.wizard-progress-indicator'
+      />
+    </nav.subnav>
+  </viewer.nav>
+
+  <viewer.main>
+    <div class='docs-container docs__center'>
+      <div class='docs-section'>
+        {{outlet}}
+      </div>
+    </div>
+  </viewer.main>
+</DocsViewer>

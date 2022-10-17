@@ -1,13 +1,14 @@
-import EmberRouter from '@ember/routing/router';
+import AddonDocsRouter, { docsRoute } from 'ember-cli-addon-docs/router';
 import config from './config/environment';
 
-export default class Router extends EmberRouter {
-  location = config.locationType;
-  rootURL = config.rootURL;
-}
+const Router = AddonDocsRouter.extend({
+  location: config.locationType,
+  rootURL: config.rootURL,
+});
 
 Router.map(function () {
-  this.route('docs', function () {
+  docsRoute(this, function () {
+    /* Your docs routes go here */
     this.route('features', function () {
       this.route('validating-steps');
       this.route('state-manager');
@@ -16,12 +17,10 @@ Router.map(function () {
 
     this.route('cookbook', function () {
       this.route('dynamic-definition');
-      this.route('tabs', function () {
-        this.route('query-param');
-      });
-      this.route('wizard', function () {
-        this.route('progress-indicator');
-      });
+      this.route('tabs');
+      this.route('tabs-query-param');
+      this.route('wizard');
+      this.route('wizard-progress-indicator');
     });
 
     this.route('api', function () {
@@ -33,3 +32,5 @@ Router.map(function () {
 
   this.route('not-found', { path: '/*path' });
 });
+
+export default Router;
