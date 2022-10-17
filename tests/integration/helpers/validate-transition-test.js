@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { click, render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
-import td from 'testdouble';
+import * as td from 'testdouble';
 
 module('Integration | Helper | validate-transition', function (hooks) {
   setupRenderingTest(hooks);
@@ -15,7 +15,7 @@ module('Integration | Helper | validate-transition', function (hooks) {
     });
 
     await render(hbs`
-      <button {{action (validate-transition transition with=validator)}}>
+      <button {{action (validate-transition this.transition with=this.validator)}}>
         Validate
       </button>
     `);
@@ -30,7 +30,7 @@ module('Integration | Helper | validate-transition', function (hooks) {
     this.set('validator', td.function());
 
     await render(hbs`
-      <button {{action (validate-transition transition with=validator)}}>
+      <button {{action (validate-transition this.transition with=this.validator)}}>
         Validate
       </button>
     `);
@@ -45,7 +45,7 @@ module('Integration | Helper | validate-transition', function (hooks) {
     this.set('validator', validator);
 
     await render(hbs`
-      <button {{action (validate-transition transition with=(action validator 'foo' 1))}}>
+      <button {{action (validate-transition this.transition with=(action this.validator 'foo' 1))}}>
         Validate
       </button>
     `);

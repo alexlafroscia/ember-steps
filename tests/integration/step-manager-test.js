@@ -3,7 +3,7 @@ import { setupRenderingTest } from 'ember-qunit';
 import { hbs } from 'ember-cli-htmlbars';
 import { click, render, settled } from '@ember/test-helpers';
 import { A } from '@ember/array';
-import td from 'testdouble';
+import * as td from 'testdouble';
 
 module('step-manager', function (hooks) {
   setupRenderingTest(hooks);
@@ -88,7 +88,7 @@ module('step-manager', function (hooks) {
 
       await click('button');
 
-      assert.equal(this.step, 'first');
+      assert.strictEqual(this.step, 'first');
     });
 
     test('subscribing to step changes', async function (assert) {
@@ -133,7 +133,11 @@ module('step-manager', function (hooks) {
 
       await click('button');
 
-      assert.equal(this.step, 'second', 'Step was updated to the new value');
+      assert.strictEqual(
+        this.step,
+        'second',
+        'Step was updated to the new value'
+      );
     });
   });
 
@@ -177,7 +181,7 @@ module('step-manager', function (hooks) {
       await click('button');
 
       assert.dom('[data-test-first]').exists();
-      assert.equal(this.initialStep, 'second');
+      assert.strictEqual(this.initialStep, 'second');
     });
   });
 

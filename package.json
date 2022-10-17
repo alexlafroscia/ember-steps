@@ -90,8 +90,8 @@
     "qunit-dom": "^2.0.0",
     "qunit-wait-for": "^2.0.2",
     "standard-version": "^9.5.0",
-    "testdouble": "^3.16.0",
-    "testdouble-qunit": "^3.0.0",
+    "testdouble": "^3.16.6",
+    "testdouble-qunit": "^3.0.3",
     "webpack": "^5.65.0"
   },
   "engines": {
