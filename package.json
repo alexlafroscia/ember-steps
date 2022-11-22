@@ -27,7 +27,7 @@
     "tracked-maps-and-sets": "^3.0.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "^13.1.0",
+    "@commitlint/cli": "^17.3.0",
     "@commitlint/config-conventional": "^13.1.0",
     "@ember/optional-features": "^2.0.0",
     "@ember/test-helpers": "^2.4.2",
